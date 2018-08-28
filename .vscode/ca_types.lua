@@ -1,5 +1,6 @@
 --class declarations
 --# assume global class CM
+--# assume global class CA_EVENT_HANDLER
 --# assume global class CA_WORLD
 --# assume global class CA_MODEL
 --# assume global class CA_FACTION
@@ -76,7 +77,6 @@
 --# assume CA_UIC.SimulateClick: method()
 --# assume CA_UIC.SimulateMouseOn: method()
 --# assume CA_UIC.Visible: method() --> boolean
-
 --# assume CA_UIC.SetImage: method(path: string)
 --# assume CA_UIC.SetCanResizeHeight: method(state: boolean)
 --# assume CA_UIC.SetCanResizeWidth: method(state: boolean)
@@ -92,14 +92,75 @@
 --# assume CA_UIC.SimulateLClick: method()
 --# assume CA_UIC.SimulateKey: method(keyString: string)
 
+--event handler
+--# assume CA_EVENT_HANDLER.add_listener: method(
+    --# Name: string,
+    --# EventName: string,
+    --# Conditional: (function(context: WHATEVER) --> boolean) |  boolean,
+    --# Callback: function(context: WHATEVER),
+    --# Persist: boolean)
+--# assume CA_EVENT_HANDLER.remove_listener: method(handler: string)
+
+
 --CM
+--interfaces
 --# assume CM.model: method() --> CA_MODEL
 
+--scripting
+--# assume CM.add_listener: method(
+    --# Name: string,
+    --# EventName: string,
+    --# Conditional: (function(context: WHATEVER) --> boolean) |  boolean,
+    --# Callback: function(context: WHATEVER),
+    --# Persist: boolean)
+--# assume CM.remove_listener: method(handler: string)
+--# assume CM.register_ui_created_callback: method( function() )
+--# assume CM.register_first_tick_callback: method(function())
+--# assume CM.random_number: method(range: number, min: number?) 
+--saving
+--# assume CM.set_saved_value: method(valueKey: string, value: any)
+--# assume CM.get_saved_value: method(valueKey: string) --> WHATEVER
+--# assume CM.register_loading_game_callback: method(function(context: WHATEVER))
+--# assume CM.load_value: method(name: string, default: any, context: WHATEVER) --> WHATEVER
+--# assume CM.register_saving_game_callback:method(function(context: WHATEVER))
+--# assume CM.save_value: method(name: string, value: any, context: WHATEVER)
+--------------------------
+--game interface commands
+--ui
+--# assume CM.ui_root: method() --> CA_UIC
+--effect bundles
+--# assume CM.apply_effect_bundle_to_region: method(bundle: string, region: string, turns: number)
+--# assume CM.remove_effect_bundle_from_region: method(bundle: string, region: string)
+--# assume CM.apply_effect_bundle_to_characters_force: method(bundleKey: string, charCqi: CA_CQI, turns: number, useCommandQueue: boolean)
+--# assume CM.remove_effect_bundle_from_characters_force: method(bundleKey: string, charCqi: CA_CQI)
+--# assume CM.apply_effect_bundle: method(bundle: string, faction: string, timer: int)
+--# assume CM.remove_effect_bundle: method(bundle: string, faction: string)
 
-
-
-
-
+--factions
+--# assume CM.get_local_faction: method(force: boolean?) --> string
+--# assume CM.treasury_mod: method(faction_key: string, quantity: number)
+--# assume CM.transfer_region_to_faction: method(region: string, faction: string)
+--events
+--# assume CM.trigger_incident: method(factionName: string, incidentKey: string, fireImmediately: boolean)
+--# assume CM.trigger_dilemma: method(faction_key: string, dilemma_key: string, trigger_immediately: boolean)
+--diplomacy
+--# assume CM.force_make_vassal: method(master: string, vassal: string)
+--# assume CM.force_diplomacy:  method(faction: string, other_faction: string, record: string, offer: boolean, accept: boolean, enable_payments: boolean)
+--# assume CM.force_declare_war: method(declarer: string, declaree: string)
+--# assume CM.force_make_peace: method(faction: string, other_faction: string)
+--# assume CM.grant_faction_handover: method(absorber: string, absorbed: string, first_turn: number, last_turn: number, context: WHATEVER)
+--characters
+--# assume CM.set_character_immortality: method(lookup: string, immortal: boolean)
+--# assume CM.force_add_skill: method(lookup: string, skill_key: string)
+--# assume CM.force_add_trait: method(lookup: string, trait_key: string, showMessage: boolean)
+--technology
+--# assume CM.lock_technology: method(faction: string, technology: string)
+--# assume CM.unlock_technology: method(faction: string, technology: string)
+--ai
+--# assume CM.force_change_cai_faction_personality: method(key: string, personality: string)
+--battles
+--# assume CM.win_next_autoresolve_battle: method(faction: string)
+--# assume CM.modify_next_autoresolve_battle: method(attacker_win_chance: number, defender_win_chance: number, attacker_losses_modifier: number, defender_losses_modifier: number, wipe_out_loser: boolean)
 
 
 --MODEL
@@ -121,7 +182,7 @@
 --# assume CA_WORLD.faction_exists: method(faction_key: string) --> boolean
 --# assume CA_WORLD.CA_REGION_MANAGER: method() --> CA_REGION_MANAGER
 --# assume CA_WORLD.ancillary_exists: method(ancillary_key: string)
-
+--# assume CA_WORLD.whose_turn_is_it: method() --> string
 --REGION MANAGER
 --# assume CA_REGION_MANAGER.region_list: method() --> CA_REGION_LIST
 --# assume CA_REGION_MANAGER.region_by_key: method(region_key: string) --> CA_REGION
@@ -278,11 +339,15 @@
 
 -- GLOBAL FUNCTIONS
 -- COMMON
---# assume global find_uicomponent: function(parent: CA_UIC, string...) --> CA_UIC
---# assume global UIComponent: function(pointer: CA_Component) --> CA_UIC
---# assume global find_uicomponent_from_table: function(root: CA_UIC, findtable: vector<string>) --> CA_UIC
---# assume global uicomponent_descended_from: function(root: CA_UIC, parent_name: string) --> boolean
+--# assume global get_eh: function() --> CA_EVENT_HANDLER
 
+--# assume global is_uicomponent: function(arg: any) --> boolean
+--# assume global find_uicomponent_by_table: function(uic: CA_UIC, path: vector<string>) --> CA_UIC
+--# assume global UIComponent: function(pointer: CA_Component) --> CA_UIC
+--# assume global uicomponent_to_str: function(uic: CA_UIC) --> string
+
+--# assume global output: function(text: string)
+--# assume global script_error: function(text: string)
 
 --# assume global is_string: function(arg: string) --> boolean
 --# assume global is_table: function(arg: table) --> boolean
