@@ -34,18 +34,18 @@ local function log_uicomponent(uic)
     local pos_x, pos_y = uic:Position();
     local size_x, size_y = uic:Bounds();
 
-    MODLOG("position on screen:\t" .. tostring(pos_x) .. ", " .. tostring(pos_y));
-    MODLOG("size:\t\t\t" .. tostring(size_x) .. ", " .. tostring(size_y));
-    MODLOG("state:\t\t" .. tostring(uic:CurrentState()));
-    MODLOG("visible:\t\t" .. tostring(uic:Visible()));
-    MODLOG("priority:\t\t" .. tostring(uic:Priority()));
-    MODLOG("children:");
+    MODLOG("\tposition on screen:\t" .. tostring(pos_x) .. ", " .. tostring(pos_y));
+    MODLOG("\tsize:\t\t\t" .. tostring(size_x) .. ", " .. tostring(size_y));
+    MODLOG("\tstate:\t\t" .. tostring(uic:CurrentState()));
+    MODLOG("\tvisible:\t\t" .. tostring(uic:Visible()));
+    MODLOG("\tpriority:\t\t" .. tostring(uic:Priority()));
+    MODLOG("\tchildren:");
     
     
     for i = 0, uic:ChildCount() - 1 do
         local child = UIComponent(uic:Find(i));
         
-        MODLOG(tostring(i) .. ": " .. child:Id());
+        MODLOG("\t\t"..tostring(i) .. ": " .. child:Id());
     end;
 
 
@@ -54,7 +54,7 @@ end;
 
 
 -- for debug purposes
-function output_uicomponent_on_click()
+function log_uicomponent_on_click()
     local eh = get_eh();
     
     if not eh then
@@ -72,4 +72,4 @@ function output_uicomponent_on_click()
         true
     );
 end;
-
+log_uicomponent_on_click()
