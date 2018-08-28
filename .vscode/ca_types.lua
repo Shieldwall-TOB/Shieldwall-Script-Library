@@ -110,15 +110,25 @@
 --# assume CA_REGION.name: method() --> string
 --# assume CA_REGION.province_name: method() --> string
 --# assume CA_REGION.public_order: method() --> number
+--# assume CA_REGION.majority_religion: method() --> string
+--# assume CA_REGION.majority_religion_percentage: method() --> number
+--# assume CA_REGION.has_governor: method() --> boolean
+--# assume CA_REGION.governor: method() --> CA_CHAR
 --# assume CA_REGION.is_null_interface: method() --> boolean
---# assume CA_REGION.is_abandoned: method() --> boolean
 --# assume CA_REGION.owning_faction: method() --> CA_FACTION
 --# assume CA_REGION.slot_list: method() --> CA_SLOT_LIST
 --# assume CA_REGION.is_province_capital: method() --> boolean
 --# assume CA_REGION.building_exists: method(building: string) --> boolean
 --# assume CA_REGION.resource_exists: method(resource_key: string) --> boolean
+--# assume CA_REGION.building_superchain_exists: method(superchain_key: string) --> boolean
 --# assume CA_REGION.any_resource_available: method() --> boolean
 --# assume CA_REGION.adjacent_region_list: method() --> CA_REGION_LIST
+--# assume CA_REGION.last_building_constructed_key: method() --> string
+
+--CA REGION LIST
+--# assume CA_REGION_LIST.num_items: method() --> number
+--# assume CA_REGION_LIST.item_at: method(i: number) --> CA_REGION
+
 
 --CA SETTLEMENT
 --# assume CA_SETTLEMENT.logical_position_x: method() --> number
@@ -131,7 +141,14 @@
 --# assume CA_SETTLEMENT.is_port: method() --> boolean
 --# assume CA_SETTLEMENT.region: method() --> CA_REGION
 
-
+--CA GARRISON RESIDENCE
+--# assume CA_GARRISON_RESIDENCE.region: method() --> CA_REGION
+--# assume CA_GARRISON_RESIDENCE.faction: method() --> CA_FACTION
+--# assume CA_GARRISON_RESIDENCE.is_under_siege: method() --> boolean
+--# assume CA_GARRISON_RESIDENCE.settlement_interface: method() --> CA_SETTLEMENT
+--# assume CA_GARRISON_RESIDENCE.army: method() --> CA_FORCE
+--# assume CA_GARRISON_RESIDENCE.command_queue_index: method() --> CA_CQI
+--# assume CA_GARRISON_RESIDENCE.unit_count: method() --> number
 
 
 
@@ -178,6 +195,14 @@
 --# assume CA_FAMILY.father: method() --> CA_FAMILY
 --# assume CA_FAMILY.has_trait: method(trait_key: string) --> boolean
 
+-- PENDING BATTLE
+--# assume CA_PENDING_BATTLE.attacker: method() --> CA_CHAR
+--# assume CA_PENDING_BATTLE.defender: method() --> CA_CHAR
+--# assume CA_PENDING_BATTLE.ambush_battle: method() --> boolean
+
+
+
+
 -- GLOBAL FUNCTIONS
 -- COMMON
 --# assume global find_uicomponent: function(parent: CA_UIC, string...) --> CA_UIC
@@ -193,7 +218,10 @@
 --# assume global is_boolean: function(arg: boolean) --> boolean
 
 
-
+-- GLOBAL VARIABLES
+--leave at the bottom of this file
+--# assume global cm: CM
+--# assume global __write_output_to_logfile: boolean
 
 
 
