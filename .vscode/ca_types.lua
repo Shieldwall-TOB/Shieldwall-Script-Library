@@ -92,6 +92,7 @@
 --# assume CA_FACTION.factions_met: method() --> CA_FACTION_LIST
 --# assume CA_FACTION.factions_at_war_with: method() --> CA_FACTION_LIST
 --# assume CA_FACTION.total_food: method() --> number
+--# assume CA_FACTION.has_food_shortage: method() --> boolean
 --# assume CA_FACTION.state_religion: method() --> string
 --# assume CA_FACTION.state_religion_percentage: method() --> number
 --# assume CA_FACTION.mercenary_pool: method() --> WHATEVER
@@ -135,7 +136,47 @@
 
 
 --CA CHARACTER
+--# assume CA_CHAR.has_trait: method(traitName: string) --> boolean
+--# assume CA_CHAR.logical_position_x: method() --> number
+--# assume CA_CHAR.logical_position_y: method() --> number
+--# assume CA_CHAR.display_position_x: method() --> number
+--# assume CA_CHAR.display_position_y: method() --> number
+--# assume CA_CHAR.character_subtype_key: method() --> string
+--# assume CA_CHAR.region: method() --> CA_REGION
+--# assume CA_CHAR.faction: method() --> CA_FACTION
+--# assume CA_CHAR.military_force: method() --> CA_FORCE
+--# assume CA_CHAR.character_subtype: method(subtype: string) --> boolean
+--# assume CA_CHAR.get_forename: method() --> string
+--# assume CA_CHAR.get_surname: method() --> string
+--# assume CA_CHAR.command_queue_index: method() --> CA_CQI
+--# assume CA_CHAR.cqi: method() --> CA_CQI
+--# assume CA_CHAR.rank: method() --> int
+--# assume CA_CHAR.won_battle: method() --> boolean
+--# assume CA_CHAR.battles_fought: method() --> number
+--# assume CA_CHAR.is_wounded: method() --> boolean
+--# assume CA_CHAR.has_military_force: method() --> boolean
+--# assume CA_CHAR.is_faction_leader: method() --> boolean
+--# assume CA_CHAR.family_member: method() --> CA_FAMILY
+--# assume CA_CHAR.is_null_interface: method() --> boolean
 
+--# assume CA_CHAR.loyalty: method() --> number
+--# assume CA_CHAR.is_politician: method() --> boolean
+--# assume CA_CHAR.gravitas: method() --> number
+--# assume CA_CHAR.has_father: method() --> boolean
+--# assume CA_CHAR.has_mother: method() --> boolean
+--# assume CA_CHAR.mother: method() --> CA_FAMILY
+--# assume CA_CHAR.father: method() --> CA_FAMILY
+--# assume CA_CHAR.is_heir: method() --> boolean
+--# assume CA_CHAR.is_minister: method() --> boolean
+
+-- CA FAMILY MEMBER
+--# assume CA_FAMILY.is_null_interface: method() --> boolean
+--# assume CA_FAMILY.come_of_age: method() --> boolean
+--# assume CA_FAMILY.has_father: method() --> boolean
+--# assume CA_FAMILY.has_mother: method() --> boolean
+--# assume CA_FAMILY.mother: method() --> CA_FAMILY
+--# assume CA_FAMILY.father: method() --> CA_FAMILY
+--# assume CA_FAMILY.has_trait: method(trait_key: string) --> boolean
 
 -- GLOBAL FUNCTIONS
 -- COMMON
