@@ -32,7 +32,65 @@
 --Fake types
 --# assume global class CA_CQI
 
+--# type global BUTTON_STATE = 
+--# "active" | "hover" | "down" | 
+--# "selected" | "selected_hover" | "selected_down" |
+--# "drop_down"
 
+
+--# type global BATTLE_SIDE =
+--# "Attacker" | "Defender" 
+
+--# type global CA_MARKER_TYPE = 
+--# "pointer" | "move_to_vfx" | "look_at_vfx" | "tutorial_marker"
+
+
+-- CONTEXT
+--# assume CA_UIContext.component: CA_Component
+--# assume CA_UIContext.string: string
+
+-- UIC
+--# assume CA_UIC.Address: method() --> CA_Component
+--# assume CA_UIC.Adopt: method(pointer: CA_Component)
+--# assume CA_UIC.ChildCount: method() --> number
+--# assume CA_UIC.ClearSound: method()
+--# assume CA_UIC.CreateComponent: method(name: string, path: string)
+--# assume CA_UIC.CurrentState: method() --> BUTTON_STATE
+--# assume CA_UIC.DestroyChildren: method()
+--# assume CA_UIC.Dimensions: method() --> (number, number)
+--# assume CA_UIC.Find: method(arg: number | string) --> CA_Component
+--# assume CA_UIC.GetTooltipText: method() --> string
+--# assume CA_UIC.Id: method() --> string
+--# assume CA_UIC.MoveTo: method(x: number, y: number)
+--# assume CA_UIC.Parent: method() --> CA_Component
+--# assume CA_UIC.Position: method() --> (number, number)
+--# assume CA_UIC.Resize: method(w: number, h: number)
+--# assume CA_UIC.SetInteractive: method(interactive: boolean)
+--# assume CA_UIC.SetOpacity: method(opacity: number)
+--# assume CA_UIC.SetState: method(state: BUTTON_STATE)
+--# assume CA_UIC.SetStateText: method(text: string)
+--# assume CA_UIC.SetVisible: method(visible: boolean)
+--# assume CA_UIC.SetDisabled: method(disabled: boolean)
+--# assume CA_UIC.ShaderTechniqueSet: method(technique: string | number, unknown: boolean)
+--# assume CA_UIC.ShaderVarsSet: method(p1: number, p2: number, p3: number, p4: number, unknown: boolean)
+--# assume CA_UIC.SimulateClick: method()
+--# assume CA_UIC.SimulateMouseOn: method()
+--# assume CA_UIC.Visible: method() --> boolean
+
+--# assume CA_UIC.SetImage: method(path: string)
+--# assume CA_UIC.SetCanResizeHeight: method(state: boolean)
+--# assume CA_UIC.SetCanResizeWidth: method(state: boolean)
+--# assume CA_UIC.SetTooltipText: method(tooltip: string, state: boolean?)
+--# assume CA_UIC.GetStateText: method() --> string
+--# assume CA_UIC.PropagatePriority: method(priority: number)
+--# assume CA_UIC.Priority: method() --> number
+--# assume CA_UIC.Bounds: method() --> (number, number)
+--# assume CA_UIC.Height: method() --> number
+--# assume CA_UIC.Width: method() --> number
+--# assume CA_UIC.SetImageRotation:  method(unknown: number, rotation: number)
+--# assume CA_UIC.ResizeTextResizingComponentToInitialSize: method(width: number, height: number)
+--# assume CA_UIC.SimulateLClick: method()
+--# assume CA_UIC.SimulateKey: method(keyString: string)
 
 --CM
 --# assume CM.model: method() --> CA_MODEL
@@ -130,17 +188,6 @@
 --# assume CA_REGION_LIST.item_at: method(i: number) --> CA_REGION
 
 
---CA SETTLEMENT
---# assume CA_SETTLEMENT.logical_position_x: method() --> number
---# assume CA_SETTLEMENT.logical_position_y: method() --> number
---# assume CA_SETTLEMENT.is_null_interface: method() --> boolean
---# assume CA_SETTLEMENT.faction: method() -->CA_FACTION
---# assume CA_SETTLEMENT.commander: method() --> CA_CHAR
---# assume CA_SETTLEMENT.has_commander: method() --> boolean
---# assume CA_SETTLEMENT.slot_list: method() --> CA_SLOT_LIST
---# assume CA_SETTLEMENT.is_port: method() --> boolean
---# assume CA_SETTLEMENT.region: method() --> CA_REGION
-
 --CA GARRISON RESIDENCE
 --# assume CA_GARRISON_RESIDENCE.region: method() --> CA_REGION
 --# assume CA_GARRISON_RESIDENCE.faction: method() --> CA_FACTION
@@ -149,7 +196,33 @@
 --# assume CA_GARRISON_RESIDENCE.army: method() --> CA_FORCE
 --# assume CA_GARRISON_RESIDENCE.command_queue_index: method() --> CA_CQI
 --# assume CA_GARRISON_RESIDENCE.unit_count: method() --> number
+--CA SETTLEMENT
+--# assume CA_SETTLEMENT.logical_position_x: method() --> number
+--# assume CA_SETTLEMENT.logical_position_y: method() --> number
+--# assume CA_SETTLEMENT.is_null_interface: method() --> boolean
+--# assume CA_SETTLEMENT.faction: method() -->CA_FACTION
+--# assume CA_SETTLEMENT.commander: method() --> CA_CHAR
+--# assume CA_SETTLEMENT.has_commander: method() --> boolean
+--# assume CA_SETTLEMENT.slot_list: method() --> CA_SLOT_LIST
+--# assume CA_SETTLEMENT.region: method() --> CA_REGION
+--SLOT LIST
+--# assume CA_SLOT_LIST.num_items: method() --> number
+--# assume CA_SLOT_LIST.item_at: method(index: number) --> CA_SLOT
+--# assume CA_SLOT_LIST.slot_type_exists: method(slot_key: string) --> boolean
+--# assume CA_SLOT_LIST.building_type_exists: method(building_key: string) --> boolean
 
+
+--SLOT
+--# assume CA_SLOT.has_building: method() --> boolean
+--# assume CA_SLOT.building: method() --> CA_BUILDING
+--# assume CA_SLOT.resource_key: method() --> string
+
+--CA BUILDING
+--# assume CA_BUILDING.name: method() --> string
+--# assume CA_BUILDING.chain: method() --> string
+--# assume CA_BUILDING.superchain: method() --> string
+--# assume CA_BUILDING.faction: method() --> CA_FACTION
+--# assume CA_BUILDING.region: method() --> CA_REGION
 
 
 --CA CHARACTER
