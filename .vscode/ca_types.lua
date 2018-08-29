@@ -1,4 +1,5 @@
---class declarations
+--class declarations\
+--# assume global class _G
 --# assume global class CM
 --# assume global class CA_EVENT_HANDLER
 --# assume global class CA_WORLD
@@ -53,6 +54,7 @@
 -- UIC
 --# assume CA_UIC.Address: method() --> CA_Component
 --# assume CA_UIC.Adopt: method(pointer: CA_Component)
+--# assume CA_UIC.Divorce: method(pointer: CA_Component)
 --# assume CA_UIC.ChildCount: method() --> number
 --# assume CA_UIC.ClearSound: method()
 --# assume CA_UIC.CreateComponent: method(name: string, path: string)
@@ -342,9 +344,20 @@
 --# assume global get_eh: function() --> CA_EVENT_HANDLER
 
 --# assume global is_uicomponent: function(arg: any) --> boolean
+--# assume global find_uicomponent: function(parent: CA_UIC, string...) --> CA_UIC
 --# assume global find_uicomponent_by_table: function(uic: CA_UIC, path: vector<string>) --> CA_UIC
 --# assume global UIComponent: function(pointer: CA_Component) --> CA_UIC
 --# assume global uicomponent_to_str: function(uic: CA_UIC) --> string
+--# assume global print_all_uicomponent_children: function(component: CA_UIC)
+--# assume global output_uicomponent: function(uic: CA_UIC, omit_children: boolean)
+
+--v [require] function(file: string)
+function force_require(file)
+
+end
+
+
+
 
 --# assume global output: function(text: string)
 --# assume global script_error: function(text: string)

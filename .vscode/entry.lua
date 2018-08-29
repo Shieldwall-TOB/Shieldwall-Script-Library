@@ -1,3 +1,4 @@
 ---[[development assist
-require("lib/dev")
+require("shieldwall/lib/dev")
 --]]
+

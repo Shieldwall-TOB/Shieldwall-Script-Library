@@ -1,3 +1,12 @@
+print("test")
+__write_output_to_logfile = true
+
+
+
+
+
+
+
 --v function(text: string, context: string?)
 function MODLOG(text, context)
     if not __write_output_to_logfile then
@@ -9,13 +18,13 @@ function MODLOG(text, context)
     end
     local logText = tostring(text)
     local logTimeStamp = os.date("%d, %m %Y %X")
-    local popLog = io.open("shieldwall_log.txt","a")
+    local popLog = io.open("SHIELDWALL_UI.txt","a")
     --# assume logTimeStamp: string
     popLog :write(pre..":  [".. logTimeStamp .. "]:  "..logText .. "  \n")
     popLog :flush()
     popLog :close()
 end
-
+MODLOG("LOADING SHIELDWALL LIBRARY")
 --v function(uic: CA_UIC)
 local function log_uicomponent(uic)
     if not is_uicomponent(uic) then
@@ -72,7 +81,7 @@ function log_uicomponent_on_click()
         true
     );
 end;
-log_uicomponent_on_click()
+
 --v [NO_CHECK] function()
 function MOD_ERROR_LOGS()
 --Vanish's PCaller
@@ -211,3 +220,7 @@ function MOD_ERROR_LOGS()
 end
 
 
+cm:register_ui_created_callback( function()
+    log_uicomponent_on_click()
+    MOD_ERROR_LOGS()
+end)
