@@ -178,8 +178,8 @@ function MOD_ERROR_LOGS()
     
     --logAllObjectCalls(eh);
     --logAllObjectCalls(cm);
-    MODLOG("CA_GAME_INTERFACE")
-    logAllObjectCalls(cm.game_interface);
+   -- MODLOG("CA_GAME_INTERFACE")
+   -- logAllObjectCalls(cm.game_interface);
     
     eh.trigger_event = wrapFunction(
         eh.trigger_event,
@@ -222,11 +222,12 @@ end
 
 
 cm:register_ui_created_callback( function()
-    --log_uicomponent_on_click()
+    log_uicomponent_on_click()
     MOD_ERROR_LOGS()
 end)
 
 cm:register_first_tick_callback( function()
+    --[[
     --# assume logAllObjectCalls: function(WHATEVER)
     local faction = cm:model():world():faction_by_key(cm:get_local_faction())
     MODLOG("CA FACTION INTERFACE")
@@ -241,4 +242,5 @@ cm:register_first_tick_callback( function()
     logAllObjectCalls(faction:home_region():settlement())
     MODLOG("CA_BUILDING_INTERFACE")
     logAllObjectCalls(faction:home_region():settlement():slot_list():item_at(0):building())
+    --]]
 end)

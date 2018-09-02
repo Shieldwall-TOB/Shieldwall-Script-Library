@@ -191,10 +191,19 @@ require("vik_traits");
 require("vik_decrees");
 
 
-
+------------------------
+--UI MODDING FRAMEWORK--
+------------------------
+require("uimf/lib_uimf")
 
 
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
 require("shieldwall/lib/dev")
+
+cm:register_ui_created_callback(
+	function()
+		local testButton = Button.New()
+	end
+)
