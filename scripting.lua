@@ -202,8 +202,5 @@ require("uimf/lib_uimf")
 -----------------------
 require("shieldwall/lib/dev")
 
-cm:register_ui_created_callback(
-	function()
-		local testButton = Button.New()
-	end
-)
+require("shieldwall/lib/uimf_tests")
+
