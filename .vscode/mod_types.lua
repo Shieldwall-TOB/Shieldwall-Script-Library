@@ -17,10 +17,10 @@
 --# TEXT | IMAGE | BUTTON | TEXT_BUTTON | FRAME | TEXT_BOX | LIST_VIEW | DUMMY
 
 --# type global BUTTON_TYPE = 
---# "CIRCULAR" | "SQUARE" | "CIRCULAR_TOGGLE" | "SQUARE_TOGGLE"
+--# "CIRCULAR" | "SQUARE"
 
 --# type global TEXT_BUTTON_TYPE = 
---# "TEXT" | "TEXT_TOGGLE"
+--# "TEXT" 
 
 --# type global TEXT_TYPE = 
 --# "NORMAL" | "WRAPPED" | "TITLE" | "HEADER"

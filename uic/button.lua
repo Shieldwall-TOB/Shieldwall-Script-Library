@@ -15,7 +15,7 @@ function Button.new(name, parent, buttonType, imagePath)
     local self = {};
     local button = nil --: CA_UIC
     if buttonType == "CIRCULAR" then
-        button = Util.createComponent(name, parentComponent, "ui/campaign ui/layout", "radar_things", "hud_center_docker", "button_group_management", "button_decrees");
+        button = Util.createComponent(name, parentComponent,  "ui/campaign ui/objectives_screen", "button_ok");
     elseif buttonType == "SQUARE" then
         button = Util.createComponent(name, parentComponent, "ui/campaign ui/clan", "main", "TabGroup", "Family", "tab_child", "family_button_bar", "button_filter");
     else

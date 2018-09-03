@@ -15,7 +15,7 @@ function TextButton.new(name, parent, buttonType, buttonText)
     local textButton = nil --: CA_UIC
     local textButtonText = nil --: CA_UIC
     if buttonType == "TEXT" then
-        textButton = Util.createComponent(name, parentComponent, "ui/campaign ui/objectives_screen", "TabGroup", "tab_victory_conditions");
+        textButton = Util.createComponent(name, parentComponent, "ui/campaign ui/campaign_victory", "button_parent", "button_continue");
         textButtonText = UIComponent(textButton:Find("tx_victory_conditions"));
     else
         Log.write("Invalid text button type:" .. buttonType);

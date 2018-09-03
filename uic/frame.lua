@@ -10,7 +10,7 @@ function Frame.new(name)
     local frame = Util.createComponent(name, cm:ui_root(), "ui/campaign ui/objectives_screen");
 
     Util.delete(UIComponent(frame:Find("TabGroup")));
-    Util.delete(UIComponent(frame:Find("TabGroup_old")));
+    Util.delete(UIComponent(frame:Find("button_ok")));
     local title = find_uicomponent(frame, "title_plaque", "tx_objectives");
     title:SetStateText(name);
     local parchment = UIComponent(frame:Find("parchment"));
@@ -153,9 +153,9 @@ end
 function Frame.AddCloseButton(self, callback, cross, hideInstead)
     local imagePath --: string
     if cross then
-        imagePath = "ui/skins/warhammer2/icon_cross.png";
+        imagePath = "ui/skins/warhammer2/fe_icon_cross.png";
     else
-        imagePath = "ui/skins/warhammer2/icon_check.png";
+        imagePath = "ui/skins/warhammer2/fe_icon_tick.png";
     end
     local closeButton = Button.new(self.name .. "CloseButton", self.uic, "CIRCULAR", imagePath);
     self.closeButton = closeButton;

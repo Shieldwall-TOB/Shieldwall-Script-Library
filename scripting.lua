@@ -194,7 +194,7 @@ require("vik_decrees");
 ------------------------
 --UI MODDING FRAMEWORK--
 ------------------------
-require("uimf/lib_uimf")
+--require("uimf/lib_uimf")
 
 
 -----------------------
@@ -202,5 +202,5 @@ require("uimf/lib_uimf")
 -----------------------
 require("shieldwall/lib/dev")
 
-require("shieldwall/lib/uimf_tests")
+--require("shieldwall/lib/uimf_tests")
 
