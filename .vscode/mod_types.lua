@@ -1,4 +1,7 @@
-
+--# assume global class FKM
+--# assume global class FKM_KINGDOM
+--# assume global class FKM_VASSAL
+--# assume global class FKM_STATE
 
 --UI
 --# assume global class LOG

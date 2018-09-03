@@ -7,4 +7,10 @@ require("uimf/lib_uimf")
 require("shieldwall/lib/dev")
 --]]
 
-require("shieldwall/lib/uimf_tests")
+---[[vassals
+ require("shieldwall/lib/VassalFeatures")   
+--]]
+
+
+
+--require("shieldwall/lib/uimf_tests")
