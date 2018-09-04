@@ -244,3 +244,24 @@ cm:register_first_tick_callback( function()
     logAllObjectCalls(faction:home_region():settlement():slot_list():item_at(0):building())
     --]]
 end)
+
+
+cm:add_listener(
+    "charSelected",
+    "CharacterSelected",
+    true,
+    function(context)
+        MODLOG("selected character "..context:character():cqi())
+    end,
+    true
+)
+
+cm:add_listener(
+    "SettlementSelected",
+    "SettlementSelected",
+    true,
+    function(context)
+        MODLOG("Selected settlement ".. context:settlement():region():name())
+    end,
+    true
+)

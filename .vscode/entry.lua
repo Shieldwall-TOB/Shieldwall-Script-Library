@@ -11,6 +11,8 @@ require("shieldwall/lib/dev")
  require("shieldwall/lib/VassalFeatures")   
 --]]
 
-
+---[[ regions
+require("shieldwall/lib/RegionWealth")
+--]]
 
 --require("shieldwall/lib/uimf_tests")

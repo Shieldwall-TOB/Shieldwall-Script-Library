@@ -3,6 +3,9 @@
 --# assume global class FKM_VASSAL
 --# assume global class FKM_STATE
 
+--# assume global class RWM
+
+
 --UI
 --# assume global class LOG
 --# assume global class BUTTON

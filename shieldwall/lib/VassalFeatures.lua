@@ -13,6 +13,12 @@ function faction_kingdom_manager.init()
     self._vassal = {} --:map<string, FKM_VASSAL>
     self._states = {} --:map<string, FKM_STATE>
 
-
     _G.fkm = self
 end
+
+
+
+
+
+
+
