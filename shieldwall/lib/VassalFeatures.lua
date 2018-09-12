@@ -68,8 +68,8 @@ function faction_kingdom_manager.add_kingdom(self, faction_key)
     return kingdom
 end
 
---v function(self: FKM, faction_key: string) --> FKM_VASSAL
-function faction_kingdom_manager.add_vassal(self, faction_key)
+--v function(self: FKM, faction_key: string, known_liege: string?) --> FKM_VASSAL
+function faction_kingdom_manager.add_vassal(self, faction_key, known_liege)
     if self:is_faction_vassal(faction_key) == true then
         self:log("Tried to add ["..faction_key.."] as a vassal but that faction already has a vassal entry, returning it.")
         return self._vassals[faction_key]
@@ -83,12 +83,18 @@ function faction_kingdom_manager.add_vassal(self, faction_key)
         self:log("tried to add faction ["..faction_key.."] as a vassal but they aren't anyone's vassal, aborting")
         return fkm_vassal.null_interface()
     end 
+    
     local liege_key --:string
-    for i = 0, faction_obj:factions_met():num_items() - 1 do
-        local target = faction_obj:factions_met():item_at(i)
-        if faction_obj:is_vassal_of(target) then
-            liege_key = target:name()
-            break
+    if not not known_liege then
+        --# assume known_liege: string
+        liege_key = known_liege
+    else
+        for i = 0, faction_obj:factions_met():num_items() - 1 do
+            local target = faction_obj:factions_met():item_at(i)
+            if faction_obj:is_vassal_of(target) then
+                liege_key = target:name()
+                break
+            end
         end
     end
     if liege_key == nil then
