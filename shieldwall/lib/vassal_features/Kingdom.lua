@@ -11,17 +11,32 @@ function fkm_kingdom.new(model, faction_key, human)
         end
     }) --# assume self: FKM_KINGDOM
 
-    self.model = model
+    self._model = model
     self._name = faction_key
     self._isHuman = human
 
     return self
 end
 
+--v function() --> FKM_KINGDOM
+function fkm_kingdom.null_interface()
+    local self = {}
+    self.is_null_interface = function(self) return true end --: function(self: FKM_KINGDOM) --> boolean
+    --# assume self: FKM_KINGDOM
+    return self
+end
 
+--v function (self: FKM_KINGDOM) --> boolean
+function fkm_kingdom.is_null_interface(self)
+    return false
+end
 
-
+--v function(self: FKM_KINGDOM, text: any)
+function fkm_kingdom.log(self, text)
+    self._model:log(text)
+end
 
 return {
-    new = fkm_kingdom.new
+    new = fkm_kingdom.new,
+    null_interface = fkm_kingdom.null_interface
 }
