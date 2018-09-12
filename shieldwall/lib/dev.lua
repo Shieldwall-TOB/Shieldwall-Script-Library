@@ -14,19 +14,35 @@ function MODLOG(text, context)
     end
     local pre = context --:string
     if not context then
-        pre = "LOG"
+        pre = "DEV"
     end
     local logText = tostring(text)
     local logTimeStamp = os.date("%d, %m %Y %X")
-    local popLog = io.open("SHIELDWALL_UI.txt","a")
+    local popLog = io.open("sheildwall_logs.txt","a")
     --# assume logTimeStamp: string
     popLog :write(pre..":  [".. logTimeStamp .. "]:  "..logText .. "  \n")
     popLog :flush()
     popLog :close()
 end
+
+
+local popLog = io.open("sheildwall_logs.txt", "w+")
+local logTimeStamp = os.date("%d, %m %Y %X")
+--# assume logTimeStamp: string
+popLog:write("NEW LOG: ".. logTimeStamp)
+popLog :flush()
+popLog :close()
+
 MODLOG("LOADING SHIELDWALL LIBRARY")
 --v function(uic: CA_UIC)
 local function log_uicomponent(uic)
+
+    local LOG = MODLOG
+    --v function(text: any)
+    local function MODLOG(text)
+        LOG(tostring(text), "UIC")
+    end
+
     if not is_uicomponent(uic) then
         script_error("ERROR: output_uicomponent() called but supplied object [" .. tostring(uic) .. "] is not a ui component");
         return;
@@ -93,8 +109,8 @@ function MOD_ERROR_LOGS()
         --output("safeCall start");
         local status, result = pcall(func)
         if not status then
-            MODLOG(tostring(result))
-            MODLOG(debug.traceback());
+            MODLOG(tostring(result), "ERR")
+            MODLOG(debug.traceback(), "ERR");
         end
         --output("safeCall end");
         return result;
@@ -219,11 +235,30 @@ function MOD_ERROR_LOGS()
     end
     eh.add_listener = myAddListener;
 end
+MOD_ERROR_LOGS()
 
-
+--start UI tracking helpers.
 cm:register_ui_created_callback( function()
     log_uicomponent_on_click()
-    MOD_ERROR_LOGS()
+    cm:add_listener(
+        "charSelected",
+        "CharacterSelected",
+        true,
+        function(context)
+            MODLOG("selected character "..context:character():cqi(), "SEL")
+        end,
+        true
+    )
+
+    cm:add_listener(
+        "SettlementSelected",
+        "SettlementSelected",
+        true,
+        function(context)
+            MODLOG("Selected settlement ".. context:settlement():region():name(), "SEL")
+        end,
+        true
+    )
 end)
 
 cm:register_first_tick_callback( function()
@@ -245,23 +280,3 @@ cm:register_first_tick_callback( function()
     --]]
 end)
 
-
-cm:add_listener(
-    "charSelected",
-    "CharacterSelected",
-    true,
-    function(context)
-        MODLOG("selected character "..context:character():cqi())
-    end,
-    true
-)
-
-cm:add_listener(
-    "SettlementSelected",
-    "SettlementSelected",
-    true,
-    function(context)
-        MODLOG("Selected settlement ".. context:settlement():region():name())
-    end,
-    true
-)
