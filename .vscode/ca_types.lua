@@ -199,7 +199,6 @@
 --# assume CA_FACTION.is_human: method() --> boolean
 --# assume CA_FACTION.is_dead: method() --> boolean
 --# assume CA_FACTION.is_vassal_of: method(faction: CA_FACTION) --> boolean
---# assume CA_FACTION.is_vassal: method() --> boolean
 --# assume CA_FACTION.is_ally_vassal_or_client_state_of: method(faction: string) --> boolean
 --# assume CA_FACTION.allied_with: method(faction: CA_FACTION) --> boolean
 --# assume CA_FACTION.at_war_with: method(faction: CA_FACTION) --> boolean
@@ -210,7 +209,6 @@
 --# assume CA_FACTION.is_null_interface: method() --> boolean
 --# assume CA_FACTION.faction_leader: method() --> CA_CHAR
 --# assume CA_FACTION.has_home_region: method() --> boolean
---# assume CA_FACTION.factions_met: method() --> CA_FACTION_LIST
 --# assume CA_FACTION.factions_at_war_with: method() --> CA_FACTION_LIST
 --# assume CA_FACTION.total_food: method() --> number
 --# assume CA_FACTION.has_food_shortage: method() --> boolean
@@ -322,6 +320,11 @@
 --# assume CA_CHAR.is_heir: method() --> boolean
 --# assume CA_CHAR.is_minister: method() --> boolean
 
+--CA CHAR LIST
+--# assume CA_CHAR_LIST.item_at: method(i: number) --> CA_CHAR
+--# assume CA_CHAR_LIST.num_items: method() --> number
+
+
 -- CA FAMILY MEMBER
 --# assume CA_FAMILY.is_null_interface: method() --> boolean
 --# assume CA_FAMILY.come_of_age: method() --> boolean
@@ -336,12 +339,21 @@
 --# assume CA_PENDING_BATTLE.defender: method() --> CA_CHAR
 --# assume CA_PENDING_BATTLE.ambush_battle: method() --> boolean
 
+-- CA FORCE
 
+--# assume CA_FORCE.general_character: method() --> CA_CHAR
+--# assume CA_FORCE.unit_list: method() --> CA_UNIT_LIST
+
+--CA_FORCE_LIST
+--# assume CA_FORCE_LIST.num_items: method() --> number
+--# assume CA_FORCE_LIST.item_at: method(i: number) --> CA_FORCE
 
 
 -- GLOBAL FUNCTIONS
 -- COMMON
 --# assume global get_eh: function() --> CA_EVENT_HANDLER
+--# assume global get_events: function() --> map<string, vector<function(context:WHATEVER?)>>
+
 
 --# assume global is_uicomponent: function(arg: any) --> boolean
 --# assume global find_uicomponent: function(parent: CA_UIC, string...) --> CA_UIC

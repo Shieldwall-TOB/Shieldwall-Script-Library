@@ -1,4 +1,4 @@
-print("test")
+
 __write_output_to_logfile = true
 
 
@@ -29,7 +29,7 @@ end
 local popLog = io.open("sheildwall_logs.txt", "w+")
 local logTimeStamp = os.date("%d, %m %Y %X")
 --# assume logTimeStamp: string
-popLog:write("NEW LOG: ".. logTimeStamp)
+popLog:write("NEW LOG: ".. logTimeStamp .. "\n")
 popLog :flush()
 popLog :close()
 
@@ -217,6 +217,14 @@ function MOD_ERROR_LOGS()
             --end
         end
     )
+
+    local currentFirstTick = cm.register_first_tick_callback
+    --v [NO_CHECK] function (cm: any, callback: function)
+    function myFirstTick(cm, callback)
+        currentFirstTick(cm, wrapFunction(callback))
+    end
+    cm.register_first_tick_callback = myFirstTick
+
     
     local currentAddListener = eh.add_listener;
     --v [NO_CHECK] function(eh: any, listenerName: any, eventName: any, conditionFunc: any, listenerFunc: any, persistent: any)
@@ -245,7 +253,7 @@ cm:register_ui_created_callback( function()
         "CharacterSelected",
         true,
         function(context)
-            MODLOG("selected character "..context:character():cqi(), "SEL")
+            MODLOG("selected character with CQI ["..context:character():cqi().."]", "SEL")
         end,
         true
     )
@@ -255,28 +263,13 @@ cm:register_ui_created_callback( function()
         "SettlementSelected",
         true,
         function(context)
-            MODLOG("Selected settlement ".. context:settlement():region():name(), "SEL")
+            MODLOG("Selected settlement ["..  context:garrison_residence():region():name() .. "]", "SEL")
         end,
         true
     )
 end)
 
 cm:register_first_tick_callback( function()
-    --[[
-    --# assume logAllObjectCalls: function(WHATEVER)
-    local faction = cm:model():world():faction_by_key(cm:get_local_faction())
-    MODLOG("CA FACTION INTERFACE")
-    logAllObjectCalls(faction)
-    MODLOG("CA REGION INTERFACE")
-    logAllObjectCalls(faction:home_region())
-    MODLOG("CA_CHARACTER INTERFACE")
-    logAllObjectCalls(faction:faction_leader())
-    MODLOG("CA_FORCE_INTERFACE")
-    logAllObjectCalls(faction:faction_leader():military_force())
-    MODLOG("CA_SETTLEMENT_INTERFACE")
-    logAllObjectCalls(faction:home_region():settlement())
-    MODLOG("CA_BUILDING_INTERFACE")
-    logAllObjectCalls(faction:home_region():settlement():slot_list():item_at(0):building())
-    --]]
+
 end)
 

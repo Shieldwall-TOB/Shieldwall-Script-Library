@@ -64,7 +64,7 @@ function faction_kingdom_manager.add_kingdom(self, faction_key)
     local faction_obj = cm:model():world():faction_by_key(faction_key)
     local kingdom = fkm_kingdom.new(self, faction_key, faction_obj:is_human())
     self._kingdoms[faction_key] = kingdom
-
+    self:log("added the faction ["..faction_key.."] as a kingdom! ")
     return kingdom
 end
 
@@ -79,18 +79,15 @@ function faction_kingdom_manager.add_vassal(self, faction_key, known_liege)
         self._kingdoms[faction_key] = nil
     end
     local faction_obj = cm:model():world():faction_by_key(faction_key)
-    if not faction_obj:is_vassal() then
-        self:log("tried to add faction ["..faction_key.."] as a vassal but they aren't anyone's vassal, aborting")
-        return fkm_vassal.null_interface()
-    end 
     
     local liege_key --:string
     if not not known_liege then
         --# assume known_liege: string
         liege_key = known_liege
     else
-        for i = 0, faction_obj:factions_met():num_items() - 1 do
-            local target = faction_obj:factions_met():item_at(i)
+        local list = cm:model():world():faction_list()
+        for i = 0, list:num_items() - 1 do
+            local target = list:item_at(i)
             if faction_obj:is_vassal_of(target) then
                 liege_key = target:name()
                 break
@@ -103,10 +100,19 @@ function faction_kingdom_manager.add_vassal(self, faction_key, known_liege)
     end
     local vassal = fkm_vassal.new(self, faction_key, liege_key)
     self._vassals[faction_key] = vassal
+    self:log("Added faction ["..faction_key.."] as a vassal with liege ["..liege_key.."]")
     return vassal
 end
 
-
+--v function(self: FKM, vassal: string)
+function faction_kingdom_manager.remove_vassal(self, vassal)
+    if not self:is_faction_vassal(vassal) then
+        self:log("the faction ["..vassal.."] is being called for removal from the vassals list, they already is not a vassal!")
+        return 
+    end
+    self:log("removing the faction ["..vassal.."] from the vassal list!")
+    self._vassals[vassal] = nil
+end
 
 
 

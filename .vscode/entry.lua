@@ -1,18 +1,22 @@
----[[
-require("uimf/lib_uimf")
---]]
-
-
----[[development assist
-require("shieldwall/lib/dev")
---]]
-
----[[vassals
- require("shieldwall/lib/VassalFeatures")   
---]]
-
----[[ regions
-require("shieldwall/lib/RegionWealth")
---]]
-
+------------------------
+--UI MODDING FRAMEWORK--
+------------------------
+--require("uimf/lib_uimf")
 --require("shieldwall/lib/uimf_tests")
+
+-----------------------
+--SHIELDWALL SCRIPTS---
+-----------------------
+
+--library
+require("shieldwall/lib/dev")
+require("shieldwall/lib/VassalFeatures")
+
+--content
+require("shieldwall/content/KingdomsContent")
+
+--ebs
+require("shieldwall/ebs/VassalFeatures")
+require("shieldwall/ebs/MajorEmpires")
+
+

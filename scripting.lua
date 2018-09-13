@@ -195,12 +195,20 @@ require("vik_decrees");
 --UI MODDING FRAMEWORK--
 ------------------------
 --require("uimf/lib_uimf")
-
+--require("shieldwall/lib/uimf_tests")
 
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
-require("shieldwall/lib/dev")
 
---require("shieldwall/lib/uimf_tests")
+--library
+require("shieldwall/lib/dev")
+require("shieldwall/lib/VassalFeatures")
+
+--content
+require("shieldwall/content/KingdomsContent")
+
+--ebs
+require("shieldwall/ebs/VassalFeatures")
+require("shieldwall/ebs/MajorEmpires")
 
