@@ -182,7 +182,7 @@
 --# assume CA_WORLD.faction_list: method() --> CA_FACTION_LIST
 --# assume CA_WORLD.faction_by_key: method(faction_key: string) --> CA_FACTION
 --# assume CA_WORLD.faction_exists: method(faction_key: string) --> boolean
---# assume CA_WORLD.CA_REGION_MANAGER: method() --> CA_REGION_MANAGER
+--# assume CA_WORLD.region_manager: method() --> CA_REGION_MANAGER
 --# assume CA_WORLD.ancillary_exists: method(ancillary_key: string)
 --# assume CA_WORLD.whose_turn_is_it: method() --> string
 --REGION MANAGER
