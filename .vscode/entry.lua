@@ -16,7 +16,7 @@ require("shieldwall/lib/RegionOwnershipTracker")
 require("shieldwall/content/KingdomsContent")
 
 --ebs
-require("shieldwall/ebs/VassalFeatures")
-require("shieldwall/ebs/MajorEmpires")
-
-
+require("shieldwall/ebs/ebs_major_empires")
+require("shieldwall/ebs/ebs_vassal_features")
+require("shieldwall/ebs/ebs_restore_ally_territory")
+require("shieldwall/ebs/ebs_region_tracking")
