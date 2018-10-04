@@ -73,6 +73,14 @@ function region_owner_tracker.get_past_owners(self, region)
     return self._pastRegionOwners[region]
 end
 
+--v function(self: ROT, player: string) --> vector<string>
+function region_owner_tracker.get_player_new_regions(self, player)
+    if self._playerNewRegions[player] == nil then
+        self._playerNewRegions[player] = {}
+    end
+    return self._playerNewRegions[player]
+end
+
 --v function(self: ROT, player: string)
 function region_owner_tracker.clear_player_new_regions(self, player)
     self._playerNewRegions[player] = {}
