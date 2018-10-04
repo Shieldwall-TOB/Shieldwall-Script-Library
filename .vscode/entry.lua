@@ -11,7 +11,7 @@
 --library
 require("shieldwall/lib/dev")
 require("shieldwall/lib/VassalFeatures")
-
+require("shieldwall/lib/RegionOwnershipTracker")
 --content
 require("shieldwall/content/KingdomsContent")
 

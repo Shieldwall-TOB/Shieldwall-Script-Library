@@ -5,7 +5,7 @@
 
 --# assume global class RWM
 
-
+--# assume global class ROT
 --UI
 --# assume global class LOG
 --# assume global class BUTTON
