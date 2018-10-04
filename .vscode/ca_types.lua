@@ -33,7 +33,7 @@
 --# assume global class CA_UIContext
 --Fake types
 --# assume global class CA_CQI
-
+--# assume global class CA_CONTEXT
 --# type global BUTTON_STATE = 
 --# "active" | "hover" | "down" | 
 --# "selected" | "selected_hover" | "selected_down" |
@@ -112,8 +112,8 @@
 --# assume CM.add_listener: method(
     --# Name: string,
     --# EventName: string,
-    --# Conditional: (function(context: WHATEVER) --> boolean) |  boolean,
-    --# Callback: function(context: WHATEVER),
+    --# Conditional: (function(context: CA_CONTEXT) --> boolean) |  boolean,
+    --# Callback: function(context: CA_CONTEXT),
     --# Persist: boolean)
 --# assume CM.remove_listener: method(handler: string)
 --# assume CM.register_ui_created_callback: method( function() )
@@ -348,6 +348,16 @@
 --# assume CA_FORCE_LIST.num_items: method() --> number
 --# assume CA_FORCE_LIST.item_at: method(i: number) --> CA_FORCE
 
+--CA CONTEXT
+--# assume CA_CONTEXT.garrison_residence: method() --> CA_GARRISON_RESIDENCE
+--# assume CA_CONTEXT.faction: method() --> CA_FACTION
+--# assume CA_CONTEXT.proposer: method() --> CA_FACTION
+--# assume CA_CONTEXT.recipient: method() --> CA_FACTION
+--# assume CA_CONTEXT.character: method() --> CA_CHAR
+--# assume CA_CONTEXT.component: CA_Component
+--# assume CA_CONTEXT.string: string
+--# assume CA_CONTEXT.dilemma: method() --> string
+--# assume CA_CONTEXT.choice: method() --> number
 
 -- GLOBAL FUNCTIONS
 -- COMMON
