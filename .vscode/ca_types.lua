@@ -295,6 +295,7 @@
 --# assume CA_CHAR.character_subtype_key: method() --> string
 --# assume CA_CHAR.region: method() --> CA_REGION
 --# assume CA_CHAR.faction: method() --> CA_FACTION
+--# assume CA_CHAR.has_military_force: method() --> boolean
 --# assume CA_CHAR.military_force: method() --> CA_FORCE
 --# assume CA_CHAR.character_subtype: method(subtype: string) --> boolean
 --# assume CA_CHAR.get_forename: method() --> string
@@ -305,7 +306,6 @@
 --# assume CA_CHAR.won_battle: method() --> boolean
 --# assume CA_CHAR.battles_fought: method() --> number
 --# assume CA_CHAR.is_wounded: method() --> boolean
---# assume CA_CHAR.has_military_force: method() --> boolean
 --# assume CA_CHAR.is_faction_leader: method() --> boolean
 --# assume CA_CHAR.family_member: method() --> CA_FAMILY
 --# assume CA_CHAR.is_null_interface: method() --> boolean
@@ -343,6 +343,7 @@
 
 --# assume CA_FORCE.general_character: method() --> CA_CHAR
 --# assume CA_FORCE.unit_list: method() --> CA_UNIT_LIST
+--# assume CA_FORCE.active_stance: method() --> string
 
 --CA_FORCE_LIST
 --# assume CA_FORCE_LIST.num_items: method() --> number
