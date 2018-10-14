@@ -14,6 +14,7 @@ function fkm_kingdom.new(model, faction_key, human)
     self._model = model
     self._name = faction_key
     self._isHuman = human
+    self._estateOwners = {} --:map<CA_CQI, vector<ESTATE>>
 
     return self
 end
@@ -24,6 +25,14 @@ function fkm_kingdom.null_interface()
     self.is_null_interface = function(self) return true end --: function(self: FKM_KINGDOM) --> boolean
     --# assume self: FKM_KINGDOM
     return self
+end
+
+--v function(self: FKM_KINGDOM, estate: ESTATE)
+function fkm_kingdom.add_estate(self, estate)
+    if self._estateOwners[estate._owner] == nil then
+        self._estateOwners[estate._owner] = {}
+    end
+    table.insert(self._estateOwners[estate._owner], estate)
 end
 
 --v function (self: FKM_KINGDOM) --> boolean

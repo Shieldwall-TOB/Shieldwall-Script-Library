@@ -7,9 +7,16 @@
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
+--[[
+    All shieldwall scripts are split into three sections
+    1. The library defines all data structures used by the mod's scripting.
+    2. The Content section is for loading inputs, usually in the form of keys, to the script.
+    3. The Event Based Scripting section is for active elements of the script
+--]]
 
 --library
 require("shieldwall/lib/dev")
+require("shieldwall/lib/EstateManagement")
 require("shieldwall/lib/VassalFeatures")
 require("shieldwall/lib/RegionOwnershipTracker")
 --content

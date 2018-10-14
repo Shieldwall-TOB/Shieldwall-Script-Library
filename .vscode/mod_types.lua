@@ -2,7 +2,8 @@
 --# assume global class FKM_KINGDOM
 --# assume global class FKM_VASSAL
 --# assume global class FKM_STATE
-
+--# assume global class ET
+--# assume global class ESTATE
 --# assume global class RWM
 
 --# assume global class ROT
