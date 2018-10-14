@@ -253,7 +253,7 @@ cm:register_ui_created_callback( function()
         "CharacterSelected",
         true,
         function(context)
-            MODLOG("selected character with CQI ["..context:character():cqi().."]", "SEL")
+            MODLOG("selected character with CQI ["..tostring(context:character():cqi()).."]", "SEL")
         end,
         true
     )
