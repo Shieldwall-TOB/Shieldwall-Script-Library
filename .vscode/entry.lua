@@ -16,7 +16,7 @@
 
 CONST = require("shieldwall/ShieldWallConstants")
 --library
-require("shieldwall/lib/dev")
+dev = require("shieldwall/lib/dev")
 require("shieldwall/lib/EstateManagement")
 require("shieldwall/lib/VassalFeatures")
 require("shieldwall/lib/RegionOwnershipTracker")
@@ -25,6 +25,7 @@ require("shieldwall/lib/RegionWealth")
 require("shieldwall/content/KingdomsContent")
 require("shieldwall/content/NamesAndPlaces")
 --ebs
+require("shieldwall/ebs/ebs_estates_tracking")
 require("shieldwall/ebs/ebs_major_empires")
 require("shieldwall/ebs/ebs_vassal_features")
 require("shieldwall/ebs/ebs_restore_ally_territory")
