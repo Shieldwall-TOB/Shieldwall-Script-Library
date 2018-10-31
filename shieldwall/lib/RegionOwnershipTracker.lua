@@ -85,3 +85,5 @@ end
 function region_owner_tracker.clear_player_new_regions(self, player)
     self._playerNewRegions[player] = {}
 end
+
+region_owner_tracker.init()

@@ -6,7 +6,7 @@ cm:add_listener(
     "FactionTurnStart",
     true,
     function(context)
-        for i = 0, context:faction():region_list():num_items() do
+        for i = 0, context:faction():region_list():num_items() - 1 do
             rwm:process_end_turn(context:faction():region_list():item_at(i):name())
         end
     end,
@@ -37,6 +37,16 @@ cm:add_listener(
     true,
     function(context)
         rwm:set_region_wealth(context:garrison_residence():region():name(), 3)
+    end,
+    true
+)
+
+cm:add_listener(
+    "RegionWealthRegionRebels",
+    "RegionRebels",
+    true,
+    function(context)
+        rwm:set_region_wealth(context:region():name(), 1)
     end,
     true
 )

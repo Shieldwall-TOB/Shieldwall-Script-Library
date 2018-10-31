@@ -27,6 +27,7 @@
 --# assume global class CA_PENDING_BATTLE
 --# assume global class CA_MISSION
 --# assume global class CA_AI
+--# assume global class CA_ESTATE
 --UI types
 --# assume global class CA_UIC
 --# assume global class CA_Component
@@ -284,7 +285,11 @@
 --# assume CA_BUILDING.superchain: method() --> string
 --# assume CA_BUILDING.faction: method() --> CA_FACTION
 --# assume CA_BUILDING.region: method() --> CA_REGION
-
+--CA ESTATE
+--# assume CA_ESTATE.is_null_interface: method() --> boolean
+--# assume CA_ESTATE.estate_record_key: method() --> string
+--# assume CA_ESTATE.owner: method() --> CA_CHAR
+--# assume CA_ESTATE.region: method() --> CA_REGION
 
 --CA CHARACTER
 --# assume CA_CHAR.has_trait: method(traitName: string) --> boolean
@@ -359,6 +364,8 @@
 --# assume CA_CONTEXT.string: string
 --# assume CA_CONTEXT.dilemma: method() --> string
 --# assume CA_CONTEXT.choice: method() --> number
+--# assume CA_CONTEXT.estate: method() --> CA_ESTATE
+--# assume CA_CONTEXT.region: method() --> CA_REGION
 
 -- GLOBAL FUNCTIONS
 -- COMMON
