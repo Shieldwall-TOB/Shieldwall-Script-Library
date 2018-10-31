@@ -1,6 +1,7 @@
 --class declarations\
 --# assume global class _G
 --# assume global class CM
+--# assume global class CA_EFFECT
 --# assume global class CA_EVENT_HANDLER
 --# assume global class CA_WORLD
 --# assume global class CA_MODEL
@@ -176,6 +177,7 @@
 --# assume CA_MODEL.campaign_ai: method() --> CA_AI
 --# assume CA_MODEL.season: method() --> number
 --# assume CA_MODEL.character_for_command_queue_index: method(CA_CQI) --> CA_CHAR
+--# assume CA_MODEL.has_character_command_queue_index: method(CA_CQI) --> boolean
 --# assume CA_MODEL.military_force_for_command_queue_index: method(CA_CQI) --> CA_FORCE
 --# assume CA_MODEL.faction_for_command_queue_index: method(CA_CQI) --> CA_FACTION
 
@@ -367,6 +369,11 @@
 --# assume CA_CONTEXT.estate: method() --> CA_ESTATE
 --# assume CA_CONTEXT.region: method() --> CA_REGION
 
+--CA_EFFECT
+--# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
+
+
+
 -- GLOBAL FUNCTIONS
 -- COMMON
 --# assume global get_eh: function() --> CA_EVENT_HANDLER
@@ -381,14 +388,6 @@
 --# assume global print_all_uicomponent_children: function(component: CA_UIC)
 --# assume global output_uicomponent: function(uic: CA_UIC, omit_children: boolean)
 
---v [require] function(file: string)
-function force_require(file)
-
-end
-
-
-
-
 --# assume global output: function(text: string)
 --# assume global script_error: function(text: string)
 
@@ -402,6 +401,7 @@ end
 -- GLOBAL VARIABLES
 --leave at the bottom of this file
 --# assume global cm: CM
+--# assume global effect: CA_EFFECT
 --# assume global __write_output_to_logfile: boolean
 
 

@@ -273,3 +273,38 @@ cm:register_first_tick_callback( function()
 
 end)
 
+--v function(key: string) --> CA_FACTION
+local function dev_get_faction(key)
+    local world = cm:model():world();
+    
+    if world:faction_exists(key) then
+        return world:faction_by_key(key);
+    end;
+    
+    return nil;
+end
+
+--v function(region_key: string) --> CA_REGION
+local function dev_get_region(region_key)
+    return cm:model():world():region_manager():region_by_key(region_key);
+end
+
+--v function(cqi: CA_CQI) --> CA_CHAR
+local function dev_get_character(cqi)
+
+	
+	
+	local model = cm:model();
+	if model:has_character_command_queue_index(cqi) then
+		return model:character_for_command_queue_index(cqi);
+	end;
+
+	return nil;
+end
+
+
+return {
+    get_faction = dev_get_faction,
+    get_region = dev_get_region,
+    get_character = dev_get_character
+}

@@ -14,6 +14,7 @@
     3. The Event Based Scripting section is for active elements of the script
 --]]
 
+CONST = require("shieldwall/ShieldWallConstants")
 --library
 require("shieldwall/lib/dev")
 require("shieldwall/lib/EstateManagement")
@@ -22,7 +23,7 @@ require("shieldwall/lib/RegionOwnershipTracker")
 require("shieldwall/lib/RegionWealth")
 --content
 require("shieldwall/content/KingdomsContent")
-
+require("shieldwall/content/NamesAndPlaces")
 --ebs
 require("shieldwall/ebs/ebs_major_empires")
 require("shieldwall/ebs/ebs_vassal_features")
