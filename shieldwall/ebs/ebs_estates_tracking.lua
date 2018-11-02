@@ -30,6 +30,9 @@ end)
 
 --v function(estate: ESTATE) --> string
 local function get_estate_bundle(estate)
+    if estate:is_royal() then
+        return nil
+    end
     local estate_type = estate:type()
     local bundle_prefix --:string
     if estate_type == CONST.town_estate_type then
@@ -40,9 +43,6 @@ local function get_estate_bundle(estate)
         bundle_prefix = "resource"
     end
     local bundle_suffix = "_other"
-    if estate:is_royal() then
-        bundle_suffix = "_crown"
-    end
     return "shield_"..bundle_prefix.."_estate"..bundle_suffix
 end
 
@@ -51,6 +51,7 @@ cm:add_listener(
     "CharacterAssignedEstate",
     true,
     function(context)
+        et:log("Character was assigned estate!")
         local estate = et:check_estate(context:estate())
         et:grant_estate_to_character(context:character():cqi(), context:estate():region():name())
         estate:update_bundle(get_estate_bundle(estate))
@@ -63,9 +64,10 @@ cm:add_listener(
     "CharacterStrippedOfEstate",
     true,
     function(context)
+        et:log("Character was stripped of an estate!")
         local estate = et:check_estate(context:estate())
         et:strip_estate_from_character(context:character():cqi(), context:estate():region():name())
-        estate:update_bundle(get_estate_bundle(estate))
+        estate:update_bundle()
     end,
     true
 )
@@ -99,6 +101,24 @@ cm:add_listener(
 
 cm:register_first_tick_callback( function()
     if cm:is_new_game() then
-        
+        local humans = cm:get_human_factions()
+        for i = 1, #humans do
+            local region_list = dev.get_faction(humans[i]):region_list()
+            for i = 0, region_list:num_items() - 1 do
+                local current_region = region_list:item_at(i)
+                if current_region:settlement():is_null_interface() then
+                    --do nothing
+                else
+                    local estate = et:get_region_estate(current_region:name())
+                    estate:update_bundle(get_estate_bundle(estate))
+                end
+            end
+        end
     end
+end)
+
+dev.add_settlement_selected_log(function(region)
+    local estate = et:get_region_estate(region:name())
+    return "has estate: owner ["..tostring(estate._owner).."], type ["..estate:type().."], royalty: ["..tostring(estate:is_royal()).."] "
+
 end)
