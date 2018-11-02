@@ -140,6 +140,8 @@
 --# assume CM.remove_effect_bundle_from_characters_force: method(bundleKey: string, charCqi: CA_CQI)
 --# assume CM.apply_effect_bundle: method(bundle: string, faction: string, timer: int)
 --# assume CM.remove_effect_bundle: method(bundle: string, faction: string)
+--# assume CM.apply_effect_bundle_to_force: method(bundle: string, mfcqi: CA_CQI, turns: number)
+--# assume CM.remove_effect_bundle_from_force: method(bundle: string, mfcqi: CA_CQI)
 
 --factions
 --# assume CM.get_local_faction: method(force: boolean?) --> string
@@ -353,10 +355,20 @@
 --# assume CA_FORCE.general_character: method() --> CA_CHAR
 --# assume CA_FORCE.unit_list: method() --> CA_UNIT_LIST
 --# assume CA_FORCE.active_stance: method() --> string
-
+--# assume CA_FORCE.command_queue_index: method() --> CA_CQI
 --CA_FORCE_LIST
 --# assume CA_FORCE_LIST.num_items: method() --> number
 --# assume CA_FORCE_LIST.item_at: method(i: number) --> CA_FORCE
+
+--CA UNIT
+--# assume CA_UNIT.unit_key: method() --> string
+
+--CA UNIT LIST
+--# assume CA_UNIT_LIST.num_items: method() --> number
+--# assume CA_UNIT_LIST.item_at: method(i: number) --> CA_UNIT
+--# assume CA_UNIT_LIST.has_unit: method(string) --> boolean
+
+
 
 --CA CONTEXT
 --# assume CA_CONTEXT.garrison_residence: method() --> CA_GARRISON_RESIDENCE
