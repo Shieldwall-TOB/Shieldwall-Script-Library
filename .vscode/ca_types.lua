@@ -143,6 +143,7 @@
 
 --factions
 --# assume CM.get_local_faction: method(force: boolean?) --> string
+--# assume CM.get_human_factions: method() --> vector<string>
 --# assume CM.treasury_mod: method(faction_key: string, quantity: number)
 --# assume CM.transfer_region_to_faction: method(region: string, faction: string)
 --events
