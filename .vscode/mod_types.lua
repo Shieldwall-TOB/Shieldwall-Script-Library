@@ -4,9 +4,28 @@
 --# assume global class FKM_STATE
 --# assume global class ET
 --# assume global class ESTATE
+--# type global ESTATE_SAVE = {
+--# _faction: string, _region: string, _type: string, _cqi: string, _isRoyal: boolean, _turnGranted: string
+--#}
 --# assume global class RWM
 
 --# assume global class ROT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --UI
 --# assume global class LOG
 --# assume global class BUTTON

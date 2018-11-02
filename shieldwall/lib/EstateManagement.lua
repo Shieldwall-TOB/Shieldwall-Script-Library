@@ -16,12 +16,16 @@ function estate_tracker.init()
     return self
 end
 
+--v method(text: any)
+function estate_tracker:log(text)
+    MODLOG(tostring(text), "ET ")
+end
 
 --v function(model: ET, faction: string, region: string, estate_type: string, owner: CA_CQI?) --> ESTATE
 function estate_object.new(model, faction, region, estate_type, owner)
     local self = {}
     setmetatable(self, {
-        __index = estate_tracker
+        __index = estate_object
     })  --# assume self: ESTATE
 
     self._model = model
@@ -72,6 +76,39 @@ function estate_object.update_bundle(self, new_bundle)
         cm:apply_effect_bundle_to_region(new_bundle, self._region, 0)
     end
 end
+
+--v function(self: ESTATE) --> ESTATE_SAVE
+function estate_object.save(self)
+    local savetable = {}
+    savetable._faction = self._faction
+    savetable._region = self._region
+    savetable._isRoyal = self._isRoyal
+    savetable._type = self._type
+    savetable._cqi = tostring(self._owner)
+    savetable._turnGranted = tostring(self._turnGranted)
+
+    return savetable
+end
+
+--v function(savetable: ESTATE_SAVE) --> ESTATE
+function estate_object.load(savetable)
+    local self = {}
+    setmetatable(self, {
+        __index = estate_tracker
+    })  --# assume self: ESTATE
+
+    self._faction = savetable._faction
+    self._region = savetable._region
+    self._isRoyal = savetable._isRoyal
+    self._type = savetable._type
+    local loaded_owner = tonumber(savetable._cqi) 
+    --# assume loaded_owner: CA_CQI
+    self._owner = loaded_owner
+    self._turnGranted = tonumber(savetable._turnGranted)
+
+    return self
+end
+
 
 --v function(self: ET, region: string) --> ESTATE
 function estate_tracker.get_region_estate(self, region)
@@ -137,6 +174,42 @@ function estate_tracker.has_estate(self, region)
     return not not self._estateData[region]
 end
 
+--v function(self: ET, estate_table: ESTATE_SAVE)
+function estate_tracker.load_estate(self, estate_table)
+    self:log("Loading an estate for region ["..estate_table._region.."] ")
+    self._estateData[estate_table._region] = estate_object.load(estate_table)
+end
+
+--v function(self: ET, estate_region: string, is_royal: boolean)
+function estate_tracker.create_start_pos_estate(self, estate_region, is_royal)
+    local region_obj = dev.get_region(estate_region)
+    local faction = region_obj:owning_faction()
+    local faction_name = faction:name()
+    local estate_type = CONST.default_estate_type
+    for building, estate_key in pairs(self._buildingsToEstates) do
+        if region_obj:building_exists(building) then
+            estate_type = estate_key
+            break
+        end
+    end
+    local estate_char --:CA_CQI
+    if is_royal then
+        estate_char = faction:faction_leader():cqi()
+    else
+        for i = 0, faction:character_list():num_items() - 1 do
+            local current_char = faction:character_list():item_at(i)
+            if not (current_char:is_heir() or current_char:is_faction_leader()) then
+                estate_char = current_char:cqi()
+                break
+            end
+        end
+    end
+    if estate_char == nil then
+        self:log("ERROR: couldn't find a char to pin a startpos estate to!")
+    end
+    local estate = estate_object.new(self, estate_region, faction_name, estate_type, estate_char)
+    self._estateData[estate_region] = estate
+end
 
 
 estate_tracker.init()

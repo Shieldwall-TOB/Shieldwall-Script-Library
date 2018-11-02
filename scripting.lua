@@ -207,8 +207,8 @@ require("vik_decrees");
     3. The Event Based Scripting section is for active elements of the script
 --]]
 
---library
 CONST = require("shieldwall/ShieldWallConstants")
+--library
 dev = require("shieldwall/lib/dev")
 require("shieldwall/lib/EstateManagement")
 require("shieldwall/lib/VassalFeatures")
@@ -217,7 +217,9 @@ require("shieldwall/lib/RegionWealth")
 --content
 require("shieldwall/content/KingdomsContent")
 require("shieldwall/content/NamesAndPlaces")
+require("shieldwall/content/EstatesContent")
 --ebs
+require("shieldwall/ebs/ebs_estates_tracking")
 require("shieldwall/ebs/ebs_major_empires")
 require("shieldwall/ebs/ebs_vassal_features")
 require("shieldwall/ebs/ebs_restore_ally_territory")

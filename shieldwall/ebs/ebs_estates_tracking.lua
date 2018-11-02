@@ -1,4 +1,33 @@
 local et = _G.et
+
+cm:register_loading_game_callback(function(context)
+    local ok, err = pcall(function()
+        local savetable = cm:load_value("estate_tracker_save", {}, context)
+        for region, estate_data in pairs(savetable) do
+            et:load_estate(estate_data)
+        end
+    end)
+    if not ok then 
+        MODLOG(tostring(err), "LDR")
+    end
+end)
+
+cm:register_saving_game_callback(function(context)
+    local ok, err = pcall(function()
+        local savetable = {} --:map<string, ESTATE_SAVE>
+        for region, estate in pairs(et._estateData) do
+            savetable[region] = estate:save()
+        end
+        cm:save_value("estate_tracker_save", savetable, context)
+    end)
+    if not ok then
+        MODLOG(tostring(err), "SVR")
+    end
+    
+end)
+
+
+
 --v function(estate: ESTATE) --> string
 local function get_estate_bundle(estate)
     local estate_type = estate:type()
@@ -66,3 +95,10 @@ cm:add_listener(
     end,
     true
 )
+
+
+cm:register_first_tick_callback( function()
+    if cm:is_new_game() then
+        
+    end
+end)

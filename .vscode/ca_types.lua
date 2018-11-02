@@ -122,6 +122,7 @@
 --# assume CM.register_first_tick_callback: method(function())
 --# assume CM.random_number: method(range: number, min: number?) 
 --saving
+--# assume CM.is_new_game: method() --> boolean
 --# assume CM.set_saved_value: method(valueKey: string, value: any)
 --# assume CM.get_saved_value: method(valueKey: string) --> WHATEVER
 --# assume CM.register_loading_game_callback: method(function(context: WHATEVER))

@@ -24,6 +24,7 @@ require("shieldwall/lib/RegionWealth")
 --content
 require("shieldwall/content/KingdomsContent")
 require("shieldwall/content/NamesAndPlaces")
+require("shieldwall/content/EstatesContent")
 --ebs
 require("shieldwall/ebs/ebs_estates_tracking")
 require("shieldwall/ebs/ebs_major_empires")
