@@ -1,6 +1,6 @@
 
 __write_output_to_logfile = true
-
+__should_output_ui = false
 
 
 
@@ -80,6 +80,9 @@ end;
 
 -- for debug purposes
 function log_uicomponent_on_click()
+    if not __should_output_ui then
+        return
+    end
     local eh = get_eh();
     
     if not eh then
