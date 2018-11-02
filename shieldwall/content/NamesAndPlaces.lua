@@ -111,3 +111,11 @@ cm:add_listener(
     end,
     true
 )
+
+dev.add_settlement_selected_log(function(region)
+	if region_intros_played[region:name()] == nil then
+		return "Place has no registered name"
+	else
+		return "Place has a registered name"
+	end
+end)
