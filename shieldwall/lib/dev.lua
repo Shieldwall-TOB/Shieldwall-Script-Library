@@ -276,6 +276,8 @@ cm:register_first_tick_callback( function()
 
 end)
 
+--dev shortcut library
+
 --v function(key: string) --> CA_FACTION
 local function dev_get_faction(key)
     local world = cm:model():world();
@@ -306,8 +308,21 @@ local function dev_get_character(cqi)
 end
 
 
+--v function() --> CA_REGION_LIST
+local function dev_region_list()
+    return cm:model():world():region_manager():region_list()
+end
+
+--v function() --> CA_FACTION_LIST
+local function dev_faction_list()
+    return cm:model():world():faction_list()
+end
+
+
 return {
     get_faction = dev_get_faction,
     get_region = dev_get_region,
-    get_character = dev_get_character
+    get_character = dev_get_character,
+    region_list = dev_region_list,
+    faction_list = dev_faction_list
 }
