@@ -91,7 +91,6 @@ region_intros_played = {
 --v function(context: CA_CONTEXT)
 local function OnSettlementSelected(context)
     local region_name = context:garrison_residence():region():name() --:string
-    NAPLOG("Selected Settlement: "..region_name)
     if region_intros_played[region_name] == nil then
         --we don't have a intro for this region
         return
