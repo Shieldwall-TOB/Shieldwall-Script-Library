@@ -248,6 +248,10 @@ function MOD_ERROR_LOGS()
 end
 MOD_ERROR_LOGS()
 
+
+local settlement_selected_log_calls = {} --:vector<(function(CA_REGION) --> string)>
+local char_selected_log_calls = {} --:vector<(function(CA_CHAR) --> string)>
+
 --start UI tracking helpers.
 cm:register_ui_created_callback( function()
     log_uicomponent_on_click()
@@ -267,10 +271,20 @@ cm:register_ui_created_callback( function()
         true,
         function(context)
             MODLOG("Selected settlement ["..  context:garrison_residence():region():name() .. "]", "SEL")
+            for i = 1, #settlement_selected_log_calls do
+                MODLOG("\t"..settlement_selected_log_calls[i](context:garrison_residence():region()), "SEL")
+            end
         end,
         true
     )
 end)
+
+--v function(call: function(CA_REGION) --> string)
+local function dev_add_settlement_select_log_call(call)
+    table.insert(settlement_selected_log_calls, call)
+end
+
+
 
 cm:register_first_tick_callback( function()
 
@@ -324,5 +338,6 @@ return {
     get_region = dev_get_region,
     get_character = dev_get_character,
     region_list = dev_region_list,
-    faction_list = dev_faction_list
+    faction_list = dev_faction_list,
+    add_settlement_selected_log = dev_add_settlement_select_log_call
 }
