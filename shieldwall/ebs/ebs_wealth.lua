@@ -17,14 +17,15 @@ cm:add_listener(
     "RegionWealthCharTurnEnd",
     "CharacterTurnEnd",
     function(context)
-        --idk why the long form is necessary, but I keep getting a "nil method call" on
-        -- "owning faction" when doing context:character():region():owning_faction()
-        return not ((dev.get_region(context:character():region():name()):owning_faction():name() == context:character():faction():name()) or (context:character():region():settlement():is_null_interface()))
+        if context:character():region():is_null_interface() then
+            return false
+        end
+        return not ((context:character():region():owning_faction():name() == context:character():faction():name()) or (context:character():region():settlement():is_null_interface()))
     end,
     function(context)
         local character = context:character()
         if character:has_military_force() then
-            if string.find(character:military_force():active_stance(), "RAID") then
+            if string.find(character:military_force():active_stance(), "RAIDING") then
                 rwm:set_region_wealth(context:character():region():name(), 2)
             else
                 rwm:set_region_wealth(context:character():region():name(), 1)
