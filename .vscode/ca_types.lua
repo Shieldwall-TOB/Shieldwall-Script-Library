@@ -151,7 +151,7 @@
 --# assume CM.trigger_dilemma: method(faction_key: string, dilemma_key: string, trigger_immediately: boolean)
 --diplomacy
 --# assume CM.force_make_vassal: method(master: string, vassal: string)
---# assume CM.force_diplomacy:  method(faction: string, other_faction: string, record: string, offer: boolean, accept: boolean, enable_payments: boolean)
+--# assume CM.force_diplomacy:  method(faction: string, other_faction: string, record: string, offer: boolean, accept: boolean)
 --# assume CM.force_declare_war: method(declarer: string, declaree: string)
 --# assume CM.force_make_peace: method(faction: string, other_faction: string)
 --# assume CM.grant_faction_handover: method(absorber: string, absorbed: string, first_turn: number, last_turn: number, context: WHATEVER)
