@@ -1,14 +1,5 @@
-
-__write_output_to_logfile = true
-__should_output_ui = false
-__log_game_objects = true
-
-
-
-
-
 --v function(text: string, context: string?)
-function MODLOG(text, context)
+local function MODLOG(text, context)
     if not __write_output_to_logfile then
         return; 
     end
@@ -80,7 +71,7 @@ end;
 
 -- for debug purposes
 function log_uicomponent_on_click()
-    if not __should_output_ui then
+    if not CONST.__should_output_ui then
         return
     end
     local eh = get_eh();
@@ -253,7 +244,7 @@ MOD_ERROR_LOGS()
 
 --object logging
 cm:register_first_tick_callback(function()
-    if not __log_game_objects then
+    if not CONST.__log_game_objects then
         return
     end
     --v function(text: any)
@@ -372,6 +363,7 @@ local function dev_readonlytable(t)
 end
 
 return {
+    log = MODLOG,
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,

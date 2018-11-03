@@ -21,7 +21,7 @@ end
 
 --v method(text: any)
 function faction_kingdom_manager:log(text)
-    MODLOG(tostring(text), "FKM")
+    dev.log(tostring(text), "FKM")
 end
 
 

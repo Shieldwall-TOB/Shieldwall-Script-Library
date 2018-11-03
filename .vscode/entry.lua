@@ -13,8 +13,8 @@
     2. The Content section is for loading inputs, usually in the form of keys, to the script.
     3. The Event Based Scripting section is for active elements of the script
 --]]
-dev = require("shieldwall/lib/dev")
 CONST = require("shieldwall/ShieldWallConstants")
+dev = require("shieldwall/dev")
 --library
 require("shieldwall/lib/EstateManagement")
 require("shieldwall/lib/VassalFeatures")

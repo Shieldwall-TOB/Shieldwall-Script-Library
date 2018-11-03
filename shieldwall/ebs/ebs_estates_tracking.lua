@@ -8,7 +8,7 @@ cm:register_loading_game_callback(function(context)
         end
     end)
     if not ok then 
-        MODLOG(tostring(err), "LDR")
+        dev.log(tostring(err), "LDR")
     end
 end)
 
@@ -21,7 +21,7 @@ cm:register_saving_game_callback(function(context)
         cm:save_value("estate_tracker_save", savetable, context)
     end)
     if not ok then
-        MODLOG(tostring(err), "SVR")
+        dev.log(tostring(err), "SVR")
     end
     
 end)

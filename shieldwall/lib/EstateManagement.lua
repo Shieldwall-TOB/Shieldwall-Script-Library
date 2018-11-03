@@ -18,7 +18,7 @@ end
 
 --v method(text: any)
 function estate_tracker:log(text)
-    MODLOG(tostring(text), "ET ")
+    dev.log(tostring(text), "ET ")
 end
 
 --v function(self: ET, building: string, estate_type: string)

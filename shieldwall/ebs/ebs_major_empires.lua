@@ -6,7 +6,7 @@ local VerboseLog = true
 
 --v function(text: any)
 local function MELOG(text)
-    MODLOG(tostring(text), "ME ")
+    dev.log(tostring(text), "GK ")
 end
 
 
@@ -152,14 +152,14 @@ function(context)
 		local result = context:character():model():pending_battle():defender_battle_result();
 
 		if result == "close_victory" or result == "decisive_victory" or result == "heroic_victory" or result == "pyrrhic_victory" then
-			MELOG("DFME:-- Result --\n"..context:character():faction():name().." Won! ("..result..")");
+			MELOG("GREAT KINGDOMS:-- Result --\n\t\t"..context:character():faction():name().." Won! ("..result..")");
 		end;
 	elseif context:character():model():pending_battle():has_attacker() and context:character():model():pending_battle():attacker():cqi() == context:character():cqi() then
 		-- The character is the Attacker
 		local result = context:character():model():pending_battle():attacker_battle_result();
 
 		if result == "close_victory" or result == "decisive_victory" or result == "heroic_victory" or result == "pyrrhic_victory" then
-			MELOG("DFME:-- Result --\n"..context:character():faction():name().." Won! ("..result..")");
+			MELOG("GREAT KINGDOMS:-- Result --\n\t\t"..context:character():faction():name().." Won! ("..result..")");
 		end;
 	end;
 end;

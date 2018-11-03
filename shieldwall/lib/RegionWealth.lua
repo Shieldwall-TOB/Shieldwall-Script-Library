@@ -24,7 +24,7 @@ end
 
 --v method(text: any)
 function region_wealth_manager:log(text)
-    MODLOG(tostring(text), "RWM")
+    dev.log(tostring(text), "RWM")
 end
 
 

@@ -20,7 +20,7 @@ end
 
 --v method(text: any)
 function region_owner_tracker:log(text)
-    MODLOG(tostring(text), "ROT")
+    dev.log(tostring(text), "ROT")
 end
 
 --v function(self: ROT, region: string, player: string)
