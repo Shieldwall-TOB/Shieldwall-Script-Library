@@ -70,7 +70,7 @@ end;
 
 
 -- for debug purposes
-function log_uicomponent_on_click()
+local function log_uicomponent_on_click()
     if not CONST.__should_output_ui then
         return
     end
@@ -91,6 +91,33 @@ function log_uicomponent_on_click()
         true
     );
 end;
+
+--v [NO_CHECK] function(uic: CA_UIC) --> string
+local function dev_uicomponent_to_str(uic)
+	if not is_uicomponent(uic) then
+		return "";
+	end;
+	
+	if uic:Id() == "root" then
+		return "root";
+	else
+		return dev_uicomponent_to_str(UIComponent(uic:Parent())) .. " > " .. uic:Id();
+	end;	
+end;
+
+--v [NO_CHECK] function(uic: CA_UIC)
+local function dev_print_all_uicomponent_children(uic)
+	MODLOG(dev_uicomponent_to_str(uic), "UIC");
+	for i = 0, uic:ChildCount() - 1 do
+		local uic_child = UIComponent(uic:Find(i));
+		dev_print_all_uicomponent_children(uic_child);
+	end;
+end;
+
+
+
+
+
 
 --v [NO_CHECK] function()
 function MOD_ERROR_LOGS()
@@ -366,7 +393,7 @@ return {
     log = MODLOG,
     callback = add_callback,
     eh = get_eh(),
-    out_children = print_all_uicomponent_children,
+    out_children = dev_print_all_uicomponent_children,
     get_uic = find_uicomponent,
     get_faction = dev_get_faction,
     get_region = dev_get_region,
