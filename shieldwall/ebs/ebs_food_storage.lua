@@ -1,5 +1,5 @@
 local fkm = _G.fkm
-
+local rot = _G.rot --not directly used here but the event 
 
 cm:add_listener(
     "FoodStorageFactionTurnStart",
@@ -26,6 +26,7 @@ cm:add_listener(
     function(context)
         local region = context:region()
         local faction_name = context:faction():name()
+        fkm:log("faction ["..faction_name.."] lost region ["..region:name().."]")
         fkm:remove_region_contribution_from_faction(region:name(), faction_name)
         fkm:calc_food_storage_cap(region)
     end,
