@@ -1,6 +1,6 @@
 --v function(text: string, context: string?)
 local function MODLOG(text, context)
-    if not __write_output_to_logfile then
+    if not CONST.__write_output_to_logfile then
         return; 
     end
     local pre = context --:string
@@ -364,6 +364,7 @@ end
 
 return {
     log = MODLOG,
+    eh = get_eh(),
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,
