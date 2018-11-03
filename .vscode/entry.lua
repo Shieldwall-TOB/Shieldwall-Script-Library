@@ -16,7 +16,6 @@
 dev = require("shieldwall/lib/dev")
 CONST = require("shieldwall/ShieldWallConstants")
 --library
-
 require("shieldwall/lib/EstateManagement")
 require("shieldwall/lib/VassalFeatures")
 require("shieldwall/lib/RegionOwnershipTracker")
@@ -36,3 +35,4 @@ require("shieldwall/ebs/ebs_region_tracking")
 require("shieldwall/ebs/ebs_wealth")
 require("shieldwall/ebs/ebs_war_limits")
 require("shieldwall/ebs/ebs_unit_effects")
+require("shieldwall/ebs/ebs_food_storage")
