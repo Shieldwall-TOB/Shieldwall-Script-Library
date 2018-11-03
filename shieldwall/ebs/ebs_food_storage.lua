@@ -62,4 +62,26 @@ end)
 
 
 
+cm:register_saving_game_callback(function(context)
+    local svtable = fkm:save_food_storage()
+    cm:save_value("fkm_food_storage", svtable, context)
+end)
 
+cm:register_loading_game_callback(function(context)
+    local svtable = cm:load_value("fkm_food_storage", {}, context)
+    fkm:load_food_storage(svtable)
+end)
+
+cm:add_listener(
+    "FoodStorageDisplay",
+    "ComponentMouseOn",
+    function(context)
+        return context.string == "food"
+    end,
+    function(context)
+        local FoodComponent = UIComponent(context.component)
+        dev.log(FoodComponent:GetTooltipText(), "DFTEST")
+        local ToolTipComponent = find_uicomponent(cm:ui_root(), "Tooltip")
+    end,
+    true
+)

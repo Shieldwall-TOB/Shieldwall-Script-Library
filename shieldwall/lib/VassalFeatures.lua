@@ -17,8 +17,7 @@ function faction_kingdom_manager.init()
     self._buildingFoodStorageCap = {} --:map<string, number>
     
     --major faction autoresolve bonus toggles
-    self._influenceAutoresolve = true --:boolean
-
+    self._influenceAutoresolve = CONST.enable_great_kingdom_bonus
     _G.fkm = self
 end
 
@@ -161,10 +160,10 @@ function faction_kingdom_manager.mod_food_storage(self, faction, quantity)
     elseif new_val < 0 then
         new_val = 0
     end
-    cm:remove_effect_bundle(CONST.food_storage_bundle..(tostring(old_val)), faction)
     if not (old_val == 0) then
-        self._factionFoodStorageQuantity[faction] = new_val
+        cm:remove_effect_bundle(CONST.food_storage_bundle..(tostring(old_val)), faction)
     end
+    self._factionFoodStorageQuantity[faction] = new_val
     if not (new_val == 0) then
         cm:apply_effect_bundle(CONST.food_storage_bundle..(tostring(new_val)), faction, 0)
     end
@@ -237,7 +236,21 @@ function faction_kingdom_manager.does_building_have_cap_effect(self, building)
     return not not self._buildingFoodStorageCap[building]
 end
 
+--v function(self: FKM, svtable: {_regionValues: map<string, number>, _factionValues: map<string, number>, _factionCaps: map<string, number>})
+function faction_kingdom_manager.load_food_storage(self, svtable)
+    self._foodStorageRegionContribution = svtable._regionValues or {}
+    self._factionFoodStorageQuantity = svtable._factionValues or {}
+    self._factionFoodStorageCaps = svtable._factionCaps or {}
+end
 
+--v function(self: FKM) --> {_regionValues: map<string, number>, _factionValues: map<string, number>, _factionCaps: map<string, number>}
+function faction_kingdom_manager.save_food_storage(self)
+    local retval = {}
+    retval._regionValues = self._foodStorageRegionContribution
+    retval._factionValues = self._factionFoodStorageQuantity
+    retval._factionCaps = self._factionFoodStorageCaps
+    return retval
+end
 
 faction_kingdom_manager.init()
 _G.fkm:log("Init complete")
