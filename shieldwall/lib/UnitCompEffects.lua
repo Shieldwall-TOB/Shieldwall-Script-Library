@@ -65,6 +65,9 @@ end
 
 --v function(self: UEM, force: CA_FORCE)
 function unit_effects_manager.evaluate_force(self, force)
+    if force:unit_list():is_empty() then
+        return
+    end
     local unit_list = force:unit_list()
     local cqi = force:command_queue_index()
     for unit, effect in pairs(self._unitEffects) do
