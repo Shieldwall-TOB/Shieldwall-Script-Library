@@ -54,7 +54,12 @@ end
 function estate_object.change_faction(self, faction_key)
     self._faction = faction_key
     self._isRoyal = true
-    self._owner = dev.get_faction(faction_key):faction_leader():cqi()
+    local faction = dev.get_faction(faction_key)
+    if faction and (not faction:faction_leader():is_null_interface()) then
+        self._owner = faction:faction_leader():cqi()
+    else
+
+    end
 end
 
 --v function(self: ESTATE) --> string
