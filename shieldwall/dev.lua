@@ -364,6 +364,7 @@ end
 
 return {
     log = MODLOG,
+    callback = add_callback,
     eh = get_eh(),
     out_children = print_all_uicomponent_children,
     get_uic = find_uicomponent,

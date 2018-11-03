@@ -415,7 +415,7 @@
 --# assume global is_number: function(arg: number) --> boolean
 --# assume global is_function: function(arg: function) --> boolean
 --# assume global is_boolean: function(arg: boolean) --> boolean
-
+--# assume global add_callback: function(callback: function(), timer: number?, name: string?)
 
 -- GLOBAL VARIABLES
 --leave at the bottom of this file
