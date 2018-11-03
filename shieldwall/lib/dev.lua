@@ -261,6 +261,9 @@ cm:register_ui_created_callback( function()
         true,
         function(context)
             MODLOG("selected character with CQI ["..tostring(context:character():cqi()).."]", "SEL")
+            for i = 1, #char_selected_log_calls do
+                MODLOG("\t"..char_selected_log_calls[i](context:character()), "SEL")
+            end
         end,
         true
     )
@@ -284,11 +287,12 @@ local function dev_add_settlement_select_log_call(call)
     table.insert(settlement_selected_log_calls, call)
 end
 
+--v function(call: function(CA_CHAR) --> string)
+local function dev_add_character_select_log_call(call)
+    table.insert(char_selected_log_calls, call)
+end
 
 
-cm:register_first_tick_callback( function()
-
-end)
 
 --dev shortcut library
 
@@ -332,6 +336,16 @@ local function dev_faction_list()
     return cm:model():world():faction_list()
 end
 
+--v [NO_CHECK] function(t: table) --> table
+local function dev_readonlytable(t)
+    return setmetatable({}, {
+        __index = table,
+        __newindex = function(table, key, value)
+                        error("Attempt to modify read-only table")
+                    end,
+        __metatable = false
+    });
+end
 
 return {
     get_faction = dev_get_faction,
@@ -339,5 +353,7 @@ return {
     get_character = dev_get_character,
     region_list = dev_region_list,
     faction_list = dev_faction_list,
-    add_settlement_selected_log = dev_add_settlement_select_log_call
+    add_settlement_selected_log = dev_add_settlement_select_log_call,
+    add_character_selected_log = dev_add_character_select_log_call,
+    as_read_only = dev_readonlytable
 }
