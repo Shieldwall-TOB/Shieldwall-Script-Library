@@ -365,6 +365,8 @@ end
 return {
     log = MODLOG,
     eh = get_eh(),
+    out_children = print_all_uicomponent_children,
+    get_uic = find_uicomponent,
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,
