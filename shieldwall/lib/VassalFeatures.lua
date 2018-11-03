@@ -162,10 +162,10 @@ function faction_kingdom_manager.mod_food_storage(self, faction, quantity)
         new_val = 0
     end
     cm:remove_effect_bundle(CONST.food_storage_bundle..(tostring(old_val)), faction)
-    if not old_val == 0 then
+    if not (old_val == 0) then
         self._factionFoodStorageQuantity[faction] = new_val
     end
-    if not new_val == 0 then
+    if not (new_val == 0) then
         cm:apply_effect_bundle(CONST.food_storage_bundle..(tostring(new_val)), faction, 0)
     end
 end
