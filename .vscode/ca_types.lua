@@ -2,6 +2,8 @@
 --# assume global class _G
 --# assume global class CM
 --# assume global class CA_EFFECT
+--# assume global class CA_SCRIPT
+--# assume global class CA_GAME
 --# assume global class CA_EVENT_HANDLER
 --# assume global class CA_WORLD
 --# assume global class CA_MODEL
@@ -109,7 +111,7 @@
 --CM
 --interfaces
 --# assume CM.model: method() --> CA_MODEL
-
+--# assume CM.scripting: CA_SCRIPT
 --scripting
 --# assume CM.add_listener: method(
     --# Name: string,
@@ -184,6 +186,9 @@
 --# assume CA_MODEL.has_character_command_queue_index: method(CA_CQI) --> boolean
 --# assume CA_MODEL.military_force_for_command_queue_index: method(CA_CQI) --> CA_FORCE
 --# assume CA_MODEL.faction_for_command_queue_index: method(CA_CQI) --> CA_FACTION
+
+--CA SCRIPT
+--# assume CA_SCRIPT.game_interface: CA_GAME
 
 --WORLD
 --# assume CA_WORLD.faction_list: method() --> CA_FACTION_LIST
@@ -367,7 +372,6 @@
 --# assume CA_UNIT_LIST.num_items: method() --> number
 --# assume CA_UNIT_LIST.item_at: method(i: number) --> CA_UNIT
 --# assume CA_UNIT_LIST.has_unit: method(string) --> boolean
-
 
 
 --CA CONTEXT

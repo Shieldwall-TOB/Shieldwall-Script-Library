@@ -1,7 +1,7 @@
 
 __write_output_to_logfile = true
 __should_output_ui = false
-
+__log_game_objects = true
 
 
 
@@ -176,7 +176,7 @@ function MOD_ERROR_LOGS()
         local metatable = getmetatable(object);
         for name,f in pairs(getmetatable(object)) do
             if is_function(f) then
-                MODLOG("Found " .. name);
+                MODLOG("\tFound " .. name);
                 if name == "Id" or name == "Parent" or name == "Find" or name == "Position" or name == "CurrentState"  or name == "Visible"  or name == "Priority" or "Bounds" then
                     --Skip
                 else
@@ -185,12 +185,12 @@ function MOD_ERROR_LOGS()
             end
             if name == "__index" and not is_function(f) then
                 for indexname,indexf in pairs(f) do
-                    MODLOG("Found in index " .. indexname);
+                    MODLOG("\t\tFound in index " .. indexname);
                     if is_function(indexf) then
                         f[indexname] = logFunctionCall(indexf, indexname);
                     end
                 end
-                MODLOG("Index end");
+                MODLOG("\tIndex end");
             end
         end
     end
@@ -246,8 +246,32 @@ function MOD_ERROR_LOGS()
     end
     eh.add_listener = myAddListener;
 end
-MOD_ERROR_LOGS()
+MOD_ERROR_LOGS() 
+--# assume logAllObjectCalls: function(object: any)
+--# assume safeCall: function(func: function)
 
+
+--object logging
+cm:register_first_tick_callback(function()
+    if not __log_game_objects then
+        return
+    end
+    --v function(text: any)
+    local function log(text)
+        MODLOG(tostring(text), "OBJ")
+    end
+    log("GAME INTERFACE")
+    logAllObjectCalls(cm.scripting.game_interface)
+    log("FACTION INTERFACE")
+    local faction = cm:model():world():faction_by_key(cm:get_local_faction(true))
+    logAllObjectCalls(faction)
+    log("REGION INTERFACE")
+    logAllObjectCalls(faction:home_region())
+end)
+
+
+
+--SELECTION TRACKING
 
 local settlement_selected_log_calls = {} --:vector<(function(CA_REGION) --> string)>
 local char_selected_log_calls = {} --:vector<(function(CA_CHAR) --> string)>
