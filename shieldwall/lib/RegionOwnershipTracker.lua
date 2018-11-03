@@ -33,7 +33,7 @@ end
 
 --v function(self: ROT, region: string)
 function region_owner_tracker.transfer_or_add_region(self, region)
-    local region_obj = cm:model():world():region_manager():region_by_key(region)
+    region_obj = dev.get_region(region)
     if self._currentRegionOwners[region] == nil then
         --we don't have the region!
         self:log("Starting to track the region ["..region.."] ")
@@ -48,6 +48,7 @@ function region_owner_tracker.transfer_or_add_region(self, region)
         self:log("Region ["..region.."] is being transfered from ["..old_owner.."] to ["..new_owner:name().."]")
         self._pastRegionOwners[region][old_owner] = cm:model():turn_number()
         self._currentRegionOwners[region] = new_owner:name()
+        dev.eh:trigger_event("FactionLostRegion", dev.get_faction(old_owner), region_obj)
     end
 end
 
