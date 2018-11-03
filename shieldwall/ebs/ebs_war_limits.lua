@@ -4,7 +4,7 @@ cm:add_listener(
     "WarLimiter",
     "FactionTurnStart",
     function(context)
-        return not context:faction():is_human()
+        return (not context:faction():is_human()) and (context:faction():name() ~= "rebels") and (context:faction():has_home_region())
     end,
     function(context)
         local wars = context:faction():factions_at_war_with()
@@ -15,6 +15,7 @@ cm:add_listener(
             end
         end
         if counter > 1 then
+            dev.log("Limiting wars on faction ["..context:faction():name().."]", "WAR")
             local faction_list = dev.faction_list()
             for i = 0, faction_list:num_items() - 1 do
                 local faction = faction_list:item_at(i):name() 
@@ -25,6 +26,7 @@ cm:add_listener(
             end
         else
             if cm:get_saved_value("war_restricted_"..context:faction():name()) == true then
+                dev.log("removing limits for wars on faction ["..context:faction():name().."]", "WAR")
                 local faction_list = dev.faction_list()
                 for i = 0, faction_list:num_items() - 1 do
                     local faction = faction_list:item_at(i):name() 
