@@ -16,3 +16,15 @@ cm:register_first_tick_callback(function()
         rot:transfer_or_add_region(region_list:item_at(i):name())
     end
 end)
+
+cm:register_saving_game_callback(function(context)
+    local svtable = rot:save()
+    cm:save_value("rot_save", svtable, context)
+    rot:log("ROT Saved Successfully")
+end)
+
+cm:register_loading_game_callback(function(context)
+    local svtable = cm:load_value("rot_save", {}, context)
+    rot:load(svtable)
+    rot:log("ROT Loaded Successfully")
+end)

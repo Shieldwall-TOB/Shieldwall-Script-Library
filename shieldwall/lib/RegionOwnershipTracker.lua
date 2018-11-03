@@ -87,4 +87,23 @@ function region_owner_tracker.clear_player_new_regions(self, player)
     self._playerNewRegions[player] = {}
 end
 
+--v function(self: ROT) --> ROT_SAVE
+function region_owner_tracker.save(self)
+    local svtable = {}
+    svtable._owners = self._currentRegionOwners
+    svtable._pastOwners = self._pastRegionOwners
+    svtable._playerNewRegions = self._playerNewRegions
+    return svtable
+end
+
+--v function(self: ROT, svtable: ROT_SAVE)
+function region_owner_tracker.load(self, svtable)
+    self._currentRegionOwners = svtable._owners or {}
+    self._pastRegionOwners = svtable._pastOwners  or {}
+    self._playerNewRegions = svtable._playerNewRegions or {}
+end
+
+
+
+
 region_owner_tracker.init()
