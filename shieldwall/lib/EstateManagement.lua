@@ -82,6 +82,7 @@ function estate_object.update_bundle(self, new_bundle)
     end
     if new_bundle then
         --# assume new_bundle: string
+        self._lastBundle = new_bundle
         self._model:log("Applying bundle ["..new_bundle.."] for estate ["..self._region.."]   ")
         cm:apply_effect_bundle_to_region(new_bundle, self._region, 0)
     end
@@ -97,17 +98,18 @@ function estate_object.save(self)
     savetable._type = self._type
     savetable._cqi = tostring(self._owner)
     savetable._turnGranted = tostring(self._turnGranted)
+    savetable._lastBundle = self._lastBundle
 
     return savetable
 end
 
---v function(savetable: ESTATE_SAVE) --> ESTATE
-function estate_object.load(savetable)
+--v function(model: ET, savetable: ESTATE_SAVE) --> ESTATE
+function estate_object.load(model, savetable)
     local self = {}
     setmetatable(self, {
         __index = estate_object
     })  --# assume self: ESTATE
-
+    self._model = model
     self._faction = savetable._faction
     self._region = savetable._region
     self._isRoyal = savetable._isRoyal
@@ -116,7 +118,7 @@ function estate_object.load(savetable)
     --# assume loaded_owner: CA_CQI
     self._owner = loaded_owner
     self._turnGranted = tonumber(savetable._turnGranted)
-
+    self._lastBundle = savetable._lastBundle
     return self
 end
 
@@ -191,7 +193,7 @@ end
 --v function(self: ET, estate_table: ESTATE_SAVE)
 function estate_tracker.load_estate(self, estate_table)
     self:log("Loading an estate for region ["..estate_table._region.."] ")
-    self._estateData[estate_table._region] = estate_object.load(estate_table)
+    self._estateData[estate_table._region] = estate_object.load(self, estate_table)
 end
 
 --v function(self: ET, estate_region: string, is_royal: boolean)
