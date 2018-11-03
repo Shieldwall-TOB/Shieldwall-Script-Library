@@ -106,7 +106,7 @@
     --# Callback: function(context: WHATEVER),
     --# Persist: boolean)
 --# assume CA_EVENT_HANDLER.remove_listener: method(handler: string)
-
+--# assume CA_EVENT_HANDLER.trigger_event: method(name: string, any...)
 
 --CM
 --interfaces
@@ -372,7 +372,7 @@
 --# assume CA_UNIT_LIST.num_items: method() --> number
 --# assume CA_UNIT_LIST.item_at: method(i: number) --> CA_UNIT
 --# assume CA_UNIT_LIST.has_unit: method(string) --> boolean
-
+--# assume CA_UNIT_LIST.is_empty: method() --> boolean
 
 --CA CONTEXT
 --# assume CA_CONTEXT.garrison_residence: method() --> CA_GARRISON_RESIDENCE
@@ -386,6 +386,7 @@
 --# assume CA_CONTEXT.choice: method() --> number
 --# assume CA_CONTEXT.estate: method() --> CA_ESTATE
 --# assume CA_CONTEXT.region: method() --> CA_REGION
+--# assume CA_CONTEXT.building: method() --> CA_BUILDING
 
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
