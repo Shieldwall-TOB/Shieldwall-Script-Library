@@ -15,7 +15,11 @@
 --# assume global class RWM
 
 --# assume global class ROT
-
+--# type global ROT_SAVE = {
+--# _owners: map<string, string>,
+--# _pastOwners: map<string, map<string, number>>,
+--# _playerNewRegions: map<string, vector<string>>
+--# }
 --this could probably become a millitary force object
 --# assume global class UEM
 
