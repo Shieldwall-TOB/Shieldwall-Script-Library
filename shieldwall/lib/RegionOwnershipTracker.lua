@@ -42,6 +42,10 @@ function region_owner_tracker.transfer_or_add_region(self, region)
     else
         local old_owner = self._currentRegionOwners[region]
         local new_owner = region_obj:owning_faction()
+        if old_owner == new_owner:name() then
+            --this happens when loading an old save.
+            return
+        end
         if new_owner:is_human() then
             self:player_captures_region(region, new_owner:name())
         end
