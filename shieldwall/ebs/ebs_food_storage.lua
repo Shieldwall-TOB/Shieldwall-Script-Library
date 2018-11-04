@@ -1,5 +1,5 @@
 local fkm = _G.fkm
-local rot = _G.rot --not directly used here but the event 
+local rot = _G.rot --not directly used here but the event from the model is necessary
 
 cm:add_listener(
     "FoodStorageFactionTurnStart",
@@ -97,13 +97,16 @@ cm:add_listener(
                 end
                 BuildingTitle:SetStateText("[[col:"..col.."]]"..before_stores.."[[/col]] Net Food This Turn")
                 --oldText = DescriptionWindow:GetStateText()
-                if faction:total_food() >= 0 then
-                    if before_stores >= 0 then
-                        local increase_val = math.ceil(((before_stores*CONST.food_storage_percentage)/20)-0.5)*20
-                        DescriptionWindow:SetStateText("You have "..stores.."/"..fkm:get_food_storage_cap_for_faction(faction:name()).." Food Stores. Your stores will increase by [[col:green]]"..increase_val.."[[/col]] next turn.")
-                    else
-                        DescriptionWindow:SetStateText("You have "..stores.."/"..fkm:get_food_storage_cap_for_faction(faction:name()).." Food Stores. Your Stores will decrease by [[col:red]]"..before_stores.."[[/col]] next turn.")
-                    end
+
+                if before_stores >= 0 then
+                    local raw_change = (before_stores*CONST.food_storage_percentage)
+                    local cap = fkm:get_food_storage_cap_for_faction(faction:name())
+                    local increase_val = fkm:calculate_potential_food_change(stores, cap, raw_change)
+                    DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your stores will increase by [[col:green]]"..increase_val.."[[/col]] next turn.")
+                else
+                    local cap = fkm:get_food_storage_cap_for_faction(faction:name())
+                    local decrease_val = fkm:calculate_potential_food_change(stores, cap, before_stores)
+                    DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your Stores will decrease by [[col:red]]"..decrease_val.."[[/col]] next turn.")
                 end
             end
         end, 0.1)

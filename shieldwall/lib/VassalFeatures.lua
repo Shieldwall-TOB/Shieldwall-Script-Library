@@ -148,7 +148,7 @@ function faction_kingdom_manager.mod_food_storage(self, faction, quantity)
     local new_val = old_val + quantity
     --clamp the value to the nearest 5
     if not (new_val%5 == 0) then
-        new_val = (math.ceil((new_val/20)-0.5))*20
+        new_val = (math.ceil((new_val/5)-0.5))*5
         self:log("clamped new food storage value to ["..new_val.."] ")
     else
         self:log("new food storage is ["..new_val.."] ")
@@ -167,6 +167,25 @@ function faction_kingdom_manager.mod_food_storage(self, faction, quantity)
     if not (new_val == 0) then
         cm:apply_effect_bundle(CONST.food_storage_bundle..(tostring(new_val)), faction, 0)
     end
+end
+
+--v function(self: FKM, old_stores: number, cap: number, quantity: number) --> number
+function faction_kingdom_manager.calculate_potential_food_change(self, old_stores, cap, quantity)
+    local old_val = old_stores
+    local new_val = old_val + quantity
+    --clamp the value to the nearest 5
+    if not (new_val%5 == 0) then
+        new_val = (math.ceil((new_val/5)-0.5))*5
+    else 
+
+    end
+    --clamp the value to the current cap
+    if new_val > cap then
+        new_val = cap
+    elseif new_val < 0 then
+        new_val = 0
+    end
+    return (new_val - old_val)
 end
 
 --v function(self: FKM, region: string, faction: string)
@@ -210,7 +229,7 @@ function faction_kingdom_manager.calc_food_storage_cap(self, region)
     end
     --clamp change to multiples of five, rounding down
     if not (new_region_contrib%5 == 0) then
-        new_region_contrib = (math.ceil((new_region_contrib/20)-0.5))*20
+        new_region_contrib = (math.ceil((new_region_contrib/5)-0.5))*5
         self:log("clamped new food storage capacity to ["..new_region_contrib.."] ")
     else
         self:log("new food storage capacity is is ["..new_region_contrib.."] ")
