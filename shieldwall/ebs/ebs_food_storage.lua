@@ -5,14 +5,14 @@ cm:add_listener(
     "FoodStorageFactionTurnStart",
     "FactionTurnStart",
     function(context)
-        return context:faction():has_home_region()
+        return context:faction():has_home_region() and (not (cm:model():turn_number() == 1))
     end,
     function(context)
         local faction = context:faction() --:CA_FACTION
         local food_value = faction:total_food()
         local food_after_storage = food_value - fkm:get_food_in_storage_for_faction(faction:name())
         if food_after_storage > 0 then
-            food_after_storage = math.ceil(food_after_storage/2)
+            food_after_storage = math.ceil(food_after_storage*CONST.food_storage_percentage)
         end
         fkm:mod_food_storage(faction:name(), food_after_storage)
     end,
@@ -77,12 +77,36 @@ cm:add_listener(
     "FoodStorageDisplay",
     "ComponentMouseOn",
     function(context)
-        return context.string == "food"
+        local HoverComponent = UIComponent(context.component)
+        return uicomponent_descended_from(HoverComponent, "food") or context.string == "food"
     end,
     function(context)
-        local FoodComponent = UIComponent(context.component)
-        dev.log(FoodComponent:GetTooltipText(), "DFTEST")
-        local ToolTipComponent = find_uicomponent(cm:ui_root(), "Tooltip")
+        
+        dev.callback(function()
+            local TooltipComponent = dev.get_uic(cm:ui_root(), "FoodBreakdownTooltip")
+            if not not TooltipComponent then
+                local DescriptionWindow = dev.get_uic(TooltipComponent, "description_window")
+                local BuildingTitle = dev.get_uic(TooltipComponent, "title_frame", "dy_building_title")
+                local faction = dev.get_faction(cm:get_local_faction(true))
+                local stores = fkm:get_food_in_storage_for_faction(faction:name())
+                local before_stores = faction:total_food() - stores
+                --storesDetail = "Your stores will increase by "..tostring(CONST.food_storage_percentage*100).." percent of your surplus food each turn"
+                local col = "green"
+                if before_stores < 0 then
+                    col = "red"
+                end
+                BuildingTitle:SetStateText("[[col:"..col.."]]"..before_stores.."[[/col]] Net Food This Turn")
+                --oldText = DescriptionWindow:GetStateText()
+                if faction:total_food() >= 0 then
+                    if before_stores >= 0 then
+                        local increase_val = math.ceil(((before_stores*CONST.food_storage_percentage)/20)-0.5)*20
+                        DescriptionWindow:SetStateText("You have "..stores.."/"..fkm:get_food_storage_cap_for_faction(faction:name()).." Food Stores. Your stores will increase by [[col:green]]"..increase_val.."[[/col]] next turn.")
+                    else
+                        DescriptionWindow:SetStateText("You have "..stores.."/"..fkm:get_food_storage_cap_for_faction(faction:name()).." Food Stores. Your Stores will decrease by [[col:red]]"..before_stores.."[[/col]] next turn.")
+                    end
+                end
+            end
+        end, 0.1)
     end,
     true
 )

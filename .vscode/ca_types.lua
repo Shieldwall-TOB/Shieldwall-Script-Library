@@ -84,8 +84,6 @@
 --# assume CA_UIC.SimulateMouseOn: method()
 --# assume CA_UIC.Visible: method() --> boolean
 --# assume CA_UIC.SetImage: method(path: string)
---# assume CA_UIC.SetCanResizeHeight: method(state: boolean)
---# assume CA_UIC.SetCanResizeWidth: method(state: boolean)
 --# assume CA_UIC.SetTooltipText: method(tooltip: string, state: boolean?)
 --# assume CA_UIC.GetStateText: method() --> string
 --# assume CA_UIC.PropagatePriority: method(priority: number)
@@ -406,7 +404,7 @@
 --# assume global uicomponent_to_str: function(uic: CA_UIC) --> string
 --# assume global print_all_uicomponent_children: function(component: CA_UIC)
 --# assume global output_uicomponent: function(uic: CA_UIC, omit_children: boolean)
-
+--# assume global uicomponent_descended_from: function(uic: CA_UIC, parent_name: string) --> boolean
 --# assume global output: function(text: string)
 --# assume global script_error: function(text: string)
 

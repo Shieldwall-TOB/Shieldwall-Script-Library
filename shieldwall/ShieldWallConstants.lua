@@ -9,7 +9,8 @@ return {
     resource_estate_type = "vik_estates_religious",
     food_storage_cap_absolute = 2000,
     food_storage_cap_base = 150,
-    food_storage_bundle = "shield_food_storage_bundle_"
+    food_storage_bundle = "shield_food_storage_bundle_",
+    food_storage_percentage = 0.5
 }
 
 
