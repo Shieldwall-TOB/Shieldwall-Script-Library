@@ -11,3 +11,13 @@ cm:add_listener(
     end,
     true
 )
+
+cm:register_saving_game_callback(function(context)
+    local svtable = uem:save()
+    cm:save_value("uem_savedata", svtable, context)
+end)
+
+cm:register_loading_game_callback(function(context) 
+    local svtable = cm:load_value("uem_savedata", {}, context)
+    uem:load(svtable)
+end)

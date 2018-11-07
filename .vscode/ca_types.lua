@@ -359,6 +359,7 @@
 -- CA FORCE
 
 --# assume CA_FORCE.general_character: method() --> CA_CHAR
+--# assume CA_FORCE.has_general: method() --> boolean
 --# assume CA_FORCE.unit_list: method() --> CA_UNIT_LIST
 --# assume CA_FORCE.active_stance: method() --> string
 --# assume CA_FORCE.command_queue_index: method() --> CA_CQI
