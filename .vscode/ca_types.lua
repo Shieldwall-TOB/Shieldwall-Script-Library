@@ -169,7 +169,9 @@
 --battles
 --# assume CM.win_next_autoresolve_battle: method(faction: string)
 --# assume CM.modify_next_autoresolve_battle: method(attacker_win_chance: number, defender_win_chance: number, attacker_losses_modifier: number, defender_losses_modifier: number, wipe_out_loser: boolean)
-
+--shroud
+--# assume CM.make_sea_region_seen_in_shroud: method(region: string) 
+--# assume CM.make_region_seen_in_shroud: method(faction_key: string, region_key: string)
 
 --MODEL
 --# assume CA_MODEL.world: method() --> CA_WORLD
