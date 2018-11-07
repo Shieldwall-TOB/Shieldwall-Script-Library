@@ -11,7 +11,10 @@ return {
     food_storage_cap_absolute = 2000,
     food_storage_cap_base = 175,
     food_storage_bundle = "shield_food_storage_bundle_",
-    food_storage_percentage = 0.5
+    food_storage_percentage = 0.5,
+    region_wealth_bundle = "shield_wealth_bundle_",
+    region_wealth_cap = 3,
+    region_wealth_floor = 0
 }
 
 

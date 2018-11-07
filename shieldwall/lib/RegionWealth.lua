@@ -1,6 +1,3 @@
-WEALTH_BUNDLE_PREFIX = "shield_wealth_bundle_"
-WEALTH_BUNDLE_MIN = 0
-WEALTH_BUNDLE_MAX = 3
 
 
 local region_wealth_manager = {} --# assume region_wealth_manager: RWM
@@ -14,8 +11,6 @@ local self = {}
     })
     --# assume self: RWM
 
-    self._maxPoints = WEALTH_BUNDLE_MAX
-    self._minPoints = WEALTH_BUNDLE_MIN
     self._currentLevels = {} --:map<string, number>
     self._levelTimers = {} --:map<string, number>
 
@@ -39,10 +34,10 @@ end
 --v function(self: RWM, region: string) 
 function region_wealth_manager.update_bundle(self, region)
     self:log("Updating bundles for region: ["..region.."] ")
-    for i = self._minPoints, self._maxPoints do
-        cm:remove_effect_bundle_from_region(WEALTH_BUNDLE_PREFIX..i, region)
+    for i = CONST.region_wealth_floor, CONST.region_wealth_cap do
+        cm:remove_effect_bundle_from_region(CONST.region_wealth_bundle..i, region)
     end
-    cm:apply_effect_bundle_to_region(WEALTH_BUNDLE_PREFIX..self:get_region_wealth(region), region, 0)
+    cm:apply_effect_bundle_to_region(CONST.region_wealth_bundle..self:get_region_wealth(region), region, 0)
 end
 
 --v function(self: RWM, region: string, value: number)
