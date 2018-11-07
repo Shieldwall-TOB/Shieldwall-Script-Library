@@ -1,15 +1,6 @@
-
-__write_output_to_logfile = true
-__should_output_ui = false
-
-
-
-
-
-
 --v function(text: string, context: string?)
-function MODLOG(text, context)
-    if not __write_output_to_logfile then
+local function MODLOG(text, context)
+    if not CONST.__write_output_to_logfile then
         return; 
     end
     local pre = context --:string
@@ -24,6 +15,38 @@ function MODLOG(text, context)
     popLog :flush()
     popLog :close()
 end
+
+local exports = {} --:map<string, boolean>
+--v function(name: string, ...: string)
+local function RAWPRINT(name, ...)
+    if exports[name] == nil then
+        return
+    end
+    logText = "" --:string
+    for i = 1, #arg do
+        logText = logText.."\t"..arg[i]
+    end
+    local popLog = io.open("sheildwall_output"..name..".tsv","a")
+    --# assume logTimeStamp: string
+    popLog :write(logText.."\n")
+    popLog :flush()
+    popLog :close()
+end
+
+--v function(name: string, ...: string)
+local function new_export(name, ...)
+    logText = "" 
+    for i = 1, #arg do
+        logText = logText.."\t"..arg[i]
+    end
+    local popLog = io.open("sheildwall_output"..name..".tsv","w+")
+    popLog :write(logText.."\n")
+    popLog :flush()
+    popLog :close()
+end
+
+
+
 
 
 local popLog = io.open("sheildwall_logs.txt", "w+")
@@ -79,8 +102,8 @@ end;
 
 
 -- for debug purposes
-function log_uicomponent_on_click()
-    if not __should_output_ui then
+local function log_uicomponent_on_click()
+    if not CONST.__should_output_ui then
         return
     end
     local eh = get_eh();
@@ -100,6 +123,33 @@ function log_uicomponent_on_click()
         true
     );
 end;
+
+--v [NO_CHECK] function(uic: CA_UIC) --> string
+local function dev_uicomponent_to_str(uic)
+	if not is_uicomponent(uic) then
+		return "";
+	end;
+	
+	if uic:Id() == "root" then
+		return "root";
+	else
+		return dev_uicomponent_to_str(UIComponent(uic:Parent())) .. " > " .. uic:Id();
+	end;	
+end;
+
+--v [NO_CHECK] function(uic: CA_UIC)
+local function dev_print_all_uicomponent_children(uic)
+	MODLOG(dev_uicomponent_to_str(uic), "UIC");
+	for i = 0, uic:ChildCount() - 1 do
+		local uic_child = UIComponent(uic:Find(i));
+		dev_print_all_uicomponent_children(uic_child);
+	end;
+end;
+
+
+
+
+
 
 --v [NO_CHECK] function()
 function MOD_ERROR_LOGS()
@@ -176,7 +226,7 @@ function MOD_ERROR_LOGS()
         local metatable = getmetatable(object);
         for name,f in pairs(getmetatable(object)) do
             if is_function(f) then
-                MODLOG("Found " .. name);
+                MODLOG("\tFound " .. name);
                 if name == "Id" or name == "Parent" or name == "Find" or name == "Position" or name == "CurrentState"  or name == "Visible"  or name == "Priority" or "Bounds" then
                     --Skip
                 else
@@ -185,12 +235,12 @@ function MOD_ERROR_LOGS()
             end
             if name == "__index" and not is_function(f) then
                 for indexname,indexf in pairs(f) do
-                    MODLOG("Found in index " .. indexname);
+                    MODLOG("\t\tFound in index " .. indexname);
                     if is_function(indexf) then
                         f[indexname] = logFunctionCall(indexf, indexname);
                     end
                 end
-                MODLOG("Index end");
+                MODLOG("\tIndex end");
             end
         end
     end
@@ -246,8 +296,32 @@ function MOD_ERROR_LOGS()
     end
     eh.add_listener = myAddListener;
 end
-MOD_ERROR_LOGS()
+MOD_ERROR_LOGS() 
+--# assume logAllObjectCalls: function(object: any)
+--# assume safeCall: function(func: function)
 
+
+--object logging
+cm:register_first_tick_callback(function()
+    if not CONST.__log_game_objects then
+        return
+    end
+    --v function(text: any)
+    local function log(text)
+        MODLOG(tostring(text), "OBJ")
+    end
+    log("GAME INTERFACE")
+    logAllObjectCalls(cm.scripting.game_interface)
+    log("FACTION INTERFACE")
+    local faction = cm:model():world():faction_by_key(cm:get_local_faction(true))
+    logAllObjectCalls(faction)
+    log("REGION INTERFACE")
+    logAllObjectCalls(faction:home_region())
+end)
+
+
+
+--SELECTION TRACKING
 
 local settlement_selected_log_calls = {} --:vector<(function(CA_REGION) --> string)>
 local char_selected_log_calls = {} --:vector<(function(CA_CHAR) --> string)>
@@ -261,6 +335,9 @@ cm:register_ui_created_callback( function()
         true,
         function(context)
             MODLOG("selected character with CQI ["..tostring(context:character():cqi()).."]", "SEL")
+            for i = 1, #char_selected_log_calls do
+                MODLOG("\t"..char_selected_log_calls[i](context:character()), "SEL")
+            end
         end,
         true
     )
@@ -284,11 +361,12 @@ local function dev_add_settlement_select_log_call(call)
     table.insert(settlement_selected_log_calls, call)
 end
 
+--v function(call: function(CA_CHAR) --> string)
+local function dev_add_character_select_log_call(call)
+    table.insert(char_selected_log_calls, call)
+end
 
 
-cm:register_first_tick_callback( function()
-
-end)
 
 --dev shortcut library
 
@@ -332,12 +410,31 @@ local function dev_faction_list()
     return cm:model():world():faction_list()
 end
 
+--v [NO_CHECK] function(t: table) --> table
+local function dev_readonlytable(t)
+    return setmetatable({}, {
+        __index = table,
+        __newindex = function(table, key, value)
+                        error("Attempt to modify read-only table")
+                    end,
+        __metatable = false
+    });
+end
 
 return {
+    log = MODLOG,
+    export = RAWPRINT,
+    new_export = new_export,
+    callback = add_callback,
+    eh = get_eh(),
+    out_children = dev_print_all_uicomponent_children,
+    get_uic = find_uicomponent,
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,
     region_list = dev_region_list,
     faction_list = dev_faction_list,
-    add_settlement_selected_log = dev_add_settlement_select_log_call
+    add_settlement_selected_log = dev_add_settlement_select_log_call,
+    add_character_selected_log = dev_add_character_select_log_call,
+    as_read_only = dev_readonlytable
 }

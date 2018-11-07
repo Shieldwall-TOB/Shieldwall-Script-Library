@@ -2,6 +2,8 @@
 --# assume global class _G
 --# assume global class CM
 --# assume global class CA_EFFECT
+--# assume global class CA_SCRIPT
+--# assume global class CA_GAME
 --# assume global class CA_EVENT_HANDLER
 --# assume global class CA_WORLD
 --# assume global class CA_MODEL
@@ -82,8 +84,6 @@
 --# assume CA_UIC.SimulateMouseOn: method()
 --# assume CA_UIC.Visible: method() --> boolean
 --# assume CA_UIC.SetImage: method(path: string)
---# assume CA_UIC.SetCanResizeHeight: method(state: boolean)
---# assume CA_UIC.SetCanResizeWidth: method(state: boolean)
 --# assume CA_UIC.SetTooltipText: method(tooltip: string, state: boolean?)
 --# assume CA_UIC.GetStateText: method() --> string
 --# assume CA_UIC.PropagatePriority: method(priority: number)
@@ -104,12 +104,12 @@
     --# Callback: function(context: WHATEVER),
     --# Persist: boolean)
 --# assume CA_EVENT_HANDLER.remove_listener: method(handler: string)
-
+--# assume CA_EVENT_HANDLER.trigger_event: method(name: string, any...)
 
 --CM
 --interfaces
 --# assume CM.model: method() --> CA_MODEL
-
+--# assume CM.scripting: CA_SCRIPT
 --scripting
 --# assume CM.add_listener: method(
     --# Name: string,
@@ -140,6 +140,8 @@
 --# assume CM.remove_effect_bundle_from_characters_force: method(bundleKey: string, charCqi: CA_CQI)
 --# assume CM.apply_effect_bundle: method(bundle: string, faction: string, timer: int)
 --# assume CM.remove_effect_bundle: method(bundle: string, faction: string)
+--# assume CM.apply_effect_bundle_to_force: method(bundle: string, mfcqi: CA_CQI, turns: number)
+--# assume CM.remove_effect_bundle_from_force: method(bundle: string, mfcqi: CA_CQI)
 
 --factions
 --# assume CM.get_local_faction: method(force: boolean?) --> string
@@ -151,7 +153,7 @@
 --# assume CM.trigger_dilemma: method(faction_key: string, dilemma_key: string, trigger_immediately: boolean)
 --diplomacy
 --# assume CM.force_make_vassal: method(master: string, vassal: string)
---# assume CM.force_diplomacy:  method(faction: string, other_faction: string, record: string, offer: boolean, accept: boolean, enable_payments: boolean)
+--# assume CM.force_diplomacy:  method(faction: string, other_faction: string, record: string, offer: boolean, accept: boolean)
 --# assume CM.force_declare_war: method(declarer: string, declaree: string)
 --# assume CM.force_make_peace: method(faction: string, other_faction: string)
 --# assume CM.grant_faction_handover: method(absorber: string, absorbed: string, first_turn: number, last_turn: number, context: WHATEVER)
@@ -167,7 +169,9 @@
 --battles
 --# assume CM.win_next_autoresolve_battle: method(faction: string)
 --# assume CM.modify_next_autoresolve_battle: method(attacker_win_chance: number, defender_win_chance: number, attacker_losses_modifier: number, defender_losses_modifier: number, wipe_out_loser: boolean)
-
+--shroud
+--# assume CM.make_sea_region_seen_in_shroud: method(region: string) 
+--# assume CM.make_region_seen_in_shroud: method(faction_key: string, region_key: string)
 
 --MODEL
 --# assume CA_MODEL.world: method() --> CA_WORLD
@@ -182,6 +186,9 @@
 --# assume CA_MODEL.has_character_command_queue_index: method(CA_CQI) --> boolean
 --# assume CA_MODEL.military_force_for_command_queue_index: method(CA_CQI) --> CA_FORCE
 --# assume CA_MODEL.faction_for_command_queue_index: method(CA_CQI) --> CA_FACTION
+
+--CA SCRIPT
+--# assume CA_SCRIPT.game_interface: CA_GAME
 
 --WORLD
 --# assume CA_WORLD.faction_list: method() --> CA_FACTION_LIST
@@ -248,6 +255,7 @@
 --# assume CA_REGION.any_resource_available: method() --> boolean
 --# assume CA_REGION.adjacent_region_list: method() --> CA_REGION_LIST
 --# assume CA_REGION.last_building_constructed_key: method() --> string
+--# assume CA_REGION.slot_type_exists: method(key: string) --> boolean
 
 --CA REGION LIST
 --# assume CA_REGION_LIST.num_items: method() --> number
@@ -353,10 +361,19 @@
 --# assume CA_FORCE.general_character: method() --> CA_CHAR
 --# assume CA_FORCE.unit_list: method() --> CA_UNIT_LIST
 --# assume CA_FORCE.active_stance: method() --> string
-
+--# assume CA_FORCE.command_queue_index: method() --> CA_CQI
 --CA_FORCE_LIST
 --# assume CA_FORCE_LIST.num_items: method() --> number
 --# assume CA_FORCE_LIST.item_at: method(i: number) --> CA_FORCE
+
+--CA UNIT
+--# assume CA_UNIT.unit_key: method() --> string
+
+--CA UNIT LIST
+--# assume CA_UNIT_LIST.num_items: method() --> number
+--# assume CA_UNIT_LIST.item_at: method(i: number) --> CA_UNIT
+--# assume CA_UNIT_LIST.has_unit: method(string) --> boolean
+--# assume CA_UNIT_LIST.is_empty: method() --> boolean
 
 --CA CONTEXT
 --# assume CA_CONTEXT.garrison_residence: method() --> CA_GARRISON_RESIDENCE
@@ -370,6 +387,7 @@
 --# assume CA_CONTEXT.choice: method() --> number
 --# assume CA_CONTEXT.estate: method() --> CA_ESTATE
 --# assume CA_CONTEXT.region: method() --> CA_REGION
+--# assume CA_CONTEXT.building: method() --> CA_BUILDING
 
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
@@ -389,7 +407,7 @@
 --# assume global uicomponent_to_str: function(uic: CA_UIC) --> string
 --# assume global print_all_uicomponent_children: function(component: CA_UIC)
 --# assume global output_uicomponent: function(uic: CA_UIC, omit_children: boolean)
-
+--# assume global uicomponent_descended_from: function(uic: CA_UIC, parent_name: string) --> boolean
 --# assume global output: function(text: string)
 --# assume global script_error: function(text: string)
 
@@ -398,7 +416,7 @@
 --# assume global is_number: function(arg: number) --> boolean
 --# assume global is_function: function(arg: function) --> boolean
 --# assume global is_boolean: function(arg: boolean) --> boolean
-
+--# assume global add_callback: function(callback: function(), timer: number?, name: string?)
 
 -- GLOBAL VARIABLES
 --leave at the bottom of this file

@@ -1,16 +1,27 @@
+
+--should become the defacto faction object
 --# assume global class FKM
 --# assume global class FKM_KINGDOM
 --# assume global class FKM_VASSAL
 --# assume global class FKM_STATE
+
+
+--should probably be rolled together with RWM and ROT to become a single region object
 --# assume global class ET
 --# assume global class ESTATE
 --# type global ESTATE_SAVE = {
---# _faction: string, _region: string, _type: string, _cqi: string, _isRoyal: boolean, _turnGranted: string
+--# _faction: string, _region: string, _type: string, _cqi: string, _isRoyal: boolean, _turnGranted: string, _lastBundle: string
 --#}
 --# assume global class RWM
 
 --# assume global class ROT
-
+--# type global ROT_SAVE = {
+--# _owners: map<string, string>,
+--# _pastOwners: map<string, map<string, number>>,
+--# _playerNewRegions: map<string, vector<string>>
+--# }
+--this could probably become a millitary force object
+--# assume global class UEM
 
 
 

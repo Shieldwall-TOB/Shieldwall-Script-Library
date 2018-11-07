@@ -20,7 +20,7 @@ end
 
 --v method(text: any)
 function region_owner_tracker:log(text)
-    MODLOG(tostring(text), "ROT")
+    dev.log(tostring(text), "ROT")
 end
 
 --v function(self: ROT, region: string, player: string)
@@ -33,7 +33,7 @@ end
 
 --v function(self: ROT, region: string)
 function region_owner_tracker.transfer_or_add_region(self, region)
-    local region_obj = cm:model():world():region_manager():region_by_key(region)
+    region_obj = dev.get_region(region)
     if self._currentRegionOwners[region] == nil then
         --we don't have the region!
         self:log("Starting to track the region ["..region.."] ")
@@ -42,12 +42,17 @@ function region_owner_tracker.transfer_or_add_region(self, region)
     else
         local old_owner = self._currentRegionOwners[region]
         local new_owner = region_obj:owning_faction()
+        if old_owner == new_owner:name() then
+            --this happens when loading an old save.
+            return
+        end
         if new_owner:is_human() then
             self:player_captures_region(region, new_owner:name())
         end
         self:log("Region ["..region.."] is being transfered from ["..old_owner.."] to ["..new_owner:name().."]")
         self._pastRegionOwners[region][old_owner] = cm:model():turn_number()
         self._currentRegionOwners[region] = new_owner:name()
+        dev.eh:trigger_event("FactionLostRegion", dev.get_faction(old_owner), region_obj)
     end
 end
 
@@ -85,5 +90,24 @@ end
 function region_owner_tracker.clear_player_new_regions(self, player)
     self._playerNewRegions[player] = {}
 end
+
+--v function(self: ROT) --> ROT_SAVE
+function region_owner_tracker.save(self)
+    local svtable = {}
+    svtable._owners = self._currentRegionOwners
+    svtable._pastOwners = self._pastRegionOwners
+    svtable._playerNewRegions = self._playerNewRegions
+    return svtable
+end
+
+--v function(self: ROT, svtable: ROT_SAVE)
+function region_owner_tracker.load(self, svtable)
+    self._currentRegionOwners = svtable._owners or {}
+    self._pastRegionOwners = svtable._pastOwners  or {}
+    self._playerNewRegions = svtable._playerNewRegions or {}
+end
+
+
+
 
 region_owner_tracker.init()

@@ -14,7 +14,11 @@ local kingdoms = {
 "vik_fact_west_seaxe",
 "vik_fact_east_engle",
 "vik_fact_northymbre",
-"vik_fact_aileach"
+"vik_fact_aileach",
+"vik_fact_dene",
+"vik_fact_northleode", 
+"vik_fact_orkneyar",
+"vik_fact_ulaid"
 }--:vector<string>
 
 

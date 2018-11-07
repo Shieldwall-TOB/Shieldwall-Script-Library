@@ -4,10 +4,10 @@
 
 --v function(text: any)
 function NAPLOG(text)
-    if not MODLOG then
+    if not dev then
         return --designed for safe use outside of SW library
     end
-    MODLOG(tostring(text), "NAP")
+    dev.log(tostring(text), "NAP")
 end
 
 
