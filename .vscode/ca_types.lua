@@ -253,6 +253,7 @@
 --# assume CA_REGION.any_resource_available: method() --> boolean
 --# assume CA_REGION.adjacent_region_list: method() --> CA_REGION_LIST
 --# assume CA_REGION.last_building_constructed_key: method() --> string
+--# assume CA_REGION.slot_type_exists: method(key: string) --> boolean
 
 --CA REGION LIST
 --# assume CA_REGION_LIST.num_items: method() --> number

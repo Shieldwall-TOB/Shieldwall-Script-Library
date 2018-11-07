@@ -16,6 +16,38 @@ local function MODLOG(text, context)
     popLog :close()
 end
 
+local exports = {} --:map<string, boolean>
+--v function(name: string, ...: string)
+local function RAWPRINT(name, ...)
+    if exports[name] == nil then
+        return
+    end
+    logText = "" --:string
+    for i = 1, #arg do
+        logText = logText.."\t"..arg[i]
+    end
+    local popLog = io.open("sheildwall_output"..name..".tsv","a")
+    --# assume logTimeStamp: string
+    popLog :write(logText.."\n")
+    popLog :flush()
+    popLog :close()
+end
+
+--v function(name: string, ...: string)
+local function new_export(name, ...)
+    logText = "" 
+    for i = 1, #arg do
+        logText = logText.."\t"..arg[i]
+    end
+    local popLog = io.open("sheildwall_output"..name..".tsv","w+")
+    popLog :write(logText.."\n")
+    popLog :flush()
+    popLog :close()
+end
+
+
+
+
 
 local popLog = io.open("sheildwall_logs.txt", "w+")
 local logTimeStamp = os.date("%d, %m %Y %X")
@@ -391,6 +423,8 @@ end
 
 return {
     log = MODLOG,
+    export = RAWPRINT,
+    new_export = new_export,
     callback = add_callback,
     eh = get_eh(),
     out_children = dev_print_all_uicomponent_children,
