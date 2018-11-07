@@ -28,8 +28,8 @@ end
 
 
 
-local fkm_vassal = require("shieldwall/lib/vassal_features/Vassal")
-local fkm_kingdom = require("shieldwall/lib/vassal_features/Kingdom")
+local fkm_vassal = require("shieldwall/lib/faction_features/Vassal")
+local fkm_kingdom = require("shieldwall/lib/faction_features/Kingdom")
 
 
 
