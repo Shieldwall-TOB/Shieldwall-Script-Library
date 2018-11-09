@@ -87,26 +87,28 @@ cm:add_listener(
             if not not TooltipComponent then
                 local DescriptionWindow = dev.get_uic(TooltipComponent, "description_window")
                 local BuildingTitle = dev.get_uic(TooltipComponent, "title_frame", "dy_building_title")
-                local faction = dev.get_faction(cm:get_local_faction(true))
-                local stores = fkm:get_food_in_storage_for_faction(faction:name())
-                local before_stores = faction:total_food() - stores
-                --storesDetail = "Your stores will increase by "..tostring(CONST.food_storage_percentage*100).." percent of your surplus food each turn"
-                local col = "green"
-                if before_stores < 0 then
-                    col = "red"
-                end
-                BuildingTitle:SetStateText("[[col:"..col.."]]"..before_stores.."[[/col]] Net Food This Turn")
-                --oldText = DescriptionWindow:GetStateText()
+                if (not not BuildingTitle) and (not not DescriptionWindow) then
+                    local faction = dev.get_faction(cm:get_local_faction(true))
+                    local stores = fkm:get_food_in_storage_for_faction(faction:name())
+                    local before_stores = faction:total_food() - stores
+                    --storesDetail = "Your stores will increase by "..tostring(CONST.food_storage_percentage*100).." percent of your surplus food each turn"
+                    local col = "green"
+                    if before_stores < 0 then
+                        col = "red"
+                    end
+                    BuildingTitle:SetStateText("[[col:"..col.."]]"..before_stores.."[[/col]] Net Food This Turn")
+                    --oldText = DescriptionWindow:GetStateText()
 
-                if before_stores >= 0 then
-                    local raw_change = (before_stores*CONST.food_storage_percentage)
-                    local cap = fkm:get_food_storage_cap_for_faction(faction:name())
-                    local increase_val = fkm:calculate_potential_food_change(stores, cap, raw_change)
-                    DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your stores will increase by [[col:green]]"..increase_val.."[[/col]] next turn.")
-                else
-                    local cap = fkm:get_food_storage_cap_for_faction(faction:name())
-                    local decrease_val = fkm:calculate_potential_food_change(stores, cap, before_stores)
-                    DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your Stores will decrease by [[col:red]]"..decrease_val.."[[/col]] next turn.")
+                    if before_stores >= 0 then
+                        local raw_change = (before_stores*CONST.food_storage_percentage)
+                        local cap = fkm:get_food_storage_cap_for_faction(faction:name())
+                        local increase_val = fkm:calculate_potential_food_change(stores, cap, raw_change)
+                        DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your stores will increase by [[col:green]]"..increase_val.."[[/col]] next turn.")
+                    else
+                        local cap = fkm:get_food_storage_cap_for_faction(faction:name())
+                        local decrease_val = fkm:calculate_potential_food_change(stores, cap, before_stores)
+                        DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your Stores will decrease by [[col:red]]"..decrease_val.."[[/col]] next turn.")
+                    end
                 end
             end
         end, 0.1)
