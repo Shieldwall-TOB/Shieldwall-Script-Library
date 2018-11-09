@@ -88,6 +88,9 @@ region_intros_played = {
 		["vik_reg_wintanceaster"] = 0
 } --:map<string, int>
 
+local advice_expanded = false
+
+
 --v function(context: CA_CONTEXT)
 local function OnSettlementSelected(context)
     local region_name = context:garrison_residence():region():name() --:string
@@ -98,7 +101,33 @@ local function OnSettlementSelected(context)
     if not cm:get_saved_value("region_intro_played_"..region_name) then
         NAPLOG("Playing region advice for ["..region_name.."] ")
         cm:set_saved_value("region_intro_played_"..region_name, true)
-        effect.advance_scripted_advice_thread("Region.Intro." ..region_name,  1);
+		effect.advance_scripted_advice_thread("Region.Intro." ..region_name,  1);
+		if advice_expanded == false then
+			advice_expanded = true
+			if dev then
+				dev.callback(function() 
+					local AdviceResizable = dev.get_uic(cm:ui_root(), "advice_interface", "text_parent_list", "text_parent")
+					if not not AdviceResizable then
+						NAPLOG("Resizing advice!")
+						AdviceResizable:Resize(AdviceResizable:Width(), 2*AdviceResizable:Height())
+						dev.get_uic(AdviceResizable, "advice_text_panel", "info_text"):SetVisible(false)
+						local VSlider = dev.get_uic(AdviceResizable, "vslider")
+						VSlider:Resize(VSlider:Width(), VSlider:Height()*2)
+					end
+				end, 0.1)
+			else
+				add_callback(function()
+					local AdviceResizable = find_uicomponent(cm:ui_root(), "advice_interface", "text_parent_list", "text_parent")
+					if not not AdviceResizable then
+						NAPLOG("Resizing advice!")
+						AdviceResizable:Resize(AdviceResizable:Width(), 2*AdviceResizable:Height())
+						find_uicomponent(AdviceResizable, "advice_text_panel", "info_text"):SetVisible(false)
+						local VSlider = find_uicomponent(AdviceResizable, "vslider")
+						VSlider:Resize(VSlider:Width(), VSlider:Height()*2)
+					end
+				end, 0.1)
+			end
+		end
     end
 end;
 
@@ -111,11 +140,12 @@ cm:add_listener(
     end,
     true
 )
-
-dev.add_settlement_selected_log(function(region)
-	if region_intros_played[region:name()] == nil then
-		return "Place has no registered name"
-	else
-		return "Place has a registered name"
-	end
-end)
+if dev then
+	dev.add_settlement_selected_log(function(region)
+		if region_intros_played[region:name()] == nil then
+			return "Place has no registered name"
+		else
+			return "Place has a registered name"
+		end
+	end)
+end
