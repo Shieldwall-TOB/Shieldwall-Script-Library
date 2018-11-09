@@ -146,7 +146,15 @@ local function dev_print_all_uicomponent_children(uic)
 	end;
 end;
 
-
+--don't call this one root. Just dont. 
+--v [NO_CHECK] function(uic: CA_UIC)
+local function dev_print_all_uicomponent_details(uic)
+    log_uicomponent(uic)
+    for i = 0, uic:ChildCount() - 1 do
+        local uic_child = UIComponent(uic:Find(i));
+        dev_print_all_uicomponent_details(uic_child)
+    end;
+end;
 
 
 
@@ -154,64 +162,37 @@ end;
 --v [NO_CHECK] function()
 function MOD_ERROR_LOGS()
 --Vanish's PCaller
-    --All credits to vanish
+    --All credits to vanishoxyact from WH2
     local eh = get_eh();
 
     --v function(func: function) --> any
     function safeCall(func)
-        --output("safeCall start");
         local status, result = pcall(func)
         if not status then
             MODLOG(tostring(result), "ERR")
             MODLOG(debug.traceback(), "ERR");
         end
-        --output("safeCall end");
         return result;
     end
     
-    --local oldTriggerEvent = core.trigger_event;
     
     --v [NO_CHECK] function(...: any)
     function pack2(...) return {n=select('#', ...), ...} end
     --v [NO_CHECK] function(t: vector<WHATEVER>) --> vector<WHATEVER>
     function unpack2(t) return unpack(t, 1, t.n) end
     
-    --v [NO_CHECK] function(f: function(), argProcessor: function()) --> function()
+    --v [NO_CHECK] function(f: function(), argProcessor: (function())?) --> function()
     function wrapFunction(f, argProcessor)
         return function(...)
-            --output("start wrap ");
             local someArguments = pack2(...);
             if argProcessor then
                 safeCall(function() argProcessor(someArguments) end)
             end
             local result = pack2(safeCall(function() return f(unpack2( someArguments )) end));
-            --for k, v in pairs(result) do
-            --    output("Result: " .. tostring(k) .. " value: " .. tostring(v));
-            --end
-            --output("end wrap ");
             return unpack2(result);
             end
     end
     
-    -- function myTriggerEvent(event, ...)
-    --     local someArguments = { ... }
-    --     safeCall(function() oldTriggerEvent(event, unpack( someArguments )) end);
-    -- end
-    
-    --v [NO_CHECK] function(fileName: string)
-    function tryRequire(fileName)
-        local loaded_file = loadfile(fileName);
-        if not loaded_file then
-            MODLOG("Failed to find mod file with name " .. fileName)
-        else
-            MODLOG("Found mod file with name " .. fileName)
-            MODLOG("Load start")
-            local local_env = getfenv(1);
-            setfenv(loaded_file, local_env);
-            loaded_file();
-            MODLOG("Load end")
-        end
-    end
     
     --v [NO_CHECK] function(f: function(), name: string)
     function logFunctionCall(f, name)
@@ -245,29 +226,16 @@ function MOD_ERROR_LOGS()
         end
     end
     
-    --logAllObjectCalls(eh);
-    --logAllObjectCalls(cm);
-   -- MODLOG("CA_GAME_INTERFACE")
-   -- logAllObjectCalls(cm.game_interface);
     
     eh.trigger_event = wrapFunction(
         eh.trigger_event,
         function(ab)
-            --output("trigger_event")
-            --for i, v in pairs(ab) do
-            --    output("i: " .. tostring(i) .. " v: " .. tostring(v))
-            --end
-            --output("Trigger event: " .. ab[1])
         end
     );
     
     check_callbacks = wrapFunction(
         check_callbacks,
         function(ab)
-            --output("check_callbacks")
-            --for i, v in pairs(ab) do
-            --    output("i: " .. tostring(i) .. " v: " .. tostring(v))
-            --end
         end
     )
 
@@ -284,14 +252,12 @@ function MOD_ERROR_LOGS()
     function myAddListener(eh, listenerName, eventName, conditionFunc, listenerFunc, persistent)
         local wrappedCondition = nil;
         if is_function(conditionFunc) then
-            --wrappedCondition =  wrapFunction(conditionFunc, function(arg) output("Callback condition called: " .. listenerName .. ", for event: " .. eventName); end);
             wrappedCondition =  wrapFunction(conditionFunc);
         else
             wrappedCondition = conditionFunc;
         end
         currentAddListener(
             eh, listenerName, eventName, wrappedCondition, wrapFunction(listenerFunc), persistent
-            --eh, listenerName, eventName, wrappedCondition, wrapFunction(listenerFunc, function(arg) output("Callback called: " .. listenerName .. ", for event: " .. eventName); end), persistent
         )
     end
     eh.add_listener = myAddListener;
@@ -299,7 +265,7 @@ end
 MOD_ERROR_LOGS() 
 --# assume logAllObjectCalls: function(object: any)
 --# assume safeCall: function(func: function)
-
+--# assume wrapFunction: function(f: function(), argProcessor: (function())?) --> function()
 
 --object logging
 cm:register_first_tick_callback(function()
@@ -421,13 +387,20 @@ local function dev_readonlytable(t)
     });
 end
 
+--v function (callback: function(), timer: number?, name: string?)
+function dev_callback(callback, timer, name)
+    add_callback(wrapFunction(callback), timer, name)
+end
+
+
 return {
     log = MODLOG,
     export = RAWPRINT,
     new_export = new_export,
-    callback = add_callback,
+    callback = dev_callback,
     eh = get_eh(),
     out_children = dev_print_all_uicomponent_children,
+    out_details_for_children = dev_print_all_uicomponent_details,
     get_uic = find_uicomponent,
     get_faction = dev_get_faction,
     get_region = dev_get_region,
