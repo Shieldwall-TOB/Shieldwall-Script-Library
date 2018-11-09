@@ -22,11 +22,13 @@ local function RAWPRINT(name, ...)
     if exports[name] == nil then
         return
     end
-    logText = "" --:string
-    for i = 1, #arg do
-        logText = logText.."\t"..arg[i]
+    logText = arg[1]
+    if #arg > 1 then
+        for i = 2, #arg do
+            logText = logText.."\t"..arg[i]
+        end
     end
-    local popLog = io.open("sheildwall_output"..name..".tsv","a")
+    local popLog = io.open("sheildwall_output_"..name..".tsv","a")
     --# assume logTimeStamp: string
     popLog :write(logText.."\n")
     popLog :flush()
@@ -35,17 +37,18 @@ end
 
 --v function(name: string, ...: string)
 local function new_export(name, ...)
-    logText = "" 
-    for i = 1, #arg do
-        logText = logText.."\t"..arg[i]
+    exports[name] = true
+    logText = arg[1]
+    if #arg > 1 then
+        for i = 2, #arg do
+            logText = logText.."\t"..arg[i]
+        end
     end
-    local popLog = io.open("sheildwall_output"..name..".tsv","w+")
+    local popLog = io.open("sheildwall_output_"..name..".tsv","w+")
     popLog :write(logText.."\n")
     popLog :flush()
     popLog :close()
 end
-
-
 
 
 
