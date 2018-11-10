@@ -215,7 +215,7 @@
 --# assume CA_FACTION.allied_with: method(faction: CA_FACTION) --> boolean
 --# assume CA_FACTION.at_war_with: method(faction: CA_FACTION) --> boolean
 --# assume CA_FACTION.region_list: method() --> CA_REGION_LIST
---# assume CA_FACTION.has_effect_bundle: method(bundle:string) --> boolean
+
 --# assume CA_FACTION.home_region: method() --> CA_REGION
 --# assume CA_FACTION.command_queue_index: method() --> CA_CQI
 --# assume CA_FACTION.is_null_interface: method() --> boolean
