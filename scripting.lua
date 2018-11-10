@@ -191,21 +191,6 @@ require("vik_traits");
 require("vik_decrees");
 
 
-------------------------
---UI MODDING FRAMEWORK--
-------------------------
---require("uimf/lib_uimf")
---require("shieldwall/lib/uimf_tests")
-
------------------------
---SHIELDWALL SCRIPTS---
------------------------
---[[
-    All shieldwall scripts are split into three sections
-    1. The library defines all data structures used by the mod's scripting.
-    2. The Content section is for loading inputs, usually in the form of keys, to the script.
-    3. The Event Based Scripting section is for active elements of the script
---]]
 
 -----------------------
 --SHIELDWALL SCRIPTS---
@@ -240,3 +225,4 @@ require("shieldwall/ebs/ebs_wealth")
 require("shieldwall/ebs/ebs_war_limits")
 require("shieldwall/ebs/ebs_unit_effects")
 require("shieldwall/ebs/ebs_food_storage")
+require("shieldwall/ebs/ebs_seasonal_effects")
