@@ -293,7 +293,9 @@ end)
 --SELECTION TRACKING
 
 local settlement_selected_log_calls = {} --:vector<(function(CA_REGION) --> string)>
+local settlement_selected_log_lists = {} --:vector<(function(CA_REGION) --> (string, vector<string>))>
 local char_selected_log_calls = {} --:vector<(function(CA_CHAR) --> string)>
+local char_selected_log_lists = {} --:vector<(function(CA_CHAR) --> (string, vector<string>))>
 
 --start UI tracking helpers.
 cm:register_ui_created_callback( function()
@@ -306,6 +308,13 @@ cm:register_ui_created_callback( function()
             MODLOG("selected character with CQI ["..tostring(context:character():cqi()).."]", "SEL")
             for i = 1, #char_selected_log_calls do
                 MODLOG("\t"..char_selected_log_calls[i](context:character()), "SEL")
+            end
+            for i = 1, #char_selected_log_lists do
+                local title, list = char_selected_log_lists[i](context:character())
+                MODLOG("\t"..title, "SEL")
+                for j = 1, #list do
+                    MODLOG("\t\t"..list[j] , "SEL")
+                end
             end
         end,
         true
@@ -320,6 +329,13 @@ cm:register_ui_created_callback( function()
             for i = 1, #settlement_selected_log_calls do
                 MODLOG("\t"..settlement_selected_log_calls[i](context:garrison_residence():region()), "SEL")
             end
+            for i = 1, #settlement_selected_log_lists do
+                local title, list = settlement_selected_log_lists[i](context:garrison_residence():region())
+                MODLOG("\t"..title, "SEL")
+                for j = 1, #list do
+                    MODLOG("\t\t"..list[j] , "SEL")
+                end
+            end
         end,
         true
     )
@@ -330,10 +346,43 @@ local function dev_add_settlement_select_log_call(call)
     table.insert(settlement_selected_log_calls, call)
 end
 
+--v function(call: function(CA_REGION) --> (string, vector<string>))
+local function dev_add_settlement_select_log_list(call)
+    table.insert(settlement_selected_log_lists, call)
+end
+
 --v function(call: function(CA_CHAR) --> string)
 local function dev_add_character_select_log_call(call)
     table.insert(char_selected_log_calls, call)
 end
+
+--v function(call: function(CA_CHAR) --> (string, vector<string>))
+local function dev_add_character_select_log_list(call)
+    table.insert(char_selected_log_lists, call)
+end
+
+--settlement logging
+if CONST.__log_settlements then
+    dev_add_settlement_select_log_list(function(region)
+        local retval = {} --:vector<string>
+        if region:settlement():is_null_interface() then
+            return "Buildings:", retval
+        end
+        local slot_list = region:settlement():slot_list()
+        for i = 0, slot_list:num_items() - 1 do
+            local slot = slot_list:item_at(i)
+            if slot:has_building() then
+                table.insert(retval, slot:building():name())
+            end
+        end
+        return "Buildings:", retval 
+    end)
+end
+
+
+
+
+
 
 
 
