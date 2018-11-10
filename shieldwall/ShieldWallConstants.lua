@@ -3,6 +3,7 @@ return {
     __should_output_ui = false,
     __log_game_objects = false,
     __no_fog = true,
+    __log_settlements = true,
     enable_great_kingdom_bonus = true,
     default_estate_type = "vik_estates_agricultural",
     town_estate_type = "vik_estates_estate_building",
@@ -14,7 +15,8 @@ return {
     food_storage_percentage = 0.5,
     region_wealth_bundle = "shield_wealth_bundle_",
     region_wealth_cap = 3,
-    region_wealth_floor = 0
+    region_wealth_floor = 0,
+    season_bundle_prefix = "shield_season_"
 }
 
 
