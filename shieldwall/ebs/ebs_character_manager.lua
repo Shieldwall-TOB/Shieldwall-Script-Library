@@ -79,16 +79,17 @@ cm:add_listener(
         return context:garrison_residence():faction():is_human() and context:garrison_residence():region():has_governor()
     end,
     function(context)
+        local cqi = context:garrison_residence():region():governor():cqi()
         dev.callback(
             function()
                 local panel = dev.get_uic(cm:ui_root(), "layout", "info_panel_holder", "primary_info_panel_holder", "info_panel_background", "ProvinceInfoPopup", "subpanel_character")
                 if not not panel then
-                    title = dev.get_uic(panel, "dy_title")
-                    name = dev.get_uic(panel, "dy_name")
+                    local title = dev.get_uic(panel, "dy_title")
+                    local name = dev.get_uic(panel, "dy_name")
                     local old_title = title:GetStateText()
                     local old_name = name:GetStateText()
                     name:SetStateText(old_name.."; " ..old_title)
-                    local title_trait = charm:get_character(context:garrison_residence():region():governor():cqi()):current_title()
+                    local title_trait = charm:get_character(cqi):current_title()
                     title:SetStateText(CONST.titles_localisation()[title_trait])
                 end
             end, 0.1
@@ -105,14 +106,17 @@ cm:add_listener(
         return context:character():faction():is_human() and context:character():has_military_force()
     end,
     function(context)
+        local cqi = context:character():cqi()
         dev.callback(
             function()
                 local panel = dev.get_uic(cm:ui_root(), "layout", "info_panel_holder", "primary_info_panel_holder", "info_panel_background", "CharacterInfoPopup", "subpanel_character")
                 if not not panel then
+                    local title = dev.get_uic(panel, "dy_type")
+                    local name = dev.get_uic(panel, "dy_name")
                     local old_title = title:GetStateText()
                     local old_name = name:GetStateText()
                     name:SetStateText(old_name.."; " ..old_title)
-                    local title_trait = charm:get_character(context:character():cqi()):current_title()
+                    local title_trait = charm:get_character(cqi):current_title()
                     title:SetStateText(CONST.titles_localisation()[title_trait])
                 end
             end, 0.1
