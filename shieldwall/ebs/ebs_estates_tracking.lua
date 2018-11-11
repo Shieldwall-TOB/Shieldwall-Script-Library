@@ -35,11 +35,11 @@ local function get_estate_bundle(estate)
     end
     local estate_type = estate:type()
     local bundle_prefix --:string
-    if estate_type == CONST.town_estate_type then
+    if estate_type == CONST.noble_estate_type then
         bundle_prefix = "town"
-    elseif estate_type == CONST.agricultural_estate_type then
+    elseif estate_type == CONST.minor_estate_type then
         bundle_prefix = "agricultural"
-    elseif estate_type == CONST.resource_estate_type then
+    elseif estate_type == CONST.grand_estate_type then
         bundle_prefix = "resource"
     end
     local bundle_suffix = "_other"
