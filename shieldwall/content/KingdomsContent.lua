@@ -22,7 +22,7 @@ local kingdoms = {
 }--:vector<string>
 
 
-cm:register_first_tick_callback( function()
+dev.pre_first_tick( function(context)
     for i = 1, #kingdoms do
         local faction_name = kingdoms[i]
         fkm:add_kingdom(faction_name)

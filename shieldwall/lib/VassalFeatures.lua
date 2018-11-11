@@ -61,9 +61,8 @@ function faction_kingdom_manager.add_kingdom(self, faction_key)
 
     if self:is_faction_vassal(faction_key) == true then
         self:log("Tried to add ["..faction_key.."] as a kingdom but that faction is a vassal!, deleting the vassal!")
-        self._vassals[faction_key] = nil
     end
-
+    self._vassals[faction_key] = nil
     local faction_obj = cm:model():world():faction_by_key(faction_key)
     local kingdom = fkm_kingdom.new(self, faction_key, faction_obj:is_human())
     self._kingdoms[faction_key] = kingdom

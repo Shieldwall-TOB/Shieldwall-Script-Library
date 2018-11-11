@@ -121,6 +121,9 @@ function char_detail.update_title(self, new_title)
     if new_title ~= "no_title" then
         cm:force_add_trait(dev.lookup(self._cqi), new_title, true)
     end
+    if new_title ~= old_title then
+        dev.log("Character with cqi ["..tostring(self._cqi).."] changed title from ["..old_title.."] to ["..new_title.."]", "CHM")
+    end
     self._currentTitle = new_title
 end
 

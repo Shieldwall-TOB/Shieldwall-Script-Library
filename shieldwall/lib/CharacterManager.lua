@@ -85,19 +85,23 @@ end
 
 --v function(self: CHAR_MANAGER, cqi: CA_CQI)
 function character_manager.update_title_for_character(self, cqi)
+    if not dev.is_game_created() then
+        return
+    end
     if dev.get_character(cqi):is_faction_leader() then
         local character = self:get_character(cqi)
         local faction = dev.get_character(cqi):faction()
+        dev.log("Updating title for a faction leader from ["..faction:name().."]")
         if self:fkm():is_faction_vassal(faction:name()) then
-            character:update_title(CONST.charm_leader_title_prefix.."_vassal")
+            character:update_title(CONST.charm_leader_title_prefix.."vassal")
             return
         end
         if (self._leaderTitleOverrideFactions[faction:name()] == true) and self:fkm():is_faction_kingdom(faction:name()) then
-            local level = self:fkm()._kingdoms[faction:name()]
+            local level = self:fkm()._kingdoms[faction:name()]:kingdom_level()
             character:update_title(CONST.charm_leader_title_prefix.. faction:name().. "_".. tostring(level))
             return
         else
-            character:update_title(CONST.charm_leader_title_prefix.."_king")
+            character:update_title(CONST.charm_leader_title_prefix.."king")
             return
         end
     end

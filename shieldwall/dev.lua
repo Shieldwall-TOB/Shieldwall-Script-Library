@@ -489,17 +489,35 @@ function dev_post_first_tick(callback)
     table.insert(post_first_tick_callbacks, callback)
 end
 
+_G.game_created = false
+
 cm:register_first_tick_callback(function(context)
-    for i = 1, #pre_first_tick_callbacks do
-        pre_first_tick_callbacks[i](context)
-    end
-    for i = 1, #first_tick_callbacks do
-        first_tick_callbacks[i](context)
-    end
-    for i = 1, #post_first_tick_callbacks do
-        post_first_tick_callbacks[i](context)
+    _G.game_created = true
+    MODLOG("===================================================================================", "DEV")
+    MODLOG("===================================================================================", "DEV")
+    MODLOG("===============THE GAME IS STARTING: RUNNING FIRST TICK CALLBACK===================", "DEV")
+    MODLOG("===================================================================================", "DEV")
+    MODLOG("===================================================================================", "DEV")
+    local ok, err = pcall( function()
+        for i = 1, #pre_first_tick_callbacks do
+            pre_first_tick_callbacks[i](context)
+        end
+        for i = 1, #first_tick_callbacks do
+            first_tick_callbacks[i](context)
+        end
+        for i = 1, #post_first_tick_callbacks do
+            post_first_tick_callbacks[i](context)
+        end
+    end)
+    if not ok then
+        MODLOG("ERROR IN FIRST TICK", "ERR")
+        MODLOG(tostring(err), "ERR")
     end
 end)
+--v function() --> boolean
+local function dev_game_created()
+    return _G.game_created
+end
 
 
 return {
@@ -522,5 +540,6 @@ return {
     as_read_only = dev_readonlytable,
     first_tick = dev_first_tick,
     pre_first_tick = dev_pre_first_tick,
-    post_first_tick = dev_post_first_tick
+    post_first_tick = dev_post_first_tick,
+    is_game_created = dev_game_created
 }

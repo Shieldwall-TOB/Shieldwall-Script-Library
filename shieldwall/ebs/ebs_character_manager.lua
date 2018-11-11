@@ -62,11 +62,24 @@ cm:add_listener(
 
 dev.post_first_tick(function(context) 
     local humans = cm:get_human_factions()
-    for i = 1, #humans do
-        local char_list = dev.get_faction(humans[i]):character_list()
+    for j = 1, #humans do
+        local char_list = dev.get_faction(humans[j]):character_list()
         for i = 0, char_list:num_items() - 1 do
             local character = char_list:item_at(i)
             charm:update_title_for_character(character:cqi())
         end
     end
 end)
+
+
+cm:add_listener(
+    "RegionSelectedTitlesUI",
+    "RegionSelected",
+    function(context)
+        return context:garrison_residence():faction():is_human()
+    end,
+    function(context)
+
+    end,
+    true
+)
