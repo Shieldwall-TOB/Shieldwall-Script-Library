@@ -1,20 +1,24 @@
 local character_manager = {} --# assume character_manager: CHAR_MANAGER
 
---v function() 
-function character_manager.init()
+--v function(fkm: FKM) 
+function character_manager.init(fkm)
     local self = {}
     setmetatable(self, {
         __index = character_manager
     }) --# assume self: CHAR_MANAGER
-
+    self._fkm = fkm
     self._characterData = {} --:map<CA_CQI, CHAR_DETAIL>
     self._estateTypesTitlePoints = {} --:map<string, number>
     self._titleLevels = {} --:map<string, number>
     self._subcultureTitleKeys = {} --:map<string, string>
+    self._leaderTitleOverrideFactions =  {} --:map<string, boolean>
     _G.charm = self
 end
 
-
+--v function(self: CHAR_MANAGER) --> FKM
+function character_manager.fkm(self)
+    return self._fkm
+end
 
 --v function(self: CHAR_MANAGER, estate_type: string, points:number)
 function character_manager.register_estate_type(self, estate_type, points)
@@ -81,6 +85,22 @@ end
 
 --v function(self: CHAR_MANAGER, cqi: CA_CQI)
 function character_manager.update_title_for_character(self, cqi)
+    if dev.get_character(cqi):is_faction_leader() then
+        local character = self:get_character(cqi)
+        local faction = dev.get_character(cqi):faction()
+        if self:fkm():is_faction_vassal(faction:name()) then
+            character:update_title(CONST.charm_leader_title_prefix.."_vassal")
+            return
+        end
+        if (self._leaderTitleOverrideFactions[faction:name()] == true) and self:fkm():is_faction_kingdom(faction:name()) then
+            local level = self:fkm()._kingdoms[faction:name()]
+            character:update_title(CONST.charm_leader_title_prefix.. faction:name().. "_".. tostring(level))
+            return
+        else
+            character:update_title(CONST.charm_leader_title_prefix.."_king")
+            return
+        end
+    end
     local points = 0 --:number
     for region, estate in pairs(self:get_character(cqi):estates()) do
         points = points + self:get_title_points_for_estate_type(estate:type())
@@ -105,4 +125,4 @@ function character_manager.update_title_for_character(self, cqi)
     end
 end
 
-character_manager.init()
+character_manager.init(_G.fkm)
