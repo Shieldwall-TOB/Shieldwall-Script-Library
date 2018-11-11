@@ -470,6 +470,37 @@ function dev_callback(callback, timer, name)
     add_callback(wrapFunction(callback), timer, name)
 end
 
+local pre_first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
+local first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
+local post_first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
+
+--v function(callback: function(context: WHATEVER))
+function dev_pre_first_tick(callback)
+    table.insert(pre_first_tick_callbacks, callback)
+end
+
+--v function(callback: function(context: WHATEVER))
+function dev_first_tick(callback)
+    table.insert(first_tick_callbacks, callback)
+end
+
+--v function(callback: function(context: WHATEVER))
+function dev_post_first_tick(callback)
+    table.insert(post_first_tick_callbacks, callback)
+end
+
+cm:register_first_tick_callback(function(context)
+    for i = 1, #pre_first_tick_callbacks do
+        pre_first_tick_callbacks[i](context)
+    end
+    for i = 1, #first_tick_callbacks do
+        first_tick_callbacks[i](context)
+    end
+    for i = 1, #post_first_tick_callbacks do
+        post_first_tick_callbacks[i](context)
+    end
+end)
+
 
 return {
     log = MODLOG,
@@ -488,5 +519,8 @@ return {
     faction_list = dev_faction_list,
     add_settlement_selected_log = dev_add_settlement_select_log_call,
     add_character_selected_log = dev_add_character_select_log_call,
-    as_read_only = dev_readonlytable
+    as_read_only = dev_readonlytable,
+    first_tick = dev_first_tick,
+    pre_first_tick = dev_pre_first_tick,
+    post_first_tick = dev_post_first_tick
 }

@@ -37,7 +37,7 @@ cm:add_listener(
     end, 
     true)
 
-cm:register_first_tick_callback(function(context)
+dev.pre_first_tick(function(context)
     dev.log("World created while season is ["..cm:model():season().."], and the season cache is ["..season_cache.."] ", "SES")
     if season_cache ~= cm:model():season() then
         apply_season_effects()

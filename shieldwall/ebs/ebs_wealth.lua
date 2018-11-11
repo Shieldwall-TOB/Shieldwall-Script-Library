@@ -25,7 +25,7 @@ cm:add_listener(
     function(context)
         local character = context:character()
         if character:has_military_force() then
-            if string.find(character:military_force():active_stance(), "RAIDING") then
+            if string.find(character:military_force():active_stance(), "RAID") then
                 rwm:set_region_wealth(context:character():region():name(), 2)
             else
                 rwm:set_region_wealth(context:character():region():name(), 1)

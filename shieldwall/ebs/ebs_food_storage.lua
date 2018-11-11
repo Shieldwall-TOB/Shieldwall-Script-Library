@@ -45,7 +45,7 @@ cm:add_listener(
 )
 
 
-cm:register_first_tick_callback(function() 
+dev.first_tick(function(context) 
     local humans = cm:get_human_factions()
     for i = 1, #humans do
         local faction = dev.get_faction(humans[i])

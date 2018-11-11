@@ -114,7 +114,7 @@ cm:add_listener(
 )
 
 
-cm:register_first_tick_callback( function()
+dev.pre_first_tick( function(context)
     if cm:is_new_game() then
         for region, info in pairs(et._startPosEstates) do
             et:process_start_pos_estate(info._ownerName, info._region, info._estateType)
