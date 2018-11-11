@@ -397,11 +397,19 @@ if CONST.__log_settlements then
     end)
 end
 
+if CONST.__log_characters then
+    dev_add_character_select_log_list(function(character)
+        local retval = {} --:vector<string>
+        if character:is_null_interface() then
+            return "Info:", retval
+        end
+        table.insert(retval, "Name: "..character:get_forename())
+        table.insert(retval, "X, Y: "..character:logical_position_x()..", "..character:logical_position_y())
+        table.insert(retval, "Is faction leader: ".. tostring(character:is_faction_leader()))
 
-
-
-
-
+        return "Info:", retval
+    end)
+end
 
 
 --dev shortcut library
