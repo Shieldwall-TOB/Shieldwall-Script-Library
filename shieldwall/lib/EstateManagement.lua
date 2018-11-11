@@ -48,6 +48,7 @@ function estate_tracker.get_region_estate(self, region)
             end
         end
         self._estateData[region]  = estate_object.new(self, faction_key, region, estate_type)
+        dev.eh:trigger_event("CharacterGainedEstate", dev.get_faction(faction_key):faction_leader(), self._estateData[region])
         return self._estateData[region]
     end
 end
@@ -60,6 +61,7 @@ function estate_tracker.grant_estate_to_character(self, character, region)
     estate._faction = faction_key
     estate._owner = character
     estate._isRoyal = (dev.get_character(character):is_heir() or dev.get_character(character):is_faction_leader())
+    dev.eh:trigger_event("CharacterGainedEstate", dev.get_character(character), self._estateData[region])
 end
 
 --v function(self: ET, character: CA_CQI, region: string)
@@ -67,9 +69,11 @@ function estate_tracker.strip_estate_from_character(self, character, region)
     local region_obj = cm:model():world():region_manager():region_by_key(region)
     local faction_key = region_obj:owning_faction():name() 
     local estate = self:get_region_estate(region)
+    dev.eh:trigger_event("CharacterLostEstate", dev.get_character(estate._owner), estate)
     estate._faction = faction_key
     estate._owner = dev.get_faction(faction_key):faction_leader():cqi()
     estate._isRoyal = true
+    dev.eh:trigger_event("CharacterGainedEstate", dev.get_faction(faction_key):faction_leader(), self._estateData[region])
 end
 
 --v function(self: ET, estate: CA_ESTATE) --> ESTATE
@@ -89,6 +93,7 @@ function estate_tracker.check_estate(self, estate)
         end
         local estate_type = estate:estate_record_key()
         self._estateData[estate_region] = estate_object.new(self, estate_faction, estate_region, estate_type, estate_cqi)
+        dev.eh:trigger_event("CharacterGainedEstate", estate_owner, self._estateData[estate_region])
         return self._estateData[estate_region]
     end
 end
@@ -104,24 +109,7 @@ function estate_tracker.load_estate(self, estate_table)
     self._estateData[estate_table._region] = estate_object.load(self, estate_table)
 end
 
---v function(self: ET, estate_region: string, is_royal: boolean)
-function estate_tracker.create_start_pos_estate(self, estate_region, is_royal)
-    self:log("creating an estate from startpos for region ["..estate_region.."] ")
-    local region_obj = dev.get_region(estate_region)
-    local faction = region_obj:owning_faction()
-    local faction_name = faction:name()
-    local estate_type = CONST.default_estate_type
-    for building, estate_key in pairs(self._buildingsToEstates) do
-        if region_obj:building_exists(building) then
-            self:log("inferred type for new estate as ["..estate_key.."]")
-            estate_type = estate_key
-            break
-        end
-    end
-    local estate = estate_object.new(self, faction_name, estate_region, estate_type)
-    estate._isRoyal = is_royal
-    self._estateData[estate_region] = estate
-end
+
 
 
 estate_tracker.init()

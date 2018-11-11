@@ -335,7 +335,7 @@ function custom_context:unit()
 end;
 
 --MORE INSERTIONS BY DRUNK FLAMINGO
-function custom_context:estate()
+function custom_context:shield_estate()
 	return self.estate_data
 end
 

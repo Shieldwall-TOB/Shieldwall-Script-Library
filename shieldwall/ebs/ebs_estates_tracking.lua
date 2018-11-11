@@ -78,7 +78,9 @@ cm:add_listener(
     true,
     function(context)
         local estate = et:get_region_estate(context:garrison_residence():region():name())
+        dev.eh:trigger_event("CharacterLostEstate", dev.get_character(estate._owner), estate)
         estate:change_faction(context:character():faction():name())
+        dev.eh:trigger_event("CharacterGainedEstate", context:character():faction():faction_leader(), estate)
         estate:update_bundle()
     end,
     true
@@ -101,17 +103,14 @@ cm:add_listener(
 
 cm:register_first_tick_callback( function()
     if cm:is_new_game() then
-        local humans = cm:get_human_factions()
-        for i = 1, #humans do
-            local region_list = dev.get_faction(humans[i]):region_list()
-            for i = 0, region_list:num_items() - 1 do
-                local current_region = region_list:item_at(i)
-                if current_region:settlement():is_null_interface() then
-                    --do nothing
-                else
-                    local estate = et:get_region_estate(current_region:name())
-                    estate:update_bundle(get_estate_bundle(estate))
-                end
+        local region_list = dev.region_list()
+        for i = 0, region_list:num_items() - 1 do
+            local current_region = region_list:item_at(i)
+            if current_region:settlement():is_null_interface() then
+                --do nothing
+            else
+                local estate = et:get_region_estate(current_region:name())
+                estate:update_bundle(get_estate_bundle(estate))
             end
         end
     end
@@ -120,5 +119,4 @@ end)
 dev.add_settlement_selected_log(function(region)
     local estate = et:get_region_estate(region:name())
     return "has estate: owner ["..tostring(estate._owner).."], type ["..estate:type().."], royalty: ["..tostring(estate:is_royal()).."] "
-
 end)
