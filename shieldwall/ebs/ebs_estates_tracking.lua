@@ -1,10 +1,18 @@
 local et = _G.et
+local charm = _G.charm
 
 cm:register_loading_game_callback(function(context)
     local ok, err = pcall(function()
         local savetable = cm:load_value("estate_tracker_save", {}, context)
         for region, estate_data in pairs(savetable) do
-            et:load_estate(estate_data)
+            local loaded = et:load_estate(estate_data)
+            --# assume estate_data: ESTATE_SAVE
+            if not (estate_data._cqi == nil) then
+                local cqi = tonumber(estate_data._cqi)
+                --# assume cqi: CA_CQI
+                local char = charm:get_character(cqi)
+                char:add_estate(loaded)
+            end
         end
     end)
     if not ok then 

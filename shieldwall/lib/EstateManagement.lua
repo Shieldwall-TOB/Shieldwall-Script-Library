@@ -103,10 +103,11 @@ function estate_tracker.has_estate(self, region)
     return not not self._estateData[region]
 end
 
---v function(self: ET, estate_table: ESTATE_SAVE)
-function estate_tracker.load_estate(self, estate_table)
+--v function(self: ET, estate_table: ESTATE_SAVE) --> ESTATE
+function estate_tracker.load_estate(self, estate_table) 
     self:log("Loading an estate for region ["..estate_table._region.."] ")
     self._estateData[estate_table._region] = estate_object.load(self, estate_table)
+    return self._estateData[estate_table._region]
 end
 
 

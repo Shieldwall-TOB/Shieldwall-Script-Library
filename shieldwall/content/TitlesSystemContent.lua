@@ -1,13 +1,13 @@
 local charm = _G.charm
 
 local subcultures_to_title_sets = {
-    vik_sub_cult_anglo_viking = "_norse",
-    vik_sub_cult_english = "_saxon",
-    vik_sub_cult_irish = "_irish",
-    vik_sub_cult_scots = "_scotish",
-    vik_sub_cult_viking = "_norse",
-    vik_sub_cult_viking_gael = "_norse",
-    vik_sub_cult_welsh = "_welsh"
+    vik_sub_cult_anglo_viking = "norse",
+    vik_sub_cult_english = "saxon",
+    vik_sub_cult_irish = "irish",
+    vik_sub_cult_scots = "scotish",
+    vik_sub_cult_viking = "norse",
+    vik_sub_cult_viking_gael = "norse",
+    vik_sub_cult_welsh = "welsh"
 } --:map<string, string>
 for sc, key in pairs(subcultures_to_title_sets) do
     charm:set_title_key_for_sc(sc, key)
