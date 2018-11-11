@@ -457,6 +457,7 @@ return {
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,
+    lookup = char_lookup_str,
     region_list = dev_region_list,
     faction_list = dev_faction_list,
     add_settlement_selected_log = dev_add_settlement_select_log_call,

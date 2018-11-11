@@ -120,7 +120,7 @@
 --# assume CM.remove_listener: method(handler: string)
 --# assume CM.register_ui_created_callback: method( function() )
 --# assume CM.register_first_tick_callback: method(function())
---# assume CM.random_number: method(range: number, min: number?) 
+--# assume CM.random_number: method(range: number, min: number?) --> int
 --saving
 --# assume CM.is_new_game: method() --> boolean
 --# assume CM.set_saved_value: method(valueKey: string, value: any)
@@ -161,6 +161,7 @@
 --# assume CM.set_character_immortality: method(lookup: string, immortal: boolean)
 --# assume CM.force_add_skill: method(lookup: string, skill_key: string)
 --# assume CM.force_add_trait: method(lookup: string, trait_key: string, showMessage: boolean)
+--# assume CM.force_remove_trait: method(lookup: string, trait_key: string)
 --technology
 --# assume CM.lock_technology: method(faction: string, technology: string)
 --# assume CM.unlock_technology: method(faction: string, technology: string)
@@ -215,7 +216,6 @@
 --# assume CA_FACTION.allied_with: method(faction: CA_FACTION) --> boolean
 --# assume CA_FACTION.at_war_with: method(faction: CA_FACTION) --> boolean
 --# assume CA_FACTION.region_list: method() --> CA_REGION_LIST
-
 --# assume CA_FACTION.home_region: method() --> CA_REGION
 --# assume CA_FACTION.command_queue_index: method() --> CA_CQI
 --# assume CA_FACTION.is_null_interface: method() --> boolean
@@ -390,6 +390,7 @@
 --# assume CA_CONTEXT.region: method() --> CA_REGION
 --# assume CA_CONTEXT.building: method() --> CA_BUILDING
 
+
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
 
@@ -418,6 +419,7 @@
 --# assume global is_function: function(arg: function) --> boolean
 --# assume global is_boolean: function(arg: boolean) --> boolean
 --# assume global add_callback: function(callback: function(), timer: number?, name: string?)
+--# assume global char_lookup_str: function(CA_CHAR | CA_CQI) --> string
 
 -- GLOBAL VARIABLES
 --leave at the bottom of this file

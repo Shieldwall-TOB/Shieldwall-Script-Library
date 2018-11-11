@@ -19,7 +19,8 @@ return {
     season_bundle_prefix = "shield_season_",
     charm_minor_noble_threshold = 1,
     charm_middle_noble_threshold = 5,
-    charm_great_noble_threshold = 10
+    charm_great_noble_threshold = 10,
+    charm_title_prefix = "shield_title_"
 }
 
 
