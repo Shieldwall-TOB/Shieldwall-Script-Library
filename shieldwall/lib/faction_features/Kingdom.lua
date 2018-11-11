@@ -14,6 +14,10 @@ function fkm_kingdom.new(model, faction_key, human)
     self._model = model
     self._name = faction_key
     self._isHuman = human
+    if cm:get_saved_value("fkm_"..faction_key.."_kingdom_level") == nil then
+        cm:set_saved_value("fkm_"..faction_key.."_kingdom_level", 0)
+    end
+    self._kingdomLevel = cm:get_saved_value("fkm_"..faction_key.."_kingdom_level") 
     self._estateOwners = {} --:map<CA_CQI, vector<ESTATE>>
 
     return self
@@ -44,6 +48,18 @@ end
 function fkm_kingdom.log(self, text)
     self._model:log(text)
 end
+
+--v function(self: FKM_KINGDOM, level: number)
+function fkm_kingdom.update_kingdom_level(self, level)
+    cm:set_saved_value("fkm_"..self._name.."_kingdom_level", level)
+    self._kingdomLevel = level
+end
+
+--v function(self: FKM_KINGDOM) --> number
+function fkm_kingdom.kingdom_level(self)
+    return self._kingdomLevel
+end
+
 
 return {
     new = fkm_kingdom.new,
