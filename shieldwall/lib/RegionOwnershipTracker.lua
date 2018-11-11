@@ -36,7 +36,7 @@ function region_owner_tracker.transfer_or_add_region(self, region)
     region_obj = dev.get_region(region)
     if self._currentRegionOwners[region] == nil then
         --we don't have the region!
-        self:log("Starting to track the region ["..region.."] ")
+        --self:log("Starting to track the region ["..region.."] ")
         self._currentRegionOwners[region] = region_obj:owning_faction():name()
         self._pastRegionOwners[region] = {}
     else

@@ -36,7 +36,7 @@ function estate_tracker.get_region_estate(self, region)
     if not not self._estateData[region] then
         return self._estateData[region]
     else
-        self:log("Asked for an estate at ["..region.."] which doesn't yet exist! inferring it ")
+        --self:log("Asked for an estate at ["..region.."] which doesn't yet exist! inferring it ")
         local region_obj = cm:model():world():region_manager():region_by_key(region)
         local faction_key = region_obj:owning_faction():name()
         local estate_type = CONST.default_estate_type
