@@ -282,6 +282,10 @@ function custom_context:add_data(obj)
 	
 	if is_string(obj) then
 		self.string = obj;
+	--drunk flamingo insertions for use in shieldwall overhaul
+	elseif tostring(obj) == "SHIELDWALL_ESTATE" then
+		self.estate_data = obj
+	--end of insertions
 	elseif is_region(obj) then
 		self.region_data = obj;
 	elseif is_character(obj) then
@@ -329,3 +333,15 @@ end;
 function custom_context:unit()
 	return self.unit_data;
 end;
+
+--MORE INSERTIONS BY DRUNK FLAMINGO
+function custom_context:estate()
+	return self.estate_data
+end
+
+
+
+
+
+
+--END OF INSERTIONS

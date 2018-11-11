@@ -4,7 +4,8 @@ estate_object = {} --# assume estate_object: ESTATE
 function estate_object.new(model, faction, region, estate_type, owner)
     local self = {}
     setmetatable(self, {
-        __index = estate_object
+        __index = estate_object,
+        __tostring = function() return "SHIELDWALL_ESTATE" end
     })  --# assume self: ESTATE
 
     self._model = model
