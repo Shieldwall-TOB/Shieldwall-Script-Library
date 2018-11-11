@@ -36,7 +36,7 @@
 
 
 
-
+_G.traits_localized_content = {} --:map<string, string>
 
 
 

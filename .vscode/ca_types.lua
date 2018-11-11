@@ -129,6 +129,7 @@
 --# assume CM.load_value: method(name: string, default: any, context: WHATEVER) --> WHATEVER
 --# assume CM.register_saving_game_callback:method(function(context: WHATEVER))
 --# assume CM.save_value: method(name: string, value: any, context: WHATEVER)
+--# assume CM.game_interface_created: boolean
 --------------------------
 --game interface commands
 --ui

@@ -29,6 +29,7 @@ require("shieldwall/content/EstatesContent")
 require("shieldwall/content/UnitEffectsContent")
 require("shieldwall/content/FoodStorageContent")
 require("shieldwall/content/TitlesSystemContent")
+require("shieldwall/content/TitlesLocalisedContent")
 --ebs
 require("shieldwall/ebs/ebs_estates_tracking")
 require("shieldwall/ebs/ebs_major_empires")
