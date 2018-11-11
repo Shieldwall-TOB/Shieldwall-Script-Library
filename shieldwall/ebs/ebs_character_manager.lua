@@ -52,7 +52,9 @@ cm:add_listener(
         local char_list = context:faction():character_list()
         for i = 0, char_list:num_items() - 1 do
             local character = char_list:item_at(i)
-            charm:update_title_for_character(character:cqi())
+            if not character:is_faction_leader() then
+                charm:update_title_for_character(character:cqi())
+            end
         end
     end,
     true

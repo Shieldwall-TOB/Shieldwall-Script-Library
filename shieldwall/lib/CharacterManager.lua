@@ -104,3 +104,5 @@ function character_manager.update_title_for_character(self, cqi)
         character:update_title(title)
     end
 end
+
+character_manager.init()
