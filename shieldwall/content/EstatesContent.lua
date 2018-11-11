@@ -246,7 +246,61 @@ ESTATES_EFFECTS = {
 } --:map<string, {building: string, effect: string, effect_scope: string, value: number, value_damaged: number, value_ruined: number}>
 
 for building, row in pairs(ESTATES_EFFECTS) do
-    et:add_estate_to_building(building, row.effect)
+	local effect = string.gsub(row.effect, "estates", "estate")
+    et:add_estate_to_building(building, effect)
 end
 
+local start_pos_estates = {
+	["vik_reg_oxnaforda"] = {"vik_estate_agricultural","2147363335"},
+	["vik_reg_licetfelda"] = {"vik_estate_agricultural","2147363186"},
+	["vik_reg_staefford"] = {"vik_estate_agricultural","2147363186"},
+	["vik_reg_tamworthige"] = {"vik_estate_estate_building","2147363186"},
+	["vik_reg_hripum"] = {"vik_estate_agricultural","2147366761"},
+	["vik_reg_alclyt"] = {"vik_estate_agricultural","2147366870"},
+	["vik_reg_cetretha"] = {"vik_estate_estate_building","2147366870"},
+	["vik_reg_dunholm"] = {"vik_estate_agricultural","2147366741"},
+	["vik_reg_mameceaster"] = {"vik_estate_estate_building","2147366934"},
+	["vik_reg_celmeresfort"] = {"vik_estate_agricultural","2147366822"},
+	["vik_reg_lunden"] = {"vik_estate_estate_building","2147366822"},
+	["vik_reg_sancte_albanes"] = {"vik_estate_agricultural","2147366822"},
+	["vik_reg_tilaburg"] = {"vik_estate_agricultural","2147366822"},
+	["vik_reg_rendlesham"] = {"vik_estate_estate_building","2147366738"},
+	["vik_reg_wigingamere"] = {"vik_estate_agricultural","2147366862"},
+	["vik_reg_casteltoun"] = {"vik_estate_estate_building","2147366232"},
+	["vik_reg_inis_patraic"] = {"vik_estate_agricultural","2147366232"},
+	["vik_reg_aethelingaeg"] = {"vik_estate_estate_building","2147363123"},
+	["vik_reg_glastingburi"] = {"vik_estate_agricultural","2147363123"},
+	["vik_reg_waecet"] = {"vik_estate_agricultural","2147363123"},
+	["vik_reg_sconnin"] = {"vik_estate_agricultural","2147364675"},
+	["vik_reg_axanbrycg"] = {"vik_estate_agricultural","2147363108"},
+	["vik_reg_bathanceaster"] = {"vik_estate_agricultural","2147363108"},
+	["vik_reg_ethandun"] = {"vik_estate_agricultural","2147363108"},
+	["vik_reg_brideport"] = {"vik_estate_agricultural","2147363513"},
+	["vik_reg_sceaftesburg"] = {"vik_estate_agricultural","2147363513"},
+	["vik_reg_scireburnan"] = {"vik_estate_agricultural","2147363513"},
+	["vik_reg_werham"] = {"vik_estate_estate_building","2147363513"},
+	["vik_reg_doreceaster"] = {"vik_estate_estate_building","2147363612"},
+	["vik_reg_ebbesham"] = {"vik_estate_agricultural","2147363490"},
+	["vik_reg_guldeford"] = {"vik_estate_agricultural","2147363490"},
+	["vik_reg_ceaster"] = {"vik_estate_estate_building","2147363475"},
+	["vik_reg_stoc"] = {"vik_estate_agricultural","2147363475"},
+	["vik_reg_waerincwicum"] = {"vik_estate_estate_building","2147363481"},
+	["vik_reg_brug"] = {"vik_estate_agricultural","2147363540"},
+	["vik_reg_scrobbesburg"] = {"vik_estate_agricultural","2147363540"},
+	["vik_reg_alt_clut"] = {"vik_estate_agricultural","2147364076"},
+	["vik_reg_cenn_rigmonid"] = {"vik_estate_agricultural","2147364466"},
+	["vik_reg_scoan"] = {"vik_estate_estate_building","2147364466"},
+	["vik_reg_dear"] = {"vik_estate_agricultural","2147364787"},
+	["vik_reg_rinnin"] = {"vik_estate_agricultural","2147364787"},
+	["vik_reg_ros_cuissine"] = {"vik_estate_agricultural","2147364787"},
+	["vik_reg_maeldune"] = {"vik_estate_agricultural","2147366794"},
+	["vik_reg_domuc"] = {"vik_estate_agricultural","2147366741"},
+	["vik_reg_doneceaster"] = {"vik_estate_agricultural","2147367004"},
+	["vik_reg_dun_beccan"] = {"vik_estate_agricultural","2147365995"},
+	["vik_reg_ioua"] = {"vik_estate_estate_building","2147366152"},
+	["vik_reg_na_seciri"] = {"vik_estate_agricultural","2147366168"}
+}--:map<string, {string, string}>
 
+for region_name, estate_info in pairs(start_pos_estates) do
+	et:register_startpos_estate(region_name, estate_info[2], estate_info[1])
+end

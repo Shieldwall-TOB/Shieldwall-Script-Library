@@ -51,6 +51,11 @@ local function get_estate_bundle(estate)
         bundle_prefix = "resource"
     end
     local bundle_suffix = "_other"
+    if bundle_prefix == nil then
+        et:log("Bundle prefix in get estate bundle is nil! SOmething went wrong!")
+        et:log("The errant estate has type ["..estate:type().."], is owned by faction ["..estate._faction.."] ")
+        return nil
+    end
     return "shield_"..bundle_prefix.."_estate"..bundle_suffix
 end
 
@@ -111,6 +116,9 @@ cm:add_listener(
 
 cm:register_first_tick_callback( function()
     if cm:is_new_game() then
+        for region, info in pairs(et._startPosEstates) do
+            et:process_start_pos_estate(info._ownerName, info._region, info._estateType)
+        end
         local region_list = dev.region_list()
         for i = 0, region_list:num_items() - 1 do
             local current_region = region_list:item_at(i)
