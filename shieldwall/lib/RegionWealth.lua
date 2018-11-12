@@ -61,8 +61,10 @@ function region_wealth_manager.process_end_turn(self, region)
                 local char_list = fact_list:item_at(i):character_list()
                 for j = 0, char_list:num_items() - 1 do
                     local char = char_list:item_at(j)
-                    if char:region():name() == region then
-                        self._currentLevels[region] = 1
+                    if (not char:region():is_null_interface()) then
+                        if char:region():name() == region then
+                            self._currentLevels[region] = 1
+                        end
                     end
                 end
             end

@@ -3,6 +3,9 @@ local season_cache = -1 --:number
 
 --v function()
 local function apply_season_effects()
+    if not dev.is_game_created() then
+        return
+    end
     local prefix = CONST.season_bundle_prefix
     local old_bundle = prefix .. season_cache
     local new_season = cm:model():season()
