@@ -60,6 +60,7 @@ cm:add_listener(
     true
 )
 
+
 dev.post_first_tick(function(context) 
     local humans = cm:get_human_factions()
     for j = 1, #humans do
@@ -71,12 +72,13 @@ dev.post_first_tick(function(context)
     end
 end)
 
+local cancel_order = false --:boolean
 
 cm:add_listener(
     "RegionSelectedTitlesUI",
     "SettlementSelected",
     function(context)
-        return context:garrison_residence():faction():is_human() and context:garrison_residence():region():has_governor()
+        return context:garrison_residence():faction():is_human() and context:garrison_residence():region():has_governor() and (not cancel_order)
     end,
     function(context)
         local cqi = context:garrison_residence():region():governor():cqi()
@@ -84,13 +86,23 @@ cm:add_listener(
             function()
                 local panel = dev.get_uic(cm:ui_root(), "layout", "info_panel_holder", "primary_info_panel_holder", "info_panel_background", "ProvinceInfoPopup", "subpanel_character")
                 if not not panel then
+                    cancel_order = true
                     local title = dev.get_uic(panel, "dy_title")
                     local name = dev.get_uic(panel, "dy_name")
                     local old_title = title:GetStateText()
                     local old_name = name:GetStateText()
-                    name:SetStateText(old_name.."; " ..old_title)
+                    if old_title and old_name then 
+                        name:SetStateText(old_name.."; " ..old_title)
+                    else
+                        dev.log(" Warn, nil arg passed to CA UIC ","CHM")
+                    end
                     local title_trait = charm:get_character(cqi):current_title()
-                    title:SetStateText(CONST.titles_localisation()[title_trait])
+                    if not (CONST.titles_localisation()[title_trait] == nil) then
+                        title:SetStateText(CONST.titles_localisation()[title_trait])
+                    else
+                        dev.log(" Warn, nil arg passed to CA UIC ","CHM")
+                    end
+                    cancel_order = false 
                 end
             end, 0.1
         )
@@ -103,24 +115,35 @@ cm:add_listener(
     "CharacterSelectedTitlesUI",
     "CharacterSelected",
     function(context)
-        return context:character():faction():is_human() and context:character():has_military_force()
+        return context:character():faction():is_human() and context:character():has_military_force() and (not cancel_order)
     end,
     function(context)
         local cqi = context:character():cqi()
         dev.callback(
             function()
+                cancel_order = true
                 local panel = dev.get_uic(cm:ui_root(), "layout", "info_panel_holder", "primary_info_panel_holder", "info_panel_background", "CharacterInfoPopup", "subpanel_character")
                 if not not panel then
                     local title = dev.get_uic(panel, "dy_type")
                     local name = dev.get_uic(panel, "dy_name")
                     local old_title = title:GetStateText()
                     local old_name = name:GetStateText()
-                    name:SetStateText(old_name.."; " ..old_title)
+                    if old_title and old_name then 
+                        name:SetStateText(old_name.."; " ..old_title)
+                    else
+                        dev.log(" Warn, nil arg passed to CA UIC ","CHM")
+                    end
                     local title_trait = charm:get_character(cqi):current_title()
-                    title:SetStateText(CONST.titles_localisation()[title_trait])
+                    if not (CONST.titles_localisation()[title_trait] == nil) then
+                        title:SetStateText(CONST.titles_localisation()[title_trait])
+                    else
+                        dev.log(" Warn, nil arg passed to CA UIC ","CHM")
+                    end
+                    cancel_order = false 
                 end
             end, 0.1
         )
+        
     end,
     true
 )
