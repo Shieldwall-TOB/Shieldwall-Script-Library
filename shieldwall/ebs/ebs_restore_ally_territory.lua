@@ -44,6 +44,24 @@ cm:add_listener(
                 end
             end
         end
+        local ai_new_regions = rot:get_ai_new_region_pairs()
+        local humans = cm:get_human_factions()
+        for k = 1, #humans do
+            local human = dev.get_faction(humans[k])
+            for faction_name, regions in pairs(ai_new_regions) do
+                local faction = dev.get_faction(faction_name)
+                if human:allied_with(faction) or faction:is_vassal_of(human) then
+                    for i = 1, #regions do
+                        region_name = regions[i]
+                        if rot:region_has_past_owner(region_name, human:name()) then
+                            rot:log("AI faction ["..faction_name.."] is returning region ["..region_name.."] to human faction ["..human:name().."] who is player ["..k.."] ")
+                            cm:transfer_region_to_faction(region_name, human:name())
+                        end
+                    end
+                end
+            end
+        end
+        rot:clear_ai_new_regions()
     end,
     true
 )

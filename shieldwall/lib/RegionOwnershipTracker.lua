@@ -13,6 +13,7 @@ function region_owner_tracker.init()
     self._removalTimer = 15 --:number
     --how many turns until the thing deletes past owners.
     self._playerNewRegions = {} --:map<string, vector<string>>
+    self._aiNewRegions = {} --:map<string, vector<string>>
     --stores regions aquired by the player between turns.
     _G.rot = self
     _G.region_tracker = self
@@ -31,6 +32,15 @@ function region_owner_tracker.player_captures_region(self, region, player)
     table.insert(self._playerNewRegions[player], region)
 end
 
+--v function(self: ROT, region: string, ai: string)
+function region_owner_tracker.ai_captures_region(self, region, ai)
+    if self._aiNewRegions[ai] == nil then
+        self._aiNewRegions[ai] = {}
+    end
+    table.insert(self._aiNewRegions[ai], region)
+end
+
+
 --v function(self: ROT, region: string)
 function region_owner_tracker.transfer_or_add_region(self, region)
     region_obj = dev.get_region(region)
@@ -48,6 +58,8 @@ function region_owner_tracker.transfer_or_add_region(self, region)
         end
         if new_owner:is_human() then
             self:player_captures_region(region, new_owner:name())
+        elseif new_owner:name() ~= "rebels" then
+            self:ai_captures_region(region, new_owner:name())
         end
         self:log("Region ["..region.."] is being transfered from ["..old_owner.."] to ["..new_owner:name().."]")
         self._pastRegionOwners[region][old_owner] = cm:model():turn_number()
@@ -78,6 +90,33 @@ function region_owner_tracker.get_past_owners(self, region)
     return self._pastRegionOwners[region]
 end
 
+--v function(self: ROT, region: string, faction: string) --> boolean
+function region_owner_tracker.region_has_past_owner(self, region, faction)
+    if self._pastRegionOwners[region] == nil then
+        self._pastRegionOwners[region] = {}
+    end
+    for owner, time in pairs(self._pastRegionOwners[region]) do
+        if owner == faction then
+            return true
+        end
+    end
+    return false
+end
+
+--v function(self: ROT) --> map<string, vector<string>>
+function region_owner_tracker.get_ai_new_region_pairs(self)
+    if self._aiNewRegions == nil then
+        self._aiNewRegions = {}
+    end
+    return self._aiNewRegions
+end
+
+--v function(self: ROT)
+function region_owner_tracker.clear_ai_new_regions(self)
+    self._aiNewRegions = {}
+end
+
+
 --v function(self: ROT, player: string) --> vector<string>
 function region_owner_tracker.get_player_new_regions(self, player)
     if self._playerNewRegions[player] == nil then
@@ -91,12 +130,15 @@ function region_owner_tracker.clear_player_new_regions(self, player)
     self._playerNewRegions[player] = {}
 end
 
+
+
 --v function(self: ROT) --> ROT_SAVE
 function region_owner_tracker.save(self)
     local svtable = {}
     svtable._owners = self._currentRegionOwners
     svtable._pastOwners = self._pastRegionOwners
     svtable._playerNewRegions = self._playerNewRegions
+    svtable._aiNewRegions = self._aiNewRegions
     return svtable
 end
 
@@ -105,6 +147,7 @@ function region_owner_tracker.load(self, svtable)
     self._currentRegionOwners = svtable._owners or {}
     self._pastRegionOwners = svtable._pastOwners  or {}
     self._playerNewRegions = svtable._playerNewRegions or {}
+    self._aiNewRegions = svtable._aiNewRegions or {}
 end
 
 
