@@ -19,7 +19,7 @@ return {
     region_wealth_floor = 0,
     season_bundle_prefix = "shield_season_",
     charm_minor_noble_threshold = 1,
-    charm_middle_noble_threshold = 5,
+    charm_middle_noble_threshold = 4,
     charm_great_noble_threshold = 10,
     charm_title_prefix = "shield_title_",
     charm_leader_title_prefix = "shield_leader_titles_",
