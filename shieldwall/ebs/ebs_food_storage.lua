@@ -14,7 +14,11 @@ cm:add_listener(
         if food_after_storage > 0 then
             food_after_storage = math.ceil(food_after_storage*CONST.food_storage_percentage)
         end
-        fkm:mod_food_storage(faction:name(), food_after_storage)
+        local mod = 0
+        if not faction:is_human() and food_value > 0 then
+            mod = 50
+        end
+        fkm:mod_food_storage(faction:name(), food_after_storage+mod)
     end,
     true
 )
