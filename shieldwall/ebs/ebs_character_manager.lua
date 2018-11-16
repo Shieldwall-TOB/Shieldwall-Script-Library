@@ -147,3 +147,17 @@ cm:add_listener(
     end,
     true
 )
+
+
+cm:add_listener(
+    "EstateEXPCharTurnStart",
+    "CharacterTurnStart",
+    function(context)
+        return context:character():faction():name() ~= "rebels"
+    end,
+    function(context)
+        charm:apply_estate_exp_for_character(context:character():cqi(), context)
+    end,
+    true
+)
+

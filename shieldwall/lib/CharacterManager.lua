@@ -15,6 +15,12 @@ function character_manager.init(fkm)
     _G.charm = self
 end
 
+
+--v method(text: any)
+function character_manager:log(text)
+    dev.log(tostring(text), "CHM")
+end
+
 --v function(self: CHAR_MANAGER) --> FKM
 function character_manager.fkm(self)
     return self._fkm
@@ -81,6 +87,16 @@ function character_manager.load_character(self, sv_table)
     self._characterData[cqi] = loaded_char
 end
 
+
+--v function(self: CHAR_MANAGER, cqi: CA_CQI) --> number
+function character_manager.get_estate_size_for_character(self, cqi)
+    local points = 0 --:number
+    for region, estate in pairs(self:get_character(cqi):estates()) do
+        points = points + self:get_title_points_for_estate_type(estate:type())
+    end
+    return points
+end
+
     
 
 --v function(self: CHAR_MANAGER, cqi: CA_CQI)
@@ -105,27 +121,56 @@ function character_manager.update_title_for_character(self, cqi)
             return
         end
     end
-    local points = 0 --:number
-    for region, estate in pairs(self:get_character(cqi):estates()) do
-        points = points + self:get_title_points_for_estate_type(estate:type())
+    local level --:number
+    local points = self:get_estate_size_for_character(cqi)
+    if points >= CONST.charm_great_noble_threshold then
+        level = 2
+    elseif points >= CONST.charm_middle_noble_threshold then
+        level = 1
+    elseif points >= CONST.charm_minor_noble_threshold then
+        level = 0
     end
     local subculture = dev.get_character(cqi):faction():subculture()
     local character = self:get_character(cqi)
-    local level --:number
     local home_estate = character:get_home_estate()
-    if points > CONST.charm_great_noble_threshold then
-        level = 2
-    elseif points > CONST.charm_middle_noble_threshold then
-        level = 1
-
-    elseif points > CONST.charm_minor_noble_threshold then
-        level = 0
-    end
     if level == nil or home_estate == "no_estate" then
         character:update_title("no_title")
     else
         local title = CONST.charm_title_prefix .. home_estate .. "_" .. self:get_title_key_for_sc(subculture) .. "_" .. tostring(level)
         character:update_title(title)
+    end
+end
+
+--v function(self: CHAR_MANAGER, cqi: CA_CQI, context: CA_CONTEXT)
+function character_manager.apply_estate_exp_for_character(self, cqi, context)
+    if dev.get_character(cqi):is_faction_leader() and not dev.get_character(cqi):faction():is_human() then
+        effect.add_agent_experience("Trigger_Shieldwall_Non_Player_King", 15, 0, context)
+        return
+    end
+    local points = self:get_estate_size_for_character(cqi)
+    local exp --:number
+    local event --:string
+    if points >= CONST.charm_exp_highest then
+        exp = 42
+        event = "Trigger_Estate_Highest"
+    elseif points >= CONST.charm_exp_high then
+        exp = 34
+        event = "Trigger_Estate_High"
+    elseif points >= CONST.charm_exp_medium then
+        exp = 28
+        event = "Trigger_Estate_Medium"
+    elseif points >= CONST.charm_exp_small then
+        exp = 24
+        event = "Trigger_Estate_Small"
+    elseif points >= CONST.charm_exp_smallest then
+        exp = 20
+        event = "Trigger_Estate_Smallest"
+    end
+    if exp and event then
+        if dev.get_character(cqi):faction():is_human() then
+            self:log("Applying ["..exp.."] exp with exp event ["..event.."] to character ["..tostring(cqi).."] with title ["..self:get_character(cqi):current_title().."] ")
+        end
+        effect.add_agent_experience(event, exp, 0, context)
     end
 end
 

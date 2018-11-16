@@ -394,7 +394,7 @@
 
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
-
+--# assume CA_EFFECT.add_agent_experience: function(trigger: string, exp: number, auth: number, context: CA_CONTEXT)
 
 
 -- GLOBAL FUNCTIONS

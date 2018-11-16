@@ -2,7 +2,7 @@ return {
     __write_output_to_logfile = true,
     __should_output_ui = false,
     __log_game_objects = false,
-    __no_fog = true,
+    __no_fog = false,
     __log_settlements = true,
     __log_characters = true,
     enable_great_kingdom_bonus = true,
@@ -27,7 +27,12 @@ return {
         if _G.traits_localized_content == nil then
             return {}
         else return _G.traits_localized_content end 
-    end
+    end,
+    charm_exp_smallest = 1,
+    charm_exp_small = 4,
+    charm_exp_medium = 7,
+    charm_exp_high = 10,
+    charm_exp_highest = 15
 }
 
 
