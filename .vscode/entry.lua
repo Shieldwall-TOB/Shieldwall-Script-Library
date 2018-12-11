@@ -1,8 +1,3 @@
-------------------------
---UI MODDING FRAMEWORK--
-------------------------
---require("uimf/lib_uimf")
---require("shieldwall/lib/uimf_tests")
 
 -----------------------
 --SHIELDWALL SCRIPTS---
@@ -14,7 +9,13 @@
     3. The Event Based Scripting section is for active elements of the script
 --]]
 CONST = require("shieldwall/ShieldWallConstants")
+------------------------
+--UI MODDING FRAMEWORK--
+------------------------
+local ui_module = require("shieldwall/ui_script/ui_module")
+------------------------
 dev = require("shieldwall/dev")
+dev.ui_module = ui_module
 --library
 require("shieldwall/lib/EstateManagement")
 require("shieldwall/lib/VassalFeatures")
