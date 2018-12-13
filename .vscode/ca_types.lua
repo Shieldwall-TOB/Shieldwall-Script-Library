@@ -187,6 +187,7 @@
 --# assume CA_MODEL.character_for_command_queue_index: method(CA_CQI) --> CA_CHAR
 --# assume CA_MODEL.has_character_command_queue_index: method(CA_CQI) --> boolean
 --# assume CA_MODEL.military_force_for_command_queue_index: method(CA_CQI) --> CA_FORCE
+--# assume CA_MODEL.has_military_force_command_queue_index: method(CA_CQI) --> boolean
 --# assume CA_MODEL.faction_for_command_queue_index: method(CA_CQI) --> CA_FACTION
 
 --CA SCRIPT

@@ -425,6 +425,15 @@ local function dev_get_faction(key)
     return nil;
 end
 
+--v function(cqi: CA_CQI) --> CA_FORCE
+local function dev_get_force(cqi)
+    if cm:model():has_military_force_command_queue_index(cqi) then
+        return cm:model():military_force_for_command_queue_index(cqi)
+    else
+        return nil
+    end
+end
+
 --v function(region_key: string) --> CA_REGION
 local function dev_get_region(region_key)
     return cm:model():world():region_manager():region_by_key(region_key);
@@ -581,6 +590,7 @@ return {
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,
+    get_force = dev_get_force,
     lookup = char_lookup_str,
     region_list = dev_region_list,
     faction_list = dev_faction_list,

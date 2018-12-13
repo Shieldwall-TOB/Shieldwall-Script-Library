@@ -1,6 +1,6 @@
 local et = _G.et
 
-ESTATES_EFFECTS = {
+local ESTATES_EFFECTS = {
 	["vik_abbey_1"] = { ["building"] = "vik_abbey_1", ["effect"] = "vik_estates_agricultural", ["effect_scope"] = "building_to_building_own", ["value"] = 1, ["value_damaged"] = 1, ["value_ruined"] = 0 },
 	["vik_abbey_2"] = { ["building"] = "vik_abbey_2", ["effect"] = "vik_estates_agricultural", ["effect_scope"] = "building_to_building_own", ["value"] = 1, ["value_damaged"] = 1, ["value_ruined"] = 0 },
 	["vik_abbey_3"] = { ["building"] = "vik_abbey_3", ["effect"] = "vik_estates_agricultural", ["effect_scope"] = "building_to_building_own", ["value"] = 1, ["value_damaged"] = 1, ["value_ruined"] = 0 },
