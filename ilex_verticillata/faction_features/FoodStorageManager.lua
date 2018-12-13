@@ -1,14 +1,20 @@
 -- each faction object has a food storage manager object attached which handles their food exports, inports and storage
-
 local food_manager = {} --# assume food_manager: FOOD_MANAGER
 
 
---content API--
+-------------------------
+-----STATIC CONTENT------
+-------------------------
+
 food_manager._buildingFoodStorageCap = {} --:map<string, number>
 --v function(building: string, cap_effect: number)
 function food_manager.add_food_storage_cap_effect_to_building(building, cap_effect)
     food_manager._buildingFoodStorageCap[building] = cap_effect
 end
+
+----------------------------
+----OBJECT CONSTRUCTOR------
+----------------------------
 
 --v function(faction: FACTION_DETAIL) --> FOOD_MANAGER
 function food_manager.new(faction)
@@ -26,6 +32,11 @@ function food_manager.new(faction)
 
     return self
 end
+
+
+------------------------------------
+----SAVING AND LOADING FUNCTIONS----
+------------------------------------
 
 --v function(faction: FACTION_DETAIL, savetable: table) --> FOOD_MANAGER
 function food_manager.load(faction, savetable)
@@ -47,6 +58,9 @@ end
 
 
 return {
-    add_food_storage_cap_effect_to_building =  food_manager.add_food_storage_cap_effect_to_building,
-    new = food_manager.new
+    --creation
+    new = food_manager.new,
+    load = food_manager.load,
+    --content API
+    add_food_storage_cap_effect_to_building =  food_manager.add_food_storage_cap_effect_to_building
 }

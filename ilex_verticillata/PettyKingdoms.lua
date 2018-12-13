@@ -1,11 +1,22 @@
 -- The Pety Kingdoms Manager is a suite of campaign features designed for shieldwall. 
 -- It is the script side data tracking archetecture behind all campaign features.
-
--- why the fuck is it called this? I don't bloody know it was the original name of the mod.
--- see, you learn stuff by reading useless comments. 
-
 local petty_kingdoms_manager = {} --# assume petty_kingdoms_manager: PKM
+--v method(text: any)
+function petty_kingdoms_manager:log(text)
+    dev.log(tostring(text), "PKM")
+end
+
+----------------------------
+-----SUBCLASS LIBARIES------
+----------------------------
 local faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
+-------------------------
+-----STATIC CONTENT------
+-------------------------
+
+----------------------------
+----OBJECT CONSTRUCTOR------
+----------------------------
 
 --v function()
 function petty_kingdoms_manager.init()
@@ -15,15 +26,15 @@ function petty_kingdoms_manager.init()
         __type = function() return "PETTY_KINGDOMS_MANAGER" end
     }) --# assume self: PKM
 
-    self._season = -1
+    self._lastSeason = -1
     self._factions = {}
+    self._selectedProvince = nil
+    self._selectedCharacter = nil
+    self._selectedRegion = nil
 
     _G.pkm = self
 
 end
 
 
---v method(text: any)
-function petty_kingdoms_manager:log(text)
-    dev.log(tostring(text), "PKM")
-end
+petty_kingdoms_manager.init()
