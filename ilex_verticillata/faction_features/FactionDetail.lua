@@ -67,6 +67,11 @@ end
 ------NIL SAFE QUERIES-----
 ---------------------------
 
+--v function(self: FACTION_DETAIL) --> string
+function faction_detail.name(self)
+    return self._name
+end
+
 ----------------------------
 -----SUBCLASS LIBARIES------
 ----------------------------
@@ -111,6 +116,8 @@ end
 
 
 return {
+    --existence query
+    has_faction = faction_detail.has_faction,
     --creation
     new = faction_detail.new,
     load = faction_detail.load,

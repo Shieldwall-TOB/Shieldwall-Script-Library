@@ -6,10 +6,7 @@ function petty_kingdoms_manager:log(text)
     dev.log(tostring(text), "PKM")
 end
 
-----------------------------
------SUBCLASS LIBARIES------
-----------------------------
-local faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
+
 -------------------------
 -----STATIC CONTENT------
 -------------------------
@@ -40,6 +37,12 @@ function petty_kingdoms_manager.init()
     _G.pkm = self
 
 end
+
+----------------------------
+-----SUBCLASS LIBARIES------
+----------------------------
+local faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
+
 
 
 petty_kingdoms_manager.init()
