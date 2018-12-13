@@ -121,4 +121,4 @@ end
 
 
 
-return shield_ui.init()
+return shield_ui.init

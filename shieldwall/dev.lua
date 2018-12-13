@@ -519,6 +519,55 @@ local function dev_game_created()
     return _G.game_created
 end
 
+--v function(text: any)
+local function dev_save_logger(text)
+    if not CONST.__should_output_save_load then
+        return
+    end
+    MODLOG(tostring(text), "SVL")
+end
+
+
+--v [NO_CHECK] function(object: any, ...:string) --> table
+function dev_save_object_as_plain_table(object, ...)
+    if CONST.__should_output_save_load then
+        MODLOG("Saving data for object: ["..tostring(object).."]", "SAV")
+    end
+    local sv_tab = {} --:table
+    for i = 1, #arg do
+        local field = arg[i]
+        if object[field] and not is_function(object[field]) then 
+            sv_tab[field] = object[field] 
+            if CONST.__should_output_save_load then
+                if type(sv_tab[field]) == "string" or type(sv_tab[field]) == "number" then
+                    MODLOG("\t Saved field ["..field.."] which had a value of ["..sv_tab[field].."]", "SAV")
+                else
+                    MODLOG("\t Saved field ["..field.."] which had a value type ["..type(sv_tab[field]).."]", "SAV")
+                end
+            end
+        end
+    end
+    return sv_tab
+end
+
+--v [NO_CHECK] function(sv_tab: table, object: any, ...:string) 
+function dev_load_object_from_plain_table(sv_tab, object, ...)
+    if CONST.__should_output_save_load then
+        MODLOG("Loading data for object: ["..tostring(object).."]", "LOD")
+    end
+    for i = 1, #arg do
+        local field = arg[i]
+        if sv_tab[field] then
+            object[field] = sv_tab[field]
+            if type(sv_tab[field]) == "string" or type(sv_tab[field]) == "number" then
+                MODLOG("\t Loaded field ["..field.."] which had a value of ["..sv_tab[field].."]", "LOD")
+            else
+                MODLOG("\t Loaded field ["..field.."] which had a value type ["..type(sv_tab[field]).."]", "LOD")
+            end
+        end
+    end
+end
+
 
 return {
     log = MODLOG,
@@ -541,5 +590,7 @@ return {
     first_tick = dev_first_tick,
     pre_first_tick = dev_pre_first_tick,
     post_first_tick = dev_post_first_tick,
-    is_game_created = dev_game_created
+    is_game_created = dev_game_created,
+    save = dev_save_object_as_plain_table,
+    load = dev_load_object_from_plain_table
 }

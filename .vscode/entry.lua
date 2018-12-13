@@ -1,4 +1,3 @@
-
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
@@ -12,10 +11,14 @@ CONST = require("shieldwall/ShieldWallConstants")
 ------------------------
 --UI MODDING FRAMEWORK--
 ------------------------
-local ui_module = require("shieldwall/ui_script/ui_module")
-------------------------
+local ok, err = pcall(function()
 dev = require("shieldwall/dev")
-dev.ui_module = ui_module
+
+------------------------
+dev.pre_first_tick(function(context)
+	dev.ui_module = require("shieldwall/ui_script/ui_module")
+end)
+
 --library
 --require("shieldwall/lib/EstateManagement")
 --require("shieldwall/lib/VassalFeatures")
@@ -23,6 +26,13 @@ dev.ui_module = ui_module
 --require("shieldwall/lib/RegionWealth")
 --require("shieldwall/lib/UnitCompEffects")
 --require("shieldwall/lib/CharacterManager")
+end)
+if not not ok then
+	dev.log("Successfully loaded shieldwall library!")
+else
+	dev.log("Error loading shieldwall library!")
+	dev.log(tostring(err))
+end
 --content
 --require("shieldwall/content/KingdomsContent")
 --require("shieldwall/content/NamesAndPlaces")
@@ -43,3 +53,5 @@ dev.ui_module = ui_module
 --require("shieldwall/ebs/ebs_food_storage")
 --require("shieldwall/ebs/ebs_seasonal_effects")
 --require("shieldwall/ebs/ebs_character_manager")
+
+require("ilex_verticillata/PettyKingdoms")
