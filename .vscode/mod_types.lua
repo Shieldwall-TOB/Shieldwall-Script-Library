@@ -1,10 +1,10 @@
 --# assume global class PKM
---# assume global class FACTION
+--# assume global class FACTION_DETAIL
 --# assume global class FOOD_MANAGER
 --# assume global class PERSONALITY_MANAGER
 --# assume global class CHARACTER_DETAIL
 --# assume global class RECRUITER_CHARACTER
---# assume global class FACTION_PROVINCE_DETAIL
+--# assume global class PROVINCE_DETAIL
 --# assume global class REGION_DETAIL
 
 

@@ -10,7 +10,7 @@ function food_manager.add_food_storage_cap_effect_to_building(building, cap_effe
     food_manager._buildingFoodStorageCap[building] = cap_effect
 end
 
---v function(faction: FACTION) --> FOOD_MANAGER
+--v function(faction: FACTION_DETAIL) --> FOOD_MANAGER
 function food_manager.new(faction)
     local self = {}
     setmetatable(self, {
@@ -27,7 +27,7 @@ function food_manager.new(faction)
     return self
 end
 
---v function(faction: FACTION, savetable: table) --> FOOD_MANAGER
+--v function(faction: FACTION_DETAIL, savetable: table) --> FOOD_MANAGER
 function food_manager.load(faction, savetable)
     local self = {}
     setmetatable(self, {

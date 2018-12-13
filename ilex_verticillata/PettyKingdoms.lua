@@ -5,7 +5,7 @@
 -- see, you learn stuff by reading useless comments. 
 
 local petty_kingdoms_manager = {} --# assume petty_kingdoms_manager: PKM
-local Faction = require("ilex_verticillata/faction_features/Faction")
+local faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
 
 --v function()
 function petty_kingdoms_manager.init()
