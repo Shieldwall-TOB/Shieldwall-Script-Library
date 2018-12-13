@@ -24,6 +24,7 @@ function region_detail.new(region_key)
         return region_detail
     end
 
+
     return self
 end
 
