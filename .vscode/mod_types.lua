@@ -14,9 +14,16 @@
 
 
 
-
+--[[Content]]
 _G.traits_localized_content = {} --:map<string, string>
 
 
+--[[UI Types]]
 
 
+
+--# type global BUTTON_TYPE = "" | " "
+
+
+
+--# assume global class SHIELD_UI

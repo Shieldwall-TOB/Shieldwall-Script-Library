@@ -1,8 +1,6 @@
---# type global BUTTON_TYPE = "" | " "
-
-
-
---# assume global class SHIELD_UI
+------------------------
+--UI MODDING FRAMEWORK--
+------------------------
 
 local Components = require("shieldwall/ui_script/components")
 local shield_ui = {} --# assume shield_ui: SHIELD_UI
@@ -22,7 +20,8 @@ function shield_ui.log(self, text)
     popLog :close()
 end
     
-function shield_ui.init()
+--v function() --> SHIELD_UI
+function shield_ui.init() 
     local self = {}
     setmetatable(self, {
         __index = shield_ui
@@ -32,7 +31,7 @@ function shield_ui.init()
     local component = root:Find("Garbage");
     if not component then
         self:log("Could not create a script dummy, util init failed!")
-        return
+        return nil
     else
         self.garbage =  UIComponent(component);
     end
@@ -40,6 +39,7 @@ function shield_ui.init()
     
 
     _G.shw_uim = self
+    return self
 end
 
 
