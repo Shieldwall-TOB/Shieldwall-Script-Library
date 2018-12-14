@@ -9,10 +9,10 @@
     4. The CONST sections data drive script values.
 --]]
 
+--Load Constants
 CONST = require("shieldwall/ShieldWallConstants")
-------------------------
---UI MODDING FRAMEWORK--
-------------------------
+
+--Load Libraries
 local ok, err = pcall(function()
     --LIB MANIFEST:
     dev = require("shieldwall/dev")
@@ -32,6 +32,7 @@ else
     dev.log("************************************************************")
 end
 
+--Load Model
 local ok, err = pcall(function()
     --MODEL MANIFEST: 
     require("ilex_verticillata/PettyKingdoms") 
@@ -45,10 +46,10 @@ else
     dev.log("************************************************************")
 end
 
-
+--Load Features
 local ok, err = pcall(function()
-    --EBS MANIFEST: 
-        --empty for now
+    --FEATURES MANIFEST: 
+    require("shieldwall/features/CitiesLandmarks")
 end)
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")
