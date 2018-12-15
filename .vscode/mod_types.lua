@@ -8,7 +8,7 @@
             --# assume global class UNIT_EFFECTS_MANAGER
         --# assume global class PROVINCE_DETAIL
             --# assume global class POP_MANAGER
-            --# assume global class REGION_DETAIL
+    --# assume global class REGION_DETAIL
 --[[Enumerations]]
 --# type global POP_CASTE = "serf" | "lord" | "monk" | "foreign" 
 

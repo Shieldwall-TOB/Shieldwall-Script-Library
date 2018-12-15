@@ -76,9 +76,9 @@ end
 -----SUBCLASS LIBARIES------
 ----------------------------
 
-local food_manager = require("ilex_verticillata/faction_features/FoodStorageManager")
-local province_detail = require("ilex_verticillata/province_features/ProvinceDetail")
-local character_detail = require("ilex_verticillata/character_features/CharacterDetail")
+food_manager = require("ilex_verticillata/faction_features/FoodStorageManager")
+province_detail = require("ilex_verticillata/province_features/ProvinceDetail")
+character_detail = require("ilex_verticillata/character_features/CharacterDetail")
 
 
 
@@ -112,8 +112,17 @@ function faction_detail.get_food_manager(self)
     return self._factionFoodManager
 end
 
+--------------------------------
+----PROVINCE DETAIL OBJECTS-----
+--------------------------------
 
-
+--v function(self: FACTION_DETAIL, province_key: string) --> PROVINCE_DETAIL
+function faction_detail.get_province(self, province_key)
+    if self._provinces[province_key] == nil then
+        self._provinces[province_key] = province_detail.new(self, province_key)
+    end
+    return self._provinces[province_key]
+end
 
 return {
     --existence query

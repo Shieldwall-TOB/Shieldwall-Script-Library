@@ -20,8 +20,8 @@ end
 ----OBJECT CONSTRUCTOR------
 ----------------------------
 
---v function(region_key: string) --> REGION_DETAIL
-function region_detail.new(region_key)
+--v function(model: PKM, region_key: string) --> REGION_DETAIL
+function region_detail.new(model, region_key)
     local self = {} 
     setmetatable(self, {
         __index = region_detail
@@ -32,8 +32,9 @@ function region_detail.new(region_key)
     function self:prototype()
         return region_detail
     end
-
+    self._model = model
     self._name = region_key
+    self._factionProvince = nil --:PROVINCE_DETAIL
     self._buildings = nil --:map<string, boolean>
     self._activeEffects = {} --:map<string, boolean>    
     self._effectCount = 0 --:number
@@ -45,6 +46,37 @@ end
 function region_detail.name(self)
     return self._name
 end
+
+-----------------------------
+-----PROVINCE ATTACHMENT-----
+-----------------------------
+
+--gets if there is currently a province attached
+--v function(self: REGION_DETAIL) --> boolean
+function region_detail.has_province(self)
+    return not not self._factionProvince
+end
+
+--returns the attached province for this region
+--v function(self: REGION_DETAIL) --> PROVINCE_DETAIL
+function region_detail.province_detail(self)
+    if self._factionProvince == nil then
+        self:log("Warning: Asked the region detail ["..self._name.."] for an attached province, but none exists. Try wrapping your code in a check for has_province")
+        return nil
+    end
+    return self._factionProvince
+end
+
+--attaches a new province to this region. Obviously not for external use. 
+--v function(self: REGION_DETAIL, province: PROVINCE_DETAIL)
+function region_detail.add_province(self, province)
+    self._factionProvince = province
+end
+
+
+-----------------------------
+------BUILDING TRACKING------
+-----------------------------
 
 --updates the cache'd buildings
 --v function(self: REGION_DETAIL) 
@@ -126,9 +158,9 @@ function region_detail.save(self)
     return sv_tab
 end
 
---v function(region_key: string, sv_tab: table) --> REGION_DETAIL
-function region_detail.load(region_key, sv_tab)
-    local self = region_detail.new(region_key)
+--v function(model: PKM, region_key: string, sv_tab: table) --> REGION_DETAIL
+function region_detail.load(model, region_key, sv_tab)
+    local self = region_detail.new(model, region_key)
     dev.load(sv_tab, self, "_activeEffects", "_effectsClear")
     return self
 end
@@ -136,6 +168,6 @@ end
 
 return {
     --creation
-    region_detail.new,
-    region_detail.load
+    new = region_detail.new,
+    load = region_detail.load
 }
