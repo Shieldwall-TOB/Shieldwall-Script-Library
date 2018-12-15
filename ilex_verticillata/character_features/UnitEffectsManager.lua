@@ -33,6 +33,11 @@ function unit_effects_manager.add_conditional_effect_to_unit(unit, condition)
     unit_effects_manager._unitEffectConditions[unit] = condition
 end
 
+----------------------------
+----OBJECT CONSTRUCTOR------
+----------------------------
+
+
 --v function(character_detail: CHARACTER_DETAIL) --> UNIT_EFFECTS_MANAGER
 function unit_effects_manager.new(character_detail) 
     local self = {}
@@ -59,8 +64,9 @@ function unit_effects_manager.new(character_detail)
 end
 
 
-
-
+------------------------------------
+----SAVING AND LOADING FUNCTIONS----
+------------------------------------
 
 
 --v function(self: UNIT_EFFECTS_MANAGER) --> table
@@ -76,6 +82,9 @@ function unit_effects_manager.load(character_detail, sv_tab)
     return self
 end
 
+-------------------
+------EFFECTS------
+-------------------
 
 --v function(self: UNIT_EFFECTS_MANAGER, unit: string) --> boolean
 function unit_effects_manager.has_effect_for_unit(self, unit)
@@ -107,6 +116,9 @@ function unit_effects_manager.is_effect_applied(self, effect)
     return not not self._activeEffects[effect]
 end
 
+-----------------------------------
+----STATE CHANGING FUNCTIONS-------
+-----------------------------------
 
 --v function(self: UNIT_EFFECTS_MANAGER)
 function unit_effects_manager.evaluate_force(self)
@@ -135,3 +147,11 @@ function unit_effects_manager.evaluate_force(self)
     end
 end
 
+return {
+    --creation
+    new = unit_effects_manager.new,
+    load = unit_effects_manager.load,
+    --Content API
+    add_effect_to_unit = unit_effects_manager.add_effect_to_unit,
+    add_conditional_effect_to_unit = unit_effects_manager.add_conditional_effect_to_unit
+}
