@@ -69,7 +69,7 @@ end
 ----------------------------
 -----SUBCLASS LIBARIES------
 ----------------------------
-region_detail = require("ilex_verticillata/province_features/RegionDetail")
+
 pop_manager = require("ilex_verticillata/province_features/PopManager")
 
 ------------------------------------

@@ -29,7 +29,8 @@ function petty_kingdoms_manager.init()
     end
 
     self._lastSeason = -1
-    self._factions = {}
+    self._factions = {} --:map<string, FACTION_DETAIL>
+    self._regions = {}  --:map<string, REGION_DETAIL>
     self._selectedProvince = nil
     self._selectedCharacter = nil
     self._selectedRegion = nil
@@ -41,7 +42,8 @@ end
 ----------------------------
 -----SUBCLASS LIBARIES------
 ----------------------------
-local faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
+region_detail = require("ilex_verticillata/province_features/RegionDetail")
+faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
 
 
 
