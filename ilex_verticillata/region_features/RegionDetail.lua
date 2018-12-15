@@ -38,6 +38,13 @@ function region_detail.new(model, region_key)
     self._buildings = nil --:map<string, boolean>
     self._activeEffects = {} --:map<string, boolean>    
     self._effectCount = 0 --:number
+
+    self._estates = {} --:map<string, ESTATE_DETAIL>
+    self._estateChains = {} --:map<string, string>
+    self._numEstates = 0 --:number
+
+
+
     register_to_prototype(self._name, self)
     return self
 end
@@ -72,6 +79,8 @@ end
 function region_detail.add_province(self, province)
     self._factionProvince = province
 end
+
+
 
 
 -----------------------------
@@ -147,6 +156,65 @@ function region_detail.remove_effect_bundle(self, bundle_key)
     self._effectCount = self._effectCount - 1 
 end
 
+-------------------------------
+-----ESTATE DETAIL OBJECTS-----
+-------------------------------
+
+estate_detail = require("ilex_verticillata/region_features/EstateDetail")
+
+--v function(self: REGION_DETAIL) --> number
+function region_detail.num_estates(self)
+    return self._numEstates
+end
+
+--v function(self: REGION_DETAIL, building_key: string) --> ESTATE_DETAIL
+function region_detail.get_estate_detail(self, building_key)
+    if self._estates[building_key] == nil then
+        self:log("WARNING: Asked region ["..self._name.."] for the estate ["..building_key.."] but this region does not an estate for that building key!")
+    end
+    return self._estates[building_key]
+end
+
+--v function(self: REGION_DETAIL) --> map<string, ESTATE_DETAIL>
+function region_detail.estates(self) 
+    return self._estates 
+end
+
+--v function(self: REGION_DETAIL) --> map<string, string>
+function region_detail.estate_chains(self)
+    return self._estateChains
+end
+
+--v function(self: REGION_DETAIL) --> boolean
+function region_detail.has_no_estates(self)
+    return (self._numEstates == 0)
+end
+
+--v function(self: REGION_DETAIL, building_level: string)
+function region_detail.upgrade_estate_building(self, building_level)
+    for estate_key, current_estate_detail in pairs(self._estates) do
+        if current_estate_detail:chain() == estate_detail.estate_chain_for_level(building_level) then
+            current_estate_detail:upgrade_building(building_level)
+        end
+    end
+end
+
+--v function(self: REGION_DETAIL, building_key: string)
+function region_detail.add_estate(self, building_key)
+    local building_chain = estate_detail.estate_chain_for_level(building_key)
+    if self._estateChains[building_chain] then
+        self:upgrade_estate_building(building_key)
+    else
+        self._estates[building_key] = estate_detail.new(self, building_key)
+        self._estateChains[building_chain] = building_key
+        self._numEstates = self._numEstates + 1
+    end
+end
+
+--v function(self: REGION_DETAIL, building_key: string)
+function region_detail.load_estate_detail(self, building_key)
+    self._estates[building_key] = estate_detail.new(self, building_key)
+end
 
 
 ------------------------------------
@@ -154,14 +222,14 @@ end
 ------------------------------------
 --v function(self: REGION_DETAIL) --> table
 function region_detail.save(self)
-    local sv_tab = dev.save(self, "_activeEffects", "_effectsClear")
+    local sv_tab = dev.save(self, "_activeEffects", "_effectsClear", "_estateChains")
     return sv_tab
 end
 
 --v function(model: PKM, region_key: string, sv_tab: table) --> REGION_DETAIL
 function region_detail.load(model, region_key, sv_tab)
     local self = region_detail.new(model, region_key)
-    dev.load(sv_tab, self, "_activeEffects", "_effectsClear")
+    dev.load(sv_tab, self, "_activeEffects", "_effectsClear", "_estateChains")
     return self
 end
 

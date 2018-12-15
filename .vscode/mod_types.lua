@@ -9,10 +9,11 @@
         --# assume global class PROVINCE_DETAIL
             --# assume global class POP_MANAGER
     --# assume global class REGION_DETAIL
+        --# assume global class ESTATE_DETAIL
 --[[Enumerations]]
 --# type global POP_CASTE = "serf" | "lord" | "monk" | "foreign" 
-
-
+--# type global ESTATE_TYPE = "vik_estate_agricultural" | "vik_estate_estate_building" | "vik_estate_estate_building"
+-- // \\                //\\    Rural Estates         //\\    Urban Estates //  \\      //  Church Estates //\\
 
 --[[Content]]
 _G.traits_localized_content = {} --:map<string, string>

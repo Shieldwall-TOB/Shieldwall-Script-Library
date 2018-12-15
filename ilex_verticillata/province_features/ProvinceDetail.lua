@@ -59,7 +59,7 @@ function province_detail.new(faction_detail, province_key)
 end
 
 ---------------------------
-------NIL SAFE QUERIES-----
+------GENERIC METHODS------
 ---------------------------
 
 --v function(self: PROVINCE_DETAIL) --> string
@@ -68,13 +68,29 @@ function province_detail.name(self)
 end
 
 ----------------------------
------SUBCLASS LIBARIES------
+-----POPULATION MANAGERS----
 ----------------------------
 
 pop_manager = require("ilex_verticillata/province_features/PopManager")
 
+--v function(self: PROVINCE_DETAIL) --> boolean
+function province_detail.has_population(self)
+    return not not self._populationManager
+end
 
+--v function(self: PROVINCE_DETAIL) --> POP_MANAGER
+function province_detail.get_population_manager(self)
+    if self._populationManager == nil then 
+        self._populationManager = pop_manager.new(self)
+    end
+    return self._populationManager
+end
 
+--v function(self: PROVINCE_DETAIL, savetable: table) --> POP_MANAGER
+function province_detail.load_population_manager(self, savetable)
+    self._populationManager = pop_manager.load(self, savetable)
+    return self._populationManager
+end
 -------------------------------
 -------REGION SUBOBJECTS-------
 -------------------------------

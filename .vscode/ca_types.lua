@@ -415,11 +415,11 @@
 --# assume global output: function(text: string)
 --# assume global script_error: function(text: string)
 
---# assume global is_string: function(arg: string) --> boolean
---# assume global is_table: function(arg: table) --> boolean
---# assume global is_number: function(arg: number) --> boolean
---# assume global is_function: function(arg: function) --> boolean
---# assume global is_boolean: function(arg: boolean) --> boolean
+--# assume global is_string: function(arg: any) --> boolean
+--# assume global is_table: function(arg: any) --> boolean
+--# assume global is_number: function(arg: any) --> boolean
+--# assume global is_function: function(arg: any) --> boolean
+--# assume global is_boolean: function(arg: any) --> boolean
 --# assume global add_callback: function(callback: function(), timer: number?, name: string?)
 --# assume global char_lookup_str: function(CA_CHAR | CA_CQI) --> string
 

@@ -47,7 +47,7 @@ function faction_detail.new(model, key)
         return faction_detail
     end
     self._name = key
-    self._characters = {} --:map<CA_CQI, CHARACTER_DETAIL>
+    self._characters = {} --:map<string, CHARACTER_DETAIL>
     self._provinces = {} --:map<string, PROVINCE_DETAIL>
     self._factionFoodManager = nil --:FOOD_MANAGER
     self._personalityManager = nil --:PERSONALITY_MANAGER 
@@ -72,13 +72,10 @@ function faction_detail.name(self)
     return self._name
 end
 
-----------------------------
------SUBCLASS LIBARIES------
-----------------------------
 
-food_manager = require("ilex_verticillata/faction_features/FoodStorageManager")
-province_detail = require("ilex_verticillata/province_features/ProvinceDetail")
-character_detail = require("ilex_verticillata/character_features/CharacterDetail")
+
+
+
 
 
 
@@ -103,7 +100,7 @@ end
 -----------------------------
 ----FACTION FOOD MANAGER-----
 -----------------------------
-
+food_manager = require("ilex_verticillata/faction_features/FoodStorageManager")
 --v function(self: FACTION_DETAIL) --> FOOD_MANAGER
 function faction_detail.get_food_manager(self)
     if self._factionFoodManager == nil then
@@ -115,7 +112,7 @@ end
 --------------------------------
 ----PROVINCE DETAIL OBJECTS-----
 --------------------------------
-
+province_detail = require("ilex_verticillata/province_features/ProvinceDetail")
 --v function(self: FACTION_DETAIL, province_key: string, save_data: table) --> PROVINCE_DETAIL
 function faction_detail.load_province(self, province_key, save_data)
     self._provinces[province_key] = province_detail.load(self, province_key, save_data)
@@ -129,6 +126,34 @@ function faction_detail.get_province(self, province_key)
     end
     return self._provinces[province_key]
 end
+
+-----------------------------------
+-----CHARACTER DETAIL OBJECTS------
+-----------------------------------
+character_detail = require("ilex_verticillata/character_features/CharacterDetail")
+
+--v function(faction_detail: FACTION_DETAIL, cqi: CA_CQI) --> CHARACTER_DETAIL
+local function raw_get_faction_detail_character_by_cqi(faction_detail, cqi)
+    return faction_detail._characters[tostring(cqi)]
+end
+
+
+--v function(self: FACTION_DETAIL, cqi: string, save_data: table) --> CHARACTER_DETAIL
+function faction_detail.load_character(self, cqi, save_data)
+    self._characters[cqi] = character_detail.load(self, cqi, save_data)
+    return self._characters[cqi]
+end
+
+--v function(self: FACTION_DETAIL, cqi: CA_CQI) --> CHARACTER_DETAIL
+function faction_detail.get_character(self, cqi)
+    local cqi = tostring(cqi)
+    if self._characters[cqi] == nil then
+        self._characters[cqi] = character_detail.new(self, cqi)
+    end
+    return self._characters[cqi]
+end
+
+
 
 return {
     --existence query

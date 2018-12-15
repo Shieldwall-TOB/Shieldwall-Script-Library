@@ -46,7 +46,7 @@ end
 -----REGION DETAIL LIB------
 ----------------------------
 
-region_detail = require("ilex_verticillata/province_features/RegionDetail")
+region_detail = require("ilex_verticillata/region_features/RegionDetail")
 
 --v function(self: PKM, region_key: string, savedata: table) --> REGION_DETAIL
 function petty_kingdoms_manager.load_region(self, region_key, savedata)
@@ -122,20 +122,41 @@ end
 local function OnGameLoaded(context)
     local region_bank = cm:load_value("pkm_region_detail", {}, context)
     for region_key, region_save in pairs(region_bank) do
-        pkm:load_region(region_key, region_save)
+        local ld_region_detail = pkm:load_region(region_key, region_save)
+        for chain_key, building_key in pairs(ld_region_detail:estate_chains()) do
+            ld_region_detail:load_estate_detail(building_key)
+        end
     end
+    --[[ Loaded tables ]]
     local faction_bank = cm:load_value("pkm_faction_detail", {}, context)
+    --# assume faction_bank: map<string, table>
     local province_bank = cm:load_value("pkm_province_detail", {}, context)
+    --# assume province_bank: map<string, map<string, table>>
     local food_manager_bank = cm:load_value("pkm_faction_food_manager", {}, context)
+    --# assume food_manager_bank:map<string, table>
     local pop_manager_bank = cm:load_value("pkm_province_pop_manager", {}, context)
+    --# assume pop_manager_bank:map<string, table>
     local character_bank = cm:load_value("pkm_character_detail", {}, context)
+    --# assume character_bank: map<string, map<string, table>>
     local unit_effects_manager_bank = cm:load_value("pkm_character_unit_effects_manager", {}, context)
+    --# assume unit_effects_manager_bank: map<string, table>
+
+
     for faction_key, faction_save in pairs(faction_bank) do
-        local detail = pkm:load_faction(faction_key, faction_save)
+        local ld_faction_detail = pkm:load_faction(faction_key, faction_save)
         local faction_province_bank = province_bank[faction_key]
+        local faction_character_bank = character_bank[faction_key]
         if faction_province_bank then
             for province_key, province_save in pairs(faction_province_bank) do
-                detail:load_province(province_key, province_save)
+                local ld_province_detail = ld_faction_detail:load_province(province_key, province_save)
+                if pop_manager_bank[faction_key.."_"..province_key] then
+                   ld_province_detail:load_population_manager(pop_manager_bank[province_key]) 
+                else
+                    ld_province_detail:get_population_manager()
+                end
+            end
+            for character_cqi_as_string, character_save in pairs(faction_character_bank) do
+                local ld_character_detail = ld_faction_detail:load_character(character_cqi_as_string, character_save) 
             end
         end
     end

@@ -7,15 +7,19 @@ end
 -------------------------
 ----INSTANCE REGISTER----
 -------------------------
-unit_effects_manager._instances = {} --:map<CA_CQI, UNIT_EFFECTS_MANAGER>
---v function(cqi: CA_CQI) --> boolean
+unit_effects_manager._instances = {} --:map<string, UNIT_EFFECTS_MANAGER>
+--v function(cqi: CA_CQI | string) --> boolean
 function unit_effects_manager.has_force(cqi) 
+    if is_number(cqi) then
+        cqi = tostring(cqi)
+    end
+    --# assume cqi: string
     return not not unit_effects_manager._instances[cqi]
 end
 
---v function(cqi: CA_CQI, object: UNIT_EFFECTS_MANAGER)
-local function register_to_prototype(cqi, object)
-    unit_effects_manager._instances[cqi] = object
+--v function(cqi_as_string: string, object: UNIT_EFFECTS_MANAGER)
+local function register_to_prototype(cqi_as_string, object)
+    unit_effects_manager._instances[cqi_as_string] = object
 end
 
 -------------------------
@@ -53,13 +57,14 @@ function unit_effects_manager.new(character_detail)
 
     self._character = character_detail
     self._cqi = dev.get_character(character_detail:cqi()):military_force():command_queue_index()
+    self._cqiAsString = tostring(self._cqi)
     
     self._activeEffects = {} --:map<string, boolean>
     if unit_effects_manager.has_force(self._cqi) then
-        self._activeEffects = unit_effects_manager._instances[self._cqi]._activeEffects
+        self._activeEffects = unit_effects_manager._instances[self._cqiAsString]._activeEffects
     end
 
-    register_to_prototype(self._cqi, self)
+    register_to_prototype(self._cqiAsString, self)
     return self
 end
 
