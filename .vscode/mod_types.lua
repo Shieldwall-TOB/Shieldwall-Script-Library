@@ -10,7 +10,7 @@
             --# assume global class POP_MANAGER
             --# assume global class REGION_DETAIL
 --[[Enumerations]]
---# type global POP_CASTES = "serf" | "lord" | "monk" | "foreign" 
+--# type global POP_CASTE = "serf" | "lord" | "monk" | "foreign" 
 
 
 

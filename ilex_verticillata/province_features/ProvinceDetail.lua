@@ -61,12 +61,16 @@ end
 ------NIL SAFE QUERIES-----
 ---------------------------
 
+--v function(self: PROVINCE_DETAIL) --> string
+function province_detail.name(self)
+    return self._key
+end
 
 ----------------------------
 -----SUBCLASS LIBARIES------
 ----------------------------
-local region_detail = require("ilex_verticillata/province_features/RegionDetail")
-
+region_detail = require("ilex_verticillata/province_features/RegionDetail")
+pop_manager = require("ilex_verticillata/province_features/PopManager")
 
 ------------------------------------
 ----SAVING AND LOADING FUNCTIONS----
