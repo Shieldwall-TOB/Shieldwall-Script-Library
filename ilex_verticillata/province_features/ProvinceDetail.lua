@@ -73,22 +73,6 @@ end
 
 pop_manager = require("ilex_verticillata/province_features/PopManager")
 
-------------------------------------
-----SAVING AND LOADING FUNCTIONS----
-------------------------------------
-
---v function(self: PROVINCE_DETAIL) --> table
-function province_detail.save(self)
-    local sv_tab = dev.save(self,  "_activeEffects", "_effectsClear", "_lastCapital")
-    return sv_tab
-end
-
---v function(faction_detail: FACTION_DETAIL, key: string, sv_tab: table) --> PROVINCE_DETAIL
-function province_detail.load(faction_detail, key, sv_tab)
-    local self = province_detail.new(faction_detail, key)
-    dev.load(sv_tab, self, "_activeEffects", "_effectsClear", "_lastCapital")
-    return self
-end
 
 
 -------------------------------
@@ -147,6 +131,43 @@ function province_detail.remove_region(self, region_key, new_province)
     end
 end
 
+------------------------------------
+----SAVING AND LOADING FUNCTIONS----
+------------------------------------
+
+--v function(self: PROVINCE_DETAIL) --> table
+function province_detail.save(self)
+    local sv_tab = dev.save(self,  "_activeEffects", "_effectsClear", "_lastCapital")
+    -- Now, assembly an arbitrary field to store which regions we want this province to load. 
+    --# assume sv_tab: map<string, map<string, boolean>> 
+    --^ this isn't actually true but its a local assumption for this code to pass.
+    sv_tab._savedRegions = {}
+    for region_key, _ in pairs(self._regions) do
+        sv_tab._savedRegions[region_key] = true
+    end
+    --# assume sv_tab: table
+    --^ reset our assumption
+    return sv_tab
+end
+
+--v function(faction_detail: FACTION_DETAIL, key: string, sv_tab: table) --> PROVINCE_DETAIL
+function province_detail.load(faction_detail, key, sv_tab)
+    local self = province_detail.new(faction_detail, key)
+    --we assemble an arbitrary field in this object when we are saving it, so we should remove that from the save data first.
+    --# assume sv_tab: map<string, map<string, boolean>> 
+    --^ this isn't actually true but its a local assumption for this code to pass.
+    if sv_tab._savedRegions then
+        for region_key, _ in pairs(sv_tab._savedRegions) do
+            self:add_region(region_key)
+        end
+    end
+    sv_tab._savedRegions = nil -- remove the field
+    --# assume sv_tab: table
+    --^ reset our assumption then load as normal
+    dev.load(sv_tab, self, "_activeEffects", "_effectsClear", "_lastCapital")
+    return self
+end
+    
 
 return {
     --Existence

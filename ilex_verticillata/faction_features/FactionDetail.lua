@@ -116,6 +116,12 @@ end
 ----PROVINCE DETAIL OBJECTS-----
 --------------------------------
 
+--v function(self: FACTION_DETAIL, province_key: string, save_data: table) --> PROVINCE_DETAIL
+function faction_detail.load_province(self, province_key, save_data)
+    self._provinces[province_key] = province_detail.load(self, province_key, save_data)
+    return self._provinces[province_key]
+end
+
 --v function(self: FACTION_DETAIL, province_key: string) --> PROVINCE_DETAIL
 function faction_detail.get_province(self, province_key)
     if self._provinces[province_key] == nil then

@@ -48,6 +48,12 @@ end
 
 region_detail = require("ilex_verticillata/province_features/RegionDetail")
 
+--v function(self: PKM, region_key: string, savedata: table) --> REGION_DETAIL
+function petty_kingdoms_manager.load_region(self, region_key, savedata)
+    self._regions[region_key] = region_detail.load(self, region_key, savedata)
+    return self._regions[region_key]
+end
+
 --v function(self: PKM, region_key: string) --> REGION_DETAIL
 function petty_kingdoms_manager.get_region(self, region_key)
     if self._regions[region_key] == nil then
@@ -65,6 +71,12 @@ end
 -----------------------------
 
 faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
+
+--v function(self: PKM, faction_key: string, savedata: table) --> FACTION_DETAIL
+function petty_kingdoms_manager.load_faction(self, faction_key, savedata)
+    self._factions[faction_key] = faction_detail.load(self, faction_key, savedata)
+    return self._factions[faction_key] 
+end
 
 --v function(self: PKM, faction_key: string) --> FACTION_DETAIL
 function petty_kingdoms_manager.get_faction(self, faction_key)
@@ -103,4 +115,33 @@ local function FirstTickObjectModel()
     for i = 0, faction_list:num_items() - 1 do
         pkm:get_faction(faction_list:item_at(i):name())
     end
+end
+
+
+--v function(context: CA_CONTEXT)
+local function OnGameLoaded(context)
+    local region_bank = cm:load_value("pkm_region_detail", {}, context)
+    for region_key, region_save in pairs(region_bank) do
+        pkm:load_region(region_key, region_save)
+    end
+    local faction_bank = cm:load_value("pkm_faction_detail", {}, context)
+    local province_bank = cm:load_value("pkm_province_detail", {}, context)
+    local food_manager_bank = cm:load_value("pkm_faction_food_manager", {}, context)
+    local pop_manager_bank = cm:load_value("pkm_province_pop_manager", {}, context)
+    local character_bank = cm:load_value("pkm_character_detail", {}, context)
+    local unit_effects_manager_bank = cm:load_value("pkm_character_unit_effects_manager", {}, context)
+    for faction_key, faction_save in pairs(faction_bank) do
+        local detail = pkm:load_faction(faction_key, faction_save)
+        local faction_province_bank = province_bank[faction_key]
+        if faction_province_bank then
+            for province_key, province_save in pairs(faction_province_bank) do
+                detail:load_province(province_key, province_save)
+            end
+        end
+    end
+end
+
+--v function(context: CA_CONTEXT)
+local function OnGameSaved(context)
+
 end
