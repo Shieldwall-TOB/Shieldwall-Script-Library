@@ -184,7 +184,9 @@ function character_detail.check_start_pos_estates(self)
     for composite_key, start_pos_estate in pairs(faction_pairs) do
         local reg_det = self:faction_detail():model():get_region(start_pos_estate._region)
         if reg_det and reg_det:has_estate_with_building(start_pos_estate._estateBuilding) then
-            self:add_estate_with_detail(reg_det:get_estate_detail(start_pos_estate._estateBuilding))
+            local estate_det = reg_det:get_estate_detail(start_pos_estate._estateBuilding)
+            self:add_estate_with_detail(estate_det)
+            estate_det:appoint_owner(self)
         end
     end
 end

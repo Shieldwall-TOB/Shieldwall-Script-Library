@@ -59,6 +59,12 @@ function region_detail.name(self)
     return self._name
 end
 
+--v function(self: REGION_DETAIL) --> PKM
+function region_detail.model(self)
+    return self._model
+end
+
+
 -----------------------------
 -----PROVINCE ATTACHMENT-----
 -----------------------------
@@ -224,6 +230,28 @@ end
 --v function(self: REGION_DETAIL, building_key: string)
 function region_detail.load_estate_detail(self, building_key)
     self._estates[building_key] = estate_detail.new(self, building_key)
+end
+
+--v function(self: REGION_DETAIL)
+function region_detail.create_start_pos_estates(self)
+    for building_key, _ in pairs(self._buildings) do
+        if not not (estate_detail.estate_chain_for_level(building_key)) then
+            --if it has a chain, it is a valid estate!
+            self:add_estate(building_key)
+        end
+    end
+end
+
+--v function(self: REGION_DETAIL,leader_detail: CHARACTER_DETAIL)
+function region_detail.transition_estates_to_new_faction(self, leader_detail)
+    self:update_buildings()
+    for building_key, _ in pairs(self._buildings) do
+        if not not (estate_detail.estate_chain_for_level(building_key)) then
+            --if it has a chain, it is a valid estate!
+            self:add_estate(building_key)
+            self:get_estate_detail(building_key):appoint_owner(leader_detail)
+        end
+    end
 end
 
 
