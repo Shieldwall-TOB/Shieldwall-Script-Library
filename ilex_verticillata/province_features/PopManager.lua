@@ -47,6 +47,21 @@ function pop_manager.set_immigration_activity_limit_for_caste(caste, limit)
     pop_manager._immigrationEffectStrengths[caste] = limit
 end
 
+
+--// Overcrowding Scalar impacts how harsh the overcrowding penalty. 
+pop_manager.overcrowdingEffectStrength = {} --:map<POP_CASTE, number>
+--v function(caste: POP_CASTE, strength: number)
+function pop_manager.set_overcrowding_strength_for_caste(caste, strength)
+    pop_manager.overcrowdingEffectStrength[caste] = strength
+end
+
+--// Overcrowding activity limit sets the percentage of pop you have to overstep before overcrowding begins.
+pop_manager._overcrowdingStartPercentage = {} --:map<POP_CASTE, number>
+--v function(caste: POP_CASTE, limit: number)
+function pop_manager.set_overcrowding_lower_limit_for_caste(caste, limit)
+    pop_manager._overcrowdingStartPercentage[caste] = limit
+end
+
 -- // Sets the minimum positive pop growth for a population type
 pop_manager._minimumPosGrowthValues = {} --:map<POP_CASTE, number>
 --v function(caste: POP_CASTE, minimum: number)
@@ -233,5 +248,7 @@ return {
     set_immigration_activity_limit_for_caste = pop_manager.set_immigration_activity_limit_for_caste,
     set_mimimum_pos_growth_for_caste = pop_manager.set_mimimum_pos_growth_for_caste,
     set_natural_growth_for_caste = pop_manager.set_natural_growth_for_caste,
-    set_population_cost_for_unit = pop_manager.set_population_cost_for_unit
+    set_population_cost_for_unit = pop_manager.set_population_cost_for_unit,
+    set_overcrowding_strength_for_caste = pop_manager.set_overcrowding_strength_for_caste,
+    set_overcrowding_lower_limit_for_caste = pop_manager.set_overcrowding_lower_limit_for_caste
 }
