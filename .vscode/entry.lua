@@ -49,7 +49,10 @@ end
 --Load Features
 local ok, err = pcall(function()
     --FEATURES MANIFEST: 
-    require("shieldwall/features/CitiesLandmarks")
+    require("shieldwall/standalone/CitiesLandmarks")
+
+    require("shieldwall/content/UnitEffectsContent")
+    require("shieldwall/features/UnitEffectsFeatures")
 end)
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")

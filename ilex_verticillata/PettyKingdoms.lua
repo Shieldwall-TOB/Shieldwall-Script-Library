@@ -99,7 +99,12 @@ function petty_kingdoms_manager.get_faction(self, faction_key)
     return self._factions[faction_key]
 end
 
-
+--v function(self: PKM, character_cqi: CA_CQI) --> CHARACTER_DETAIL
+function petty_kingdoms_manager.get_character(self, character_cqi)
+    local char = dev.get_character(character_cqi)
+    local faction = self:get_faction(char:faction():name())
+    return faction:get_character(character_cqi)
+end
 
 
 
@@ -117,6 +122,14 @@ local function FirstTickObjectModel()
     end
 end
 
+dev.pre_first_tick(function(context)
+    local ok, err = pcall(function()
+        FirstTickObjectModel()
+    end)
+    if not ok then
+        pkm:log(tostring(err))
+    end
+end)
 
 --v function(context: CA_CONTEXT)
 local function OnGameLoaded(context)
@@ -184,6 +197,7 @@ local function OnGameLoaded(context)
         end
     end
     --done
+    pkm:log("Finished loading PKM")
 end
 
 --v function(context: CA_CONTEXT)
@@ -245,4 +259,24 @@ local function OnGameSaved(context)
     cm:save_value("pkm_province_pop_manager", pop_manager_bank, context)
     cm:save_value("pkm_character_detail", character_bank, context)
     cm:save_value("pkm_character_unit_effects_manager", unit_effects_manager_bank, context)
+    pkm:log("Finished saving PKM")
 end
+
+
+cm:register_saving_game_callback(function(context)
+    local ok, err = pcall(function()
+        OnGameSaved(context)
+    end)
+    if not ok then
+        pkm:log(tostring(err))
+    end
+end)
+
+cm:register_loading_game_callback(function(context)
+    local ok, err = pcall(function()
+        OnGameLoaded(context)
+    end)
+    if not ok then
+        pkm:log(tostring(err))
+    end
+end)

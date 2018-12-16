@@ -77,7 +77,8 @@ end
 -----UNIT EFFECT SUBOBJECTS-----
 --------------------------------
 
-local unit_effects_manager = require("ilex_verticillata/character_features/UnitEffectsManager")
+unit_effects_manager = require("ilex_verticillata/character_features/UnitEffectsManager")
+_G.uem = unit_effects_manager
 --v function(self: CHARACTER_DETAIL) --> boolean
 function character_detail.has_unit_effects_manager(self)
     return not not self._forceEffectsManager

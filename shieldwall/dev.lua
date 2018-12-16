@@ -502,11 +502,11 @@ _G.game_created = false
 
 cm:register_first_tick_callback(function(context)
     _G.game_created = true
-    MODLOG("===================================================================================", "DEV")
-    MODLOG("===================================================================================", "DEV")
-    MODLOG("===============THE GAME IS STARTING: RUNNING FIRST TICK CALLBACK===================", "DEV")
-    MODLOG("===================================================================================", "DEV")
-    MODLOG("===================================================================================", "DEV")
+    MODLOG("===================================================================================", "FTC")
+    MODLOG("===================================================================================", "FTC")
+    MODLOG("===============THE GAME IS STARTING: RUNNING FIRST TICK CALLBACK===================", "FTC")
+    MODLOG("===================================================================================", "FTC")
+    MODLOG("===================================================================================", "FTC")
     local ok, err = pcall( function()
         for i = 1, #pre_first_tick_callbacks do
             pre_first_tick_callbacks[i](context)
@@ -568,10 +568,12 @@ function dev_load_object_from_plain_table(sv_tab, object, ...)
         local field = arg[i]
         if sv_tab[field] then
             object[field] = sv_tab[field]
-            if type(sv_tab[field]) == "string" or type(sv_tab[field]) == "number" then
-                MODLOG("\t Loaded field ["..field.."] which had a value of ["..sv_tab[field].."]", "LOD")
-            else
-                MODLOG("\t Loaded field ["..field.."] which had a value type ["..type(sv_tab[field]).."]", "LOD")
+            if CONST.__should_output_save_load then
+                if type(sv_tab[field]) == "string" or type(sv_tab[field]) == "number" then
+                    MODLOG("\t Loaded field ["..field.."] which had a value of ["..sv_tab[field].."]", "LOD")
+                else
+                    MODLOG("\t Loaded field ["..field.."] which had a value type ["..type(sv_tab[field]).."]", "LOD")
+                end
             end
         end
     end
