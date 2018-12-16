@@ -57,7 +57,7 @@ function character_detail.new(faction_detail, cqi)
 
 
     self._title = "no_title"
-    self._homeEstate = nil --:ESTATE_DETAIL
+    self._homeEstate = {"", "", false} --:{string, string, boolean}
     self._estates = {} --:map<string, map<string, ESTATE_DETAIL>>
     self._numEstates = 0
 
@@ -195,7 +195,7 @@ end
 
 --v function(self: CHARACTER_DETAIL) --> table
 function character_detail.save(self)
-    local sv_tab = dev.save(self,  "_activeEffects", "_effectsClear", "_lastCapital")
+    local sv_tab = dev.save(self, "_homeEstate", "_title")
     -- Now, assembly an arbitrary field to store which regions we want this province to load. 
     --# assume sv_tab: map<string, map<string, map<string, string>>> 
     --^ this isn't actually true but its a local assumption for this code to pass.
@@ -227,7 +227,7 @@ function character_detail.load(faction_detail, cqi, sv_tab)
     sv_tab._savedRegions = nil -- remove the field
     --# assume sv_tab: table
     --^ reset our assumption then load as normal
-    dev.load(sv_tab, self, "_activeEffects", "_effectsClear", "_lastCapital")
+    dev.load(sv_tab, self, "_homeEstate", "_title")
     return self
 end
     

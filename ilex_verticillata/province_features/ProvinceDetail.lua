@@ -67,6 +67,16 @@ function province_detail.name(self)
     return self._name
 end
 
+--v function(self: PROVINCE_DETAIL) --> map<string, REGION_DETAIL>
+function province_detail.regions(self)
+    return self._regions
+end
+
+--v function(self: PROVINCE_DETAIL) --> FACTION_DETAIL
+function province_detail.faction_detail(self)
+    return self._factionDetail
+end
+
 ----------------------------
 -----POPULATION MANAGERS----
 ----------------------------
