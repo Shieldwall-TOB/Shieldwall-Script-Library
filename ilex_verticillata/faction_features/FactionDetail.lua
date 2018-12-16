@@ -12,7 +12,11 @@ faction_detail._instances = {} --:map<string, FACTION_DETAIL>
 function faction_detail.has_faction(key) 
     return not not faction_detail._instances[key]
 end
-
+--v function() --> map<string, FACTION_DETAIL>
+function faction_detail.get_instances()
+    return faction_detail._instances
+end
+    
 --v function(key: string, object: FACTION_DETAIL)
 local function register_to_prototype(key, object)
     faction_detail._instances[key] = object
@@ -72,7 +76,15 @@ function faction_detail.name(self)
     return self._name
 end
 
+--v function(self: FACTION_DETAIL) --> map<string, PROVINCE_DETAIL>
+function faction_detail.provinces(self)
+    return self._provinces
+end
 
+--v function(self: FACTION_DETAIL) --> map<string, CHARACTER_DETAIL>
+function faction_detail.characters(self)
+    return self._characters
+end
 
 
 
@@ -114,6 +126,10 @@ function faction_detail.load_food_manager(self, sv_tab)
     self._factionFoodManager = food_manager.load(self, sv_tab)
 end
 
+--v function(self: FACTION_DETAIL) --> boolean
+function faction_detail.has_food_manager(self)
+    return not not self._factionFoodManager
+end
 --------------------------------
 ----PROVINCE DETAIL OBJECTS-----
 --------------------------------
@@ -163,6 +179,7 @@ end
 return {
     --existence query
     has_faction = faction_detail.has_faction,
+    get_instances = faction_detail.get_instances,
     --creation
     new = faction_detail.new,
     load = faction_detail.load,
