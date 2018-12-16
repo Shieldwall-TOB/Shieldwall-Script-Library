@@ -125,7 +125,13 @@ local function FirstTickObjectModel()
     end
     local faction_list = dev.faction_list()
     for i = 0, faction_list:num_items() - 1 do
-        pkm:get_faction(faction_list:item_at(i):name())
+        local fact_det = pkm:get_faction(faction_list:item_at(i):name())
+        for province_key, prov_det in pairs(fact_det:provinces()) do
+            prov_det:get_population_manager():set_start_pos_pops()
+        end
+        for cqi_as_string, char_det in pairs(fact_det:characters()) do
+            char_det:check_start_pos_estates()
+        end
     end
     pkm:log("Finished first tick function for new game!")
 end

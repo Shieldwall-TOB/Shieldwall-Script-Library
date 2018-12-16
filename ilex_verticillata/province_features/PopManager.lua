@@ -254,7 +254,7 @@ end
 
 --v function(self: POP_MANAGER)
 function pop_manager.evaluate_pop_growth(self)
-    for caste_key, pop_capacity in pairs(self._popCaps) do
+    for caste_key, _ in pairs(self._popCaps) do
         self:evaluate_pop_cap()
         local pop = self:get_pop_of_caste(caste_key)
         local pop_cap = self:get_pop_cap_for_caste(caste_key)
@@ -314,6 +314,24 @@ function pop_manager.evaluate_pop_growth(self)
     end
 end
     
+--v function(self: POP_MANAGER)
+function pop_manager.set_start_pos_pops(self)
+    self:evaluate_pop_cap()
+    for caste_key, pop_cap in pairs(self._popCaps) do
+        local proportion = (42 + cm:random_number(18))/100
+        local pop = math.ceil(pop_cap*proportion)
+        self._populations[caste_key] = pop
+        local bundle = 0 --:number
+        local threshold = pop_manager._popCasteBundleChangeIntervals[caste_key]
+        while pop > bundle do
+            bundle = bundle + threshold
+        end
+        self._currentPopBundles[caste_key] = (bundle-threshold)
+    end
+end
+
+
+
 
 return {
     --Creation
