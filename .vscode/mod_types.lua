@@ -15,6 +15,7 @@
 --[[Enumerations]]
 --# type global POP_CASTE = "serf" | "lord" | "monk" | "foreign" 
 --# type global ESTATE_TYPE = "vik_estate_agricultural" | "vik_estate_estate_building" | "vik_estate_estate_building"
+--# type global START_POS_ESTATE = {_region: string, _ownerName: string, _estateBuilding: string, _faction: string}
 -- // \\                //\\    Rural Estates         //\\    Urban Estates //  \\      //  Church Estates //\\
 
 --[[Content]]

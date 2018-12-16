@@ -21,14 +21,18 @@ end
 -------------------------
 -----STATIC CONTENT------
 -------------------------
-character_detail._startPosEstates = {} --:map<string, {_region: string, _ownerName: string, _estateType: string}>
---v function(self: CHARACTER_DETAIL, estate_region: string, estate_owner_name: string, estate_type_key: string)
-function character_detail.register_startpos_estate(self, estate_region, estate_owner_name, estate_type_key)
+character_detail._startPosEstates = {} --:map<string, map<string, START_POS_ESTATE>>
+--v function(self: CHARACTER_DETAIL, estate_region: string, estate_owner_name: string, estate_building: string, faction_key: string )
+function character_detail.register_startpos_estate(self, estate_region, estate_owner_name, estate_building, faction_key)
+    if character_detail._startPosEstates[faction_key] == nil then
+        character_detail._startPosEstates[faction_key] = {}
+    end
     local holder = {}
     holder._region = estate_region
     holder._ownerName = estate_owner_name
-    holder._estateType = estate_type_key
-    self._startPosEstates[estate_region] = holder
+    holder._estateBuilding = estate_building
+    holder._faction = faction_key
+    character_detail._startPosEstates[faction_key][estate_region..estate_building] = holder
 end
 
 ----------------------------
@@ -71,6 +75,11 @@ end
 function character_detail.cqi(self)
     local cqi = tonumber(self._cqi) --# assume cqi: CA_CQI
     return cqi
+end
+
+--v function(self: CHARACTER_DETAIL) --> FACTION_DETAIL
+function character_detail.faction_detail(self)
+    return self._factionDetail
 end
 
 --------------------------------
@@ -167,7 +176,18 @@ function character_detail.remove_estate(self, region_key, building_key, new_owne
     end
 end
 
-
+--v function(self: CHARACTER_DETAIL)
+function character_detail.check_start_pos_estates(self)
+    local char = dev.get_character(self:cqi())
+    local name_key = char:get_forename()
+    local faction_pairs = character_detail._startPosEstates[char:faction():name()]
+    for composite_key, start_pos_estate in pairs(faction_pairs) do
+        local reg_det = self:faction_detail():model():get_region(start_pos_estate._region)
+        if reg_det and reg_det:has_estate_with_building(start_pos_estate._estateBuilding) then
+            self:add_estate_with_detail(reg_det:get_estate_detail(start_pos_estate._estateBuilding))
+        end
+    end
+end
 
 ------------------------------------
 ----SAVING AND LOADING FUNCTIONS----

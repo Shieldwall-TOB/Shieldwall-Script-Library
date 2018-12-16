@@ -67,9 +67,9 @@ function faction_detail.new(model, key)
     return self
 end
 
----------------------------
-------NIL SAFE QUERIES-----
----------------------------
+--------------------------
+------GENERIC METHODS-----
+--------------------------
 
 --v function(self: FACTION_DETAIL) --> string
 function faction_detail.name(self)
@@ -86,7 +86,10 @@ function faction_detail.characters(self)
     return self._characters
 end
 
-
+--v function(self: FACTION_DETAIL) --> PKM
+function faction_detail.model(self)
+    return self._model
+end
 
 
 

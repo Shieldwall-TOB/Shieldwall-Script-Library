@@ -172,6 +172,11 @@ function region_detail.num_estates(self)
     return self._numEstates
 end
 
+--v function(self: REGION_DETAIL, building_key: string) --> boolean
+function region_detail.has_estate_with_building(self, building_key)
+    return not not self._estates[building_key] 
+end
+
 --v function(self: REGION_DETAIL, building_key: string) --> ESTATE_DETAIL
 function region_detail.get_estate_detail(self, building_key)
     if self._estates[building_key] == nil then
