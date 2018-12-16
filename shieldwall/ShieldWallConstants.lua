@@ -6,7 +6,6 @@ return {
     __no_fog = false,
     __log_settlements = true,
     __log_characters = true,
-    enable_great_kingdom_bonus = true,
     default_estate_type = "vik_estate_agricultural",
     noble_estate_type = "vik_estate_estate_building",
     minor_estate_type = "vik_estate_agricultural",
@@ -15,25 +14,14 @@ return {
     food_storage_cap_base = 175,
     food_storage_bundle = "shield_food_storage_bundle_",
     food_storage_percentage = 0.5,
-    region_wealth_bundle = "shield_wealth_bundle_",
-    region_wealth_cap = 3,
-    region_wealth_floor = 0,
     season_bundle_prefix = "shield_season_",
-    charm_minor_noble_threshold = 1,
-    charm_middle_noble_threshold = 4,
-    charm_great_noble_threshold = 10,
     charm_title_prefix = "shield_title_",
     charm_leader_title_prefix = "shield_leader_titles_",
     titles_localisation = function()
         if _G.traits_localized_content == nil then
             return {}
         else return _G.traits_localized_content end 
-    end,
-    charm_exp_smallest = 1,
-    charm_exp_small = 4,
-    charm_exp_medium = 7,
-    charm_exp_high = 10,
-    charm_exp_highest = 15
+    end
 }
 
 
