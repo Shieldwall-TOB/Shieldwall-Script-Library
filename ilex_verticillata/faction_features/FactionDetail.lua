@@ -109,6 +109,11 @@ function faction_detail.get_food_manager(self)
     return self._factionFoodManager
 end
 
+--v function(self: FACTION_DETAIL, sv_tab: table) 
+function faction_detail.load_food_manager(self, sv_tab)
+    self._factionFoodManager = food_manager.load(self, sv_tab)
+end
+
 --------------------------------
 ----PROVINCE DETAIL OBJECTS-----
 --------------------------------

@@ -120,13 +120,20 @@ end
 
 --v function(context: CA_CONTEXT)
 local function OnGameLoaded(context)
-    local region_bank = cm:load_value("pkm_region_detail", {}, context)
+    --[[ pre load all regions ]]
+    local region_bank = cm:load_value("pkm_region_detail", {}, context) 
+    --# assume region_bank: map<string, table>
     for region_key, region_save in pairs(region_bank) do
         local ld_region_detail = pkm:load_region(region_key, region_save)
         for chain_key, building_key in pairs(ld_region_detail:estate_chains()) do
             ld_region_detail:load_estate_detail(building_key)
         end
     end
+    --load trackers now
+    local tracker_bank = cm:load_value("pkm_region_ownership_tracker", {}, context)
+    --# assume tracker_bank: map<string, table>
+    
+
     --[[ Loaded tables ]]
     local faction_bank = cm:load_value("pkm_faction_detail", {}, context)
     --# assume faction_bank: map<string, table>
@@ -139,27 +146,47 @@ local function OnGameLoaded(context)
     local character_bank = cm:load_value("pkm_character_detail", {}, context)
     --# assume character_bank: map<string, map<string, table>>
     local unit_effects_manager_bank = cm:load_value("pkm_character_unit_effects_manager", {}, context)
-    --# assume unit_effects_manager_bank: map<string, table>
+    --# assume unit_effects_manager_bank: map<string, map<string, table>>
 
-
+    --load factions
     for faction_key, faction_save in pairs(faction_bank) do
         local ld_faction_detail = pkm:load_faction(faction_key, faction_save)
         local faction_province_bank = province_bank[faction_key]
-        local faction_character_bank = character_bank[faction_key]
+        --load provinces
         if faction_province_bank then
             for province_key, province_save in pairs(faction_province_bank) do
                 local ld_province_detail = ld_faction_detail:load_province(province_key, province_save)
+                --load pop managers
                 if pop_manager_bank[faction_key.."_"..province_key] then
                    ld_province_detail:load_population_manager(pop_manager_bank[province_key]) 
                 else
                     ld_province_detail:get_population_manager()
                 end
             end
+        end
+        --load characters
+        local faction_character_bank = character_bank[faction_key]
+        if faction_character_bank then
             for character_cqi_as_string, character_save in pairs(faction_character_bank) do
                 local ld_character_detail = ld_faction_detail:load_character(character_cqi_as_string, character_save) 
+                --load unit effects managers
+                if unit_effects_manager_bank[ld_character_detail._cqi] then
+                    for force_cqi, save_table in pairs(unit_effects_manager_bank[ld_character_detail._cqi]) do
+                        ld_character_detail:load_unit_effects_manager(force_cqi, save_table) 
+                        break --will only ever have one item. 
+                    end 
+                end
             end
         end
+        --load food manager
+        if food_manager_bank[faction_key] then
+            ld_faction_detail:load_food_manager(food_manager_bank[faction_key])
+        end
     end
+    
+
+
+    --done
 end
 
 --v function(context: CA_CONTEXT)

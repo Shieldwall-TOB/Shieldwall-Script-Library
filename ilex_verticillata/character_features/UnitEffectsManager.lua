@@ -42,8 +42,8 @@ end
 ----------------------------
 
 
---v function(character_detail: CHARACTER_DETAIL) --> UNIT_EFFECTS_MANAGER
-function unit_effects_manager.new(character_detail) 
+--v function(character_detail: CHARACTER_DETAIL, force_cqi: string) --> UNIT_EFFECTS_MANAGER
+function unit_effects_manager.new(character_detail, force_cqi) 
     local self = {}
     setmetatable(self, {
         __index = unit_effects_manager
@@ -56,8 +56,10 @@ function unit_effects_manager.new(character_detail)
     end
 
     self._character = character_detail
-    self._cqi = dev.get_character(character_detail:cqi()):military_force():command_queue_index()
-    self._cqiAsString = tostring(self._cqi)
+    local cqi = tonumber(force_cqi)
+    --# assume cqi: CA_CQI
+    self._cqi = cqi
+    self._cqiAsString = force_cqi 
     
     self._activeEffects = {} --:map<string, boolean>
     if unit_effects_manager.has_force(self._cqi) then
@@ -80,9 +82,9 @@ function unit_effects_manager.save(self)
     return svtable
 end
 
---v function(character_detail: CHARACTER_DETAIL, sv_tab: table) --> UNIT_EFFECTS_MANAGER
-function unit_effects_manager.load(character_detail, sv_tab)
-    local self = unit_effects_manager.new(character_detail)
+--v function(character_detail: CHARACTER_DETAIL, force_cqi: string, sv_tab: table) --> UNIT_EFFECTS_MANAGER
+function unit_effects_manager.load(character_detail, force_cqi, sv_tab)
+    local self = unit_effects_manager.new(character_detail, force_cqi)
     dev.load(sv_tab, self, "_activeEffects")
     return self
 end

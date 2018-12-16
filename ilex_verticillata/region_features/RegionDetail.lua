@@ -43,6 +43,7 @@ function region_detail.new(model, region_key)
     self._estateChains = {} --:map<string, string>
     self._numEstates = 0 --:number
 
+    self._ownershipTracker = nil --:OWNERSHIP_TRACKER
 
 
     register_to_prototype(self._name, self)
@@ -214,6 +215,25 @@ end
 --v function(self: REGION_DETAIL, building_key: string)
 function region_detail.load_estate_detail(self, building_key)
     self._estates[building_key] = estate_detail.new(self, building_key)
+end
+
+
+----------------------------------
+-----OWNERSHIP TRACKER OBJECT-----
+----------------------------------
+ownership_tracker = require("ilex_verticillata/region_features/OwnershipTracker")
+
+--v function(self: REGION_DETAIL) --> OWNERSHIP_TRACKER
+function region_detail.get_ownership_tracker(self)
+    if self._ownershipTracker == nil then
+        self._ownershipTracker = ownership_tracker.new(self)
+    end
+    return self._ownershipTracker
+end
+
+--v function(self: REGION_DETAIL, sv_tab: table) 
+function region_detail.load_ownership_tracker(self, sv_tab)
+    self._ownershipTracker = ownership_tracker.load(self, sv_tab)
 end
 
 

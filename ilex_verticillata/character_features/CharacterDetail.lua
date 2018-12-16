@@ -64,18 +64,18 @@ function character_detail.new(faction_detail, cqi)
     return self
 end
 
----------------------------
-------NIL SAFE QUERIES-----
----------------------------
+--------------------------
+------GENERIC METHODS-----
+--------------------------
 --v function(self: CHARACTER_DETAIL) --> CA_CQI
 function character_detail.cqi(self)
     local cqi = tonumber(self._cqi) --# assume cqi: CA_CQI
     return cqi
 end
 
-----------------------------
------SUBCLASS LIBARIES------
-----------------------------
+--------------------------------
+-----UNIT EFFECT SUBOBJECTS-----
+--------------------------------
 
 local unit_effects_manager = require("ilex_verticillata/character_features/UnitEffectsManager")
 --v function(self: CHARACTER_DETAIL) --> boolean
@@ -86,15 +86,26 @@ end
 --v function(self: CHARACTER_DETAIL) --> UNIT_EFFECTS_MANAGER
 function character_detail.get_unit_effects_manager(self)
     if self._forceEffectsManager == nil then 
-        self._forceEffectsManager = unit_effects_manager.new(self)
+        return nil
     end
     return self._forceEffectsManager
 end
 
---v function(self: CHARACTER_DETAIL, savetable: table) --> UNIT_EFFECTS_MANAGER
-function character_detail.load_unit_effects_manager(self, savetable)
-    self._forceEffectsManager = unit_effects_manager.load(self, savetable)
+--v function(self: CHARACTER_DETAIL, force_cqi: string, savetable: table) --> UNIT_EFFECTS_MANAGER
+function character_detail.load_unit_effects_manager(self, force_cqi, savetable)
+    self._forceEffectsManager = unit_effects_manager.load(self, force_cqi, savetable)
     return self._forceEffectsManager
+end
+
+--v function(self: CHARACTER_DETAIL) --> UNIT_EFFECTS_MANAGER
+function character_detail.create_unit_effects_manager(self)
+    local character_obj = dev.get_character(self:cqi())
+    if not character_obj:has_military_force() then
+        return nil
+    end
+    local force_cqi = character_obj:military_force():command_queue_index()
+    self._forceEffectsManager = unit_effects_manager.new(self, tostring(force_cqi))
+    return  self._forceEffectsManager
 end
 
 -------------------------------
@@ -154,14 +165,6 @@ function character_detail.remove_estate(self, region_key, building_key, new_owne
         new_owner:add_estate_with_detail(removed_estate)
     end
 end
-
-
-
-
--------------------------------
--------ESTATE SUBOBJECTS-------
--------------------------------
-
 
 
 
