@@ -49,10 +49,10 @@ end
 
 
 --// Overcrowding Scalar impacts how harsh the overcrowding penalty. 
-pop_manager.overcrowdingEffectStrength = {} --:map<POP_CASTE, number>
+pop_manager._overcrowdingEffectStrength = {} --:map<POP_CASTE, number>
 --v function(caste: POP_CASTE, strength: number)
 function pop_manager.set_overcrowding_strength_for_caste(caste, strength)
-    pop_manager.overcrowdingEffectStrength[caste] = strength
+    pop_manager._overcrowdingEffectStrength[caste] = strength
 end
 
 --// Overcrowding activity limit sets the percentage of pop you have to overstep before overcrowding begins.
@@ -113,7 +113,7 @@ function pop_manager.new(province)
 end
 
 ---------------------------
-------NIL SAFE QUERIES-----
+------GENERIC METHODS------
 --------------------------- 
 --v function(self: POP_MANAGER) --> PROVINCE_DETAIL
 function pop_manager.province_detail(self)
@@ -137,20 +137,14 @@ function pop_manager.get_pop_cap_for_caste(self, caste)
 end
 
 --v function(self: POP_MANAGER, caste: POP_CASTE) --> number
-function pop_manager.get_pop_cap_for_caste(self, caste)
-    if self._popCaps[caste] == nil then
-        self._popCaps[caste] = 0
-    end
-    return self._popCaps[caste]
-end
-
---v function(self: POP_MANAGER, caste: POP_CASTE) --> number
 function pop_manager.get_pop_bundle_for_caste(self, caste)
     if self._currentPopBundles[caste] == nil then
         self._currentPopBundles[caste] = 0
     end
     return self._currentPopBundles[caste]
 end
+
+
 
 
 ------------------------------------
@@ -174,8 +168,9 @@ end
 ----STATE CHANGING FUNCTIONS-------
 -----------------------------------
 
---v function(self: POP_MANAGER, caste: POP_CASTE, quantity: number, UICause: string)
-function pop_manager.modify_population(self, caste, quantity, UICause)
+
+--v function(self: POP_MANAGER, caste: POP_CASTE, quantity: number, UICause: string, block_bundle_change: boolean?)
+function pop_manager.modify_population(self, caste, quantity, UICause, block_bundle_change)
     --get cap, old pop value, and change value on vars
     local old_value = self:get_pop_of_caste(caste)
     local cap_value = self:get_pop_cap_for_caste(caste)
@@ -204,8 +199,8 @@ function pop_manager.modify_population(self, caste, quantity, UICause)
     self._populations[caste] = new_value
     --check where our current bundle is
     local bundle_thresholds --:number
-    if self:prototype()._popCasteBundleChangeIntervals[caste] then
-        bundle_thresholds = self:prototype()._popCasteBundleChangeIntervals[caste]
+    if pop_manager._popCasteBundleChangeIntervals[caste] then
+        bundle_thresholds = pop_manager._popCasteBundleChangeIntervals[caste]
     else
         self:log("WARNING: Could not calculate the bundle effects of a change in population!")
         self:log("\tNo caste bundle change interval is set for this caste")
@@ -234,7 +229,91 @@ function pop_manager.modify_population(self, caste, quantity, UICause)
 end
 
 
+--v function(self: POP_MANAGER)
+function pop_manager.evaluate_pop_cap(self)
+    for caste_key, pop_capacity in pairs(self._popCaps) do
+        local regions = self:province_detail():regions()
+        local cap = 0 --:number
+        for region_key, region_detail in pairs(regions) do
+            local buildings = region_detail:buildings()
+            for building_key, _ in pairs(buildings) do
+                local cap_contrib = pop_manager._buildingPopCapContributions[building_key][caste_key]
+                if cap_contrib then
+                    cap = cap + cap_contrib
+                end
+            end
+        end
+        local c_pop = self:get_pop_of_caste(caste_key)
+        if (cap < c_pop) then
+            self:modify_population(caste_key, c_pop - cap , "Lost Buildings")
+        end
+        self._currentPopBundles[caste_key] = cap
+    end
+end
 
+
+--v function(self: POP_MANAGER)
+function pop_manager.evaluate_pop_growth(self)
+    for caste_key, pop_capacity in pairs(self._popCaps) do
+        self:evaluate_pop_cap()
+        local pop = self:get_pop_of_caste(caste_key)
+        local pop_cap = self:get_pop_cap_for_caste(caste_key)
+        local growth = pop_manager._naturalGrowthRates[caste_key]
+        local immigration = pop_manager._immigrationEffectStrengths[caste_key]
+        local immigration_limit = pop_manager._immigrationActivityLimit[caste_key]
+        local decay_strength = pop_manager._overcrowdingEffectStrength[caste_key]
+        local decay_start_val = pop_manager._overcrowdingStartPercentage[caste_key]
+        local food_func = pop_manager._foodEffectFunctions[caste_key]
+        
+        local pop_mods = {} --:map<string, number>
+        local num_mods = 0
+        --v function(ui_growth: string, growth_quantity: number)
+        local function pop_mod(ui_growth, growth_quantity)
+            pop_mods[ui_growth] = growth_quantity
+            num_mods = num_mods + 1
+        end
+
+        --grows by growth% of pop
+        if growth then
+            pop_mod("Natural Growth", math.ceil(pop*growth))
+        end
+
+        --grows by the interger value of immigration bounded by 10% of pop cap. 
+        if immigration and immigration_limit then
+            if (pop/pop_cap) < immigration_limit then
+                local immigration_quantity = math.ceil(pop_cap/10) --:number
+                if immigration_quantity > immigration then
+                    immigration_quantity = immigration
+                end
+                pop_mod("Immigration", immigration_quantity)
+            end
+        end
+
+        --decays by the quantity of pop over the decay val * the decay strength
+        if decay_strength and decay_start_val then
+            if (pop/pop_cap) > decay_start_val then
+                local decay_threshold = (pop_cap*decay_start_val)
+                local decay_max = (pop - decay_threshold)
+                local decay_val = math.ceil(-1*(decay_max * decay_strength))
+                pop_mod("Squalor and Overcrowding", decay_val)
+            end
+        end
+        
+        --does whatever the food function does!
+        if food_func then 
+            local food_manager = self:province_detail():faction_detail():get_food_manager()
+            local food_func_result = food_func(pop, food_manager)
+            pop_mod("Food Supply", food_func_result)
+        end
+
+        --runs all the stuff through the change function.
+        for ui_cause, value in pairs(pop_mods) do
+            self:modify_population(caste_key, value, ui_cause, (num_mods == 1))
+            num_mods = num_mods - 1
+        end
+    end
+end
+    
 
 return {
     --Creation
