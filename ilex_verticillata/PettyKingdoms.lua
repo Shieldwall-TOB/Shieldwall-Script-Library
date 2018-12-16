@@ -116,13 +116,21 @@ local pkm = petty_kingdoms_manager.init()
 
 --v function()
 local function FirstTickObjectModel()
+    pkm:log("First Tick New Game starting")
+    local region_list = dev.region_list()
+    for i = 0, region_list:num_items() - 1 do
+        local reg_det = pkm:get_region(region_list:item_at(i):name())
+        reg_det:get_ownership_tracker():set_current_owner()
+        reg_det:create_start_pos_estates()
+    end
     local faction_list = dev.faction_list()
     for i = 0, faction_list:num_items() - 1 do
         pkm:get_faction(faction_list:item_at(i):name())
     end
+    pkm:log("Finished first tick function for new game!")
 end
 
-dev.pre_first_tick(function(context)
+dev.new_game(function(context)
     local ok, err = pcall(function()
         FirstTickObjectModel()
     end)

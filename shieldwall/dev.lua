@@ -510,6 +510,12 @@ end
 
 _G.game_created = false
 
+
+--v function() --> boolean
+local function dev_is_new_game()
+    return not not cm:get_saved_value("dev_new_game_callback")
+end
+
 cm:register_first_tick_callback(function(context)
     _G.game_created = true
     MODLOG("===================================================================================", "FTC")
@@ -625,6 +631,7 @@ return {
     pre_first_tick = dev_pre_first_tick,
     post_first_tick = dev_post_first_tick,
     is_game_created = dev_game_created,
+    is_new_game = dev_is_new_game,
     save = dev_save_object_as_plain_table,
     load = dev_load_object_from_plain_table
 }

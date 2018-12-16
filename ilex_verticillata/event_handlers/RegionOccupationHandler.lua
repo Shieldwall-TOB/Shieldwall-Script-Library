@@ -9,6 +9,7 @@ local function onRegionOccupied(region, character)
         local leader_detail = pkm:get_faction(character:faction():name()):get_character(character:cqi())
         reg_detail:transition_estates_to_new_faction(leader_detail)
     end
+    reg_detail:get_ownership_tracker():transfer_region(character:faction():name())
     old_province:remove_region(region:name(), new_province)
 end
 
