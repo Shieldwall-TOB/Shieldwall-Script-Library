@@ -482,6 +482,7 @@ end
 local pre_first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
 local first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
 local post_first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
+local new_game_callbacks = {} --:vector<function(context: WHATEVER)>
 
 --v function(callback: function(context: WHATEVER))
 function dev_pre_first_tick(callback)
@@ -498,6 +499,15 @@ function dev_post_first_tick(callback)
     table.insert(post_first_tick_callbacks, callback)
 end
 
+--v function(callback: function(context: WHATEVER))
+function dev_new_game_callback(callback)
+    if cm:get_saved_value("dev_new_game_callback") then
+        return
+    end
+    table.insert(new_game_callbacks, callback)
+end
+
+
 _G.game_created = false
 
 cm:register_first_tick_callback(function(context)
@@ -510,6 +520,17 @@ cm:register_first_tick_callback(function(context)
     local ok, err = pcall( function()
         for i = 1, #pre_first_tick_callbacks do
             pre_first_tick_callbacks[i](context)
+        end
+        if not cm:get_saved_value("dev_new_game_callback") then
+            MODLOG("===================================================================================", "FTC")
+            MODLOG("===================================================================================", "FTC")
+            MODLOG("===============NEW GAME STARTED: RUNNING NEW GAME START CALLBACK===================", "FTC")
+            MODLOG("===================================================================================", "FTC")
+            MODLOG("===================================================================================", "FTC")
+            for i = 1, #new_game_callbacks do
+                new_game_callbacks[i](context)
+            end
+            cm:set_saved_value("dev_new_game_callback", true)
         end
         for i = 1, #first_tick_callbacks do
             first_tick_callbacks[i](context)
@@ -600,6 +621,7 @@ return {
     add_character_selected_log = dev_add_character_select_log_call,
     as_read_only = dev_readonlytable,
     first_tick = dev_first_tick,
+    new_game = dev_new_game_callback,
     pre_first_tick = dev_pre_first_tick,
     post_first_tick = dev_post_first_tick,
     is_game_created = dev_game_created,
