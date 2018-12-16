@@ -11,6 +11,10 @@ region_detail._instances = {} --:map<string, REGION_DETAIL>
 local function register_to_prototype(key, object)
     region_detail._instances[key] = object
 end
+--v function() --> map<string, REGION_DETAIL>
+function region_detail.get_instances()
+    return region_detail._instances
+end
 
 -------------------------
 -----STATIC CONTENT------
@@ -236,7 +240,10 @@ function region_detail.load_ownership_tracker(self, sv_tab)
     self._ownershipTracker = ownership_tracker.load(self, sv_tab)
 end
 
-
+--v function(self: REGION_DETAIL) --> boolean
+function region_detail.has_ownership_tracker(self)
+    return not not self._ownershipTracker
+end
 ------------------------------------
 ----SAVING AND LOADING FUNCTIONS----
 ------------------------------------
@@ -257,5 +264,7 @@ end
 return {
     --creation
     new = region_detail.new,
-    load = region_detail.load
+    load = region_detail.load,
+    --Existance
+    get_instances = region_detail.get_instances
 }

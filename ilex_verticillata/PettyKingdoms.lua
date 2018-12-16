@@ -123,17 +123,17 @@ local function OnGameLoaded(context)
     --[[ pre load all regions ]]
     local region_bank = cm:load_value("pkm_region_detail", {}, context) 
     --# assume region_bank: map<string, table>
+    local tracker_bank = cm:load_value("pkm_region_ownership_tracker", {}, context)
+    --# assume tracker_bank: map<string, table>
     for region_key, region_save in pairs(region_bank) do
         local ld_region_detail = pkm:load_region(region_key, region_save)
         for chain_key, building_key in pairs(ld_region_detail:estate_chains()) do
             ld_region_detail:load_estate_detail(building_key)
         end
+        if tracker_bank[region_key] then
+            ld_region_detail:load_ownership_tracker(tracker_bank[region_key])
+        end
     end
-    --load trackers now
-    local tracker_bank = cm:load_value("pkm_region_ownership_tracker", {}, context)
-    --# assume tracker_bank: map<string, table>
-    
-
     --[[ Loaded tables ]]
     local faction_bank = cm:load_value("pkm_faction_detail", {}, context)
     --# assume faction_bank: map<string, table>
@@ -157,8 +157,8 @@ local function OnGameLoaded(context)
             for province_key, province_save in pairs(faction_province_bank) do
                 local ld_province_detail = ld_faction_detail:load_province(province_key, province_save)
                 --load pop managers
-                if pop_manager_bank[faction_key.."_"..province_key] then
-                   ld_province_detail:load_population_manager(pop_manager_bank[province_key]) 
+                if pop_manager_bank[province_key.."_"..faction_key] then
+                   ld_province_detail:load_population_manager(pop_manager_bank[province_key.."_"..faction_key]) 
                 else
                     ld_province_detail:get_population_manager()
                 end
@@ -183,13 +183,66 @@ local function OnGameLoaded(context)
             ld_faction_detail:load_food_manager(food_manager_bank[faction_key])
         end
     end
-    
-
-
     --done
 end
 
 --v function(context: CA_CONTEXT)
 local function OnGameSaved(context)
+    local region_bank = {} --:map<string, table>
+    local tracker_bank = {} --:map<string, table>
+    local faction_bank = {} --:map<string, table>
+    local province_bank = {} --:map<string, map<string, table>>
+    local food_manager_bank = {} --:map<string, table>
+    local pop_manager_bank = {} --:map<string, table>
+    local character_bank = {} --:map<string, map<string, table>>
+    local unit_effects_manager_bank = {} --:map<string, map<string, table>>
+    
+    --save regions
+    for region_key, region_detail_obj in pairs(region_detail.get_instances()) do
+        region_bank[region_key] = region_detail_obj:save()
+        --check for a tracker and save it.
+        if region_detail_obj:has_ownership_tracker() then
+           tracker_bank[region_key] = region_detail_obj:get_ownership_tracker():save()
+        end
+    end
 
+    --save factions
+    for faction_key, faction_detail_obj in pairs(faction_detail.get_instances()) do
+        faction_bank[faction_key] = faction_detail_obj:save()
+        --check for a food manager and save it
+        if faction_detail_obj:has_food_manager() then
+            food_manager_bank[faction_key] = faction_detail_obj:get_food_manager():save()
+        end
+        --set up blank save 
+        province_bank[faction_key] = {}
+        character_bank[faction_key] = {}
+        local fact_prov_bank = province_bank[faction_key]
+        local fact_char_bank = character_bank[faction_key]
+        -- save provinces
+        for province_key, province_detail_obj in pairs(faction_detail_obj:provinces()) do
+            fact_prov_bank[province_key] = province_detail_obj:save()
+            -- check for a pop manager and save it
+            if province_detail_obj:has_population() then
+                pop_manager_bank[province_key.."_"..faction_key] = province_detail_obj:get_population_manager():save()
+            end
+        end
+        -- save characters
+        for cqi_as_string, character_detail_obj in pairs(faction_detail_obj:characters()) do
+            fact_char_bank[cqi_as_string] = character_detail_obj:save()
+            if character_detail_obj:has_unit_effects_manager() then
+                local uem = character_detail_obj:get_unit_effects_manager() 
+                unit_effects_manager_bank[cqi_as_string] = {}
+                unit_effects_manager_bank[cqi_as_string][uem._cqiAsString] = uem:save()
+            end
+        end
+    end
+
+    cm:save_value("pkm_region_detail", region_bank, context)
+    cm:save_value("pkm_region_ownership_tracker", tracker_bank, context)
+    cm:save_value("pkm_faction_detail", faction_bank, context)
+    cm:save_value("pkm_province_detail", province_bank, context)
+    cm:save_value("pkm_faction_food_manager", food_manager_bank, context)
+    cm:save_value("pkm_province_pop_manager", pop_manager_bank, context)
+    cm:save_value("pkm_character_detail", character_bank, context)
+    cm:save_value("pkm_character_unit_effects_manager", unit_effects_manager_bank, context)
 end
