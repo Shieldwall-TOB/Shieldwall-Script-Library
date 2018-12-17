@@ -56,8 +56,11 @@ local ok, err = pcall(function()
     require("shieldwall/content/UnitEffectsContent")
     require("shieldwall/features/UnitEffectsFeatures")
 
-    require("shieldwall/features/PopulationFeatures")
     require("shieldwall/content/PopulationContent")
+    require("shieldwall/features/PopulationFeatures")
+
+    require("shieldwall/content/FoodStorageContent")
+    require("shieldwall/features/FoodStorageFeatures")
 end)
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")

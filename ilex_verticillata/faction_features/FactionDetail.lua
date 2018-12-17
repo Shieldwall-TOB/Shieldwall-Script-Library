@@ -116,6 +116,8 @@ end
 ----FACTION FOOD MANAGER-----
 -----------------------------
 food_manager = require("ilex_verticillata/faction_features/FoodStorageManager")
+_G.fm = food_manager
+
 --v function(self: FACTION_DETAIL) --> FOOD_MANAGER
 function faction_detail.get_food_manager(self)
     if self._factionFoodManager == nil then
