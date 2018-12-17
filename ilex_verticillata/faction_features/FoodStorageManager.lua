@@ -193,11 +193,16 @@ function food_manager.calculate_draw_needs(self)
     local current_draw = self:food_being_drawn()
     local total_food = faction:total_food()
     local before_stores = total_food - current_draw
-    if before_stores < 0 then
+    local stores = self:food_in_storage()
+    if before_stores < 0 and stores > 0 then
         if current_draw > 0 then
             cm:remove_effect_bundle(CONST.food_storage_bundle..(tostring(current_draw)), faction:name())
         end
         local desired_new_draw = before_stores*-1
+        
+        if desired_new_draw > stores then
+            desired_new_draw = stores
+        end
         --clamp to a multiple of five, rounding up
         if not (desired_new_draw%5 == 0) then
             desired_new_draw = (math.ceil((desired_new_draw/5)-0.5))*5
