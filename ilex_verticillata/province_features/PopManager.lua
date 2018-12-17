@@ -91,6 +91,13 @@ pop_manager._growthReductionThresholds = {} --:map<string, number>
 function pop_manager.set_growth_reduction_threshold_for_caste(caste, threshold)
     pop_manager._growthReductionThresholds[caste] = threshold
 end
+
+--// sets the bonus to pop cap that factions get in their home province
+pop_manager._homeRegionPopCaps = {} --:map<string, number>
+--v function(caste: POP_CASTE, pop_cap: number)
+function pop_manager.set_home_region_pop_cap_for_caste(caste, pop_cap)
+    pop_manager._homeRegionPopCaps[caste] = pop_cap
+end
 ----------------------------
 ----OBJECT CONSTRUCTOR------
 ----------------------------
@@ -241,6 +248,10 @@ function pop_manager.evaluate_pop_cap(self)
         local cap = 0 --:number
         for region_key, region_detail in pairs(regions) do
             local buildings = region_detail:buildings()
+            local is_capital = (dev.get_faction(region_detail:get_ownership_tracker():current_owner()):home_region():name() == region_key)
+            if is_capital and pop_manager._homeRegionPopCaps[caste_key] then 
+                cap = cap + pop_manager._homeRegionPopCaps[caste_key]
+            end
             for building_key, _ in pairs(buildings) do
                 local cap_contrib = pop_manager._buildingPopCapContributions[building_key][caste_key]
                 if cap_contrib then
@@ -362,5 +373,6 @@ return {
     set_population_cost_for_unit = pop_manager.set_population_cost_for_unit,
     set_overcrowding_strength_for_caste = pop_manager.set_overcrowding_strength_for_caste,
     set_overcrowding_lower_limit_for_caste = pop_manager.set_overcrowding_lower_limit_for_caste,
-    set_growth_reduction_threshold_for_caste = pop_manager.set_growth_reduction_threshold_for_caste
+    set_growth_reduction_threshold_for_caste = pop_manager.set_growth_reduction_threshold_for_caste,
+    set_home_region_pop_cap_for_caste = pop_manager.set_home_region_pop_cap_for_caste
 }
