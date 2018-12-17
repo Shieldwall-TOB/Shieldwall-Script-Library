@@ -4,7 +4,7 @@ cm:add_listener(
     "CharacterTurnStartEUM",
     "CharacterTurnStart",
     function(context)
-        return context:character():has_military_force() 
+        return context:character():has_military_force() and context:character():faction():name() ~= "rebels"
     end,
     function(context)
         local char_detail = pkm:get_character(context:character():cqi())

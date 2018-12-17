@@ -181,12 +181,14 @@ function character_detail.check_start_pos_estates(self)
     local char = dev.get_character(self:cqi())
     local name_key = char:get_forename()
     local faction_pairs = character_detail._startPosEstates[char:faction():name()]
-    for composite_key, start_pos_estate in pairs(faction_pairs) do
-        local reg_det = self:faction_detail():model():get_region(start_pos_estate._region)
-        if reg_det and reg_det:has_estate_with_building(start_pos_estate._estateBuilding) then
-            local estate_det = reg_det:get_estate_detail(start_pos_estate._estateBuilding)
-            self:add_estate_with_detail(estate_det)
-            estate_det:appoint_owner(self)
+    if faction_pairs then
+        for composite_key, start_pos_estate in pairs(faction_pairs) do
+            local reg_det = self:faction_detail():model():get_region(start_pos_estate._region)
+            if reg_det and reg_det:has_estate_with_building(start_pos_estate._estateBuilding) then
+                local estate_det = reg_det:get_estate_detail(start_pos_estate._estateBuilding)
+                self:add_estate_with_detail(estate_det)
+                estate_det:appoint_owner(self)
+            end
         end
     end
 end

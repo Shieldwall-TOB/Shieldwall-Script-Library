@@ -126,6 +126,7 @@ local function FirstTickObjectModel()
     local region_list = dev.region_list()
     for i = 0, region_list:num_items() - 1 do
         local reg_det = pkm:get_region(region_list:item_at(i):name())
+        reg_det:update_buildings()
         reg_det:get_ownership_tracker():set_current_owner()
         reg_det:create_start_pos_estates()
     end

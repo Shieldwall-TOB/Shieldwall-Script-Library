@@ -19,7 +19,7 @@ pm.set_immigration_activity_limit_for_caste("foreign", 0.99)
 pm.set_mimimum_pos_growth_for_caste("serf", 5)
 --natural rates of growth
 pm.set_natural_growth_for_caste("serf", 0.05) 
-pm.set_natural_growth_for_caste("lord", 0.09) 
+pm.set_natural_growth_for_caste("lord", 0.07) 
 --overcrowding values.
 pm.set_overcrowding_lower_limit_for_caste("serf", 0.65)
 pm.set_overcrowding_strength_for_caste("serf", 0.45) 
