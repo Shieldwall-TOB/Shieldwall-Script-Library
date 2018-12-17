@@ -85,7 +85,12 @@ function pop_manager.set_population_cost_for_unit(unit, caste, size)
     pop_manager._unitPopulationCastes[unit] = caste
 end
 
-
+-- // sets the threshold of population raw number for a caste before overcrowding is increased 
+pop_manager._growthReductionThresholds = {} --:map<string, number>
+--v function(caste: POP_CASTE, threshold: number)
+function pop_manager.set_growth_reduction_threshold_for_caste(caste, threshold)
+    pop_manager._growthReductionThresholds[caste] = threshold
+end
 ----------------------------
 ----OBJECT CONSTRUCTOR------
 ----------------------------
@@ -259,6 +264,8 @@ function pop_manager.evaluate_pop_growth(self)
         local pop = self:get_pop_of_caste(caste_key)
         local pop_cap = self:get_pop_cap_for_caste(caste_key)
         local growth = pop_manager._naturalGrowthRates[caste_key]
+        local min_growth = pop_manager._minimumPosGrowthValues[caste_key]
+        local growth_reducing_threshold = pop_manager._growthReductionThresholds[caste_key]
         local immigration = pop_manager._immigrationEffectStrengths[caste_key]
         local immigration_limit = pop_manager._immigrationActivityLimit[caste_key]
         local decay_strength = pop_manager._overcrowdingEffectStrength[caste_key]
@@ -275,7 +282,14 @@ function pop_manager.evaluate_pop_growth(self)
 
         --grows by growth% of pop
         if growth then
-            pop_mod("Natural Growth", math.ceil(pop*growth))
+            if growth_reducing_threshold and pop > growth_reducing_threshold then
+                growth = growth/2
+            end
+            local nat_growth = math.ceil(pop*growth) --:number
+            if min_growth and nat_growth < min_growth then
+                nat_growth = min_growth
+            end
+            pop_mod("Natural Growth", nat_growth)
         end
 
         --grows by the interger value of immigration bounded by 10% of pop cap. 
@@ -308,7 +322,7 @@ function pop_manager.evaluate_pop_growth(self)
 
         --runs all the stuff through the change function.
         for ui_cause, value in pairs(pop_mods) do
-            self:modify_population(caste_key, value, ui_cause, (num_mods == 1))
+            self:modify_population(caste_key, math.ceil(value), ui_cause, (num_mods == 1))
             num_mods = num_mods - 1
         end
     end
@@ -347,5 +361,6 @@ return {
     set_natural_growth_for_caste = pop_manager.set_natural_growth_for_caste,
     set_population_cost_for_unit = pop_manager.set_population_cost_for_unit,
     set_overcrowding_strength_for_caste = pop_manager.set_overcrowding_strength_for_caste,
-    set_overcrowding_lower_limit_for_caste = pop_manager.set_overcrowding_lower_limit_for_caste
+    set_overcrowding_lower_limit_for_caste = pop_manager.set_overcrowding_lower_limit_for_caste,
+    set_growth_reduction_threshold_for_caste = pop_manager.set_growth_reduction_threshold_for_caste
 }

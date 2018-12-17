@@ -82,7 +82,7 @@ end
 ----------------------------
 
 pop_manager = require("ilex_verticillata/province_features/PopManager")
-
+_G.pm = pop_manager
 --v function(self: PROVINCE_DETAIL) --> boolean
 function province_detail.has_population(self)
     return not not self._populationManager

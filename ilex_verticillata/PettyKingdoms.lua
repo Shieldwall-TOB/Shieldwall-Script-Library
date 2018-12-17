@@ -1,5 +1,11 @@
 -- The Pety Kingdoms Manager is a suite of campaign features designed for shieldwall. 
 -- It is the script side data tracking archetecture behind all campaign features.
+-- if you're trying to read this script for educational purposes, the best place to start is probably the faction object. 
+-- This one might be confusing because it basically initializes and stores the rest of the stuff, but it doesn't represent anything itself
+
+
+
+
 local petty_kingdoms_manager = {} --# assume petty_kingdoms_manager: PKM
 --v method(text: any)
 function petty_kingdoms_manager:log(text)
