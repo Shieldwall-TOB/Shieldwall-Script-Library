@@ -49,6 +49,12 @@ function ownership_tracker.current_owner(self)
     return self._currentOwner
 end
 
+--v function(self: OWNERSHIP_TRACKER, faction: string) --> boolean
+function ownership_tracker.has_previous_owner(self, faction)
+    return not not self._pastRegionOwners[faction]
+end
+
+
 
 --v function(region: string, player: string)
 function ownership_tracker.player_captures_region(region, player)
@@ -88,6 +94,13 @@ function ownership_tracker.transfer_region(self, new_owner)
 
     dev.eh:trigger_event("FactionLostRegion", dev.get_faction(old_owner), dev.get_region(region))
 end
+
+
+--v function(self: OWNERSHIP_TRACKER) --> map<string, number>
+function ownership_tracker.owner_history(self)
+    return self._pastRegionOwners
+end
+
 
 
 ------------------------------------

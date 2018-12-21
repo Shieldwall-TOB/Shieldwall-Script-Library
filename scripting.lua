@@ -262,6 +262,8 @@ local ok, err = pcall(function()
     require("shieldwall/content/KingdomsContent")
     require("shieldwall/features/VassalFeatures")
     require("shieldwall/features/MajorEmpireFeatures")
+
+    require("shieldwall/features/RestoreAllyTerritory")
 end)
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")

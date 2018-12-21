@@ -259,6 +259,7 @@ end
 -----OWNERSHIP TRACKER OBJECT-----
 ----------------------------------
 ownership_tracker = require("ilex_verticillata/region_features/OwnershipTracker")
+_G.rot = ownership_tracker
 
 --v function(self: REGION_DETAIL) --> OWNERSHIP_TRACKER
 function region_detail.get_ownership_tracker(self)
