@@ -112,6 +112,14 @@ local function OnSettlementSelected(context)
                         dev.get_uic(AdviceResizable, "advice_text_panel", "info_text"):SetVisible(false)
                         local VSlider = dev.get_uic(AdviceResizable, "vslider")
                         VSlider:Resize(VSlider:Width(), VSlider:Height()*2)
+                        local Top = dev.get_uic(VSlider, "top")
+                        local Bot = dev.get_uic(VSlider, "bottom")
+                        if Top and Bot then
+                            Bot:SimulateLClick()
+                            dev.callback(function()
+                                Top:SimulateLClick()
+                            end, 0.1)
+                        end
                     end
                 end, 0.1)
             else
@@ -123,6 +131,14 @@ local function OnSettlementSelected(context)
                         find_uicomponent(AdviceResizable, "advice_text_panel", "info_text"):SetVisible(false)
                         local VSlider = find_uicomponent(AdviceResizable, "vslider")
                         VSlider:Resize(VSlider:Width(), VSlider:Height()*2)
+                        local Top = find_uicomponent(VSlider, "top")
+                        local Bot = find_uicomponent(VSlider, "bottom")
+                        if Top and Bot then
+                            Bot:SimulateLClick()
+                            add_callback(function()
+                                Top:SimulateLClick()
+                            end, 0.1)
+                        end
                     end
                 end, 0.1)
             end

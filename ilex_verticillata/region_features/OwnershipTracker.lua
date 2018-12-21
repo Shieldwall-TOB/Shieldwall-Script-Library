@@ -68,7 +68,7 @@ end
 
 --v function(self: OWNERSHIP_TRACKER)
 function ownership_tracker.set_current_owner(self)
-    local current_owner = dev.get_region(self._regionName):owning_faction():name()
+    self._currentOwner = dev.get_region(self._regionName):owning_faction():name()
 end
 
 --v function(self: OWNERSHIP_TRACKER, new_owner: string)

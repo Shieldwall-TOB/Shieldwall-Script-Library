@@ -30,7 +30,11 @@ end
 faction_detail._majorFactions = {} --:map<string, boolean>
 --v function(key: string)
 function faction_detail.make_faction_major(key)
+    faction_detail:log("Made ["..key.."] a major faction.")
     faction_detail._majorFactions[key] = true
+    if faction_detail._instances[key] then
+        faction_detail._instances[key]._isMajor = true
+    end
 end
 
 ----------------------------
@@ -59,7 +63,9 @@ function faction_detail.new(model, key)
     self._kingdomLevel = 0 
     self._isMajor = not not faction_detail._majorFactions[key]
     self._isVassal = false --:boolean
-    self._master = nil --:string
+    self._liege = nil --:FACTION_DETAIL
+    self._vassals = {} --:map<string, FACTION_DETAIL>
+    self._numVassals = 0
 
     self._effectBundles = {} --:map<string, boolean>
     self._bundlesClear = true --:boolean
@@ -91,7 +97,10 @@ function faction_detail.model(self)
     return self._model
 end
 
-
+--v function(self: FACTION_DETAIL) --> boolean
+function faction_detail.is_major(self)
+    return self._isMajor
+end
 
 
 ------------------------------------
@@ -178,6 +187,48 @@ function faction_detail.get_character(self, cqi)
     end
     return self._characters[cqi]
 end
+
+---------------------------
+----VASSAL CONNECTIONS-----
+---------------------------
+
+--v function(self: FACTION_DETAIL, master: string)
+function faction_detail.subjugate(self, master)
+    local master_det = self._model._factions[master]
+    self._isVassal = true
+    self._liege = master_det
+end
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.liberate(self)
+    self:log("["..self:name().."] is liberated from being a vassal to ["..self._liege:name().."]")
+    self._isVassal = false
+    self._liege._vassals[self:name()] = nil
+    self._liege._numVassals = self._liege._numVassals - 1
+    self._liege = nil
+end
+
+--v function(self: FACTION_DETAIL, vassal: string)
+function faction_detail.remove_vassal(self, vassal)
+    local vassal_det = self._model._factions[vassal]
+    vassal_det._isVassal = false
+    vassal_det._liege = nil
+    self._numVassals = self._numVassals - 1 
+    self._vassals[vassal] = nil
+    self:log("["..self:name().."] no longer controls ["..vassal.."] as a vassal")
+end
+
+
+--v function(self: FACTION_DETAIL) --> boolean
+function faction_detail.is_faction_vassal(self)
+    return self._isVassal
+end
+
+--v function(self: FACTION_DETAIL) --> FACTION_DETAIL
+function faction_detail.liege(self)
+    return self._liege
+end
+
 
 
 

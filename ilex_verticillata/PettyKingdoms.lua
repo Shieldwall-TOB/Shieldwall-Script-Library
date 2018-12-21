@@ -53,7 +53,7 @@ end
 ----------------------------
 
 region_detail = require("ilex_verticillata/region_features/RegionDetail")
-
+_G.rd = region_detail
 --v function(self: PKM, region_key: string, savedata: table) --> REGION_DETAIL
 function petty_kingdoms_manager.load_region(self, region_key, savedata)
     self._regions[region_key] = region_detail.load(self, region_key, savedata)
@@ -77,6 +77,7 @@ end
 -----------------------------
 
 faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
+_G.fd = faction_detail
 
 --v function(self: PKM, faction_key: string, savedata: table) --> FACTION_DETAIL
 function petty_kingdoms_manager.load_faction(self, faction_key, savedata)
@@ -112,6 +113,65 @@ function petty_kingdoms_manager.get_character(self, character_cqi)
     return faction:get_character(character_cqi)
 end
 
+
+---vassal management
+--v function(self: PKM, faction: string, vassal: string?)
+function petty_kingdoms_manager.grant_faction_vassal(self, faction, vassal)
+    local faction_det = self:get_faction(faction)
+    if vassal then
+        --# assume vassal: string
+        local vassal_det = self:get_faction(vassal)
+        vassal_det:subjugate(vassal)
+        faction_det._numVassals = faction_det._numVassals + 1
+        faction_det._vassals[vassal] = vassal_det
+        faction_det:log("["..faction_det:name().."] vassalized ["..vassal_det:name().."]")
+    else
+        local faction_obj = cm:model():world():faction_by_key(faction_det:name())
+        local faction_list = cm:model():world():faction_list()
+        for j = 0, faction_list:num_items() - 1 do
+            local potential_vassal = faction_list:item_at(j)
+            if potential_vassal:is_vassal_of(faction_obj) then
+                local vassal_fd = self:get_faction(vassal)
+                vassal_fd:subjugate(faction)
+            end
+        end
+    end
+end
+
+--v function(self: PKM, faction_name: string) --> boolean
+function petty_kingdoms_manager.is_faction_vassal(self, faction_name)
+    if faction_name == "rebels" then
+        return false
+    end
+    return self:get_faction(faction_name):is_faction_vassal()
+end
+
+--v function(self: PKM, faction_name: string) --> boolean
+function petty_kingdoms_manager.is_faction_kingdom(self, faction_name)
+    if faction_name == "rebels" then
+        return false
+    end
+    return self:get_faction(faction_name):is_major()
+end
+
+--v function(self: PKM, vassal: string)
+function petty_kingdoms_manager.faction_became_vassal(self, vassal)
+    if vassal == "rebels" then
+        return 
+    end
+    local vassal_det = self:get_faction(vassal)
+    local faction_obj = cm:model():world():faction_by_key(vassal_det:name())
+    local faction_list = cm:model():world():faction_list()
+    vassal_det:log("["..vassal_det:name().."] became a vassal! attempting to find a master!")
+    for j = 0, faction_list:num_items() - 1 do
+        local potential_master = faction_list:item_at(j)
+        if faction_obj:is_vassal_of(potential_master) then
+            self:grant_faction_vassal(potential_master:name(), vassal)
+            vassal_det:log("["..vassal_det:name().."] is vassal to ["..potential_master:name().."] !")
+            break
+        end
+    end
+end
 
 
 
