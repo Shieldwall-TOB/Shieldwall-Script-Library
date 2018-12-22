@@ -76,14 +76,7 @@ function pop_manager.set_natural_growth_for_caste(caste, rate)
     pop_manager._naturalGrowthRates[caste] = rate
 end
 
---// Sets the population cost of a unit to create
-pop_manager._unitPopulationCosts = {} --:map<string, number>
-pop_manager._unitPopulationCastes = {} --:map<string, POP_CASTE>
---v function(unit: string, caste: POP_CASTE, size: number)
-function pop_manager.set_population_cost_for_unit(unit, caste, size)
-    pop_manager._unitPopulationCosts[unit] = size
-    pop_manager._unitPopulationCastes[unit] = caste
-end
+
 
 -- // sets the threshold of population raw number for a caste before overcrowding is increased 
 pop_manager._growthReductionThresholds = {} --:map<string, number>
@@ -370,7 +363,6 @@ return {
     set_immigration_activity_limit_for_caste = pop_manager.set_immigration_activity_limit_for_caste,
     set_mimimum_pos_growth_for_caste = pop_manager.set_mimimum_pos_growth_for_caste,
     set_natural_growth_for_caste = pop_manager.set_natural_growth_for_caste,
-    set_population_cost_for_unit = pop_manager.set_population_cost_for_unit,
     set_overcrowding_strength_for_caste = pop_manager.set_overcrowding_strength_for_caste,
     set_overcrowding_lower_limit_for_caste = pop_manager.set_overcrowding_lower_limit_for_caste,
     set_growth_reduction_threshold_for_caste = pop_manager.set_growth_reduction_threshold_for_caste,

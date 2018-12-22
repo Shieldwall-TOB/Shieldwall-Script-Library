@@ -62,7 +62,7 @@ function character_detail.new(faction_detail, cqi)
     self._numEstates = 0
 
     self._forceEffectsManager = nil --:UNIT_EFFECTS_MANAGER
-
+    self._recruiterCharacter = nil --:RECRUITER
 
     register_to_prototype(self._cqi, self)
     return self
@@ -192,6 +192,21 @@ function character_detail.check_start_pos_estates(self)
         end
     end
 end
+
+-----------------------------
+-----RECRUITMENT MANAGER-----
+-----------------------------
+recruiter_character = require("ilex_verticillata/character_features/Recruiter")
+_G.rc = recruiter_character
+--v function(self: CHARACTER_DETAIL) --> RECRUITER
+function character_detail.recruiter(self)
+    if self._recruiterCharacter == nil then
+        self._recruiterCharacter = recruiter_character.new(self)
+    end
+    return self._recruiterCharacter
+end
+
+
 
 ------------------------------------
 ----SAVING AND LOADING FUNCTIONS----
