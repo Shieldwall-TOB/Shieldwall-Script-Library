@@ -106,6 +106,22 @@ function estate_detail.appoint_owner(self, owning_character)
     self._owningCharacter = owning_character
 end
 
+--v function(self: ESTATE_DETAIL) --> boolean
+function estate_detail.has_owner(self)
+    return not not self._owningCharacter
+end
+
+--v function(self: ESTATE_DETAIL) --> CHARACTER_DETAIL
+function estate_detail.owner(self)
+    return self._owningCharacter
+end
+
+--v function(self: ESTATE_DETAIL)
+function estate_detail.remove_owner(self)
+    self._owningCharacter = nil
+end
+
+
 
 
 return {

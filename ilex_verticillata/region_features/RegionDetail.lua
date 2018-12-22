@@ -228,6 +228,11 @@ function region_detail.add_estate(self, building_key)
 end
 
 --v function(self: REGION_DETAIL, building_key: string)
+function region_detail.disconnect_estate(self, building_key)
+    self._estates[building_key] = nil
+end
+
+--v function(self: REGION_DETAIL, building_key: string)
 function region_detail.load_estate_detail(self, building_key)
     self._estates[building_key] = estate_detail.new(self, building_key)
 end
@@ -243,7 +248,7 @@ function region_detail.create_start_pos_estates(self)
 end
 
 --v function(self: REGION_DETAIL,leader_detail: CHARACTER_DETAIL)
-function region_detail.transition_estates_to_new_faction(self, leader_detail)
+function region_detail.refresh_estates(self, leader_detail)
     self:update_buildings()
     for building_key, _ in pairs(self._buildings) do
         if not not (estate_detail.estate_chain_for_level(building_key)) then
@@ -252,9 +257,22 @@ function region_detail.transition_estates_to_new_faction(self, leader_detail)
             self:get_estate_detail(building_key):appoint_owner(leader_detail)
         end
     end
+    for building_key, estate in pairs(self._estates) do
+        if self._buildings[building_key] == nil then
+            dev.eh:trigger_event("EstateDestroyed", building_key, dev.get_region(self._name))
+        end
+    end
 end
 
-
+--v function(self: REGION_DETAIL)
+function region_detail.clear_estates_for_rebels(self)
+    self:update_buildings()
+    for building_key, estate in pairs(self._estates) do
+        if self._buildings[building_key] == nil then
+            dev.eh:trigger_event("EstateDestroyed", building_key, dev.get_region(self._name))
+        end
+    end
+end
 ----------------------------------
 -----OWNERSHIP TRACKER OBJECT-----
 ----------------------------------

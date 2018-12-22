@@ -86,13 +86,15 @@ function ownership_tracker.transfer_region(self, new_owner)
     end
     self._pastRegionOwners[old_owner] = cm:model():turn_number()
     self._currentOwner = new_owner
-    if dev.get_faction(new_owner):is_human() then
-        ownership_tracker.player_captures_region(region, new_owner)
-    else
-        ownership_tracker.ai_captures_region(region, new_owner)
-    end
+    if not (new_owner == "rebels") then
+        if dev.get_faction(new_owner):is_human() then
+            ownership_tracker.player_captures_region(region, new_owner)
+        else
+            ownership_tracker.ai_captures_region(region, new_owner)
+        end
 
-    dev.eh:trigger_event("FactionLostRegion", dev.get_faction(old_owner), dev.get_region(region))
+        dev.eh:trigger_event("FactionLostRegion", dev.get_faction(old_owner), dev.get_region(region))
+    end
 end
 
 
