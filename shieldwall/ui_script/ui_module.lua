@@ -47,7 +47,7 @@ end
 
 --v function(self: SHIELD_UI) --> map<string, CA_UIC>
 function shield_ui.uic_hash(self)
-    return self["components"]
+    return self.components
 end
 
 --v function(self: SHIELD_UI, component_name: string) --> CA_UIC
@@ -117,8 +117,28 @@ function shield_ui.new_button(self, name, parent, button_type, image_path)
     return button
 end
 
+--v function(self: SHIELD_UI, name: string) --> CA_UIC
+function shield_ui.new_mini_frame(self, name)
+    local frame = nil --:CA_UIC
+    frame = self.createComponent(name, cm:ui_root(), "ui/campaign ui/character_information")
+    dev.get_uic(frame, "button_zoom"):SetVisible(false)
+    dev.get_uic(frame, "button_details"):SetVisible(false)
+    --dev.get_uic(frame, "info_panel_background"):SetVisible(false)
+    local subframe = dev.get_uic(frame, "subpanel_character")
+    dev.get_uic(subframe, "dy_type"):SetStateText(name)
+    dev.get_uic(subframe, "dy_name"):SetStateText("Subtitle")
+    dev.get_uic(subframe, "3D_window"):SetVisible(false)
+    dev.get_uic(subframe, "dy_ambition"):SetVisible(false)
+    dev.get_uic(subframe, "dy_zeal"):SetVisible(false)
+    dev.get_uic(subframe, "dy_rank"):SetVisible(false)
+    dev.get_uic(subframe, "dy_subterfuge"):SetVisible(false)
+    dev.get_uic(subframe, "dy_age"):SetVisible(false)
+    dev.get_uic(subframe, "dy_gravitas"):SetVisible(false)
+    dev.get_uic(subframe, "dy_command"):SetVisible(false)
 
-
+    self.components[name] = frame
+    return frame    
+end
 
 
 return shield_ui.init

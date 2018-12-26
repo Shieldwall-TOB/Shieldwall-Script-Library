@@ -70,6 +70,10 @@ local ok, err = pcall(function()
     require("shieldwall/features/MajorEmpireFeatures")
 
     require("shieldwall/features/RestoreAllyTerritory")
+
+    --UI
+    require("shieldwall/ui_features/PopulationUI")
+
 end)
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")
