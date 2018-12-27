@@ -336,7 +336,7 @@ end
 function pop_manager.set_start_pos_pops(self)
     self:evaluate_pop_cap()
     for caste_key, pop_cap in pairs(self._popCaps) do
-        local proportion = (42 + cm:random_number(18))/100
+        local proportion = (54 + cm:random_number(18))/100
         local pop = math.ceil(pop_cap*proportion)
         self._populations[caste_key] = pop
         local bundle = 0 --:number

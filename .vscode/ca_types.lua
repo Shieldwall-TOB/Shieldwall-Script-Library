@@ -61,7 +61,7 @@
 --# assume CA_UIC.Divorce: method(pointer: CA_Component)
 --# assume CA_UIC.ChildCount: method() --> number
 --# assume CA_UIC.ClearSound: method()
---# assume CA_UIC.CreateComponent: method(name: string, path: string)
+--# assume CA_UIC.CreateComponent: method(name: string, path: string, image_path: string?, text: string?, call_adopt_from_parent: boolean?)
 --# assume CA_UIC.CurrentState: method() --> BUTTON_STATE
 --# assume CA_UIC.DestroyChildren: method()
 --# assume CA_UIC.Dimensions: method() --> (number, number)

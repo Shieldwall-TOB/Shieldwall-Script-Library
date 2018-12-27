@@ -120,7 +120,7 @@ end
 --v function(self: SHIELD_UI, name: string) --> CA_UIC
 function shield_ui.new_mini_frame(self, name)
     local frame = nil --:CA_UIC
-    frame = self.createComponent(name, cm:ui_root(), "ui/campaign ui/character_information")
+    frame = self.createComponent(name, cm:ui_root(), "ui/custom/character_information")
     dev.get_uic(frame, "button_zoom"):SetVisible(false)
     dev.get_uic(frame, "button_details"):SetVisible(false)
     --dev.get_uic(frame, "info_panel_background"):SetVisible(false)
