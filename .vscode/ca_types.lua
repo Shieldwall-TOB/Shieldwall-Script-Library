@@ -48,7 +48,7 @@
 --# "Attacker" | "Defender" 
 
 --# type global CA_MARKER_TYPE = 
---# "pointer" | "move_to_vfx" | "look_at_vfx" | "tutorial_marker"
+--# "unkown_in_thrones_do_not_use_before_finding" 
 
 
 -- CONTEXT
@@ -407,6 +407,7 @@
 --# assume global is_uicomponent: function(arg: any) --> boolean
 --# assume global find_uicomponent: function(parent: CA_UIC, string...) --> CA_UIC
 --# assume global find_uicomponent_by_table: function(uic: CA_UIC, path: vector<string>) --> CA_UIC
+--# assume global find_single_uicomponent: function(uic: CA_UIC, child: string) --> CA_UIC
 --# assume global UIComponent: function(pointer: CA_Component) --> CA_UIC
 --# assume global uicomponent_to_str: function(uic: CA_UIC) --> string
 --# assume global print_all_uicomponent_children: function(component: CA_UIC)

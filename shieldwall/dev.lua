@@ -304,6 +304,13 @@ cm:register_first_tick_callback(function()
     logAllObjectCalls(faction:faction_leader())
     log("FORCE")
     logAllObjectCalls(faction:faction_leader():military_force())
+    log("UIC")
+    for key, value in pairs(getmetatable(find_uicomponent(cm:ui_root()))) do
+        --# assume key: string
+        MODLOG("\tFound "..tostring(key));
+    end
+    
+    
 end)
 
 

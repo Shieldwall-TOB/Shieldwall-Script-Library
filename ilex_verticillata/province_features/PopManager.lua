@@ -11,11 +11,12 @@ end
 
 --// Building Cap Contributions essentially help set how large the settlement is supposed to be.
 pop_manager._buildingPopCapContributions = {} --:map<string, map<POP_CASTE, number>>
---v function(building: string, pop_caste: POP_CASTE, quantity: number)
+--v function(building: string, pop_caste: string, quantity: number)
 function pop_manager.add_building_pop_cap_contribution(building, pop_caste, quantity)
     if pop_manager._buildingPopCapContributions[building] == nil then
         pop_manager._buildingPopCapContributions[building] = {}
     end
+    --# assume pop_caste: POP_CASTE
     pop_manager._buildingPopCapContributions[building][pop_caste] = quantity
 end
 
@@ -151,7 +152,6 @@ end
 
 
 
-
 ------------------------------------
 ----SAVING AND LOADING FUNCTIONS----
 ------------------------------------
@@ -236,19 +236,19 @@ end
 
 --v function(self: POP_MANAGER)
 function pop_manager.evaluate_pop_cap(self)
-    for caste_key, pop_capacity in pairs(self._popCaps) do
+    for caste_key, pop_capacity in pairs(pop_manager._popCasteBundleChangeIntervals) do
         local regions = self:province_detail():regions()
         local cap = 0 --:number
         for region_key, region_detail in pairs(regions) do
             local buildings = region_detail:buildings()
-            local is_capital = (dev.get_faction(region_detail:get_ownership_tracker():current_owner()):home_region():name() == region_key)
+            local is_capital = (dev.get_region(region_key) == region_key)
             if is_capital and pop_manager._homeRegionPopCaps[caste_key] then 
                 cap = cap + pop_manager._homeRegionPopCaps[caste_key]
             end
             for building_key, _ in pairs(buildings) do
-                local cap_contrib = pop_manager._buildingPopCapContributions[building_key][caste_key]
-                if cap_contrib then
-                    cap = cap + cap_contrib
+                local cap_contrib = pop_manager._buildingPopCapContributions[building_key]
+                if cap_contrib and cap_contrib[caste_key] then
+                    cap = cap + cap_contrib[caste_key]
                 end
             end
         end
@@ -256,7 +256,7 @@ function pop_manager.evaluate_pop_cap(self)
         if (cap < c_pop) then
             self:modify_population(caste_key, c_pop - cap , "Lost Buildings")
         end
-        self._currentPopBundles[caste_key] = cap
+        self._popCaps[caste_key] = cap
     end
 end
 
