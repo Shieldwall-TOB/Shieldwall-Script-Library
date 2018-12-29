@@ -1,0 +1,9 @@
+building_effects_junction_tables	3
+building	effect	effect_scope	value	value_damaged	value_ruined
+vik_granary_1	shield_food_storage_building	building_to_building_own	35	25	25
+vik_granary_2	shield_food_storage_building	building_to_building_own	65	50	50
+vik_souterrain_1	shield_food_storage_building	building_to_building_own	35	25	25
+vik_souterrain_2	shield_food_storage_building	building_to_building_own	65	50	50
+vik_warehouse_1	shield_food_storage_building	building_to_building_own	50	50	0
+vik_warehouse_2	shield_food_storage_building	building_to_building_own	75	75	0
+vik_warehouse_3	shield_food_storage_building	building_to_building_own	100	100	0

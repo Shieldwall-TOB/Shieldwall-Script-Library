@@ -1,0 +1,5 @@
+estates_tables	1
+effect_set	icon	key	unkeep	strip_state_political_action
+vik_estate_effects_agricultural	placeholder.png	vik_estate_agricultural	0	strip_estate_agricultural
+vik_estate_effects_estate_building	placeholder.png	vik_estate_estate_building	0	strip_estate_estate_building
+vik_estate_effects_religious	placeholder.png	vik_estate_religious	0	strip_estate_religious

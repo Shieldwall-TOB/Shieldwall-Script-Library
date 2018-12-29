@@ -1,0 +1,5 @@
+Loc PackedFile
+Key	Text	Tooltip
+effects_description_shield_food_decay	If Food Stores run out, this effect will disappear and your people will begin to starve. 	true
+effects_description_shield_food_stored	%+n Food being drawn from Storage (Factionwide)	true
+effects_description_shield_food_storage_building	%+n Food Storage Capacity (Factionwide)	true

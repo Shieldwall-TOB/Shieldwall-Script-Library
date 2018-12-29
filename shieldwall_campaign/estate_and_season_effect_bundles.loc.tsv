@@ -1,0 +1,16 @@
+Loc PackedFile
+Key	Text	Tooltip
+effect_bundles_localised_description_shield_agricultural_estate_other	This land is ruled by a minor noble, and a share of its gold and grain are taken by the Lord as taxes.	true
+effect_bundles_localised_description_shield_resource_estate_other	This land is ruled by a minor noble, and a share of its gold and grain are taken by the Lord as taxes.	true
+effect_bundles_localised_description_shield_season_0	Spring arrives, and Britannia breaths new life into the land. Crops grow, commerce resumes, and armies march.	true
+effect_bundles_localised_description_shield_season_1	The height of summer: Peasants toil in the fields and bodies rot quickly under the summer sun.	true
+effect_bundles_localised_description_shield_season_2	Leaves drift down from the trees and the weather turns bitter. Peasants and Kings alike begin to prepare for the winter to come. 	true
+effect_bundles_localised_description_shield_season_3	Winter comes, and frost grips the earth. Britannia sleeps while her people gather around their harths, braving the cold until Spring comes.	true
+effect_bundles_localised_description_shield_town_estate_other	This land is ruled by a minor noble, and a share of its gold and grain are taken by the Lord as taxes.	true
+effect_bundles_localised_title_shield_agricultural_estate_other	The Lord's Share	true
+effect_bundles_localised_title_shield_resource_estate_other	The Lord's Share	true
+effect_bundles_localised_title_shield_season_0	Spring	true
+effect_bundles_localised_title_shield_season_1	Summer	true
+effect_bundles_localised_title_shield_season_2	Autumn	true
+effect_bundles_localised_title_shield_season_3	Winter	true
+effect_bundles_localised_title_shield_town_estate_other	The Lord's Share	true

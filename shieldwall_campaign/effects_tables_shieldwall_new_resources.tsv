@@ -1,0 +1,6 @@
+effects_tables	3
+effect	icon	priority	icon_negative	is_hidden
+shield_resource_candles_production	candles.png	61	candles.png	true
+shield_resource_textiles_production	textiles.png	61	textiles.png	true
+shield_resource_jewellery_production	jewellery.png	61	jewellery.png	true
+shield_resource_steel_production	steel.png	61	steel.png	true
