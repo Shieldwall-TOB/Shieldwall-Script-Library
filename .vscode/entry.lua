@@ -71,6 +71,8 @@ local ok, err = pcall(function()
 
     require("shieldwall/features/RestoreAllyTerritory")
 
+    require("shieldwall/content/EstatesContent")
+
     --UI
     require("shieldwall/ui_features/PopulationUI")
 

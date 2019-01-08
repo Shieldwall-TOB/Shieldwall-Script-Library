@@ -192,7 +192,6 @@ require("vik_decrees");
 require("vik_ai_wars");
 require("vik_ai_peace");
 
-
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
@@ -265,6 +264,8 @@ local ok, err = pcall(function()
     require("shieldwall/features/MajorEmpireFeatures")
 
     require("shieldwall/features/RestoreAllyTerritory")
+
+    require("shieldwall/content/EstatesContent")
 
     --UI
     require("shieldwall/ui_features/PopulationUI")

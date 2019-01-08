@@ -22,8 +22,8 @@ end
 -----STATIC CONTENT------
 -------------------------
 character_detail._startPosEstates = {} --:map<string, map<string, START_POS_ESTATE>>
---v function(self: CHARACTER_DETAIL, estate_region: string, estate_owner_name: string, estate_building: string, faction_key: string )
-function character_detail.register_startpos_estate(self, estate_region, estate_owner_name, estate_building, faction_key)
+--v function(estate_region: string, estate_owner_name: string, estate_building: string, faction_key: string )
+function character_detail.register_startpos_estate(estate_region, estate_owner_name, estate_building, faction_key)
     if character_detail._startPosEstates[faction_key] == nil then
         character_detail._startPosEstates[faction_key] = {}
     end
