@@ -172,7 +172,7 @@ end
 -------------------------------
 
 estate_detail = require("ilex_verticillata/region_features/EstateDetail")
-
+_G.ed = estate_detail
 --v function(self: REGION_DETAIL) --> number
 function region_detail.num_estates(self)
     return self._numEstates
