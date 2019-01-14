@@ -218,25 +218,29 @@ end
 --v function(self: CHARACTER_DETAIL)
 function character_detail.title_for_faction_leader(self)
     local k_level = self._factionDetail:kingdom_level()
-
+    self:log("Updating title for character ["..self._cqi.."] who is a king")
 end
 
---v function(self: CHARACTER_DETAIL) --> string
-function character_detail.get_home_estate(self)
-    if self._homeEstate[3] == false then
+--v function(self: CHARACTER_DETAIL, log: boolean?) --> string
+function character_detail.get_home_estate(self, log)
+    if (self._homeEstate[3] == false) then
         local chosen_estate --:string
-        local chosen_estate_level --:number
+        local chosen_estate_level = 0 --:number
         for regions, building_pairs in pairs(self._estates) do
-            for building_key, _ in pairs(building_pairs) do
+            for chain_key, estate_object in pairs(building_pairs) do
+                local building_key = estate_object:building()
                 local build_level = string.find(building_key, "_%d")
-                local build_level_num = tonumber(string.sub(chosen_estate, build_level+1))
-                if build_level and build_level > build_level_num then
-                    chosen_estate = building_key
+                local build_level_num = tonumber(string.sub(building_key, build_level+1))
+                if build_level and (build_level_num > chosen_estate_level) then
+                    chosen_estate = chain_key
                     chosen_estate_level = build_level_num
                 end
             end
         end
-        if chosen_estate and chosen_estate_level then
+        if chosen_estate  then
+            if log then
+                self:log("Set the home estate for character ["..self._cqi.."] as ["..self._homeEstate[1].."] ")
+            end
             self._homeEstate[3] = true
             self._homeEstate[1] = chosen_estate
             self._homeEstate[2] = chosen_estate_level
@@ -252,13 +256,20 @@ function character_detail.update_title(self)
         self:title_for_faction_leader()
         return
     end
-    local home_estate = self:get_home_estate()
+    local human = dev.get_character(self:cqi()):faction():is_human()
+    if human then
+        self:log("Updating title for character ["..self._cqi.."] who is NOT a king")
+    end
+    local home_estate = self:get_home_estate(human)
     if not (home_estate == "no_estate") then
         local wealth = 0 --:number
         for estate_region, estate_pair in pairs(self._estates) do
             for estate_building, estate_object in pairs(estate_pair) do
                 wealth = wealth + estate_detail.household_growth_for_estate_building_level(estate_building)
             end
+        end
+        if human then
+            self:log("\tResolved wealth level to ["..wealth.."]")
         end
         local level --:number
         if wealth > CONST.charm_level_three_trait_threshold then
@@ -271,6 +282,9 @@ function character_detail.update_title(self)
         local subculture = dev.get_character(self:cqi()):faction():subculture()
         if level and character_detail.sc_has_titles(subculture) then
             local title = CONST.charm_title_prefix .. home_estate .. "_" .. character_detail.get_title_key_for_sc(subculture) .. "_" .. tostring(level)
+            if human then
+                self:log("\t Resolved title as ["..title.."]")
+            end
             if self._title == title then
                 return
             else
@@ -278,6 +292,14 @@ function character_detail.update_title(self)
                 cm:force_add_trait(dev.lookup(self:cqi()), title, true)
                 self._title = title
             end
+        else
+            if human then
+                self:log("\t Failed to find a title level, or this character's sub doesn't have titles!")
+            end
+        end
+    else
+        if human then
+            self:log("This character holds no home estate!")
         end
     end
 end

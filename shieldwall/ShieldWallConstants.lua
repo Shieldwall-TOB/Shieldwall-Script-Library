@@ -21,8 +21,8 @@ return {
             return {}
         else return _G.traits_localized_content end 
     end,
-    charm_level_one_trait_threshold = 4,
-    charm_level_two_trait_threshold = 16,
+    charm_level_one_trait_threshold = 1,
+    charm_level_two_trait_threshold = 15,
     charm_level_three_trait_threshold = 30,
     pop_bundle_prefix = "shield_pop_bundle_"
 }
