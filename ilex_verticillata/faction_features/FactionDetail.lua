@@ -102,6 +102,15 @@ function faction_detail.is_major(self)
     return self._isMajor
 end
 
+------------------------
+----KINGDOM CONTROLS----
+------------------------
+--v function(self: FACTION_DETAIL) --> number
+function faction_detail.kingdom_level(self)
+    return self._kingdomLevel
+end
+
+
 
 ------------------------------------
 ----SAVING AND LOADING FUNCTIONS----

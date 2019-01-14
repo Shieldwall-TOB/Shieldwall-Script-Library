@@ -46,6 +46,15 @@ function estate_detail.estate_chain_for_level(level_key)
     return estate_detail._estateBuildingChains[level_key]
 end
 
+--v function(level_key: string) --> number
+function estate_detail.household_growth_for_estate_building_level(level_key)
+    return estate_detail._estateBuildingExpQuantities[level_key]
+end
+
+--v function(level_key: string) --> string
+function estate_detail.household_growth_exp_trigger_for_estate_building_levels(level_key)
+    return estate_detail._estateBuildingExpTriggers[level_key] 
+end
 ----------------------------
 ----OBJECT CONSTRUCTOR------
 ----------------------------
@@ -130,5 +139,8 @@ return {
     --Content API
     add_estate_building_level = estate_detail.add_estate_building_level,
     estate_chain_for_level = estate_detail.estate_chain_for_level,
-    add_estate_chain_type = estate_detail.add_estate_chain_type
+    add_estate_chain_type = estate_detail.add_estate_chain_type,
+    --Content Retrieval
+    household_growth_exp_trigger_for_estate_building_levels = estate_detail.household_growth_exp_trigger_for_estate_building_levels,
+    household_growth_for_estate_building_level = estate_detail.household_growth_for_estate_building_level
 }

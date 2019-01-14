@@ -18,6 +18,7 @@ end
 local function register_to_prototype(cqi, object)
     character_detail._instances[cqi] = object
 end
+
 -------------------------
 -----STATIC CONTENT------
 -------------------------
@@ -55,11 +56,11 @@ function character_detail.new(faction_detail, cqi)
     self._cqi = tostring(cqi) --:string
     self._factionDetail = faction_detail
 
-
+    self._lastEXPTotal = 0 --:number
     self._title = "no_title"
-    self._homeEstate = {"", "", false} --:{string, string, boolean}
+    self._homeEstate = {"", 0, false} --:{string, number, boolean}
     self._estates = {} --:map<string, map<string, ESTATE_DETAIL>>
-    self._numEstates = 0
+    self._numEstates = 0 --:number
 
     self._forceEffectsManager = nil --:UNIT_EFFECTS_MANAGER
     self._recruiterCharacter = nil --:RECRUITER
@@ -192,6 +193,50 @@ function character_detail.check_start_pos_estates(self)
         end
     end
 end
+
+------------------------
+-----ESTATE EFFECTS-----
+------------------------
+
+--v function(self: CHARACTER_DETAIL)
+function character_detail.title_for_faction_leader(self)
+    local k_level = self._factionDetail:kingdom_level()
+
+end
+
+--v function(self: CHARACTER_DETAIL)
+function character_detail.update_title(self)
+    local char_obj = dev.get_character(self:cqi())
+    if char_obj:is_faction_leader() then
+        self:title_for_faction_leader()
+        return
+    end
+    if self._homeEstate[3] == false then
+        local chosen_estate = self._homeEstate[1]
+        local chosen_estate_level = self._homeEstate[2]
+        for regions, building_pairs in pairs(self._estates) do
+            for building_key, _ in pairs(building_pairs) do
+                local build_level = string.find(building_key, "_%d")
+                local build_level_num = tonumber(string.sub(chosen_estate, build_level+1))
+                if build_level and build_level > build_level_num then
+                    chosen_estate = building_key
+                    chosen_estate_level = build_level_num
+                end
+            end
+        end
+        self._homeEstate[3] = true
+        self._homeEstate[1] = chosen_estate
+        self._homeEstate[2] = chosen_estate_level
+    end
+    
+end
+
+--v function(self: CHARACTER_DETAIL, trigger: string, num: number, context: CA_CONTEXT)
+function character_detail.grow_household(self, trigger, num, context)
+    effect.add_agent_experience(trigger, num, 0, context)
+    self._lastEXPTotal = self._lastEXPTotal + num
+end
+
 
 -----------------------------
 -----RECRUITMENT MANAGER-----

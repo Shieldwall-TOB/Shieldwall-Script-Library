@@ -20,7 +20,10 @@ return {
         if _G.traits_localized_content == nil then
             return {}
         else return _G.traits_localized_content end 
-    end
+    end,
+    charm_level_one_trait_threshold = 4,
+    charm_level_two_trait_threshold = 16,
+    charm_level_three_trait_threshold = 30
 }
 
 

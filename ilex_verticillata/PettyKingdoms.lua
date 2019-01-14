@@ -205,7 +205,9 @@ end
 
 dev.new_game(function(context)
     local ok, err = pcall(function()
+        local clock = os.clock()
         FirstTickObjectModel()
+        pkm:log("New Game Setup Completed: ".. string.format("elapsed time: %.2f", os.clock() - clock))
     end)
     if not ok then
         pkm:log(tostring(err))
@@ -346,7 +348,9 @@ end
 
 cm:register_saving_game_callback(function(context)
     local ok, err = pcall(function()
+        local clock = os.clock()
         OnGameSaved(context)
+        pkm:log("Game Saved: ".. string.format("elapsed time: %.2f", os.clock() - clock))
     end)
     if not ok then
         pkm:log(tostring(err))
@@ -355,7 +359,9 @@ end)
 
 cm:register_loading_game_callback(function(context)
     local ok, err = pcall(function()
+        local clock = os.clock()
         OnGameLoaded(context)
+        pkm:log("Game Loaded: ".. string.format("elapsed time: %.2f", os.clock() - clock))
     end)
     if not ok then
         pkm:log(tostring(err))
