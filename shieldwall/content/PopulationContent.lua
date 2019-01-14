@@ -24,7 +24,7 @@ pm.set_natural_growth_for_caste("lord", 0.07)
 pm.set_overcrowding_lower_limit_for_caste("serf", 0.65)
 pm.set_overcrowding_strength_for_caste("serf", 0.45) 
 --growth reduction thresholds
-pm.set_growth_reduction_threshold_for_caste("serf", 2000)
+pm.set_growth_reduction_threshold_for_caste("serf", 625)
 --set the home region cap bonus
 pm.set_home_region_pop_cap_for_caste("serf", 160)
 pm.set_home_region_pop_cap_for_caste("lord", 80)

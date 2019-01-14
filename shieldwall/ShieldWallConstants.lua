@@ -23,7 +23,8 @@ return {
     end,
     charm_level_one_trait_threshold = 4,
     charm_level_two_trait_threshold = 16,
-    charm_level_three_trait_threshold = 30
+    charm_level_three_trait_threshold = 30,
+    pop_bundle_prefix = "shield_pop_bundle_"
 }
 
 

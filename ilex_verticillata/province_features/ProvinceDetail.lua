@@ -77,6 +77,65 @@ function province_detail.faction_detail(self)
     return self._factionDetail
 end
 
+---------------------------------
+---effect bundles and capitals---
+---------------------------------
+
+--v function(self: PROVINCE_DETAIL) --> string
+function province_detail.get_capital(self)
+    if self._lastCapital == nil then
+        --chose new capital
+        --self:log("Get Capital finding new capital in ["..self:name().."] for faction ["..self:faction_detail():name().."] ")
+        for region_key, region in pairs(self._regions) do
+            if dev.get_region(region_key):is_province_capital() then
+                self._lastCapital = region_key
+                --self:log("\tResult was ["..self._lastCapital.."] ")
+                return self._lastCapital
+            end
+        end
+        --we couldn't find one, so just pick whatever the first one is.
+        for region_key, region in pairs(self._regions) do
+            self._lastCapital = region_key
+            self:log("Get Capital finding new capital in ["..self:name().."] for faction ["..self:faction_detail():name().."] \n\tResult was not a regional capital due to province division. New Capital is ["..self._lastCapital.."] ")
+            return self._lastCapital
+        end
+    end
+    return self._lastCapital
+end
+
+--v function(self: PROVINCE_DETAIL)
+function province_detail.clear_effects(self)
+    if self._lastCapital == nil then
+        return
+    end
+    for effect_key, is_active in pairs(self._activeEffects) do
+        cm:remove_effect_bundle_from_region(effect_key, self._lastCapital)
+    end
+    self._lastCapital = nil
+    self._activeEffects = {}
+end
+
+--v function(self: PROVINCE_DETAIL, bundle: string)
+function province_detail.apply_effect_bundle(self, bundle)
+    cm:apply_effect_bundle_to_region(bundle, self:get_capital(), 0)
+    self._activeEffects[bundle] = true
+end
+
+--v function(self: PROVINCE_DETAIL, bundle: string)
+function province_detail.remove_effect_bundle(self, bundle)
+    if self._activeEffects[bundle] == nil then
+        return
+    end
+    cm:remove_effect_bundle_from_region(bundle, self:get_capital())
+    self._activeEffects[bundle] = nil
+end
+
+--v function(self: PROVINCE_DETAIL, bundle: string) --> boolean
+function province_detail.has_effect_bundle(self, bundle)
+    return not not self._activeEffects[bundle]
+end
+
+
 ----------------------------
 -----POPULATION MANAGERS----
 ----------------------------
@@ -151,11 +210,29 @@ function province_detail.remove_region(self, region_key, new_province)
     end
     self._regions[region_key] = nil
     self._numRegions = self._numRegions - 1 
+
+    --check our effects
+    local transfer_effects = {} --:map<string, boolean>
+    if region_key == self._lastCapital then
+        for effect, _ in pairs(self._activeEffects) do
+            transfer_effects.effect = true
+            self:remove_effect_bundle(effect)
+        end
+        self._lastCapital = nil
+    end
+
     if new_province then
         --# assume new_province: PROVINCE_DETAIL
         new_province:add_region(region_key)
     end
+    for effect, _ in pairs(transfer_effects) do
+        self:apply_effect_bundle(effect)
+    end
 end
+
+
+
+
 
 ------------------------------------
 ----SAVING AND LOADING FUNCTIONS----

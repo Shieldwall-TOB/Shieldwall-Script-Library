@@ -195,6 +195,7 @@ local function FirstTickObjectModel()
         local fact_det = pkm:get_faction(faction_list:item_at(i):name())
         for province_key, prov_det in pairs(fact_det:provinces()) do
             prov_det:get_population_manager():set_start_pos_pops()
+            prov_det:get_population_manager():reapply_all_pop_bundles()
         end
         for cqi_as_string, char_det in pairs(fact_det:characters()) do
             char_det:check_start_pos_estates()

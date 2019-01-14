@@ -173,6 +173,45 @@ end
 ----STATE CHANGING FUNCTIONS-------
 -----------------------------------
 
+--v function(self: POP_MANAGER, caste: POP_CASTE, old_value: number, change_value: number)
+function pop_manager.update_population_bundle(self, caste, old_value, change_value)
+    local bundle_thresholds --:number
+    if pop_manager._popCasteBundleChangeIntervals[caste] then
+        bundle_thresholds = pop_manager._popCasteBundleChangeIntervals[caste]
+    else
+        self:log("WARNING: Could not calculate the bundle effects of a change in population!")
+        self:log("\tNo caste bundle change interval is set for this caste")
+        return
+    end
+    local old_bundle = self:get_pop_bundle_for_caste(caste)
+    local cap_difference = (old_value - old_bundle) + change_value
+    if (cap_difference >= bundle_thresholds) then
+        --we have increased our bundle!
+        local new_bundle = old_bundle + bundle_thresholds
+    elseif (cap_difference < 0) then
+        --we have decreased our bundle!
+        local new_bundle = old_bundle - bundle_thresholds
+        -- >>>>>>remove old bundle
+        self:province_detail():remove_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle))
+        -- >>>>>apply new bundle
+        self:province_detail():apply_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(new_bundle))
+        self._currentPopBundles[caste] = new_bundle
+    else
+        --our bundle has stayed the same
+        if not self:province_detail():has_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle)) then
+            self:province_detail():apply_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle))
+        end
+    end
+end
+
+--v function(self: POP_MANAGER)
+function pop_manager.reapply_all_pop_bundles(self)
+    for caste_key, pop_bundle in pairs(self._currentPopBundles) do
+        if not self:province_detail():has_effect_bundle(CONST.pop_bundle_prefix .. caste_key .. "_".. tostring(pop_bundle)) then
+            self:province_detail():apply_effect_bundle(CONST.pop_bundle_prefix .. caste_key .. "_".. tostring(pop_bundle))
+        end
+    end
+end
 
 --v function(self: POP_MANAGER, caste: POP_CASTE, quantity: number, UICause: string, block_bundle_change: boolean?)
 function pop_manager.modify_population(self, caste, quantity, UICause, block_bundle_change)
@@ -202,6 +241,11 @@ function pop_manager.modify_population(self, caste, quantity, UICause, block_bun
     self._UIPopulationChanges[caste][UICause] = self._UIPopulationChanges[caste][UICause] + change_value
     --make the change.
     self._populations[caste] = new_value
+    --skip the rest if we are told to.
+    if block_bundle_change then
+        self:log("Completed population change with no change in the bundle - change was blocked via arg")
+        return
+    end
     --check where our current bundle is
     local bundle_thresholds --:number
     if pop_manager._popCasteBundleChangeIntervals[caste] then
@@ -217,20 +261,11 @@ function pop_manager.modify_population(self, caste, quantity, UICause, block_bun
         self:log("Completed population change with no change in the bundle!")
         return
     end
-    local cap_difference = (old_value - old_bundle) + change_value
-    if (cap_difference >= bundle_thresholds) then
-        --we have increased our bundle!
-        local new_bundle = old_bundle + bundle_thresholds
-    elseif (cap_difference < 0) then
-        --we have decreased our bundle!
-        local new_bundle = old_bundle - bundle_thresholds
-        -- >>>>>>remove old bundle
-        -- >>>>>apply new bundle
-        self._currentPopBundles[caste] = new_bundle
-    else
-        --we haven't sufficiently increased or decreased to change anything!
-        self:log("Completed population change with no change in the bundle!")
+    if block_bundle_change then
+        self:log("Completed population change with no change in the bundle - change was blocked via arg")
+        return
     end
+    self:update_population_bundle(caste, old_value, new_value)
 end
 
 
@@ -326,7 +361,7 @@ function pop_manager.evaluate_pop_growth(self)
 
         --runs all the stuff through the change function.
         for ui_cause, value in pairs(pop_mods) do
-            self:modify_population(caste_key, math.ceil(value), ui_cause, (num_mods == 1))
+            self:modify_population(caste_key, math.ceil(value), ui_cause, (num_mods > 1))
             num_mods = num_mods - 1
         end
     end
