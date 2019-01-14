@@ -5,6 +5,9 @@ local function onRegionOccupied(region, character)
     local old_province = reg_detail:province_detail()
     local new_province = pkm:get_faction(character:faction():name()):get_province(region:province_name())
     if not( reg_detail:has_no_estates()) then
+        for chain_key, estate in pairs(reg_detail:estates()) do
+            estate:owner():remove_estate(region:name(), estate:chain())
+        end
         --wipe and reassign estates to the new faction leader
         local leader_detail = pkm:get_faction(character:faction():name()):get_character(character:faction():faction_leader():cqi())
         reg_detail:refresh_estates(leader_detail)

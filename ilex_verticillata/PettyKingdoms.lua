@@ -199,6 +199,7 @@ local function FirstTickObjectModel()
         end
         for cqi_as_string, char_det in pairs(fact_det:characters()) do
             char_det:check_start_pos_estates()
+            char_det:update_title()
         end
     end
     pkm:log("Finished first tick function for new game!")
@@ -224,7 +225,7 @@ local function OnGameLoaded(context)
     --# assume tracker_bank: map<string, table>
     for region_key, region_save in pairs(region_bank) do
         local ld_region_detail = pkm:load_region(region_key, region_save)
-        for chain_key, building_key in pairs(ld_region_detail:estate_chains()) do
+        for chain_key, building_key in pairs(ld_region_detail:estate_building_levels()) do
             ld_region_detail:load_estate_detail(building_key)
         end
         if tracker_bank[region_key] then

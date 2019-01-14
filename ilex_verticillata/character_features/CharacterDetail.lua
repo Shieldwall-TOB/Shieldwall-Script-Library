@@ -23,8 +23,8 @@ end
 -----STATIC CONTENT------
 -------------------------
 character_detail._startPosEstates = {} --:map<string, map<string, START_POS_ESTATE>>
---v function(estate_region: string, estate_owner_name: string, estate_building: string, faction_key: string )
-function character_detail.register_startpos_estate(estate_region, estate_owner_name, estate_building, faction_key)
+--v function(estate_region: string, estate_owner_name: string, estate_building: string, estate_chain: string, faction_key: string )
+function character_detail.register_startpos_estate(estate_region, estate_owner_name, estate_building, estate_chain, faction_key)
     if character_detail._startPosEstates[faction_key] == nil then
         character_detail._startPosEstates[faction_key] = {}
     end
@@ -32,8 +32,25 @@ function character_detail.register_startpos_estate(estate_region, estate_owner_n
     holder._region = estate_region
     holder._ownerName = estate_owner_name
     holder._estateBuilding = estate_building
+    holder._estateChain = estate_chain
     holder._faction = faction_key
     character_detail._startPosEstates[faction_key][estate_region..estate_building] = holder
+end
+
+character_detail._subcultureTitleKeys = {} --:map<string, string>
+--v function(subculture: string, title_key: string)
+function character_detail.set_title_key_for_sc(subculture, title_key)
+    character_detail._subcultureTitleKeys[subculture] = title_key
+end
+
+--v function(subculture: string) --> string
+function character_detail.get_title_key_for_sc(subculture)
+    return character_detail._subcultureTitleKeys[subculture] 
+end
+
+--v function(subculture: string) --> boolean
+function character_detail.sc_has_titles(subculture)
+    return not not character_detail._subcultureTitleKeys[subculture] 
 end
 
 ----------------------------
@@ -58,7 +75,7 @@ function character_detail.new(faction_detail, cqi)
 
     self._lastEXPTotal = 0 --:number
     self._title = "no_title"
-    self._homeEstate = {"", 0, false} --:{string, number, boolean}
+    self._homeEstate = {"no_estate", 0, false} --:{string, number, boolean}
     self._estates = {} --:map<string, map<string, ESTATE_DETAIL>>
     self._numEstates = 0 --:number
 
@@ -146,12 +163,12 @@ function character_detail.landless(self)
     return (self._numEstates == 0)
 end
 
---v function(self: CHARACTER_DETAIL, region_key: string, building_key: string)
-function character_detail.add_estate(self, region_key, building_key)
+--v function(self: CHARACTER_DETAIL, region_key: string, chain_key: string)
+function character_detail.add_estate(self, region_key, chain_key)
     if self._estates[region_key] == nil then
         self._estates[region_key] = {}
     end
-    self._estates[region_key][building_key] = self._factionDetail._model:get_region(region_key):get_estate_detail(building_key)
+    self._estates[region_key][chain_key] = self._factionDetail._model:get_region(region_key):get_estate_detail(chain_key)
 end
 
 --v function(self: CHARACTER_DETAIL, detail: ESTATE_DETAIL)
@@ -163,14 +180,14 @@ function character_detail.add_estate_with_detail(self, detail)
 end
 
 
---v function(self: CHARACTER_DETAIL, region_key: string, building_key: string, new_owner: CHARACTER_DETAIL?)
-function character_detail.remove_estate(self, region_key, building_key, new_owner)
-    if self._estates[region_key] == nil or self._estates[region_key][building_key] == nil then
-        self:log("WARNING: Asked character ["..self._cqi.."] to remove an estate at ["..region_key.."] and ["..building_key.."] but this character doesn't own an estate there!")
+--v function(self: CHARACTER_DETAIL, region_key: string, chain_key: string, new_owner: CHARACTER_DETAIL?)
+function character_detail.remove_estate(self, region_key, chain_key, new_owner)
+    if self._estates[region_key] == nil or self._estates[region_key][chain_key] == nil then
+        self:log("WARNING: Asked character ["..self._cqi.."] to remove an estate at ["..region_key.."] and ["..chain_key.."] but this character doesn't own an estate there!")
         return
     end
-    local removed_estate = self._estates[region_key][building_key]
-    self._estates[region_key][building_key] = nil
+    local removed_estate = self._estates[region_key][chain_key]
+    self._estates[region_key][chain_key] = nil
     if new_owner then
         --# assume new_owner: CHARACTER_DETAIL
         new_owner:add_estate_with_detail(removed_estate)
@@ -185,8 +202,8 @@ function character_detail.check_start_pos_estates(self)
     if faction_pairs then
         for composite_key, start_pos_estate in pairs(faction_pairs) do
             local reg_det = self:faction_detail():model():get_region(start_pos_estate._region)
-            if reg_det and reg_det:has_estate_with_building(start_pos_estate._estateBuilding) then
-                local estate_det = reg_det:get_estate_detail(start_pos_estate._estateBuilding)
+            if reg_det and reg_det:has_estate_with_chain(start_pos_estate._estateChain) then
+                local estate_det = reg_det:get_estate_detail(start_pos_estate._estateChain)
                 self:add_estate_with_detail(estate_det)
                 estate_det:appoint_owner(self)
             end
@@ -204,16 +221,11 @@ function character_detail.title_for_faction_leader(self)
 
 end
 
---v function(self: CHARACTER_DETAIL)
-function character_detail.update_title(self)
-    local char_obj = dev.get_character(self:cqi())
-    if char_obj:is_faction_leader() then
-        self:title_for_faction_leader()
-        return
-    end
+--v function(self: CHARACTER_DETAIL) --> string
+function character_detail.get_home_estate(self)
     if self._homeEstate[3] == false then
-        local chosen_estate = self._homeEstate[1]
-        local chosen_estate_level = self._homeEstate[2]
+        local chosen_estate --:string
+        local chosen_estate_level --:number
         for regions, building_pairs in pairs(self._estates) do
             for building_key, _ in pairs(building_pairs) do
                 local build_level = string.find(building_key, "_%d")
@@ -224,11 +236,50 @@ function character_detail.update_title(self)
                 end
             end
         end
-        self._homeEstate[3] = true
-        self._homeEstate[1] = chosen_estate
-        self._homeEstate[2] = chosen_estate_level
+        if chosen_estate and chosen_estate_level then
+            self._homeEstate[3] = true
+            self._homeEstate[1] = chosen_estate
+            self._homeEstate[2] = chosen_estate_level
+        end
     end
-    
+    return self._homeEstate[1]
+end
+
+--v function(self: CHARACTER_DETAIL)
+function character_detail.update_title(self)
+    local char_obj = dev.get_character(self:cqi())
+    if char_obj:is_faction_leader() then
+        self:title_for_faction_leader()
+        return
+    end
+    local home_estate = self:get_home_estate()
+    if not (home_estate == "no_estate") then
+        local wealth = 0 --:number
+        for estate_region, estate_pair in pairs(self._estates) do
+            for estate_building, estate_object in pairs(estate_pair) do
+                wealth = wealth + estate_detail.household_growth_for_estate_building_level(estate_building)
+            end
+        end
+        local level --:number
+        if wealth > CONST.charm_level_three_trait_threshold then
+            level = 2
+        elseif wealth > CONST.charm_level_two_trait_threshold then
+            level = 1
+        elseif wealth > CONST.charm_level_one_trait_threshold then
+            level = 0
+        end
+        local subculture = dev.get_character(self:cqi()):faction():subculture()
+        if level and character_detail.sc_has_titles(subculture) then
+            local title = CONST.charm_title_prefix .. home_estate .. "_" .. character_detail.get_title_key_for_sc(subculture) .. "_" .. tostring(level)
+            if self._title == title then
+                return
+            else
+                cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
+                cm:force_add_trait(dev.lookup(self:cqi()), title, true)
+                self._title = title
+            end
+        end
+    end
 end
 
 --v function(self: CHARACTER_DETAIL, trigger: string, num: number, context: CA_CONTEXT)
@@ -306,5 +357,6 @@ return {
     new = character_detail.new,
     load = character_detail.load,
     --Content API
-    register_startpos_estate = character_detail.register_startpos_estate
+    register_startpos_estate = character_detail.register_startpos_estate,
+    set_title_key_for_sc = character_detail.set_title_key_for_sc
 }

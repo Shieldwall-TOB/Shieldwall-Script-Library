@@ -44,7 +44,7 @@ function region_detail.new(model, region_key)
     self._effectCount = 0 --:number
 
     self._estates = {} --:map<string, ESTATE_DETAIL>
-    self._estateChains = {} --:map<string, string>
+    self._estateBuildingLevels = {} --:map<string, string>
     self._numEstates = 0 --:number
 
     self._ownershipTracker = nil --:OWNERSHIP_TRACKER
@@ -178,17 +178,23 @@ function region_detail.num_estates(self)
     return self._numEstates
 end
 
---v function(self: REGION_DETAIL, building_key: string) --> boolean
-function region_detail.has_estate_with_building(self, building_key)
-    return not not self._estates[building_key] 
+--v function(self: REGION_DETAIL, chain_key: string) --> boolean
+function region_detail.has_estate_with_chain(self, chain_key)
+    return not not self._estates[chain_key] 
 end
 
---v function(self: REGION_DETAIL, building_key: string) --> ESTATE_DETAIL
-function region_detail.get_estate_detail(self, building_key)
-    if self._estates[building_key] == nil then
-        self:log("WARNING: Asked region ["..self._name.."] for the estate ["..building_key.."] but this region does not an estate for that building key!")
+--v function(self: REGION_DETAIL, building_key: string) --> boolean
+function region_detail.has_estate_with_building(self, building_key)
+    local chain_key = estate_detail.estate_chain_for_level(building_key)
+    return not not self._estates[chain_key] 
+end
+
+--v function(self: REGION_DETAIL, chain_key: string) --> ESTATE_DETAIL
+function region_detail.get_estate_detail(self, chain_key)
+    if self._estates[chain_key] == nil then
+        self:log("WARNING: Asked region ["..self._name.."] for the estate ["..chain_key.."] but this region does not an estate for that chain key!")
     end
-    return self._estates[building_key]
+    return self._estates[chain_key]
 end
 
 --v function(self: REGION_DETAIL) --> map<string, ESTATE_DETAIL>
@@ -197,8 +203,8 @@ function region_detail.estates(self)
 end
 
 --v function(self: REGION_DETAIL) --> map<string, string>
-function region_detail.estate_chains(self)
-    return self._estateChains
+function region_detail.estate_building_levels(self)
+    return self._estateBuildingLevels
 end
 
 --v function(self: REGION_DETAIL) --> boolean
@@ -206,30 +212,29 @@ function region_detail.has_no_estates(self)
     return (self._numEstates == 0)
 end
 
---v function(self: REGION_DETAIL, building_level: string)
-function region_detail.upgrade_estate_building(self, building_level)
-    for estate_key, current_estate_detail in pairs(self._estates) do
-        if current_estate_detail:chain() == estate_detail.estate_chain_for_level(building_level) then
-            current_estate_detail:upgrade_building(building_level)
-        end
+--v function(self: REGION_DETAIL, chain: string, building_level: string)
+function region_detail.upgrade_estate_building(self, chain, building_level)
+    if not self._estates[chain] then
+        return
     end
+    self._estates[chain]:upgrade_building(building_level)
 end
 
 --v function(self: REGION_DETAIL, building_key: string)
 function region_detail.add_estate(self, building_key)
     local building_chain = estate_detail.estate_chain_for_level(building_key)
-    if self._estateChains[building_chain] then
-        self:upgrade_estate_building(building_key)
+    if self._estateBuildingLevels[building_chain] then
+        self:upgrade_estate_building(building_chain, building_key)
     else
         self._estates[building_key] = estate_detail.new(self, building_key)
-        self._estateChains[building_chain] = building_key
+        self._estateBuildingLevels[building_chain] = building_key
         self._numEstates = self._numEstates + 1
     end
 end
 
---v function(self: REGION_DETAIL, building_key: string)
-function region_detail.disconnect_estate(self, building_key)
-    self._estates[building_key] = nil
+--v function(self: REGION_DETAIL, chain: string)
+function region_detail.disconnect_estate(self, chain)
+    self._estates[chain] = nil
 end
 
 --v function(self: REGION_DETAIL, building_key: string)
@@ -254,12 +259,12 @@ function region_detail.refresh_estates(self, leader_detail)
         if not not (estate_detail.estate_chain_for_level(building_key)) then
             --if it has a chain, it is a valid estate!
             self:add_estate(building_key)
-            self:get_estate_detail(building_key):appoint_owner(leader_detail)
+            self:get_estate_detail(estate_detail.estate_chain_for_level(building_key)):appoint_owner(leader_detail)
         end
     end
-    for building_key, estate in pairs(self._estates) do
-        if self._buildings[building_key] == nil then
-            dev.eh:trigger_event("EstateDestroyed", building_key, dev.get_region(self._name))
+    for building_chain, estate in pairs(self._estates) do
+        if self._buildings[estate:building()] == nil then
+            dev.eh:trigger_event("EstateDestroyed", building_chain, dev.get_region(self._name))
         end
     end
 end
@@ -267,10 +272,8 @@ end
 --v function(self: REGION_DETAIL)
 function region_detail.clear_estates_for_rebels(self)
     self:update_buildings()
-    for building_key, estate in pairs(self._estates) do
-        if self._buildings[building_key] == nil then
-            dev.eh:trigger_event("EstateDestroyed", building_key, dev.get_region(self._name))
-        end
+    for building_chain, estate in pairs(self._estates) do
+        dev.eh:trigger_event("EstateDestroyed", building_chain, dev.get_region(self._name))
     end
 end
 ----------------------------------
@@ -301,14 +304,14 @@ end
 ------------------------------------
 --v function(self: REGION_DETAIL) --> table
 function region_detail.save(self)
-    local sv_tab = dev.save(self, "_activeEffects", "_effectsClear", "_estateChains")
+    local sv_tab = dev.save(self, "_activeEffects", "_effectsClear", "_estateBuildingLevels")
     return sv_tab
 end
 
 --v function(model: PKM, region_key: string, sv_tab: table) --> REGION_DETAIL
 function region_detail.load(model, region_key, sv_tab)
     local self = region_detail.new(model, region_key)
-    dev.load(sv_tab, self, "_activeEffects", "_effectsClear", "_estateChains")
+    dev.load(sv_tab, self, "_activeEffects", "_effectsClear", "_estateBuildingLevels")
     return self
 end
 

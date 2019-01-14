@@ -37,9 +37,10 @@ local cd = _G.cd;
 for i = 1, #start_pos_estates do
     local name = "names_name_" .. start_pos_estates[i][2] 
     local region = start_pos_estates[i][1]
-    local building = start_pos_estates[i][3]
+	local building = start_pos_estates[i][3]
+	local chain = building:gsub("[_]?[b]?_%d", "")
     local faction = start_pos_estates[i][4]
-    cd.register_startpos_estate(region, name, building, faction)
+    cd.register_startpos_estate(region, name, building, chain, faction)
 end
 
 
