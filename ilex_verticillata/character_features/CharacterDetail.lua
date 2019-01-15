@@ -75,7 +75,7 @@ function character_detail.new(faction_detail, cqi)
 
     self._lastEXPTotal = 0 --:number
     self._title = "no_title"
-    self._homeEstate = {"no_estate", 0, false} --:{string, number, boolean}
+    self._homeEstate = "no_estate"
     self._estates = {} --:map<string, map<string, ESTATE_DETAIL>>
     self._numEstates = 0 --:number
 
@@ -176,7 +176,7 @@ function character_detail.add_estate_with_detail(self, detail)
     if self._estates[detail._regionName] == nil then
         self._estates[detail._regionName] = {}
     end
-    self._estates[detail._regionName][detail._building] = detail
+    self._estates[detail._regionName][detail._chain] = detail
 end
 
 
@@ -202,7 +202,7 @@ function character_detail.check_start_pos_estates(self)
     if faction_pairs then
         for composite_key, start_pos_estate in pairs(faction_pairs) do
             local reg_det = self:faction_detail():model():get_region(start_pos_estate._region)
-            if reg_det and reg_det:has_estate_with_chain(start_pos_estate._estateChain) then
+            if reg_det and reg_det:has_estate_with_chain(start_pos_estate._estateChain) and (start_pos_estate._ownerName == name_key) then
                 local estate_det = reg_det:get_estate_detail(start_pos_estate._estateChain)
                 self:add_estate_with_detail(estate_det)
                 estate_det:appoint_owner(self)
@@ -223,30 +223,33 @@ end
 
 --v function(self: CHARACTER_DETAIL, log: boolean?) --> string
 function character_detail.get_home_estate(self, log)
-    if (self._homeEstate[3] == false) then
+    if self._homeEstate == "no_estate" then
+        if log then
+            self:log("Determining the home estate for a new character")
+        end
         local chosen_estate --:string
         local chosen_estate_level = 0 --:number
-        for regions, building_pairs in pairs(self._estates) do
+        for region_key, building_pairs in pairs(self._estates) do
             for chain_key, estate_object in pairs(building_pairs) do
-                local building_key = estate_object:building()
-                local build_level = string.find(building_key, "_%d")
-                local build_level_num = tonumber(string.sub(building_key, build_level+1))
-                if build_level and (build_level_num > chosen_estate_level) then
-                    chosen_estate = chain_key
+                local building_key = tostring(estate_object:building())
+                self:log("building key being checked "..building_key.." ")
+                local build_level_num = tonumber(building_key:gsub("%D", ""))
+                self:log("building level num is ["..build_level_num.."], the chosen level is ["..chosen_estate_level.."] ")
+                if (build_level_num > chosen_estate_level) then
+                    self:log("Passed check, the new chosen estate is ["..region_key.."]")
+                    chosen_estate = region_key
                     chosen_estate_level = build_level_num
                 end
             end
         end
         if chosen_estate  then
             if log then
-                self:log("Set the home estate for character ["..self._cqi.."] as ["..self._homeEstate[1].."] ")
+                self:log("\tSet the home estate for character ["..self._cqi.."] as ["..chosen_estate.."] ")
             end
-            self._homeEstate[3] = true
-            self._homeEstate[1] = chosen_estate
-            self._homeEstate[2] = chosen_estate_level
+            self._homeEstate = chosen_estate
         end
     end
-    return self._homeEstate[1]
+    return self._homeEstate
 end
 
 --v function(self: CHARACTER_DETAIL)
@@ -263,9 +266,12 @@ function character_detail.update_title(self)
     local home_estate = self:get_home_estate(human)
     if not (home_estate == "no_estate") then
         local wealth = 0 --:number
+        local ed = _G.ed
         for estate_region, estate_pair in pairs(self._estates) do
             for estate_building, estate_object in pairs(estate_pair) do
-                wealth = wealth + estate_detail.household_growth_for_estate_building_level(estate_building)
+                if not not (ed.household_growth_for_estate_building_level(estate_object:building())) then
+                    wealth = wealth + ed.household_growth_for_estate_building_level(estate_object:building())
+                end
             end
         end
         if human then
@@ -339,8 +345,8 @@ function character_detail.save(self)
     sv_tab._savedRegions = {}
     for region_key, building_estate_pair in pairs(self._estates) do
         sv_tab._savedRegions[region_key] = {}
-        for building_key, estate_detail in pairs(building_estate_pair) do
-            sv_tab._savedRegions[region_key][building_key] = estate_detail:estate_type()
+        for chain_key, estate_detail in pairs(building_estate_pair) do
+            sv_tab._savedRegions[region_key][chain_key] = estate_detail:estate_type()
         end
     end
     --# assume sv_tab: table
@@ -356,8 +362,8 @@ function character_detail.load(faction_detail, cqi, sv_tab)
     --^ this isn't actually true but its a local assumption for this code to pass.
     if sv_tab._savedRegions then
         for region_key, building_estate_type_pair in pairs(sv_tab._savedRegions) do
-            for building_key, estate_type in pairs(building_estate_type_pair) do 
-                self:add_estate(region_key, building_key)
+            for chain_key, estate_type in pairs(building_estate_type_pair) do 
+                self:add_estate(region_key, chain_key)
             end
         end
     end

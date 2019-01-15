@@ -173,6 +173,7 @@ end
 
 estate_detail = require("ilex_verticillata/region_features/EstateDetail")
 _G.ed = estate_detail
+
 --v function(self: REGION_DETAIL) --> number
 function region_detail.num_estates(self)
     return self._numEstates
@@ -226,7 +227,7 @@ function region_detail.add_estate(self, building_key)
     if self._estateBuildingLevels[building_chain] then
         self:upgrade_estate_building(building_chain, building_key)
     else
-        self._estates[building_key] = estate_detail.new(self, building_key)
+        self._estates[building_chain] = estate_detail.new(self, building_key)
         self._estateBuildingLevels[building_chain] = building_key
         self._numEstates = self._numEstates + 1
     end
