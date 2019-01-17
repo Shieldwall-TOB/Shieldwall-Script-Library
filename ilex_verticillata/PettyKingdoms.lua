@@ -1,7 +1,9 @@
--- The Pety Kingdoms Manager is a suite of campaign features designed for shieldwall. 
+-- The Petty Kingdoms Manager is a suite of campaign features designed for shieldwall. 
 -- It is the script side data tracking archetecture behind all campaign features.
 -- if you're trying to read this script for educational purposes, the best place to start is probably the faction object. 
--- This one might be confusing because it basically initializes and stores the rest of the stuff, but it doesn't represent anything itself
+-- This one might be confusing because it basically initializes and stores the rest of the stuff, but it doesn't represent anything itself,
+-- It also might be confusing because PKM isn't one script that does one feature. It is essentially a data structure.
+-- The actually script is done largely in feature files and the event handlers. 
 
 
 
@@ -218,7 +220,9 @@ end)
 
 --v function(context: CA_CONTEXT)
 local function OnGameLoaded(context)
-    --[[ pre load all regions ]]
+    --[[ pre load all regions 
+        Object constructors should never include any game interface calls!
+    --]]
     local region_bank = cm:load_value("pkm_region_detail", {}, context) 
     --# assume region_bank: map<string, table>
     local tracker_bank = cm:load_value("pkm_region_ownership_tracker", {}, context)

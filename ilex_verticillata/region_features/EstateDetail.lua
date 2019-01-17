@@ -29,6 +29,7 @@ estate_detail._estateBuildingChains = {} --:map<string, string>
 estate_detail._estateBuildingExpTriggers = {} --:map<string, string>
 estate_detail._estateBuildingExpQuantities = {} --:map<string,number>
 estate_detail._estateChainEstateTypes = {} --:map<string, string>
+-- // Adds a new estate chain level to the model. 
 --v function(level_key: string, chain_key: string, exp_trigger: string, exp_quantity: number)
 function estate_detail.add_estate_building_level(level_key, chain_key, exp_trigger, exp_quantity)
     estate_detail._estateBuildingChains[level_key] = chain_key
@@ -36,6 +37,7 @@ function estate_detail.add_estate_building_level(level_key, chain_key, exp_trigg
     estate_detail._estateBuildingExpQuantities[level_key] = exp_quantity
 end
 
+--// Sets the Estate Type on a chain.
 --v function(chain_key: string, estate_type_key: string)
 function estate_detail.add_estate_chain_type(chain_key, estate_type_key)
     estate_detail._estateChainEstateTypes[chain_key] = estate_type_key

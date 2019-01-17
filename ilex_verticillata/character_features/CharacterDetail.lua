@@ -75,10 +75,10 @@ function character_detail.new(faction_detail, cqi)
 
     self._lastEXPTotal = 0 --:number
     self._title = "no_title"
-    self._homeEstate = "no_estate"
+    self._homeEstate = "no_estate" --:string!
     self._estates = {} --:map<string, map<string, ESTATE_DETAIL>>
+    --estates are bound first to region then to the chain which hosts them. 
     self._numEstates = 0 --:number
-
     self._forceEffectsManager = nil --:UNIT_EFFECTS_MANAGER
     self._recruiterCharacter = nil --:RECRUITER
 
@@ -192,6 +192,9 @@ function character_detail.remove_estate(self, region_key, chain_key, new_owner)
         --# assume new_owner: CHARACTER_DETAIL
         new_owner:add_estate_with_detail(removed_estate)
     end
+    if region_key == self._homeEstate then
+        self._homeEstate = "no_estate"
+    end
 end
 
 --v function(self: CHARACTER_DETAIL)
@@ -211,9 +214,9 @@ function character_detail.check_start_pos_estates(self)
     end
 end
 
-------------------------
------ESTATE EFFECTS-----
-------------------------
+----------------------------
+-----TITLES AND ESTATES-----
+----------------------------
 
 --v function(self: CHARACTER_DETAIL)
 function character_detail.title_for_faction_leader(self)
@@ -257,13 +260,18 @@ function character_detail.update_title(self)
     local char_obj = dev.get_character(self:cqi())
     if char_obj:is_faction_leader() then
         self:title_for_faction_leader()
+        --leaders get different ones, so run them through a different path.
         return
     end
-    local human = dev.get_character(self:cqi()):faction():is_human()
+    local human = dev.get_character(self:cqi()):faction():is_human() --only log while human to avoid this shit.
+    if CONST.__write_output_to_logfile == false then
+        human = false
+    end
     if human then
         self:log("Updating title for character ["..self._cqi.."] who is NOT a king")
     end
     local home_estate = self:get_home_estate(human)
+    --update their own estate.
     if not (home_estate == "no_estate") then
         local wealth = 0 --:number
         local ed = _G.ed
@@ -300,12 +308,12 @@ function character_detail.update_title(self)
             end
         else
             if human then
-                self:log("\t Failed to find a title level, or this character's sub doesn't have titles!")
+                self:log("\tFailed to find a title level, or this character's sub doesn't have titles!")
             end
         end
     else
         if human then
-            self:log("This character holds no home estate!")
+            self:log("\tThis character holds no home estate!")
         end
     end
 end
@@ -339,7 +347,7 @@ end
 --v function(self: CHARACTER_DETAIL) --> table
 function character_detail.save(self)
     local sv_tab = dev.save(self, "_homeEstate", "_title")
-    -- Now, assembly an arbitrary field to store which regions we want this province to load. 
+    -- Now, assembly an arbitrary field to store which regions we want this character to load as estates. 
     --# assume sv_tab: map<string, map<string, map<string, string>>> 
     --^ this isn't actually true but its a local assumption for this code to pass.
     sv_tab._savedRegions = {}
