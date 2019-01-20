@@ -171,32 +171,7 @@ function faction_detail.get_province(self, province_key)
     return self._provinces[province_key]
 end
 
------------------------------------
------CHARACTER DETAIL OBJECTS------
------------------------------------
-character_detail = require("ilex_verticillata/character_features/CharacterDetail")
-_G.cd = character_detail
 
---v function(faction_detail: FACTION_DETAIL, cqi: CA_CQI) --> CHARACTER_DETAIL
-local function raw_get_faction_detail_character_by_cqi(faction_detail, cqi)
-    return faction_detail._characters[tostring(cqi)]
-end
-
-
---v function(self: FACTION_DETAIL, cqi: string, save_data: table) --> CHARACTER_DETAIL
-function faction_detail.load_character(self, cqi, save_data)
-    self._characters[cqi] = character_detail.load(self, cqi, save_data)
-    return self._characters[cqi]
-end
-
---v function(self: FACTION_DETAIL, cqi: CA_CQI) --> CHARACTER_DETAIL
-function faction_detail.get_character(self, cqi)
-    local cqi = tostring(cqi)
-    if self._characters[cqi] == nil then
-        self._characters[cqi] = character_detail.new(self, cqi)
-    end
-    return self._characters[cqi]
-end
 
 ---------------------------
 ----VASSAL CONNECTIONS-----
@@ -239,7 +214,32 @@ function faction_detail.liege(self)
     return self._liege
 end
 
+-----------------------------------
+-----CHARACTER DETAIL OBJECTS------
+-----------------------------------
+character_detail = require("ilex_verticillata/character_features/CharacterDetail")
+_G.cd = character_detail
 
+--v function(faction_detail: FACTION_DETAIL, cqi: CA_CQI) --> CHARACTER_DETAIL
+local function raw_get_faction_detail_character_by_cqi(faction_detail, cqi)
+    return faction_detail._characters[tostring(cqi)]
+end
+
+
+--v function(self: FACTION_DETAIL, cqi: string, save_data: table) --> CHARACTER_DETAIL
+function faction_detail.load_character(self, cqi, save_data)
+    self._characters[cqi] = character_detail.load(self, cqi, save_data)
+    return self._characters[cqi]
+end
+
+--v function(self: FACTION_DETAIL, cqi: CA_CQI) --> CHARACTER_DETAIL
+function faction_detail.get_character(self, cqi)
+    local cqi = tostring(cqi)
+    if self._characters[cqi] == nil then
+        self._characters[cqi] = character_detail.new(self, cqi)
+    end
+    return self._characters[cqi]
+end
 
 
 return {

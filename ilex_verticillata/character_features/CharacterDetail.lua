@@ -53,6 +53,12 @@ function character_detail.sc_has_titles(subculture)
     return not not character_detail._subcultureTitleKeys[subculture] 
 end
 
+character_detail._leaderTitleOverrideFactions = {} --:map<string, boolean>
+--v function(faction_key: string)
+function character_detail.add_faction_leader_title_override(faction_key)
+    character_detail._leaderTitleOverrideFactions[faction_key] = true
+end
+
 ----------------------------
 ----OBJECT CONSTRUCTOR------
 ----------------------------
@@ -220,8 +226,24 @@ end
 
 --v function(self: CHARACTER_DETAIL)
 function character_detail.title_for_faction_leader(self)
-    local k_level = self._factionDetail:kingdom_level()
+    local level = self._factionDetail:kingdom_level()
+    local character = dev.get_faction(self:faction_detail():name()):faction_leader()
+    local title --:string
     self:log("Updating title for character ["..self._cqi.."] who is a king")
+    if self:faction_detail():is_faction_vassal() then
+        title = CONST.charm_leader_title_prefix.."vassal" 
+    end
+    if (character_detail._leaderTitleOverrideFactions[self:faction_detail():name()] == true) then
+        title = CONST.charm_leader_title_prefix.. self:faction_detail():name().. "_".. tostring(level)
+        
+    else
+        title = CONST.charm_leader_title_prefix.."king"
+    end
+    if title then
+        cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
+        cm:force_add_trait(dev.lookup(self:cqi()), title, true)
+        self._title = title
+    end
 end
 
 --v function(self: CHARACTER_DETAIL, log: boolean?) --> string
@@ -394,5 +416,6 @@ return {
     load = character_detail.load,
     --Content API
     register_startpos_estate = character_detail.register_startpos_estate,
-    set_title_key_for_sc = character_detail.set_title_key_for_sc
+    set_title_key_for_sc = character_detail.set_title_key_for_sc,
+    add_faction_leader_title_override = character_detail.add_faction_leader_title_override
 }

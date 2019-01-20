@@ -27,8 +27,9 @@ local factions_with_trait_overrides = {
     "vik_fact_east_engle",
     "vik_fact_northymbre",
 } --:vector<string>
-
-
+for i = 1, #factions_with_trait_overrides do
+    cd.add_faction_leader_title_override(factions_with_trait_overrides[i])
+end
 
 
 
