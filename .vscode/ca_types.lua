@@ -391,7 +391,7 @@
 --# assume CA_CONTEXT.estate: method() --> CA_ESTATE
 --# assume CA_CONTEXT.region: method() --> CA_REGION
 --# assume CA_CONTEXT.building: method() --> CA_BUILDING
-
+--# assume CA_CONTEXT.pending_battle: method() --> CA_PENDING_BATTLE
 
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)

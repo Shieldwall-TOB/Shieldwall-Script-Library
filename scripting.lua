@@ -191,7 +191,6 @@ require("vik_traits");
 require("vik_decrees");
 require("vik_ai_wars");
 require("vik_ai_peace");
-
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
@@ -269,7 +268,7 @@ local ok, err = pcall(function()
 
     require("shieldwall/content/EstatesContent")
     require("shieldwall/features/EstateFeatures")
-
+    require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
 

@@ -75,7 +75,7 @@ local ok, err = pcall(function()
 
     require("shieldwall/content/EstatesContent")
     require("shieldwall/features/EstateFeatures")
-
+    require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
 
