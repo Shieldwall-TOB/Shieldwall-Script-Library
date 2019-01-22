@@ -175,6 +175,18 @@ function petty_kingdoms_manager.faction_became_vassal(self, vassal)
     end
 end
 
+--v function(self: PKM, region_key: string, estate_chain: string) --> CHARACTER_DETAIL
+function petty_kingdoms_manager.get_estate_owner(self, region_key, estate_chain)
+    local region = self:get_region(region_key)
+    local estate = region:get_estate_detail(estate_chain)
+    if estate:owner() then
+        return estate:owner()
+    else
+        pkm:get_character(dev.get_region(region_key):owning_faction():faction_leader():cqi()):add_estate_with_detail(estate, true)
+        return estate:owner()
+    end
+
+end
 
 
 --Instantiate the model

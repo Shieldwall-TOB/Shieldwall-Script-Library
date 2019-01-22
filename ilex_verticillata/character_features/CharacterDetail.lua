@@ -177,12 +177,15 @@ function character_detail.add_estate(self, region_key, chain_key)
     self._estates[region_key][chain_key] = self._factionDetail._model:get_region(region_key):get_estate_detail(chain_key)
 end
 
---v function(self: CHARACTER_DETAIL, detail: ESTATE_DETAIL)
-function character_detail.add_estate_with_detail(self, detail)
+--v function(self: CHARACTER_DETAIL, detail: ESTATE_DETAIL, appoint: boolean?)
+function character_detail.add_estate_with_detail(self, detail, appoint)
     if self._estates[detail._regionName] == nil then
         self._estates[detail._regionName] = {}
     end
     self._estates[detail._regionName][detail._chain] = detail
+    if appoint then
+        detail:appoint_owner(self)
+    end
 end
 
 

@@ -24,6 +24,7 @@ return {
     charm_level_one_trait_threshold = 1,
     charm_level_two_trait_threshold = 15,
     charm_level_three_trait_threshold = 30,
+    estates_king_owner_bundle = "shield_owned_estate",
     pop_bundle_prefix = "shield_pop_bundle_"
 }
 

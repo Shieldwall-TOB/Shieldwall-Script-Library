@@ -89,6 +89,11 @@ function estate_detail.new(region_detail, building)
     return self
 end
 
+--v function(self: ESTATE_DETAIL) --> string
+function estate_detail.region_name(self)
+    return self._regionName
+end
+
 
 --v function(self: ESTATE_DETAIL) --> string
 function estate_detail.building(self) 
