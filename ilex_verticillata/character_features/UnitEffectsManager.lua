@@ -129,6 +129,7 @@ end
 
 --v function(self: UNIT_EFFECTS_MANAGER)
 function unit_effects_manager.evaluate_force(self)
+    local added_effects = {} --:map<string, boolean>
     local force = dev.get_force(self._cqi)
     if force:unit_list():is_empty() then
         return
@@ -138,7 +139,8 @@ function unit_effects_manager.evaluate_force(self)
     for unit, effect in pairs(self._unitEffects) do
         if unit_list:has_unit(unit) then
             self:add_effect_to_force(effect)
-        elseif self:is_effect_applied(effect) then
+            added_effects[effect] = true
+        elseif self:is_effect_applied(effect) and (not added_effects[effect]) then
             self:remove_effect_from_force(effect)
         end
     end
