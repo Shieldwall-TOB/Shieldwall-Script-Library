@@ -175,6 +175,7 @@ function character_detail.add_estate(self, region_key, chain_key)
         self._estates[region_key] = {}
     end
     self._estates[region_key][chain_key] = self._factionDetail._model:get_region(region_key):get_estate_detail(chain_key)
+    self._numEstates = self._numEstates + 1
 end
 
 --v function(self: CHARACTER_DETAIL, detail: ESTATE_DETAIL, appoint: boolean?)
@@ -186,6 +187,7 @@ function character_detail.add_estate_with_detail(self, detail, appoint)
     if appoint then
         detail:appoint_owner(self)
     end
+    self._numEstates = self._numEstates + 1
 end
 
 
@@ -204,12 +206,27 @@ function character_detail.remove_estate(self, region_key, chain_key, new_owner)
     if region_key == self._homeEstate then
         self._homeEstate = "no_estate"
     end
+    self._numEstates = self._numEstates - 1
 end
 
 --v function(self: CHARACTER_DETAIL)
 function character_detail.check_start_pos_estates(self)
     local char = dev.get_character(self:cqi())
     local name_key = char:get_forename()
+    if char:is_faction_leader() then
+        local region_list = char:faction():region_list()
+        for i = 0, region_list:num_items() - 1 do
+            local region_det = self:faction_detail():model():get_region(region_list:item_at(i):name())
+            if not region_det:has_no_estates() then
+                for chain, estate in pairs(region_det:estates()) do
+                    if not estate:has_owner() then
+                        self:add_estate_with_detail(estate)
+                        estate:appoint_owner(self)
+                    end
+                end
+            end
+        end
+    end
     local faction_pairs = character_detail._startPosEstates[char:faction():name()]
     if faction_pairs then
         for composite_key, start_pos_estate in pairs(faction_pairs) do
@@ -295,6 +312,16 @@ function character_detail.update_title(self)
     if human then
         self:log("Updating title for character ["..self._cqi.."] who is NOT a king")
     end
+    if self:landless() then
+        if self._title ~= "no_title" then
+            cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
+            self._title = "no_title"
+        end
+        if human then
+            self:log("\tCharacter is landless!")
+        end
+        return
+    end
     local home_estate = self:get_home_estate(human)
     --update their own estate.
     if not (home_estate == "no_estate") then
@@ -334,6 +361,10 @@ function character_detail.update_title(self)
         else
             if human then
                 self:log("\tFailed to find a title level, or this character's sub doesn't have titles!")
+            end
+            if self._title ~= "no_title" then
+                cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
+                self._title = "no_title"
             end
         end
     else

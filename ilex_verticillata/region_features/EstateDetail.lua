@@ -129,6 +129,9 @@ end
 
 --v function(self: ESTATE_DETAIL) --> CHARACTER_DETAIL
 function estate_detail.owner(self)
+    if self._owningCharacter == nil then
+        self:log("Attempted to access an estate that has no owner! This is an error and should be handled!")
+    end
     return self._owningCharacter
 end
 
