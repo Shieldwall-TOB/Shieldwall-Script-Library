@@ -48,7 +48,7 @@
 --# "Attacker" | "Defender" 
 
 --# type global CA_MARKER_TYPE = 
---# "pointer" | "move_to_vfx" | "look_at_vfx" | "tutorial_marker"
+--# "unkown_in_thrones_do_not_use_before_finding" 
 
 
 -- CONTEXT
@@ -61,7 +61,7 @@
 --# assume CA_UIC.Divorce: method(pointer: CA_Component)
 --# assume CA_UIC.ChildCount: method() --> number
 --# assume CA_UIC.ClearSound: method()
---# assume CA_UIC.CreateComponent: method(name: string, path: string)
+--# assume CA_UIC.CreateComponent: method(name: string, path: string, state_images: map<string, string>?, state_texts: map<string, string>?, call_adopt_from_parent: boolean?)
 --# assume CA_UIC.CurrentState: method() --> BUTTON_STATE
 --# assume CA_UIC.DestroyChildren: method()
 --# assume CA_UIC.Dimensions: method() --> (number, number)
@@ -120,7 +120,7 @@
 --# assume CM.remove_listener: method(handler: string)
 --# assume CM.register_ui_created_callback: method( function() )
 --# assume CM.register_first_tick_callback: method(function())
---# assume CM.random_number: method(range: number, min: number?) 
+--# assume CM.random_number: method(range: number, min: number?) --> int
 --saving
 --# assume CM.is_new_game: method() --> boolean
 --# assume CM.set_saved_value: method(valueKey: string, value: any)
@@ -129,6 +129,7 @@
 --# assume CM.load_value: method(name: string, default: any, context: WHATEVER) --> WHATEVER
 --# assume CM.register_saving_game_callback:method(function(context: WHATEVER))
 --# assume CM.save_value: method(name: string, value: any, context: WHATEVER)
+--# assume CM.game_interface_created: boolean
 --------------------------
 --game interface commands
 --ui
@@ -161,6 +162,7 @@
 --# assume CM.set_character_immortality: method(lookup: string, immortal: boolean)
 --# assume CM.force_add_skill: method(lookup: string, skill_key: string)
 --# assume CM.force_add_trait: method(lookup: string, trait_key: string, showMessage: boolean)
+--# assume CM.force_remove_trait: method(lookup: string, trait_key: string)
 --technology
 --# assume CM.lock_technology: method(faction: string, technology: string)
 --# assume CM.unlock_technology: method(faction: string, technology: string)
@@ -185,6 +187,7 @@
 --# assume CA_MODEL.character_for_command_queue_index: method(CA_CQI) --> CA_CHAR
 --# assume CA_MODEL.has_character_command_queue_index: method(CA_CQI) --> boolean
 --# assume CA_MODEL.military_force_for_command_queue_index: method(CA_CQI) --> CA_FORCE
+--# assume CA_MODEL.has_military_force_command_queue_index: method(CA_CQI) --> boolean
 --# assume CA_MODEL.faction_for_command_queue_index: method(CA_CQI) --> CA_FACTION
 
 --CA SCRIPT
@@ -215,7 +218,6 @@
 --# assume CA_FACTION.allied_with: method(faction: CA_FACTION) --> boolean
 --# assume CA_FACTION.at_war_with: method(faction: CA_FACTION) --> boolean
 --# assume CA_FACTION.region_list: method() --> CA_REGION_LIST
---# assume CA_FACTION.has_effect_bundle: method(bundle:string) --> boolean
 --# assume CA_FACTION.home_region: method() --> CA_REGION
 --# assume CA_FACTION.command_queue_index: method() --> CA_CQI
 --# assume CA_FACTION.is_null_interface: method() --> boolean
@@ -359,6 +361,7 @@
 -- CA FORCE
 
 --# assume CA_FORCE.general_character: method() --> CA_CHAR
+--# assume CA_FORCE.has_general: method() --> boolean
 --# assume CA_FORCE.unit_list: method() --> CA_UNIT_LIST
 --# assume CA_FORCE.active_stance: method() --> string
 --# assume CA_FORCE.command_queue_index: method() --> CA_CQI
@@ -388,10 +391,11 @@
 --# assume CA_CONTEXT.estate: method() --> CA_ESTATE
 --# assume CA_CONTEXT.region: method() --> CA_REGION
 --# assume CA_CONTEXT.building: method() --> CA_BUILDING
+--# assume CA_CONTEXT.pending_battle: method() --> CA_PENDING_BATTLE
 
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
-
+--# assume CA_EFFECT.add_agent_experience: function(trigger: string, exp: number, auth: number, context: CA_CONTEXT)
 
 
 -- GLOBAL FUNCTIONS
@@ -403,6 +407,7 @@
 --# assume global is_uicomponent: function(arg: any) --> boolean
 --# assume global find_uicomponent: function(parent: CA_UIC, string...) --> CA_UIC
 --# assume global find_uicomponent_by_table: function(uic: CA_UIC, path: vector<string>) --> CA_UIC
+--# assume global find_single_uicomponent: function(uic: CA_UIC, child: string) --> CA_UIC
 --# assume global UIComponent: function(pointer: CA_Component) --> CA_UIC
 --# assume global uicomponent_to_str: function(uic: CA_UIC) --> string
 --# assume global print_all_uicomponent_children: function(component: CA_UIC)
@@ -411,12 +416,13 @@
 --# assume global output: function(text: string)
 --# assume global script_error: function(text: string)
 
---# assume global is_string: function(arg: string) --> boolean
---# assume global is_table: function(arg: table) --> boolean
---# assume global is_number: function(arg: number) --> boolean
---# assume global is_function: function(arg: function) --> boolean
---# assume global is_boolean: function(arg: boolean) --> boolean
+--# assume global is_string: function(arg: any) --> boolean
+--# assume global is_table: function(arg: any) --> boolean
+--# assume global is_number: function(arg: any) --> boolean
+--# assume global is_function: function(arg: any) --> boolean
+--# assume global is_boolean: function(arg: any) --> boolean
 --# assume global add_callback: function(callback: function(), timer: number?, name: string?)
+--# assume global char_lookup_str: function(CA_CHAR | CA_CQI) --> string
 
 -- GLOBAL VARIABLES
 --leave at the bottom of this file

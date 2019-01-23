@@ -1,0 +1,6 @@
+effects_tables	3
+effect	icon	priority	icon_negative	is_hidden
+shield_gdp_industry	wealth.png	30	wealth.png	false
+shield_gdp_church	wealth.png	31	wealth.png	false
+shield_gdp_commerce	wealth.png	32	wealth.png	false
+shield_gdp_farm	wealth.png	33	wealth.png	false

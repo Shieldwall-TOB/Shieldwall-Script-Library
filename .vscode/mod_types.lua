@@ -1,85 +1,33 @@
+--[[Class definitions]]
+--# assume global class PKM
+    --# assume global class FACTION_DETAIL
+        --# assume global class CHARACTER_DETAIL
+            --# assume global class RECRUITER
+            --# assume global class UNIT_EFFECTS_MANAGER
+        --# assume global class PROVINCE_DETAIL
+            --# assume global class POP_MANAGER
+        --# assume global class FOOD_MANAGER
+        --# assume global class PERSONALITY_MANAGER
+    --# assume global class REGION_DETAIL
+        --# assume global class ESTATE_DETAIL
+        --# assume global class OWNERSHIP_TRACKER
 
---should become the defacto faction object
---# assume global class FKM
---# assume global class FKM_KINGDOM
---# assume global class FKM_VASSAL
---# assume global class FKM_STATE
+--[[Enumerations]]
+--# type global POP_CASTE = "serf" | "lord" | "monk" | "foreign" 
+--# type global ESTATE_TYPE = "vik_estate_agricultural" | "vik_estate_estate_building" | "vik_estate_estate_building"
+--# type global START_POS_ESTATE = {_region: string, _ownerName: string, _estateBuilding: string, _estateChain: string, _faction: string}
+-- // \\                //\\    Rural Estates         //\\    Commercial Estates //  \\      //  Church Estates //\\
 
-
---should probably be rolled together with RWM and ROT to become a single region object
---# assume global class ET
---# assume global class ESTATE
---# type global ESTATE_SAVE = {
---# _faction: string, _region: string, _type: string, _cqi: string, _isRoyal: boolean, _turnGranted: string, _lastBundle: string
---#}
---# assume global class RWM
-
---# assume global class ROT
---# type global ROT_SAVE = {
---# _owners: map<string, string>,
---# _pastOwners: map<string, map<string, number>>,
---# _playerNewRegions: map<string, vector<string>>
---# }
---this could probably become a millitary force object
---# assume global class UEM
+--[[Content]]
+_G.traits_localized_content = {} --:map<string, string>
 
 
-
+--[[UI Types]]
 
 
 
+--# type global BUTTON_TYPE = "" | " "
 
 
 
-
-
-
-
-
-
---UI
---# assume global class LOG
---# assume global class BUTTON
---# assume global class TEXT
---# assume global class IMAGE
---# assume global class TEXT_BUTTON
---# assume global class FRAME
---# assume global class TEXT_BOX
---# assume global class LIST_VIEW
---# assume global class DUMMY
---# assume global class UTIL
---# assume global class COMPONENTS
-
---# type global COMPONENT_TYPE = 
---# TEXT | IMAGE | BUTTON | TEXT_BUTTON | FRAME | TEXT_BOX | LIST_VIEW | DUMMY
-
---# type global BUTTON_TYPE = 
---# "CIRCULAR" | "SQUARE"
-
---# type global TEXT_BUTTON_TYPE = 
---# "TEXT" 
-
---# type global TEXT_TYPE = 
---# "NORMAL" | "WRAPPED" | "TITLE" | "HEADER"
---# assume BUTTON.GetContentComponent: method() --> CA_UIC
---# assume BUTTON.GetPositioningComponent: method() --> CA_UIC
---# assume global class CONTAINER
---# assume global class GAP
---# assume global class FLOW_LAYOUT
---# type global LAYOUT = FLOW_LAYOUT
---# type global FLOW_LAYOUT_TYPE = "VERTICAL" | "HORIZONTAL"
---# type global LIST_SCROLL_DIRECTION = "VERTICAL" | "HORIZONTAL"
---# assume global Log: LOG
---# assume global Text: TEXT
---# assume global Image: IMAGE
---# assume global Button: BUTTON
---# assume global TextButton: TEXT_BUTTON
---# assume global Frame: FRAME
---# assume global TextBox: TEXT_BOX
---# assume global ListView: LIST_VIEW
---# assume global Util: UTIL
---# assume global FlowLayout: FLOW_LAYOUT
---# assume global Dummy: DUMMY
---# assume global Container: CONTAINER
---# assume global TABLES: map<string, map<string, WHATEVER>>
---# assume global write_log: boolean
+--# assume global class SHIELD_UI

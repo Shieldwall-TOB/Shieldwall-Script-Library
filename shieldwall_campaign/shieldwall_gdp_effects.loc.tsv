@@ -1,0 +1,6 @@
+Loc PackedFile
+Key	Text	Tooltip
+effects_description_shield_gdp_industry	%+n Monthly Income (INDUSTRY)	true
+effects_description_shield_gdp_commerce	%+n Monthly Income (COMMERCE)	true
+effects_description_shield_gdp_church	%+n Monthly Income (CHURCH)	true
+effects_description_shield_gdp_farm	%+n Monthly Income (FARM)	true

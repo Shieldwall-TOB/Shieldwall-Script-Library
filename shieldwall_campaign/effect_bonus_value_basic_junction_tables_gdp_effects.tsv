@@ -1,0 +1,6 @@
+effect_bonus_value_basic_junction_tables	0
+effect	bonus_value_id
+shield_gdp_industry	gdp_manufacture
+shield_gdp_commerce	gdp_local_trade
+shield_gdp_church	gdp_entertainment
+shield_gdp_farm	gdp_farming

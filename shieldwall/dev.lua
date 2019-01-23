@@ -22,11 +22,13 @@ local function RAWPRINT(name, ...)
     if exports[name] == nil then
         return
     end
-    logText = "" --:string
-    for i = 1, #arg do
-        logText = logText.."\t"..arg[i]
+    logText = arg[1]
+    if #arg > 1 then
+        for i = 2, #arg do
+            logText = logText.."\t"..arg[i]
+        end
     end
-    local popLog = io.open("sheildwall_output"..name..".tsv","a")
+    local popLog = io.open("sheildwall_output_"..name..".tsv","a")
     --# assume logTimeStamp: string
     popLog :write(logText.."\n")
     popLog :flush()
@@ -35,17 +37,18 @@ end
 
 --v function(name: string, ...: string)
 local function new_export(name, ...)
-    logText = "" 
-    for i = 1, #arg do
-        logText = logText.."\t"..arg[i]
+    exports[name] = true
+    logText = arg[1]
+    if #arg > 1 then
+        for i = 2, #arg do
+            logText = logText.."\t"..arg[i]
+        end
     end
-    local popLog = io.open("sheildwall_output"..name..".tsv","w+")
+    local popLog = io.open("sheildwall_output_"..name..".tsv","w+")
     popLog :write(logText.."\n")
     popLog :flush()
     popLog :close()
 end
-
-
 
 
 
@@ -146,7 +149,15 @@ local function dev_print_all_uicomponent_children(uic)
 	end;
 end;
 
-
+--don't call this one root. Just dont. 
+--v [NO_CHECK] function(uic: CA_UIC)
+local function dev_print_all_uicomponent_details(uic)
+    log_uicomponent(uic)
+    for i = 0, uic:ChildCount() - 1 do
+        local uic_child = UIComponent(uic:Find(i));
+        dev_print_all_uicomponent_details(uic_child)
+    end;
+end;
 
 
 
@@ -154,64 +165,37 @@ end;
 --v [NO_CHECK] function()
 function MOD_ERROR_LOGS()
 --Vanish's PCaller
-    --All credits to vanish
+    --All credits to vanishoxyact from WH2
     local eh = get_eh();
 
     --v function(func: function) --> any
     function safeCall(func)
-        --output("safeCall start");
         local status, result = pcall(func)
         if not status then
             MODLOG(tostring(result), "ERR")
             MODLOG(debug.traceback(), "ERR");
         end
-        --output("safeCall end");
         return result;
     end
     
-    --local oldTriggerEvent = core.trigger_event;
     
     --v [NO_CHECK] function(...: any)
     function pack2(...) return {n=select('#', ...), ...} end
     --v [NO_CHECK] function(t: vector<WHATEVER>) --> vector<WHATEVER>
     function unpack2(t) return unpack(t, 1, t.n) end
     
-    --v [NO_CHECK] function(f: function(), argProcessor: function()) --> function()
+    --v [NO_CHECK] function(f: function(), argProcessor: (function())?) --> function()
     function wrapFunction(f, argProcessor)
         return function(...)
-            --output("start wrap ");
             local someArguments = pack2(...);
             if argProcessor then
                 safeCall(function() argProcessor(someArguments) end)
             end
             local result = pack2(safeCall(function() return f(unpack2( someArguments )) end));
-            --for k, v in pairs(result) do
-            --    output("Result: " .. tostring(k) .. " value: " .. tostring(v));
-            --end
-            --output("end wrap ");
             return unpack2(result);
             end
     end
     
-    -- function myTriggerEvent(event, ...)
-    --     local someArguments = { ... }
-    --     safeCall(function() oldTriggerEvent(event, unpack( someArguments )) end);
-    -- end
-    
-    --v [NO_CHECK] function(fileName: string)
-    function tryRequire(fileName)
-        local loaded_file = loadfile(fileName);
-        if not loaded_file then
-            MODLOG("Failed to find mod file with name " .. fileName)
-        else
-            MODLOG("Found mod file with name " .. fileName)
-            MODLOG("Load start")
-            local local_env = getfenv(1);
-            setfenv(loaded_file, local_env);
-            loaded_file();
-            MODLOG("Load end")
-        end
-    end
     
     --v [NO_CHECK] function(f: function(), name: string)
     function logFunctionCall(f, name)
@@ -245,29 +229,16 @@ function MOD_ERROR_LOGS()
         end
     end
     
-    --logAllObjectCalls(eh);
-    --logAllObjectCalls(cm);
-   -- MODLOG("CA_GAME_INTERFACE")
-   -- logAllObjectCalls(cm.game_interface);
     
     eh.trigger_event = wrapFunction(
         eh.trigger_event,
         function(ab)
-            --output("trigger_event")
-            --for i, v in pairs(ab) do
-            --    output("i: " .. tostring(i) .. " v: " .. tostring(v))
-            --end
-            --output("Trigger event: " .. ab[1])
         end
     );
     
     check_callbacks = wrapFunction(
         check_callbacks,
         function(ab)
-            --output("check_callbacks")
-            --for i, v in pairs(ab) do
-            --    output("i: " .. tostring(i) .. " v: " .. tostring(v))
-            --end
         end
     )
 
@@ -284,14 +255,12 @@ function MOD_ERROR_LOGS()
     function myAddListener(eh, listenerName, eventName, conditionFunc, listenerFunc, persistent)
         local wrappedCondition = nil;
         if is_function(conditionFunc) then
-            --wrappedCondition =  wrapFunction(conditionFunc, function(arg) output("Callback condition called: " .. listenerName .. ", for event: " .. eventName); end);
             wrappedCondition =  wrapFunction(conditionFunc);
         else
             wrappedCondition = conditionFunc;
         end
         currentAddListener(
             eh, listenerName, eventName, wrappedCondition, wrapFunction(listenerFunc), persistent
-            --eh, listenerName, eventName, wrappedCondition, wrapFunction(listenerFunc, function(arg) output("Callback called: " .. listenerName .. ", for event: " .. eventName); end), persistent
         )
     end
     eh.add_listener = myAddListener;
@@ -299,7 +268,7 @@ end
 MOD_ERROR_LOGS() 
 --# assume logAllObjectCalls: function(object: any)
 --# assume safeCall: function(func: function)
-
+--# assume wrapFunction: function(f: function(), argProcessor: (function())?) --> function()
 
 --object logging
 cm:register_first_tick_callback(function()
@@ -312,11 +281,36 @@ cm:register_first_tick_callback(function()
     end
     log("GAME INTERFACE")
     logAllObjectCalls(cm.scripting.game_interface)
+    log("MODEL")
+    logAllObjectCalls(cm:model())
+    log("WORLD")
+    logAllObjectCalls(cm:model():world())
+    log("Region manager")
+    logAllObjectCalls(cm:model():world():region_manager())
     log("FACTION INTERFACE")
     local faction = cm:model():world():faction_by_key(cm:get_local_faction(true))
     logAllObjectCalls(faction)
     log("REGION INTERFACE")
     logAllObjectCalls(faction:home_region())
+    log("SETTLEMENT")
+    logAllObjectCalls(faction:home_region():settlement())
+    log("SLOT")
+    logAllObjectCalls(faction:home_region():settlement():slot_list():item_at(0))
+    log("BUILDING")
+    logAllObjectCalls(faction:home_region():settlement():slot_list():item_at(0):building())
+    log("GARRISON")
+    logAllObjectCalls(faction:home_region():garrison_residence())
+    log("CHARACTER")
+    logAllObjectCalls(faction:faction_leader())
+    log("FORCE")
+    logAllObjectCalls(faction:faction_leader():military_force())
+    log("UIC")
+    for key, value in pairs(getmetatable(find_uicomponent(cm:ui_root()))) do
+        --# assume key: string
+        MODLOG("\tFound "..tostring(key));
+    end
+    
+    
 end)
 
 
@@ -324,7 +318,9 @@ end)
 --SELECTION TRACKING
 
 local settlement_selected_log_calls = {} --:vector<(function(CA_REGION) --> string)>
+local settlement_selected_log_lists = {} --:vector<(function(CA_REGION) --> (string, vector<string>))>
 local char_selected_log_calls = {} --:vector<(function(CA_CHAR) --> string)>
+local char_selected_log_lists = {} --:vector<(function(CA_CHAR) --> (string, vector<string>))>
 
 --start UI tracking helpers.
 cm:register_ui_created_callback( function()
@@ -337,6 +333,13 @@ cm:register_ui_created_callback( function()
             MODLOG("selected character with CQI ["..tostring(context:character():cqi()).."]", "SEL")
             for i = 1, #char_selected_log_calls do
                 MODLOG("\t"..char_selected_log_calls[i](context:character()), "SEL")
+            end
+            for i = 1, #char_selected_log_lists do
+                local title, list = char_selected_log_lists[i](context:character())
+                MODLOG("\t"..title, "SEL")
+                for j = 1, #list do
+                    MODLOG("\t\t"..list[j] , "SEL")
+                end
             end
         end,
         true
@@ -351,6 +354,13 @@ cm:register_ui_created_callback( function()
             for i = 1, #settlement_selected_log_calls do
                 MODLOG("\t"..settlement_selected_log_calls[i](context:garrison_residence():region()), "SEL")
             end
+            for i = 1, #settlement_selected_log_lists do
+                local title, list = settlement_selected_log_lists[i](context:garrison_residence():region())
+                MODLOG("\t"..title, "SEL")
+                for j = 1, #list do
+                    MODLOG("\t\t"..list[j] , "SEL")
+                end
+            end
         end,
         true
     )
@@ -361,11 +371,52 @@ local function dev_add_settlement_select_log_call(call)
     table.insert(settlement_selected_log_calls, call)
 end
 
+--v function(call: function(CA_REGION) --> (string, vector<string>))
+local function dev_add_settlement_select_log_list(call)
+    table.insert(settlement_selected_log_lists, call)
+end
+
 --v function(call: function(CA_CHAR) --> string)
 local function dev_add_character_select_log_call(call)
     table.insert(char_selected_log_calls, call)
 end
 
+--v function(call: function(CA_CHAR) --> (string, vector<string>))
+local function dev_add_character_select_log_list(call)
+    table.insert(char_selected_log_lists, call)
+end
+
+--settlement logging
+if CONST.__log_settlements then
+    dev_add_settlement_select_log_list(function(region)
+        local retval = {} --:vector<string>
+        if region:settlement():is_null_interface() then
+            return "Buildings:", retval
+        end
+        local slot_list = region:settlement():slot_list()
+        for i = 0, slot_list:num_items() - 1 do
+            local slot = slot_list:item_at(i)
+            if slot:has_building() then
+                table.insert(retval, slot:building():name())
+            end
+        end
+        return "Buildings:", retval 
+    end)
+end
+
+if CONST.__log_characters then
+    dev_add_character_select_log_list(function(character)
+        local retval = {} --:vector<string>
+        if character:is_null_interface() then
+            return "Info:", retval
+        end
+        table.insert(retval, "Name: "..character:get_forename())
+        table.insert(retval, "X, Y: "..character:logical_position_x()..", "..character:logical_position_y())
+        table.insert(retval, "Is faction leader: ".. tostring(character:is_faction_leader()))
+
+        return "Info:", retval
+    end)
+end
 
 
 --dev shortcut library
@@ -379,6 +430,15 @@ local function dev_get_faction(key)
     end;
     
     return nil;
+end
+
+--v function(cqi: CA_CQI) --> CA_FORCE
+local function dev_get_force(cqi)
+    if cm:model():has_military_force_command_queue_index(cqi) then
+        return cm:model():military_force_for_command_queue_index(cqi)
+    else
+        return nil
+    end
 end
 
 --v function(region_key: string) --> CA_REGION
@@ -421,20 +481,164 @@ local function dev_readonlytable(t)
     });
 end
 
+--v function (callback: function(), timer: number?, name: string?)
+function dev_callback(callback, timer, name)
+    add_callback(wrapFunction(callback), timer, name)
+end
+
+local pre_first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
+local first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
+local post_first_tick_callbacks = {} --:vector<function(context: WHATEVER)>
+local new_game_callbacks = {} --:vector<function(context: WHATEVER)>
+
+--v function(callback: function(context: WHATEVER))
+function dev_pre_first_tick(callback)
+    table.insert(pre_first_tick_callbacks, callback)
+end
+
+--v function(callback: function(context: WHATEVER))
+function dev_first_tick(callback)
+    table.insert(first_tick_callbacks, callback)
+end
+
+--v function(callback: function(context: WHATEVER))
+function dev_post_first_tick(callback)
+    table.insert(post_first_tick_callbacks, callback)
+end
+
+--v function(callback: function(context: WHATEVER))
+function dev_new_game_callback(callback)
+    if cm:get_saved_value("dev_new_game_callback") then
+        return
+    end
+    table.insert(new_game_callbacks, callback)
+end
+
+
+_G.game_created = false
+
+
+--v function() --> boolean
+local function dev_is_new_game()
+    return not not cm:get_saved_value("dev_new_game_callback")
+end
+
+cm:register_first_tick_callback(function(context)
+    _G.game_created = true
+    MODLOG("===================================================================================", "FTC")
+    MODLOG("===================================================================================", "FTC")
+    MODLOG("===============THE GAME IS STARTING: RUNNING FIRST TICK CALLBACK===================", "FTC")
+    MODLOG("===================================================================================", "FTC")
+    MODLOG("===================================================================================", "FTC")
+    local ok, err = pcall( function()
+        for i = 1, #pre_first_tick_callbacks do
+            pre_first_tick_callbacks[i](context)
+        end
+        if not cm:get_saved_value("dev_new_game_callback") then
+            MODLOG("===================================================================================", "FTC")
+            MODLOG("===================================================================================", "FTC")
+            MODLOG("===============NEW GAME STARTED: RUNNING NEW GAME START CALLBACK===================", "FTC")
+            MODLOG("===================================================================================", "FTC")
+            MODLOG("===================================================================================", "FTC")
+            for i = 1, #new_game_callbacks do
+                new_game_callbacks[i](context)
+            end
+            cm:set_saved_value("dev_new_game_callback", true)
+        end
+        for i = 1, #first_tick_callbacks do
+            first_tick_callbacks[i](context)
+        end
+        for i = 1, #post_first_tick_callbacks do
+            post_first_tick_callbacks[i](context)
+        end
+    end)
+    if not ok then
+        MODLOG("ERROR IN FIRST TICK", "ERR")
+        MODLOG(tostring(err), "ERR")
+    end
+end)
+--v function() --> boolean
+local function dev_game_created()
+    return _G.game_created
+end
+
+--v function(text: any)
+local function dev_save_logger(text)
+    if not CONST.__should_output_save_load then
+        return
+    end
+    MODLOG(tostring(text), "SVL")
+end
+
+
+--v [NO_CHECK] function(object: any, ...:string) --> table
+function dev_save_object_as_plain_table(object, ...)
+    if CONST.__should_output_save_load then
+        MODLOG("Saving data for object: ["..tostring(object).."]", "SAV")
+    end
+    local sv_tab = {} --:table
+    for i = 1, #arg do
+        local field = arg[i]
+        if object[field] and not is_function(object[field]) then 
+            sv_tab[field] = object[field] 
+            if CONST.__should_output_save_load then
+                if type(sv_tab[field]) == "string" or type(sv_tab[field]) == "number" then
+                    MODLOG("\t Saved field ["..field.."] which had a value of ["..sv_tab[field].."]", "SAV")
+                else
+                    MODLOG("\t Saved field ["..field.."] which had a value type ["..type(sv_tab[field]).."]", "SAV")
+                end
+            end
+        end
+    end
+    return sv_tab
+end
+
+--v [NO_CHECK] function(sv_tab: table, object: any, ...:string) 
+function dev_load_object_from_plain_table(sv_tab, object, ...)
+    if CONST.__should_output_save_load then
+        MODLOG("Loading data for object: ["..tostring(object).."]", "LOD")
+    end
+    for i = 1, #arg do
+        local field = arg[i]
+        if sv_tab[field] then
+            object[field] = sv_tab[field]
+            if CONST.__should_output_save_load then
+                if type(sv_tab[field]) == "string" or type(sv_tab[field]) == "number" then
+                    MODLOG("\t Loaded field ["..field.."] which had a value of ["..sv_tab[field].."]", "LOD")
+                else
+                    MODLOG("\t Loaded field ["..field.."] which had a value type ["..type(sv_tab[field]).."]", "LOD")
+                end
+            end
+        end
+    end
+end
+
+
 return {
     log = MODLOG,
     export = RAWPRINT,
     new_export = new_export,
-    callback = add_callback,
+    callback = dev_callback,
     eh = get_eh(),
     out_children = dev_print_all_uicomponent_children,
+    out_details_for_children = dev_print_all_uicomponent_details,
     get_uic = find_uicomponent,
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,
+    get_force = dev_get_force,
+    lookup = char_lookup_str,
     region_list = dev_region_list,
     faction_list = dev_faction_list,
     add_settlement_selected_log = dev_add_settlement_select_log_call,
     add_character_selected_log = dev_add_character_select_log_call,
-    as_read_only = dev_readonlytable
+    as_read_only = dev_readonlytable,
+    first_tick = dev_first_tick,
+    new_game = dev_new_game_callback,
+    pre_first_tick = dev_pre_first_tick,
+    post_first_tick = dev_post_first_tick,
+    is_game_created = dev_game_created,
+    is_new_game = dev_is_new_game,
+    save = dev_save_object_as_plain_table,
+    load = dev_load_object_from_plain_table
 }

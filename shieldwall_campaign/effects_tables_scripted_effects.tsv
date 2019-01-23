@@ -1,0 +1,7 @@
+effects_tables	3
+effect	icon	priority	icon_negative	is_hidden
+shield_scripted_pop_cap_serf	market_resource.png	9	market_resource.png	false
+shield_scripted_pop_cap_lord	fort.png	10	fort.png	false
+shield_scripted_pop_cap_foreign	increased_pool_max_axes.png	11	increased_pool_max_axes.png	false
+shield_scripted_pop_cap_monk	monastery.png	12	monastery.png	false
+shield_scripted_household_growth	household_wealth.png	15	household_wealth.png	false

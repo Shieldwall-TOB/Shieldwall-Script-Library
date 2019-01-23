@@ -1,0 +1,1068 @@
+Loc PackedFile
+Key	Text	Tooltip
+effect_bundles_localised_description_vik_stance_blockading	Makes ready to capture a coastal settlement.	true
+effect_bundles_localised_title_vik_politics_lineage_doubts	Doubts About Legitimacy	true
+effect_bundles_localised_description_vik_decree_honour_nobles	This decree has improved the loyalty of our nobles, as such security at home improves our standing abroad tenfold.	true
+effect_bundles_localised_title_vik_leader_influence_8	Leader Influence: 8	true
+effect_bundles_localised_title_vik_leader_influence_9	Leader Influence: 9	true
+effect_bundles_localised_title_vik_leader_influence_4	Leader Influence: 4	true
+effect_bundles_localised_description_vik_roman_walls	Time and tide wait for no man, but Roman walls still stand strong.	true
+effect_bundles_localised_title_vik_leader_influence_5	Leader Influence: 5	true
+effect_bundles_localised_title_vik_leader_influence_6	Leader Influence: 6	true
+effect_bundles_localised_title_vik_leader_influence_7	Leader Influence: 7	true
+effect_bundles_localised_title_vik_leader_influence_0	Leader Influence: 0	true
+effect_bundles_localised_title_vik_leader_influence_1	Leader Influence: 1	true
+effect_bundles_localised_description_vik_faction_trait_strat_clut_separatist	Strat Clut Separatists get the following bonuses:	true
+effect_bundles_localised_title_vik_leader_influence_2	Leader Influence: 2	true
+effect_bundles_localised_title_vik_leader_influence_3	Leader Influence: 3	true
+effect_bundles_localised_description_vik_kingdom_short_dummy	Your faction is upgraded with the following additional bonuses:	true
+effect_bundles_localised_title_vik_politics_campaign_movement	Campaign Movement	true
+effect_bundles_localised_description_vik_stance_forced_march	Increases this army's campaign map marching range.	true
+effect_bundles_localised_title_vik_faction_trait_sudreyar_separatist	Sudreyar Separatists	true
+effect_bundles_localised_title_vik_politics_po_pos	Public Order	true
+effect_bundles_localised_title_vik_food_province_negative_new	Famine	true
+effect_bundles_localised_description_vik_politics_research	Research rate has increased in your land due to recent political events.	true
+effect_bundles_localised_description_vik_politics_incident_lose_own_region	It would appear that your investment has paid off - the kingdom is now a far safer place, if the attack comes from without at least…	true
+effect_bundles_localised_title_vik_sea_king_expedition_trade_positive	Trade Mission Succeeded	true
+effect_bundles_localised_title_vik_incident_seasonal_global_murrain_of_cattle	Murrain of Cattle	true
+effect_bundles_localised_description_vik_heroism_negative_2	old data - do not loc	true
+effect_bundles_localised_description_vik_heroism_negative_1	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_5	Tribute	true
+effect_bundles_localised_title_vik_tribute_4	Tribute	true
+effect_bundles_localised_title_vik_tribute_7	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_6	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_1	Tribute	true
+effect_bundles_localised_title_vik_tribute_0	Tribute	true
+effect_bundles_localised_title_vik_tribute_3	Tribute	true
+effect_bundles_localised_title_vik_tribute_2	Tribute	true
+effect_bundles_localised_title_vik_tribute_9	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_negative_2	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_8	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_negative_1	old data - do not loc	true
+effect_bundles_localised_description_vik_dyflin_brega_peace	The native population are resistant to the sudden change in leadership. They will come to accept their fate with time...	true
+effect_bundles_localised_title_vik_disaster_floods	Flooding	true
+effect_bundles_localised_title_vik_politics_lower_influence	Lower Influence	true
+effect_bundles_localised_title_vik_kingdom_lochlann_sudreyar	Lochlann	true
+effect_bundles_localised_title_vik_faction_trait_northymbre_campaign	Northymbre	true
+effect_bundles_localised_title_vik_faction_trait_west_seaxe_campaign	West Seaxe	true
+effect_bundles_localised_title_vik_noble_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_midhe_fair_1	Friendly relations are key if men are to find greater understanding; when the fair is held, such warmth is promoted.	true
+effect_bundles_localised_description_vik_midhe_fair_2	This year the coffers were found to be empty; the people's disappointment is tangible.	true
+effect_bundles_localised_description_vik_midhe_fair_3	War has come, and so all resources must be marshalled to ensure it is brought to a successful conclusion.	true
+effect_bundles_localised_title_vik_malicious_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_strat_clut_bonus_4	Very soon, you will have no need of others to guide your course.	true
+effect_bundles_localised_description_vik_strat_clut_bonus_5	A player on the world stage, no less, and worthy of respect.	true
+effect_bundles_localised_description_vik_strat_clut_bonus_6	Your sovereignty over these islands is beyond dispute - you are ruler of all you survey... for now at least.	true
+effect_bundles_localised_description_vik_strat_clut_bonus_7	"Let all acknowledge that we have come as masters to rule."	true
+effect_bundles_localised_description_vik_strat_clut_bonus_1	From small beginnings do vast empires grow.	true
+effect_bundles_localised_description_vik_strat_clut_bonus_2	Such growth so quickly is bound to attract the wrong kind of attention.	true
+effect_bundles_localised_description_vik_strat_clut_bonus_3	Everyone has learned of, and few dispute, your growing ascendancy.	true
+effect_bundles_localised_description_vik_sea_king_expedition_raid_positive_2	"They never knew what hit them - the very definition of a 'lightning' raid!"	true
+effect_bundles_localised_description_vik_sinful_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_faction_trait_hellirborg_campaign	Hellirborg	true
+effect_bundles_localised_title_vik_heroism_positive_1	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_positive_1	old data - do not loc	true
+effect_bundles_localised_description_vik_estate_desire_reward_morale	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_legitimacy_10	old data - do not loc	true
+effect_bundles_localised_title_vik_faction_trait_hlymrekr_separatist	Hlymrekr	true
+effect_bundles_localised_description_vik_estate_desire_reward_income_industry	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_politics_giving_in	Yield & Submit	true
+effect_bundles_localised_title_vik_kingdom_england_west_seaxe	England	true
+effect_bundles_localised_title_vik_faction_trait_west_seaxe	West Seaxe	true
+effect_bundles_localised_description_vik_incident_seasonal_global_storm_year	There has been much tumult from the heavens - strong winds are matched by torrential rain, furious thunder and lightning strikes.	true
+effect_bundles_localised_title_vik_politics_po_neg	Public Order	true
+effect_bundles_localised_title_vik_politics_recruitment_cost_pos_replenishment_neg	The Clergy Appeased	true
+effect_bundles_localised_description_vik_westsexa_dilemma_1_1	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_2_1	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_3_1	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_4_1	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_5_1	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_1_3	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_2_3	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_3_3	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_4_3	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_5_3	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_1_2	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_2_2	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_3_2	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_4_2	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_5_2	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_1_4	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_2_4	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_3_4	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_4_4	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_description_vik_westsexa_dilemma_5_4	Having considered the matter from every conceivable angle, the learned Witan have reached their conclusion.	true
+effect_bundles_localised_title_vik_cowardly_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_sea_king_expedition_settle	Expedition Settled	true
+effect_bundles_localised_title_vik_tob_dilemma_recruitment_2_cavalry	Horse Meat	true
+effect_bundles_localised_title_vik_decree_lower_taxes	Decree - Relieve the Tithed	true
+effect_bundles_localised_description_fame_5	Your power is both feared and coveted.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_11	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_fame_4	Your accomplishments are great.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_10	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_fame_7	Your power is supreme.	true
+effect_bundles_localised_description_fame_6	The world trembles before you.	true
+effect_bundles_localised_description_vik_virtuous_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_fame_1	Your power is of little consequence to the world...yet!	true
+effect_bundles_localised_description_fame_3	Word of your achievements has travelled far.	true
+effect_bundles_localised_description_fame_2	Your have estabilished yourself as a worthy power.	true
+effect_bundles_localised_description_vik_decree_supplies_for_army_here_king	This decree has ensured that our armies are content, with all the supplies - and fresh recruits - they need to campaign on home soil.	true
+effect_bundles_localised_description_vik_sea_king_expedition_defeat	Today, the wind was not at your backs, leading to defeat in the field.	true
+effect_bundles_localised_description_vik_new_god_6	Embrace the coming religion and this strange new age where all people, not just your warriors, have a voice.	true
+effect_bundles_localised_description_vik_new_god_4	Embrace the coming religion and this strange new age where all people, not just your warriors, have a voice.	true
+effect_bundles_localised_description_vik_new_god_5	Embrace the coming religion and this strange new age where all people, not just your warriors, have a voice.	true
+effect_bundles_localised_description_vik_new_god_2	Embrace the coming religion and this strange new age where all people, not just your warriors, have a voice.	true
+effect_bundles_localised_description_vik_new_god_3	Embrace the coming religion and this strange new age where all people, not just your warriors, have a voice.	true
+effect_bundles_localised_description_vik_new_god_1	Embrace the coming religion and this strange new age where all people, not just your warriors, have a voice.	true
+effect_bundles_localised_title_vik_estate_desire_reward_construction_market	Estate Desire Reward	true
+effect_bundles_localised_title_vik_estate_desire_reward_income_church	Estate Desire Reward	true
+effect_bundles_localised_description_vik_decree_civic_support	This decree has boosted our naval power considerably and secured the sea trade on which we rely.	true
+effect_bundles_localised_title_vik_heroic_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_politics_character_bribery	There are those among the nobility who have further enriched themselves at your expense; such is the price of fealty it seems.	true
+effect_bundles_localised_description_vik_brutish_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_estate_desire_reward_construction_monastery_church	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_description_vik_kingdom_north_sea_empire_east_engle	North Sea Empire gets the following bonuses:	true
+effect_bundles_localised_description_vik_sea_king_expedition_raid_positive	"What is that beast all girded with iron, which kills the flocks? He has eight horns but no head, and runs as he pleases."	true
+effect_bundles_localised_title_vik_dyflin_brega_war	Populace Enthralled!	true
+effect_bundles_localised_description_vik_decree_honour_church	This decree has undoubtedly improved our standing in the Lord's eyes, for he rewards us with knowledge for our advancement.	true
+effect_bundles_localised_description_vik_sea_king_expedition_trade_negative	Despite some very hard talk, these discussions have not ended in an agreement.	true
+effect_bundles_localised_description_vik_stance_garrisoned	Safeguards the local settlement.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_9	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_8	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_1	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_3	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_2	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_5	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_4	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_7	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_6	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_wise_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_stance_laying_siege	Makes ready to capture a settlement.	true
+effect_bundles_localised_title_vik_faction_leader_religious_estates	Allegiance from Estates	true
+effect_bundles_localised_description_vik_legitimacy_9	old data - do not loc	true
+effect_bundles_localised_description_vik_legitimacy_8	old data - do not loc	true
+effect_bundles_localised_title_vik_sea_king_expedition_make_vassal_positive_2	Vassalisation Succeeded	true
+effect_bundles_localised_description_vik_legitimacy_1	Carry on at this rate and rumours of your demise will require no exaggeration!\n\nIncrease legitimacy by owning cultural land, make cultural allies and defending allies. Legitimacy naturally declines as time passes.	true
+effect_bundles_localised_description_vik_legitimacy_0	You have betrayed and stolen and taken at will; now, no one trusts you.\n\nIncrease legitimacy by owning cultural land, make cultural allies and defending allies. Legitimacy naturally declines as time passes.	true
+effect_bundles_localised_description_vik_legitimacy_3	Security at home is essential if a ruler is to be successful; recognition of legitimacy by peers and subjects is a vital part of that.\n\nIncrease legitimacy by owning cultural land, make cultural allies and defending allies. Legitimacy naturally declines as time passes.	true
+effect_bundles_localised_description_vik_legitimacy_2	Carry on at this rate and rumours of your demise will require no exaggeration!\n\nIncrease legitimacy by owning cultural land, make cultural allies and defending allies. Legitimacy naturally declines as time passes.	true
+effect_bundles_localised_description_vik_legitimacy_5	You have proved your worth to your peers - there will be no further challenges to your rule from within.	true
+effect_bundles_localised_description_vik_legitimacy_4	Security at home is essential if a ruler is to be successful; recognition of legitimacy by peers and subjects is a vital part of that.\n\nIncrease legitimacy by owning cultural land, make cultural allies and defending allies. Legitimacy naturally declines as time passes.	true
+effect_bundles_localised_description_vik_legitimacy_7	old data - do not loc	true
+effect_bundles_localised_description_vik_legitimacy_6	old data - do not loc	true
+effect_bundles_localised_description_vik_faction_trait_welsh	Welsh Kingdoms get the following bonuses:	true
+effect_bundles_localised_title_vik_kingdom_danelaw_east_engle	Danelaw	true
+effect_bundles_localised_title_vik_estate_desire_reward_construction_industry	Estate Desire Reward	true
+effect_bundles_localised_title_vik_sinful_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_kingdom_long_dummy	[[col:green]]Faction bonuses upgraded[[/col]]	true
+effect_bundles_localised_title_vik_faction_trait_east_engle	East Engle	true
+effect_bundles_localised_description_vik_edict_armed_patrols	Test!	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_east_angla	Relations with the East Engle	true
+effect_bundles_localised_title_vik_heroism_5	Heroism	true
+effect_bundles_localised_title_vik_heroism_4	Heroism	true
+effect_bundles_localised_title_vik_heroism_7	old data - do not loc	true
+effect_bundles_localised_title_vik_heroism_6	old data - do not loc	true
+effect_bundles_localised_title_vik_heroism_1	Heroism	true
+effect_bundles_localised_title_vik_heroism_0	Heroism	true
+effect_bundles_localised_title_vik_heroism_3	Heroism	true
+effect_bundles_localised_title_vik_heroism_2	Heroism	true
+effect_bundles_localised_description_vik_incident_seasonal_province_windstorm	The raging winds have damaged buildings here, depriving the population of much-needed protection against the wild elements.	true
+effect_bundles_localised_title_vik_heroism_9	old data - do not loc	true
+effect_bundles_localised_description_vik_trait_category_noble	Some characteristics cannot be learned, but instead are bestowed upon the individual before they are even born. \n\n[[rgba:255:255:255:1]]When this trait groups is active:[[/rgba]]	true
+effect_bundles_localised_title_vik_heroism_8	old data - do not loc	true
+effect_bundles_localised_title_vik_estate_desire_reward_income_farm	Estate Desire Reward	true
+effect_bundles_localised_description_vik_heroic_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_stance_fortify_west_seaxe	Stance: Fortify	true
+effect_bundles_localised_description_vik_faction_trait_hellirborg_separatist	Hellirborg get the following bonuses:	true
+effect_bundles_localised_title_vik_war_fervour_-2	War Fervour	true
+effect_bundles_localised_title_vik_war_fervour_-3	War Fervour	true
+effect_bundles_localised_title_vik_war_fervour_-1	War Fervour	true
+effect_bundles_localised_description_vik_trait_category_items	Objects collected along life's winding track may prove vital at some later juncture. 	true
+effect_bundles_localised_description_vik_decree_honour_troops	This decree has ensured that improvements to the military have occurred, pleasing both our soldiers and the people they must protect.	true
+effect_bundles_localised_title_vik_estate_desire_reward_public_order	Estate Desire Reward	true
+effect_bundles_localised_title_vik_faction_trait_northleode_campaign	Northleode	true
+effect_bundles_localised_title_vik_stance_mustering	Situation: Mustering	true
+effect_bundles_localised_title_vik_wise_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_politics_character_bribery	Corrupt Nobles	true
+effect_bundles_localised_title_vik_estate_desire_reward_construction_monastery_church	Estate Desire Reward	true
+effect_bundles_localised_description_vik_faction_trait_mide_campaign	Mide get the following bonuses:	true
+effect_bundles_localised_description_vik_estate_desire_reward_income_church	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_politics_eager_for_coin	Eager for Coin	true
+effect_bundles_localised_description_vik_heroic_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_estate_desire_reward_construction_great_hall	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_description_vik_faction_leader_noble_estates	WIP DESCRIPTION	true
+effect_bundles_localised_title_vik_here_king_army_9	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_8	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_7	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_6	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_5	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_4	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_3	Here King: Army	true
+effect_bundles_localised_title_vik_here_king_army_2	Here King: Army	true
+effect_bundles_localised_title_vik_here_king_army_1	Here King: Army	true
+effect_bundles_localised_title_vik_here_king_army_0	Here King: Army	true
+effect_bundles_localised_title_vik_here_king_english_10	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_english_11	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_english_12	old data - do not loc	true
+effect_bundles_localised_description_vik_sea_king_expedition_trade_positive_2	An agreement has been made; mercantile endeavours can now flourish and grow.	true
+effect_bundles_localised_title_vik_trait_category_malicious	Malicious	true
+effect_bundles_localised_title_vik_decree_supplies_for_army_here_king	Decree - A Well-fed Force	true
+effect_bundles_localised_title_vik_sea_king_expedition_defeat	Military Expedition Defeated	true
+effect_bundles_localised_title_vik_kingdom_norse_gaelic_sea_sudreyar	Norse Gaelic Sea	true
+effect_bundles_localised_description_vik_sea_king_expedition_settle	The road was long, with many a winding turn. Now, the journey is over, and for the travellers, life can begin again.	true
+effect_bundles_localised_description_vik_decree_lower_taxes	This decree has softened the blow of high taxation, exchanging payment in gold for the payment in kind of future goodwill.	true
+effect_bundles_localised_description_vik_civil_war_effects	Civil war has broken out - usurpers seek to overthrow the crown!	true
+effect_bundles_localised_title_fame_3	Fame: Impressive	true
+effect_bundles_localised_title_fame_2	Fame: Noteworthy	true
+effect_bundles_localised_title_fame_1	Fame: Insignificant	true
+effect_bundles_localised_title_fame_7	Fame: Supreme	true
+effect_bundles_localised_title_fame_6	Fame: Terrifying	true
+effect_bundles_localised_title_fame_5	Fame: Intimidating	true
+effect_bundles_localised_title_fame_4	Fame: Inspiring	true
+effect_bundles_localised_description_vik_politics_asserting_authority	It's quite simple - people will respect the throne or face the consequences!	true
+effect_bundles_localised_description_vik_decree_encourage_scholars	This decree has given us advantage, unseen at first, but now our advanced research will put us clearly ahead of our rivals.	true
+effect_bundles_localised_description_vik_war_fervour_-1	War fervour measures your people's appetite for war. It's affected by the number of wars you are in as well as whether you border your opponents. Decrees, faction leader influence, as well as unique faction mechanics can all impact your factions War Fervour.\n\nOn higher difficulty settings you lose more war fervour for each war you are engaged in.	true
+effect_bundles_localised_title_vik_pagan_kings_king_converts	King Converts	true
+effect_bundles_localised_description_vik_war_fervour_-2	War fervour measures your people's appetite for war. It's affected by the number of wars you are in as well as whether you border your opponents. Decrees, faction leader influence, as well as unique faction mechanics can all impact your factions War Fervour.\n\nOn higher difficulty settings you lose more war fervour for each war you are engaged in.	true
+effect_bundles_localised_description_vik_war_fervour_-3	War fervour measures your people's appetite for war. It's affected by the number of wars you are in as well as whether you border your opponents. Decrees, faction leader influence, as well as unique faction mechanics can all impact your factions War Fervour.\n\nOn higher difficulty settings you lose more war fervour for each war you are engaged in.	true
+effect_bundles_localised_title_vik_virtuous_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_politics_incident_aesthetic	People are displeased that their creativity is being stifled and are blaming you for their predicament. Sometimes, you just can't win!	true
+effect_bundles_localised_title_vik_decree_supplies_for_army	Decree - An Army Supplied	true
+effect_bundles_localised_description_vik_circenn_destiny_stone_found	The return of the Stone of Destiny to its rightful owner increases your influence and, therefore, loyalty to your rule. Income from churches increases also as a result.	true
+effect_bundles_localised_description_vik_cowardly_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_east_angla	Friendlier relations with the East Engle are in both your interests.	true
+effect_bundles_localised_description_vik_industrious_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_kingdom_danelaw_east_engle	Danelaw gets the following bonuses:	true
+effect_bundles_localised_description_vik_foolish_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_sinful_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_estate_desire_reward_construction_industry	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_description_vik_kingdom_long_dummy	Your faction is upgraded with the following additional bonuses:	true
+effect_bundles_localised_description_vik_here_king_dilemma_1_army	Share the money with the army	true
+effect_bundles_localised_title_vik_incident_strip_estate_allegiance	Opposition	true
+effect_bundles_localised_title_vik_politics_assassination_justice2	Natural Justice	true
+effect_bundles_localised_description_vik_politics_incident_lose_when_stronger	Sound investment has a habit of paying off. Your generals are both empowered and emboldened by the training afforded them - this should translate to success in battle, ensuring the kingdom grows exponentially.	true
+effect_bundles_localised_description_vik_sea_king_expedition_make_vassal_positive_2	Sensibly, these people have placed themselves under your protection.	true
+effect_bundles_localised_description_vik_burghal_0_2	War has reached our borders! The entire wealth of the kingdom should be committed to the military!\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_1_2	War has reached our borders! The entire wealth of the kingdom should be committed to the military!\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_2_2	War has reached our borders! The entire wealth of the kingdom should be committed to the military!\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_3_2	War has reached our borders! The entire wealth of the kingdom should be committed to the military!\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_4_2	War has reached our borders! The entire wealth of the kingdom should be committed to the military!\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_0_0	The people expect taxes to be lower when there are no threats to the kingdom.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_1_0	The people expect taxes to be lower when there are no threats to the kingdom.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_2_0	The people expect taxes to be lower when there are no threats to the kingdom.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_3_0	The people expect taxes to be lower when there are no threats to the kingdom.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_4_0	The people expect taxes to be lower when there are no threats to the kingdom.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_0_1	We are at war! The people will be more willing to contribute taxes towards an ongoing conflict.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_1_1	We are at war! The people will be more willing to contribute taxes towards an ongoing conflict.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_2_1	We are at war! The people will be more willing to contribute taxes towards an ongoing conflict.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_3_1	We are at war! The people will be more willing to contribute taxes towards an ongoing conflict.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_description_vik_burghal_4_1	We are at war! The people will be more willing to contribute taxes towards an ongoing conflict.\n\nThe burghal level can be changed by adjusting the tax level in the economy screen. Public order effects change if you are at peace, have a distant war, or have a war against an adjacent faction. New effects are applied at the start of your turn.	true
+effect_bundles_localised_title_vik_faction_trait_east_engle_campaign	East Engle	true
+effect_bundles_localised_title_vik_politics_hold_feast_upset	Upset Populace	true
+effect_bundles_localised_title_vik_incident_seasonal_global_st_vitus_dance	St Vitus' Dance	true
+effect_bundles_localised_description_vik_faction_trait_northleode_separatist	Northleode get the following bonuses:	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_1	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_3	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_2	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_5	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_4	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_7	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_6	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_9	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_sea_king_expedition_trade_negative	Trade Mission Failed	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_8	Bonus for the Nobility	true
+effect_bundles_localised_description_vik_sea_king_expedition_trade_positive	Finally, an accord is reached; commerce now reigns, from which all will profit.	true
+effect_bundles_localised_description_vik_incident_seasonal_global_murrain_of_cattle	Some strange malady has broken out among the cattle; this mysterious pestilence has made them mad!	true
+effect_bundles_localised_title_vik_politics_movement_neg_skill_bonus	Training in Progress	true
+effect_bundles_localised_title_vik_heroism_negative_1	old data - do not loc	true
+effect_bundles_localised_title_vik_heroism_negative_2	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_negative_1	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_negative_2	old data - do not loc	true
+effect_bundles_localised_description_vik_faction_trait_west_seaxe_separatist	West Seaxe Separatists get the following bonuses:	true
+effect_bundles_localised_description_vik_food_province_negative_new	This province is severely affected by the current famine. People are starving and beg their masters for sustenance!	true
+effect_bundles_localised_title_vik_trait_category_legendary	Legendary	true
+effect_bundles_localised_description_vik_politics_campaign_movement	Campaign movement of armies has increased in your land due to recent political events.	true
+effect_bundles_localised_description_vik_spend_culture_1a	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_1b	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_1c	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_1d	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_viking_gael	Friendlier relations with the Viking Sea Kings are in everybody's best interests.	true
+effect_bundles_localised_description_vik_faction_trait_northymbre_separatist	Northymbre Separatists get the following bonuses:	true
+effect_bundles_localised_description_vik_trait_category_experience	There’s simply no substitute for the insight and understanding gained from a life lived on the very bleeding edge.	true
+effect_bundles_localised_description_vik_spend_culture_18	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_10	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_11	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_12	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_15	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_16	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_17	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_leader_influence_8	This man wears the crown with pride, taking his role very seriously indeed.	true
+effect_bundles_localised_description_vik_leader_influence_9	All look to the king as an example, for he represents the very best in men.	true
+effect_bundles_localised_description_vik_leader_influence_2	This king has enemies everywhere; chances are, he's not long for this world.	true
+effect_bundles_localised_description_vik_leader_influence_3	To describe this king as weak would be something of an understatement.	true
+effect_bundles_localised_description_vik_leader_influence_0	People spit this king's name when it comes up in conversation, so unpopular is he.	true
+effect_bundles_localised_description_vik_leader_influence_1	He calls himself king? This man is not worthy of such a title!	true
+effect_bundles_localised_description_vik_leader_influence_6	This king has a good hold on their kingdom, becoming greatly influential on all levels of society.	true
+effect_bundles_localised_description_vik_leader_influence_7	People smile when they hear this king's name, so benevolent is his rule.	true
+effect_bundles_localised_description_vik_leader_influence_4	No one thinks anything bad about this king, but then again, they don't think anything good either.	true
+effect_bundles_localised_description_vik_leader_influence_5	The best thing said of this king is that his reign has proved stable. Hardly a glowing report!	true
+effect_bundles_localised_title_vik_wise_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_decree_new_laws	Decree - New Laws Enacted	true
+effect_bundles_localised_description_vik_incident_strip_estate_income	Stripping a noble's estate has caused them to replace the lost land with riches...	true
+effect_bundles_localised_description_att_bundle_dummy	"The Senate and the People of Rome"	true
+effect_bundles_localised_description_vik_politics_giving_in	Cash may be slipping through your fingers at an astonishing rate, but at least your grip on the throne remains firm.	true
+effect_bundles_localised_title_vik_politics_morale	Unit Morale	true
+effect_bundles_localised_description_vik_kingdom_england_west_seaxe	England gets the following bonuses:	true
+effect_bundles_localised_title_vik_decree_give_to_soldiers	Decree - The People's Army	true
+effect_bundles_localised_description_vik_incident_seasonal_global_abundunt_harvest	The Isles are experiencing a great harvest! There is food aplenty and none shall go hungry.	true
+effect_bundles_localised_description_vik_heroism_positive_1	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_positive_1	old data - do not loc	true
+effect_bundles_localised_description_vik_faction_trait_strat_clut_campaign	Strat Clut get the following bonuses:	true
+effect_bundles_localised_title_vik_strat_clut_bonus_2	Map Control - Domain	true
+effect_bundles_localised_title_vik_strat_clut_bonus_3	Map Control - Dominion	true
+effect_bundles_localised_title_vik_strat_clut_bonus_1	Map Control - Territory	true
+effect_bundles_localised_title_vik_strat_clut_bonus_6	Map Control - Kingdom	true
+effect_bundles_localised_title_vik_strat_clut_bonus_7	Map Control - Realm	true
+effect_bundles_localised_title_vik_strat_clut_bonus_4	Map Control - Province	true
+effect_bundles_localised_title_vik_strat_clut_bonus_5	Map Control - State	true
+effect_bundles_localised_description_vik_additional_upkeep	[HIDDEN] Player only effect bundle that increases factionwide upkeep by 2% for each additional army	true
+effect_bundles_localised_title_vik_decree_hold_games	Decree - Fair of Tailtiu	true
+effect_bundles_localised_description_vik_faction_trait_east_engle_separatist	East Engle Separatists get the following bonuses:	true
+effect_bundles_localised_description_vik_trait_category_wise	Wisdom cannot be taught, only learned over a lifetime of struggle and sacrifice. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_description_vik_sea_king_expedition_raid_negative	By their very nature, these things involve a degree of risk; this time, the gamble did not pay off.	true
+effect_bundles_localised_description_vik_estate_desire_reward_income_commerce	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_dyflin_brega_peace	Unhappy Populace	true
+effect_bundles_localised_title_vik_spend_culture_9	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_8	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_7	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_6	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_5	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_4	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_3	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_2	Cultural Benefits	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_11	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_10	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_description_vik_politics_hold_feast_upset	As the initial joy of the feast fades, the people are left feeling like their leader is trying to buy their support.	true
+effect_bundles_localised_description_vik_faction_trait_east_engle_campaign	East Engle get the following bonuses:	true
+effect_bundles_localised_description_vik_politics_genealogy_overload	Oddly, in their efforts to prove legitimacy, all sorts of nebulous documents are now coming to light, and from every corner of the realm!	true
+effect_bundles_localised_title_vik_foolish_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_food_faction_positive_3	Abundant Food	true
+effect_bundles_localised_title_vik_food_faction_positive_2	Food Surplus	true
+effect_bundles_localised_title_vik_food_faction_positive_1	Food Surplus	true
+effect_bundles_localised_description_vik_kingdom_temhair_mide	Temhair gets the following bonuses:	true
+effect_bundles_localised_description_vik_foolish_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_allegiance_religious_estate	Bonus to Faction Allegiance from the king holding Religious Estates.	true
+effect_bundles_localised_description_vik_decree_new_laws_fair	This decree, ratified by the Witan, has improved the loyalty and allegiance of our subjects for the benefit of the entire kingdom.	true
+effect_bundles_localised_title_vik_decree_honour_dead	Decree - Spirits of the Dead	true
+effect_bundles_localised_title_vik_faction_trait_seisilwig	Seisilwig	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_anglo_viking	Friendlier relations with the Great Viking Army are in everybody's best interests.	true
+effect_bundles_localised_title_vik_incident_seasonal_global_mortality_of_bees	Mortality of Bees	true
+effect_bundles_localised_title_vik_politics_nobles_placated	Nobles Placated	true
+effect_bundles_localised_description_debug_anti_religion_conversion	not for display | debug_anti_religion_conversion	true
+effect_bundles_localised_title_vik_decree_encourage_scholars	Decree - Gather Venerable Scholars	true
+effect_bundles_localised_description_vik_pagan_kings_king_converts	The king's conversion has found great favour amongst both his people and the neighbouring powers. However, abandoning the old ways may not sit so well with the nobility.	true
+effect_bundles_localised_title_vik_industrious_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_trait_seisilwig_separatist	Seisilwig get the following bonuses:	true
+effect_bundles_localised_title_vik_civil_war_effects	Civil War	true
+effect_bundles_localised_title_vik_faction_trait_gwined_separatist	Gwined Separatists	true
+effect_bundles_localised_description_vik_kingdom_norse_gaelic_sea_sudreyar	Norse Gaelic Sea gets the following bonuses:	true
+effect_bundles_localised_description_vik_brutish_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_decree_construction_effort	This decree has enabled us to maintain our road system, helping the kingdom to function and our armies to swiftly act should invaders come calling.	true
+effect_bundles_localised_description_vik_sea_king_expedition_conquer_negative	Despite the very best intentions, this adventure has come to naught.	true
+effect_bundles_localised_title_vik_trait_category_personality	Personality	true
+effect_bundles_localised_title_vik_miercna_treasury_army_9	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_8	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_5	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_4	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_7	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_6	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_1	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_3	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_2	Bonus for the Army	true
+effect_bundles_localised_description_vik_politics_no_secret_meetings	You've asserted your authority. Hopefully, this has put a stop to dark mutterings among the nobility.	true
+effect_bundles_localised_title_vik_faction_trait_dyflin_separatist	Dyflin Separatists	true
+effect_bundles_localised_description_vik_dyflin_slaves_13	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_12	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_11	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_10	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_16	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!	true
+effect_bundles_localised_description_vik_dyflin_slaves_15	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_14	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_title_vik_sea_king_expedition_make_vassal_positive	Vassalisation Succeeded	true
+effect_bundles_localised_description_vik_faction_trait_northleode_campaign	Northleode get the following bonuses:	true
+effect_bundles_localised_description_vik_estate_desire_reward_public_order	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_description_vik_faction_trait_vikings_major	Vikings get the following bonuses:	true
+effect_bundles_localised_description_vik_kingdom_irish_vikings_dyflin	Irish Vikings get the following bonuses:	true
+effect_bundles_localised_title_vik_sea_king_expedition_raid_negative	Raiding Party Failed	true
+effect_bundles_localised_title_vik_politics_hold_feast_food	Recent Feast	true
+effect_bundles_localised_title_vik_faction_trait_strat_clut_campaign	Strat Clut	true
+effect_bundles_localised_description_vik_decree_hold_games	This decree has strengthened our position across the kingdom - grateful contentment has followed a wave of hope.	true
+effect_bundles_localised_description_vik_kingdom_north_sea_empire_northymbre	North Sea Empire gets the following bonuses:	true
+effect_bundles_localised_title_vik_additional_upkeep	[HIDDEN]	true
+effect_bundles_localised_description_vik_expedition	When the time is right, an expedition can set sail to further your faction’s trade, influence and territorial designs.	true
+effect_bundles_localised_title_vik_incident_strip_estate_public_order	Unrest	true
+effect_bundles_localised_title_vik_incident_seasonal_global_abundunt_harvest	Abundant Harvest	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_english	Relations with the English	true
+effect_bundles_localised_title_vik_faction_trait_strat_clut	Strat Clut	true
+effect_bundles_localised_description_vik_faction_trait_rebels	Rebels get the following bonuses:	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_strat_clut	Relations with Strat Clut	true
+effect_bundles_localised_title_vik_faction_trait_hellirborg	Hellirborg	true
+effect_bundles_localised_title_vik_english_peasant_positive	Fyrd	true
+effect_bundles_localised_description_vik_politics_incident_church_2	To go against the will of God? Such a thing courts pestilence, famine and death, to go with all the wars, that we might know His displeasure. The people know this instinctively - why not so their monarch?	true
+effect_bundles_localised_description_vik_politics_incident_church_1	Naturally, when God is pleased He bestows on them the gift of prosperity upon his people, that they may praise Him all the more. Investing in the people's spiritual wellbeing can only pay dividends in the long run, surely?	true
+effect_bundles_localised_title_vik_kingdom_anglo_saxon_mierce	Anglo-Saxons	true
+effect_bundles_localised_title_vik_stance_double_time	Stance: Double Time!	true
+effect_bundles_localised_title_vik_incident_seasonal_global_dark_year	Dark Year	true
+effect_bundles_localised_description_vik_here_king_dilemma_1_english	Share the money with the people	true
+effect_bundles_localised_description_vik_faction_trait_mide	Mide get the following bonuses:	true
+effect_bundles_localised_title_vik_faction_trait_circenn_separatist	Circenn Separatists	true
+effect_bundles_localised_title_vik_faction_trait_northymbre	Northymbre	true
+effect_bundles_localised_title_vik_tob_dilemma_recruitment_2_spear	Idle Workforce	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_northymbra	Relations with Northymbre	true
+effect_bundles_localised_description_vik_faction_leader_agricultural_estates	WIP DESCRIPTION	true
+effect_bundles_localised_description_vik_faction_trait_gael	Gaelic Kingdoms get the following bonuses:	true
+effect_bundles_localised_title_vik_trait_category_virtuous	Virtuous	true
+effect_bundles_localised_title_vik_faction_trait_hlymrekr_campaign	Hlymrekr	true
+effect_bundles_localised_title_vik_trait_category_experience	Experience	true
+effect_bundles_localised_title_vik_starting_rebels_defeated	Internal Stability	true
+effect_bundles_localised_description_vik_trait_category_industrious	Work maketh the man, the kingdom, the world. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_description_vik_kingdom_prydein_strat_clut	Prydein gets the following bonuses:	true
+effect_bundles_localised_description_vik_politics_movement_neg_skill_bonus	Your armies cannot move as swiftly while being trained, but their fighting skills are increased in return.	true
+effect_bundles_localised_description_vik_estate_effects_test_bundle	Shest, shest!	true
+effect_bundles_localised_title_vik_faction_trait_seisilwig_campaign	Seisilwig	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_8	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_9	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_2	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_3	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_1	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_6	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_7	Keeping the Gold	true
+effect_bundles_localised_title_vik_bankruptcy	Bankruptcy	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_4	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_5	Keeping the Gold	true
+effect_bundles_localised_title_vik_kingdom_danelaw_northymbre	Danelaw	true
+effect_bundles_localised_description_vik_kingdom_anglo_saxon_mierce	Anglo-Saxons get the following bonuses:	true
+effect_bundles_localised_description_vik_legitimacy_10	old data - do not loc	true
+effect_bundles_localised_title_vik_politics_incident_church_1	Piety & Prosperity	true
+effect_bundles_localised_title_vik_politics_incident_church_2	Discourtesy & Displeasure	true
+effect_bundles_localised_description_vik_stance_double_time	Increases this fleet's campaign map navigation range.	true
+effect_bundles_localised_description_vik_incident_seasonal_global_dark_year	Once again, the world is experiencing a darkening; lower temperatures and crop failures abound due to the lack of light and warmth.	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_miercna	Relations with Mierce	true
+effect_bundles_localised_description_vik_faction_trait_hlymrekr_separatist	Hlymrekr get the following bonuses:	true
+effect_bundles_localised_description_vik_decree_compose_poem	This glorious verse has raised our people up, boosting our unity and courage to strive ever onward towards a truly united Wales.	true
+effect_bundles_localised_title_vik_trait_category_cowardly	Cowardly	true
+effect_bundles_localised_title_vik_kingdom_scotland_circenn	Scotland	true
+effect_bundles_localised_title_vik_sinful_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_trait_hellirborg_campaign	Hellirborg get the following bonuses:	true
+effect_bundles_localised_description_vik_politics_faction_allegiance	Faction Allegience has increased in your land due to recent political events.	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_strat_clut	Friendlier relations with Strat Clut are in both your interests.	true
+effect_bundles_localised_description_vik_sea_king_expedition_conquer_positive	Some are born to conquer, others born to serve; the natural order has been confirmed.	true
+effect_bundles_localised_description_vik_faction_trait_west_seaxe_campaign	West Seaxe get the following bonuses:	true
+effect_bundles_localised_description_vik_faction_trait_northymbre_campaign	Northymbre get the following bonuses:	true
+effect_bundles_localised_description_vik_kingdom_lochlann_sudreyar	Lochlann gets the following bonuses:	true
+effect_bundles_localised_description_vik_incident_strip_estate_public_order	Stripping a noble's estate has caused them to sway the people against your rule...	true
+effect_bundles_localised_title_vik_faction_trait_sudreyar_campaign	Sudreyar	true
+effect_bundles_localised_description_vik_virtuous_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_malicious_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_noble_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_dyflin_slaves_3	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_2	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_1	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_0	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_7	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_6	Slave Trade	true
+effect_bundles_localised_description_vik_malicious_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_dyflin_slaves_5	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_4	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_9	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_8	Slave Trade	true
+effect_bundles_localised_title_vik_expedition	Expedition	true
+effect_bundles_localised_title_vik_sea_king_expedition_make_vassal_negative	Vassalisation Failed	true
+effect_bundles_localised_title_vik_politics_incident_lose_own_region	Payback Time	true
+effect_bundles_localised_title_vik_politics_research	Research Rate	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_sudreyar	Relations with Sudreyar	true
+effect_bundles_localised_description_vik_bankruptcy	Your faction has run out of money; your people and armies will suffer as a result.	true
+effect_bundles_localised_title_vik_politics_true_genealogy	True Genealogy	true
+effect_bundles_localised_description_vik_kingdom_danelaw_northymbre	Danelaw gets the following bonuses:	true
+effect_bundles_localised_description_vik_stance_raiding_navy	Raids wealth from adjacent land regions. Also raids trade income when standing on trade routes.	true
+effect_bundles_localised_title_vik_kingdom_prydein_strat_clut	Prydein	true
+effect_bundles_localised_title_vik_estate_effects_test_bundle	Test Bundle for Estate Effects	true
+effect_bundles_localised_description_vik_tribute_8	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_9	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_6	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_7	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_4	Those in your thrall must know their place, and pay tribute!\n\nIncrease tribute by taking part in battles, demanding payments and from expeditions. Tribute naturally declines as time passes.	true
+effect_bundles_localised_description_vik_tribute_5	"We're going to need a bigger hall."	true
+effect_bundles_localised_description_vik_tribute_2	Those in your thrall must know their place, and pay tribute!\n\nIncrease tribute by taking part in battles, demanding payments and from expeditions. Tribute naturally declines as time passes.	true
+effect_bundles_localised_description_vik_tribute_3	Those in your thrall must know their place, and pay tribute!\n\nIncrease tribute by taking part in battles, demanding payments and from expeditions. Tribute naturally declines as time passes.	true
+effect_bundles_localised_description_vik_tribute_0	There is no tribute forthcoming. Maybe it's time to crack some heads?\n\nIncrease tribute by taking part in battles, demanding payments and from expeditions. Tribute naturally declines as time passes.	true
+effect_bundles_localised_description_vik_tribute_1	Those in your thrall must know their place, and pay tribute!\n\nIncrease tribute by taking part in battles, demanding payments and from expeditions. Tribute naturally declines as time passes.	true
+effect_bundles_localised_title_vik_politics_incident_win_own_region	More Than You Bargained For	true
+effect_bundles_localised_description_vik_faction_trait_sudreyar_separatist	Sudreyar Separatists get the following bonuses:	true
+effect_bundles_localised_title_vik_leader_influence_10	Leader Influence: 10	true
+effect_bundles_localised_title_vik_trait_category_industrious	Industrious	true
+effect_bundles_localised_description_vik_kingdom_wales_gwined	Cymru gets the following bonuses:	true
+effect_bundles_localised_description_vik_faction_trait_gwined	Gwined get the following bonuses:	true
+effect_bundles_localised_title_vik_faction_trait_gael	Gaelic Kingdoms	true
+effect_bundles_localised_description_vik_decree_send_expedition_dummy	UNSEEN - DO NOT LOC	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_northymbra	Friendlier relations with Northymbre are in both your interests.	true
+effect_bundles_localised_title_vik_stance_blockading	Situation: Blockading	true
+effect_bundles_localised_title_vik_faction_trait_mide	Mide	true
+effect_bundles_localised_title_vik_heroic_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_stance_fortify_west_seaxe	Establishes a fortified encampment	true
+effect_bundles_localised_title_vik_faction_trait_mierce_separatist	Mierce Separatists	true
+effect_bundles_localised_title_debug_anti_religion_conversion	debug_anti_religion_conversion	true
+effect_bundles_localised_title_vik_incident_seasonal_global_famine	Poor Harvest	true
+effect_bundles_localised_title_vik_treaty_alfred_guthrum_west_seaxe	The Treaty of Alfred & Guthrum	true
+effect_bundles_localised_description_vik_incident_seasonal_global_mortality_of_bees	A smaller yield of honey this year indicates that the bee numbers are declining. Why this has happened is anyone's guess!	true
+effect_bundles_localised_title_vik_faction_trait_caisil_separatist	Caisil	true
+effect_bundles_localised_description_vik_faction_trait_dyflin	Dyflin get the following bonuses:	true
+effect_bundles_localised_description_vik_heroism_8	old data - do not loc	true
+effect_bundles_localised_description_vik_heroism_9	old data - do not loc	true
+effect_bundles_localised_description_vik_heroism_6	old data - do not loc	true
+effect_bundles_localised_description_vik_heroism_7	old data - do not loc	true
+effect_bundles_localised_description_vik_heroism_4	Bravery and fortitude are the very best qualities in man, and can both be found among the heroes of the Welsh!\n\nIncrease heroism by winning battles, owning Welsh land and ranking-up characters. Heroism naturally declines as time passes.	true
+effect_bundles_localised_description_vik_heroism_5	There are now more heroes in this land than blood being spilled in its defence!	true
+effect_bundles_localised_description_vik_heroism_2	Bravery and fortitude are the very best qualities in man, and can both be found among the heroes of the Welsh!\n\nIncrease heroism by winning battles, owning Welsh land and ranking-up characters. Heroism naturally declines as time passes.	true
+effect_bundles_localised_description_vik_heroism_3	Bravery and fortitude are the very best qualities in man, and can both be found among the heroes of the Welsh!\n\nIncrease heroism by winning battles, owning Welsh land and ranking-up characters. Heroism naturally declines as time passes.	true
+effect_bundles_localised_description_vik_heroism_0	Where are the men of legend, whose noble blood has quenched this great land?\n\nIncrease heroism by winning battles, owning Welsh land and ranking-up characters. Heroism naturally declines as time passes.	true
+effect_bundles_localised_description_vik_heroism_1	Bravery and fortitude are the very best qualities in man, and can both be found among the heroes of the Welsh!\n\nIncrease heroism by winning battles, owning Welsh land and ranking-up characters. Heroism naturally declines as time passes.	true
+effect_bundles_localised_title_vik_faction_trait_northleode	Northleode	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_westsexa	Relations with the West Seaxe	true
+effect_bundles_localised_description_vik_decree_honour_dead	This decree has brought contentment - the people are pleased that their revered ancestors have not been forgotten.	true
+effect_bundles_localised_title_vik_faction_trait_great_viking_army	Great Viking Army	true
+effect_bundles_localised_title_vik_politics_demands	Unreasonable Demands	true
+effect_bundles_localised_description_vik_tribute_max	"We're going to need a bigger hall."	true
+effect_bundles_localised_title_vik_foolish_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_trait_mierce	Mierce get the following bonuses:	true
+effect_bundles_localised_title_vik_stance_garrisoned	Situation: Garrisoned	true
+effect_bundles_localised_description_vik_politics_usurper_allegiance	Usurper Allegience has increased in your land due to recent political events.	true
+effect_bundles_localised_title_vik_miercna_treasury_people_2	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_3	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_1	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_6	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_7	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_4	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_5	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_8	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_9	Bonus for the People	true
+effect_bundles_localised_description_vik_politics_genealogies	You have proved the legitimacy of your lineage; your leadership is now beyond question. 	true
+effect_bundles_localised_title_vik_sea_king_expedition_raid_positive	Raiding Party Succeeded	true
+effect_bundles_localised_title_vik_brutish_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_politics_characters_disloyal	A recent feast soon descended into little more than a meadhouse brawl; those who can actually remember the night do so for entirely the wrong reasons.	true
+effect_bundles_localised_description_vik_food_faction_neutral	Your faction consumes exactly the same amount of food as it produces – a delicate position to be in.	true
+effect_bundles_localised_description_vik_trait_category_personality	Nature and nurture, in tandem, define the measure of a man.	true
+effect_bundles_localised_description_vik_kingdom_alba_circenn	Alba gets the following bonuses:	true
+effect_bundles_localised_title_vik_brutish_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_trait_caisil	Caisil get the following bonuses:	true
+effect_bundles_localised_title_vik_decree_construction_effort	Decree - The Anglo-Saxon Kingdom	true
+effect_bundles_localised_title_vik_food_faction_negative_1	Food Shortage	true
+effect_bundles_localised_title_vik_food_faction_negative_3	Famine	true
+effect_bundles_localised_title_vik_food_faction_negative_2	Food Shortage	true
+effect_bundles_localised_title_vik_new_god_5	New God	true
+effect_bundles_localised_title_vik_new_god_4	New God	true
+effect_bundles_localised_title_vik_new_god_6	New God	true
+effect_bundles_localised_title_vik_new_god_1	New God	true
+effect_bundles_localised_title_vik_new_god_3	New God	true
+effect_bundles_localised_description_vik_kingdom_ireland_mide	Ireland gets the following bonuses:	true
+effect_bundles_localised_title_vik_new_god_2	New God	true
+effect_bundles_localised_description_vik_cowardly_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_noble_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_kingdom_norse_gaelic_sea_dyflin	Norse Gaelic Sea	true
+effect_bundles_localised_title_vik_treaty_alfred_guthrum_east_engle	The Treaty of Alfred & Guthrum	true
+effect_bundles_localised_title_vik_estate_desire_reward_replenishment_rate	Estate Desire Reward	true
+effect_bundles_localised_title_vik_tob_dilemma_recruitment_2_sword	Blacksmiths' Grudge	true
+effect_bundles_localised_title_vik_english_peasant_negative	Fyrd	true
+effect_bundles_localised_title_vik_faction_trait_seisilwig_separatist	Seisilwig	true
+effect_bundles_localised_description_vik_kingdom_old_north_strat_clut	Yr Hen Ogledd gets the following bonuses:	true
+effect_bundles_localised_description_vik_here_king_english_7	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_english_6	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_english_5	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_english_4	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_english_3	The English are truly happy; it seems there is much joy to be gleaned from their green and pleasant land.	true
+effect_bundles_localised_description_vik_here_king_english_2	It would appear that the English are placated, at least for now. Everyone else is probably safer as a result!\n\nIncrease English happiness by enacting decrees, researching Civic technologies, and making peace with other factions.	true
+effect_bundles_localised_description_vik_here_king_english_1	The English boil with anger! The lion strains at its leash!\n\nIncrease English happiness by enacting decrees, researching Civic technologies, and making peace with other factions.	true
+effect_bundles_localised_description_vik_here_king_english_0	The lion is loose and rampant - the English are incandescent with rage!\n\nIncrease English happiness by enacting decrees, researching Civic technologies, and making peace with other factions.	true
+effect_bundles_localised_description_vik_here_king_english_9	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_english_8	old data - do not loc	true
+effect_bundles_localised_description_vik_tob_dilemma_recruitment_2_cavalry	We've butchered a portion of our herds to provide for the people.	true
+effect_bundles_localised_description_vik_faction_trait_northymbre	Northymbre get the following bonuses:	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_viking	Relations with the Vikings	true
+effect_bundles_localised_description_vik_faction_trait_circenn_separatist	Circenn Separatists get the following bonuses:	true
+effect_bundles_localised_title_vik_industrious_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_trait_category_brutish	There are times when coarse and ferine ways, lacking finesse and judgement, are exactly what’s required to win the day. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_description_vik_sea_king_expedition_conquer_positive_2	Fortune favours the bold, as illustrated by the success of this endeavour.	true
+effect_bundles_localised_title_vik_faction_trait_hlymrekr	Hlymrekr	true
+effect_bundles_localised_description_vik_here_king_army_12	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_army_10	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_army_11	old data - do not loc	true
+effect_bundles_localised_title_vik_estate_desire_reward_morale	Estate Desire Reward	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_gwined	Friendlier relations with Gwined are in both your interests.	true
+effect_bundles_localised_description_vik_starting_rebels_defeated	Your people are happy and are eager to join your armies.	true
+effect_bundles_localised_description_vik_disaster_floods	This settlement is recovering from recent flooding. Restoration efforts are underway, but the people live in despair at the event.	true
+effect_bundles_localised_description_vik_kingdom_england_mierce	England gets the following bonuses:	true
+effect_bundles_localised_description_vik_malicious_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_stance_ambush	Stance: Ambush	true
+effect_bundles_localised_description_vik_noble_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_sea_king_expedition_raid_positive_2	Raiding Party Succeeded	true
+effect_bundles_localised_description_vik_faction_trait_seisilwig_campaign	Seisilwig get the following bonuses:	true
+effect_bundles_localised_title_vik_stance_raiding	Stance: Raiding	true
+effect_bundles_localised_description_vik_decree_give_to_church	This decree has ensured that our hoards are well spent, as more churches and abbeys can only benefit the kingdom.	true
+effect_bundles_localised_title_vik_decree_infrastructure	Decree - Infrastructure Improved	true
+effect_bundles_localised_title_vik_kingdom_prydein_gwined	Prydein	true
+effect_bundles_localised_description_vik_legitimacy_negative_1	old data - do not loc	true
+effect_bundles_localised_description_vik_legitimacy_negative_2	old data - do not loc	true
+effect_bundles_localised_description_vik_politics_po_pos	Public Order has increased in your land due to recent political events.	true
+effect_bundles_localised_description_vik_faction_trait_viking_sea_kings	Viking Sea Kings get the following bonuses:	true
+effect_bundles_localised_title_vik_stance_forced_march	Stance: Forced March	true
+effect_bundles_localised_title_vik_stance_default	Stance: None	true
+effect_bundles_localised_title_vik_faction_trait_circenn_campaign	Circenn	true
+effect_bundles_localised_title_vik_stance_fortify	Stance: Fortify	true
+effect_bundles_localised_description_vik_politics_hold_feast_food	The recent feast has put a dent in your food supply. Another feast cannot be held until your food supply recovers.	true
+effect_bundles_localised_description_vik_faction_trait_vikings	Vikings get the following bonuses:	true
+effect_bundles_localised_title_vik_rebels_rebels	Rebels!	true
+effect_bundles_localised_title_vik_stance_raiding_gaelic	Stance: Raiding	true
+effect_bundles_localised_description_vik_faction_trait_strat_clut	Strat Clut get the following bonuses:	true
+effect_bundles_localised_title_vik_trait_category_foolish	Foolish	true
+effect_bundles_localised_title_vik_food_faction_negative	Famine	true
+effect_bundles_localised_description_vik_politics_lineage_doubts	Worrying rumours abound that you are not the rightful king after all! You may wish to address the situation before it gets out of hand!	true
+effect_bundles_localised_title_vik_faction_trait_rebels	Rebels	true
+effect_bundles_localised_description_vik_english_peasant_positive	Your armies contain just the right number of levy units to absorb the enemy's arrows!\n\nCan recruit levy units based on the number of owned settlements.	true
+effect_bundles_localised_description_vik_faction_trait_hellirborg	Hellirborg get the following bonuses:	true
+effect_bundles_localised_title_vik_faction_trait_strat_clut_separatist	Strat Clut Separatists	true
+effect_bundles_localised_description_vik_decree_new_laws_witan	This decree has improved the loyalty and allegiance of our subjects for the benefit of the entire kingdom.	true
+effect_bundles_localised_title_vik_roman_walls	Roman Walls	true
+effect_bundles_localised_title_vik_kingdom_short_dummy	[[col:green]]Faction bonuses upgraded[[/col]]	true
+effect_bundles_localised_title_vik_war_fervour_2	War Fervour	true
+effect_bundles_localised_title_vik_war_fervour_3	War Fervour	true
+effect_bundles_localised_title_vik_war_fervour_0	War Fervour	true
+effect_bundles_localised_title_vik_war_fervour_1	War Fervour	true
+effect_bundles_localised_title_vik_edict_armed_patrols	Armed Patrols	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_scots	Friendlier relations with the Scots are in everybody's best interests.	true
+effect_bundles_localised_description_vik_decree_give_to_nobles	This decree has ensured that our hoards are well spent, improving the loyalty of those who govern locally so that we may safely attend to national matters.	true
+effect_bundles_localised_title_vik_faction_trait_hellirborg_separatist	Hellirborg	true
+effect_bundles_localised_title_vik_sea_king_expedition_conquer_negative	Military Expedition Failed	true
+effect_bundles_localised_title_vik_stance_mustering_navy	Situation: Mustering	true
+effect_bundles_localised_title_vik_politics_army_bribery	Army Bribed	true
+effect_bundles_localised_description_vik_incident_seasonal_settlement_lightning	Furious lightning has struck here, damaging the buildings of this settlement.	true
+effect_bundles_localised_title_vik_dyflin_slaves_14	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_15	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_16	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_10	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_11	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_12	Slave Trade	true
+effect_bundles_localised_title_vik_dyflin_slaves_13	Slave Trade	true
+effect_bundles_localised_title_vik_miercna_treasury_people_11	Bonus for the People	true
+effect_bundles_localised_title_vik_miercna_treasury_people_10	Bonus for the People	true
+effect_bundles_localised_description_vik_sea_king_expedition_make_vassal_positive	Common sense has prevailed - these people have become your vassals.	true
+effect_bundles_localised_title_vik_faction_trait_welsh	Welsh Kingdoms	true
+effect_bundles_localised_title_vik_stance_laying_siege	Situation: Laying Siege	true
+effect_bundles_localised_title_vik_kingdom_irish_vikings_dyflin	Irish Vikings	true
+effect_bundles_localised_description_vik_faction_trait_circenn	Circenn get the following bonuses:	true
+effect_bundles_localised_title_vik_kingdom_temhair_mide	Temhair	true
+effect_bundles_localised_description_vik_rebels_bandits	Bandits are running rampant in this region! If public order does not improve this could cause our people to rebel!	true
+effect_bundles_localised_description_vik_faction_trait_caisil_campaign	Caisil get the following bonuses:	true
+effect_bundles_localised_title_vik_incident_seasonal_global_ice_and_snow	Ice & Snow	true
+effect_bundles_localised_description_vik_decree_send_expedition	Our fleets are currently exploring new lands far from Britannia. It will not be long before they return with great riches and plunder!	true
+effect_bundles_localised_title_vik_kingdom_north_sea_empire_east_engle	North Sea Empire	true
+effect_bundles_localised_title_vik_brutish_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_trait_sudreyar	Sudreyar get the following bonuses:	true
+effect_bundles_localised_description_vik_faction_trait_mierce_campaign	Mierce get the following bonuses:	true
+effect_bundles_localised_title_vik_decree_new_laws_fair	Decree - New Laws Enacted	true
+effect_bundles_localised_description_vik_politics_po_neg	Public Order has decreased in your land due to recent political events.	true
+effect_bundles_localised_description_vik_politics_recruitment_cost_pos_replenishment_neg	You have decided to give in to the Church's demands and shift your focus away from military concerns.	true
+effect_bundles_localised_description_vik_incident_supply_bonus	After a long journey, there is nothing better than hearth and home, with good meat and drink, to restore even the weariest of travellers.	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_anglo_viking	Relations with the Great Viking Army	true
+effect_bundles_localised_title_vik_incident_seasonal_global_storm_year	Storm Year	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_dyflin	Friendlier relations with Dyflin are in both your interests.	true
+effect_bundles_localised_description_vik_politics_nobles_placated	You stopped the secret council, and hopefully disloyal mutterings from all quarters, for now at least.	true
+effect_bundles_localised_title_vik_decree_civic_support_here_king	Decree - Great Viking Lands	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_welsh	Friendlier relations with the Welsh are in everybody's best interests.	true
+effect_bundles_localised_title_vik_stance_patrol	Stance: Patrol	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_irish	Friendlier relations with the Irish are in everybody's best interests.	true
+effect_bundles_localised_title_vik_burghal_0_2	Burghal - Border War	true
+effect_bundles_localised_title_vik_burghal_1_2	Burghal - Border War	true
+effect_bundles_localised_title_vik_burghal_2_2	Burghal - Border War	true
+effect_bundles_localised_title_vik_burghal_3_2	Burghal - Border War	true
+effect_bundles_localised_title_vik_burghal_4_2	Burghal - Border War	true
+effect_bundles_localised_title_vik_burghal_0_0	Burghal - Peace	true
+effect_bundles_localised_title_vik_burghal_1_0	Burghal - Peace	true
+effect_bundles_localised_title_vik_burghal_2_0	Burghal - Peace	true
+effect_bundles_localised_title_vik_burghal_3_0	Burghal - Peace	true
+effect_bundles_localised_title_vik_burghal_4_0	Burghal - Peace	true
+effect_bundles_localised_title_vik_burghal_0_1	Burghal - Distant War	true
+effect_bundles_localised_title_vik_burghal_1_1	Burghal - Distant War	true
+effect_bundles_localised_title_vik_burghal_2_1	Burghal - Distant War	true
+effect_bundles_localised_title_vik_burghal_3_1	Burghal - Distant War	true
+effect_bundles_localised_title_vik_burghal_4_1	Burghal - Distant War	true
+effect_bundles_localised_description_vik_politics_assassination_justice2	You have killed one of your own and the people know of it. Sometimes, bad publicity isn't better than none at all...	true
+effect_bundles_localised_title_vik_decree_support_church	Decree - Embrace the Church	true
+effect_bundles_localised_description_vik_faction_trait_mide_separatist	Mide Separatists get the following bonuses:	true
+effect_bundles_localised_title_vik_foolish_trait_noble_estates	[PH]	true
+effect_bundles_localised_description_vik_miercna_treasury_people_11	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_description_vik_miercna_treasury_people_10	The people will be happier that gold has been invested wisely, rather than just enriching the wealthy further.	true
+effect_bundles_localised_title_vik_incident_seasonal_settlement_lightning	Lightning	true
+effect_bundles_localised_description_vik_incident_seasonal_global_st_vitus_dance	Some of the people are afflicted by St Vitus' Dance - their extremities jerk rapidly, seemingly without reason.	true
+effect_bundles_localised_title_vik_faction_trait_northleode_separatist	Northleode	true
+effect_bundles_localised_title_vik_food_faction_neutral	Food	true
+effect_bundles_localised_title_vik_stance_docked	Situation: Docked	true
+effect_bundles_localised_title_vik_politics_characters_disloyal	Disloyal Nobles	true
+effect_bundles_localised_title_vik_politics_incident_aesthetic	Cultural Backsliding	true
+effect_bundles_localised_title_vik_kingdom_ireland_mide	Ireland	true
+effect_bundles_localised_title_vik_circenn_destiny_stone_found	Stone of Destiny Found!	true
+effect_bundles_localised_title_vik_food_faction_positive	Food Surplus	true
+effect_bundles_localised_title_vik_kingdom_alba_circenn	Alba	true
+effect_bundles_localised_title_vik_faction_trait_caisil	Caisil	true
+effect_bundles_localised_description_vik_faction_trait_gwined_campaign	Gwined get the following bonuses:	true
+effect_bundles_localised_description_att_payload_food_province	The gods of the forest will ensure our hunters are successful.	true
+effect_bundles_localised_description_vik_english_peasant_negative	The Devil makes work for idle hands! There are too many untrustworthy, levied cravens in your armies.	true
+effect_bundles_localised_description_vik_treaty_alfred_guthrum_east_engle	The peace signed between these two leaders is still in-effect, keeping relations between their nations cordial for now.	true
+effect_bundles_localised_description_vik_noble_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_industrious_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_kingdom_old_north_strat_clut	Yr Hen Ogledd	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_midhe	Friendlier relations with Mide are in both your interests.	true
+effect_bundles_localised_description_vik_decree_civic_support_here_king	This decree has enabled us to quickly shore-up both our physical position and our diplomatic standing amongst our allies.	true
+effect_bundles_localised_description_vik_treaty_alfred_guthrum_west_seaxe	The peace signed between these two leaders is still in-effect, keeping relations between their nations cordial for now.	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_dyflin	Relations with Dyflin	true
+effect_bundles_localised_title_vik_faction_trait_dyflin	Dyflin	true
+effect_bundles_localised_title_vik_decree_send_expedition	Decree - Expedition Dispatched	true
+effect_bundles_localised_description_vik_politics_demands	You have given in to demands made by your nobles. What next? The keys to the kingdom?	true
+effect_bundles_localised_title_vik_faction_trait_sudreyar	Sudreyar	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_westsexa	Friendlier relations with the West Seaxe are in both your interests.	true
+effect_bundles_localised_description_vik_faction_trait_northleode	Northleode get the following bonuses:	true
+effect_bundles_localised_description_vik_faction_trait_english	English Kingdoms get the following bonuses:	true
+effect_bundles_localised_title_vik_faction_trait_mierce	Mierce	true
+effect_bundles_localised_description_vik_faction_trait_dyflin_campaign	Dyflin get the following bonuses:	true
+effect_bundles_localised_title_vik_rebels_bandits	Bandits!	true
+effect_bundles_localised_description_vik_politics_eager_for_coin	You have paid off some nobles; this may turn out to be an error, as now they are all looking to 'shore up' their support somehow.	true
+effect_bundles_localised_title_vik_politics_genealogies	Genealogies	true
+effect_bundles_localised_title_vik_faction_trait_mide_campaign	Mide	true
+effect_bundles_localised_description_vik_decree_compose_poem_2	This glorious verse has raised our people up, boosting our unity and courage to strive ever onward towards a truly united Wales.	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_sudreyar	Friendlier relations with Sudreyar are in both your interests.	true
+effect_bundles_localised_title_vik_trait_category_heroic	Heroic	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_10	Bonus for the Nobility	true
+effect_bundles_localised_title_vik_miercna_treasury_noble_11	Bonus for the Nobility	true
+effect_bundles_localised_description_vik_stance_raiding	Raids wealth from the local region. Also raids trade income when standing on trade routes, in which case raiding will incur diplomatic penalties with all factions using it.	true
+effect_bundles_localised_title_vik_estate_desire_reward_research	Estate Desire Reward	true
+effect_bundles_localised_description_vik_spend_culture_3	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_2	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_7	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_6	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_5	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_4	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_title_vik_kingdom_england_mierce	England	true
+effect_bundles_localised_description_vik_spend_culture_9	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_spend_culture_8	When a culture is advanced, all its people benefit.	true
+effect_bundles_localised_description_vik_politics_incident_win_own_region	All the showy grandstanding you have undertaken is making your neighbours - friends and rivals alike - justifiably nervous. Expect there to be consequences when it comes time to talk of treaties.	true
+effect_bundles_localised_title_vik_faction_trait_east_engle_separatist	East Engle Separatists	true
+effect_bundles_localised_title_vik_kingdom_wales_gwined	Cymru	true
+effect_bundles_localised_title_vik_trait_category_wise	Wise	true
+effect_bundles_localised_description_vik_legitimacy_positive_1	old data - do not loc	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_gwined	Relations with Gwined	true
+effect_bundles_localised_description_vik_politics_morale	Unit morale has increased in your armies due to recent political events.	true
+effect_bundles_localised_description_vik_decree_give_to_soldiers	This decree has ensured that improvements to the military have occurred, pleasing both our soldiers and the people they must protect.	true
+effect_bundles_localised_title_vik_sea_king_expedition_conquer_positive_2	Military Expedition Succeeded	true
+effect_bundles_localised_title_vik_decree_send_expedition_dummy	UNSEEN - DO NOT LOC	true
+effect_bundles_localised_description_vik_politics_turned_hands	This is where pandering to naysayers gets you - now your nobles have a taste for coin they must be kept satisfied!	true
+effect_bundles_localised_title_vik_faction_trait_gwined	Gwined	true
+effect_bundles_localised_description_vik_faction_trait_hlymrekr	Hlymrekr get the following bonuses:	true
+effect_bundles_localised_title_vik_trait_category_brutish	Brutish	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_viking	Friendlier relations with the Vikings are in everybody's best interests.	true
+effect_bundles_localised_title_vik_incident_strip_estate_loyalty	Dissent	true
+effect_bundles_localised_description_vik_industrious_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_faction_trait_northymbre_separatist	Northymbre Separatists	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_viking_gael	Relations with the Viking Sea Kings	true
+effect_bundles_localised_title_vik_estate_desire_reward_construction_agriculture	Estate Desire Reward	true
+effect_bundles_localised_description_vik_kingdom_scotland_circenn	Scotland gets the following bonuses:	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_scoan	Friendlier relations with Circenn are in both your interests.	true
+effect_bundles_localised_description_vik_decree_new_laws	This decree has improved the loyalty and allegiance of our subjects for the benefit of the entire kingdom.	true
+effect_bundles_localised_title_vik_sea_king_expedition_conquer_positive	Military Expedition Succeeded	true
+effect_bundles_localised_description_vik_wise_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_trait_category_foolish	Fools rush in; their incautious imprudence often leads to death – and not just their own either. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_title_vik_estate_desire_reward_supplies	Estate Desire Reward	true
+effect_bundles_localised_description_vik_pagan_kings_6	Stay loyal to the old gods and keep to the old ways: a life of fighting and feasting, and damn the peasants.	true
+effect_bundles_localised_description_vik_pagan_kings_5	Stay loyal to the old gods and keep to the old ways: a life of fighting and feasting, and damn the peasants.	true
+effect_bundles_localised_description_vik_pagan_kings_4	Stay loyal to the old gods and keep to the old ways: a life of fighting and feasting, and damn the peasants.	true
+effect_bundles_localised_description_vik_pagan_kings_3	Stay loyal to the old gods and keep to the old ways: a life of fighting and feasting, and damn the peasants.	true
+effect_bundles_localised_description_vik_pagan_kings_2	Stay loyal to the old gods and keep to the old ways: a life of fighting and feasting, and damn the peasants.	true
+effect_bundles_localised_description_vik_pagan_kings_1	Stay loyal to the old gods and keep to the old ways: a life of fighting and feasting, and damn the peasants.	true
+effect_bundles_localised_description_vik_pagan_kings_0	Stay loyal to the old gods and keep to the old ways: a life of fighting and feasting, and damn the peasants.	true
+effect_bundles_localised_description_vik_faction_trait_circenn_campaign	Circenn get the following bonuses:	true
+effect_bundles_localised_description_vik_stance_default	Traverses the world as normal.	true
+effect_bundles_localised_description_vik_stance_fortify	Establishes a fortified encampment.	true
+effect_bundles_localised_title_vik_malicious_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_faction_trait_viking_sea_kings	Viking Sea Kings	true
+effect_bundles_localised_description_vik_sea_king_expedition_make_vassal_negative	These people do not understand their natural place in the world!	true
+effect_bundles_localised_description_vik_decree_give_to_people	This decree has ensured that our hoards are well spent, with improved public order and allegiance across the kingdom as people see that their interests are protected.	true
+effect_bundles_localised_title_vik_trait_category_sinful	Sinful	true
+effect_bundles_localised_description_vik_kingdom_prydein_gwined	Prydein gets the following bonuses:	true
+effect_bundles_localised_title_vik_faction_trait_west_seaxe_separatist	West Seaxe Separatists	true
+effect_bundles_localised_title_vik_disaster_fire	Great Fire	true
+effect_bundles_localised_title_vik_politics_incident_lazy	Inertia Creeps	true
+effect_bundles_localised_title_vik_wise_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_trait_dyflin_separatist	Dyflin Separatists get the following bonuses:	true
+effect_bundles_localised_title_vik_politics_no_secret_meetings	No Secret Meetings	true
+effect_bundles_localised_title_vik_legitimacy_8	old data - do not loc	true
+effect_bundles_localised_title_vik_legitimacy_9	old data - do not loc	true
+effect_bundles_localised_title_vik_legitimacy_6	old data - do not loc	true
+effect_bundles_localised_title_vik_legitimacy_7	old data - do not loc	true
+effect_bundles_localised_title_vik_legitimacy_4	Legitimacy	true
+effect_bundles_localised_title_vik_legitimacy_5	Legitimacy	true
+effect_bundles_localised_title_vik_legitimacy_2	Legitimacy	true
+effect_bundles_localised_title_vik_legitimacy_3	Legitimacy	true
+effect_bundles_localised_title_vik_legitimacy_0	Legitimacy	true
+effect_bundles_localised_title_vik_legitimacy_1	Legitimacy	true
+effect_bundles_localised_description_vik_faction_leader_religious_estates	WIP DESCRIPTION	true
+effect_bundles_localised_description_vik_heroic_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_faction_trait_english	English Kingdoms	true
+effect_bundles_localised_title_vik_faction_trait_vikings_major	Vikings	true
+effect_bundles_localised_title_vik_faction_trait_dyflin_campaign	Dyflin	true
+effect_bundles_localised_description_vik_faction_trait_east_engle	East Engle get the following bonuses:	true
+effect_bundles_localised_title_vik_trait_category_noble	Noble	true
+effect_bundles_localised_title_vik_incident_seasonal_province_windstorm	Windstorm	true
+effect_bundles_localised_description_vik_faction_trait_gwined_separatist	Gwined Separatists get the following bonuses:	true
+effect_bundles_localised_description_vik_miercna_treasury_army_1	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_3	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_2	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_5	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_title_vik_estate_desire_reward_campaign_movement	Estate Desire Reward	true
+effect_bundles_localised_description_vik_miercna_treasury_army_4	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_7	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_6	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_9	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_miercna_treasury_army_8	What doesn't kill an army makes it stronger. Investing in the army is money well spent.	true
+effect_bundles_localised_description_vik_estate_desire_reward_income_farm	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_decree_honour_troops	Decree - Honour the Troops	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_midhe	Relations with Mide	true
+effect_bundles_localised_title_vik_trait_category_items	Items	true
+effect_bundles_localised_description_vik_cowardly_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_westsexa_dilemma_1_4	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_2_4	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_3_4	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_4_4	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_5_4	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_1_2	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_2_2	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_3_2	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_4_2	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_5_2	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_1_3	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_2_3	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_3_3	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_4_3	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_5_3	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_1_1	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_2_1	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_3_1	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_4_1	The Wise Men Meet	true
+effect_bundles_localised_title_vik_westsexa_dilemma_5_1	The Wise Men Meet	true
+effect_bundles_localised_description_vik_faction_trait_west_seaxe	West Seaxe get the following bonuses:	true
+effect_bundles_localised_description_vik_incident_seasonal_global_rain_of_blood	Blood rains from the skies; by its very nature, this omen cannot bode well.	true
+effect_bundles_localised_title_vik_virtuous_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_miercna_treasury_army_10	Bonus for the Army	true
+effect_bundles_localised_title_vik_miercna_treasury_army_11	Bonus for the Army	true
+effect_bundles_localised_description_vik_faction_trait_seisilwig	Seisilwig get the following bonuses:	true
+effect_bundles_localised_description_vik_food_faction_positive	Your faction is benefiting from a surplus of food - there is more than enough here for all to prosper.	true
+effect_bundles_localised_description_vik_industrious_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_faction_trait_gwined_campaign	Gwined	true
+effect_bundles_localised_title_att_payload_food_province	A Bountiful Hunt	true
+effect_bundles_localised_description_vik_estate_desire_reward_construction_market	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_description_vik_food_faction_positive_3	 The land produces far more food than is required; no one goes hungry and there is plenty for all.	true
+effect_bundles_localised_description_vik_food_faction_positive_2	Your faction has a surplus of food – there is more than enough here for all to prosper.	true
+effect_bundles_localised_description_vik_food_faction_positive_1	Your faction has a modest surplus of food – your supplies are secure for now.	true
+effect_bundles_localised_description_vik_sinful_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_stance_docked	Safeguards the local coastal settlement.	true
+effect_bundles_localised_description_vik_foolish_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_decree_civic_support	Decree - Kings of the Sea	true
+effect_bundles_localised_title_vik_politics_genealogy_overload	Genealogy Overload!	true
+effect_bundles_localised_description_vik_dyflin_brega_war	Our people have displaced the local population and are pleased at our successful warmongering!	true
+effect_bundles_localised_title_vik_decree_honour_church	Decree - Honour His Holy Church	true
+effect_bundles_localised_description_vik_decree_support_church	This decree has secured our links to Mother Church, that we may proceed in His image for His undoubted glory!	true
+effect_bundles_localised_title_vik_faction_trait_mide_separatist	Mide Separatists	true
+effect_bundles_localised_title_vik_faction_allegiance_religious_estate	Religious Estate Owner	true
+effect_bundles_localised_description_vik_politics_lower_influence	All this plotting has weakened your position somewhat.	true
+effect_bundles_localised_title_vik_decree_give_to_people	Decree - The People's Prince	true
+effect_bundles_localised_description_vik_trait_category_sinful	The tiny wrath that inflames passion leads the sinner away from Christ and down the path to damnation. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_description_vik_politics_incident_court_school	An educated, informed populace is far harder to manage, but words of wisdom can reach much farther than threats of punishment.	true
+effect_bundles_localised_description_vik_disaster_fire	This settlement is recovering from a recent fire. Restoration efforts are underway, but the people live in despair at the event.	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_6	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_title_vik_pagan_kings_4	Pagan Kings	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_7	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_title_vik_pagan_kings_5	Pagan Kings	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_4	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_title_vik_pagan_kings_6	Pagan Kings	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_5	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_2	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_title_vik_pagan_kings_0	Pagan Kings	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_3	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_title_vik_pagan_kings_1	Pagan Kings	true
+effect_bundles_localised_title_vik_pagan_kings_2	Pagan Kings	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_1	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_title_vik_pagan_kings_3	Pagan Kings	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_8	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_description_vik_miercna_treasury_keep_9	Enriching yourself at the expense of the army will no doubt have... consequences.	true
+effect_bundles_localised_title_vik_midhe_fair_3	Make War Not Gold!	true
+effect_bundles_localised_title_vik_midhe_fair_2	No Fair This Season!	true
+effect_bundles_localised_title_vik_midhe_fair_1	The Fair is in Town!	true
+effect_bundles_localised_description_vik_politics_assassination_justice	You have killed one of your own and the people know of it. Sometimes, bad publicity isn't better than none at all...	true
+effect_bundles_localised_description_vik_tob_dilemma_recruitment_2_spear	Our industry has slowed down due to a scarcity of tools.	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_scoan	Relations with Circenn	true
+effect_bundles_localised_description_vik_estate_desire_reward_supplies	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_estate_desire_reward_income_industry	Estate Desire Reward	true
+effect_bundles_localised_description_vik_estate_desire_reward_construction_agriculture	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_faction_leader_agricultural_estates	Food from Estates	true
+effect_bundles_localised_description_vik_faction_trait_hlymrekr_campaign	Hlymrekr get the following bonuses:	true
+effect_bundles_localised_description_vik_trait_category_virtuous	In this violent, unforgiving world, selfless displays of moral fortitude set a man head and shoulders above his peers. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_title_vik_heroism_10	old data - do not loc	true
+effect_bundles_localised_title_vik_tribute_10	old data - do not loc	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_english	Friendlier relations with the English are in everybody's best interests.	true
+effect_bundles_localised_title_vik_decree_honour_nobles	Decree - Noble by Nature	true
+effect_bundles_localised_description_vik_incident_strip_estate_loyalty	Stripping a noble's estate has caused dissent among the lords. They wonder if it is time for a new leader...	true
+effect_bundles_localised_title_vik_here_king_dilemma_1_english	Favour the English	true
+effect_bundles_localised_title_vik_legitimacy_positive_1	old data - do not loc	true
+effect_bundles_localised_title_vik_politics_turned_hands	Turned Hands	true
+effect_bundles_localised_description_vik_kingdom_anglo_saxon_west_seaxe	Anglo-Saxons get the following bonuses:	true
+effect_bundles_localised_description_vik_sea_king_expedition_trade_east	"Barter is in their blood - of course they will trade with us."	true
+effect_bundles_localised_title_vik_decree_compose_poem_2	Decree - An Epic Verse	true
+effect_bundles_localised_title_vik_kingdom_north_sea_empire_northymbre	North Sea Empire	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_11	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_10	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_trait_category_heroic	The undaunted, the courageous and the brave gain the respect of all through their stout-hearted, if not always well-considered, actions. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_description_vik_estate_desire_reward_research	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_decree_new_laws_witan	Decree - New Laws Enacted	true
+effect_bundles_localised_title_vik_politics_assassination_justice	Natural Justice	true
+effect_bundles_localised_description_vik_food_faction_negative	There is a great shortage of food across all your lands. Before long, the people will starve. Who will toil in your service then?	true
+effect_bundles_localised_description_vik_politics_true_genealogy	A bishop has backed your claims of legitimacy for your line, which should silence any dissenters once and for all.	true
+effect_bundles_localised_description_vik_stance_raiding_gaelic	Raids wealth from the local region. Also raids trade income when standing on trade routes, in which case raiding will incur diplomatic penalties with all factions using it.	true
+effect_bundles_localised_title_vik_stance_raiding_navy	Stance: Raiding	true
+effect_bundles_localised_title_vik_faction_trait_vikings	Vikings	true
+effect_bundles_localised_description_vik_rebels_rebels	People are not happy, and in sufficient numbers that they revolt against your rule! Put down this insurrection!	true
+effect_bundles_localised_title_vik_legitimacy_negative_2	old data - do not loc	true
+effect_bundles_localised_title_vik_legitimacy_negative_1	old data - do not loc	true
+effect_bundles_localised_title_vik_politics_incident_court_school	Too Hard to Handle	true
+effect_bundles_localised_description_vik_leader_influence_10	All hail the king! This man enjoys the love and respect of his people.	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_10	Keeping the Gold	true
+effect_bundles_localised_title_vik_miercna_treasury_keep_11	Keeping the Gold	true
+effect_bundles_localised_title_vik_estate_desire_reward_income_commerce	Estate Desire Reward	true
+effect_bundles_localised_description_vik_dyflin_slaves_9	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_8	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_7	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_6	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_5	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_4	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_3	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_2	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_1	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!\n\nGain slaves by winning battles and raiding, sacking or occupying settlements.	true
+effect_bundles_localised_description_vik_dyflin_slaves_0	There can be no tyrants where there are no slaves, and there's good money to be made from selling flesh!	true
+effect_bundles_localised_description_vik_decree_infrastructure	This decree has sped up construction projects of all kinds right across the kingdom, that we may advance further than our rivals in all areas.	true
+effect_bundles_localised_title_vik_decree_give_to_church	Decree - A Generous Donation	true
+effect_bundles_localised_title_vik_virtuous_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_description_vik_faction_trait_sudreyar_campaign	Sudreyar get the following bonuses:	true
+effect_bundles_localised_description_vik_trait_category_legendary	Some deeds – and the men who accomplish them – are the stuff of legend, to be passed down the ages for perpetuity.	true
+effect_bundles_localised_title_vik_kingdom_anglo_saxon_west_seaxe	Anglo-Saxons	true
+effect_bundles_localised_title_vik_sea_king_expedition_trade_east	Trade Mission Eastwards	true
+effect_bundles_localised_description_vik_stance_ambush	Conceals this army, allowing surprise attacks against passing enemies.	true
+effect_bundles_localised_title_vik_noble_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_malicious_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_spend_culture_1d	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_1c	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_1b	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_1a	Cultural Benefits	true
+effect_bundles_localised_description_vik_midhe_fair_vik_religion_miercna	Friendlier relations with Mierce are in both your interests.	true
+effect_bundles_localised_title_vik_here_king_army_11	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_10	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_army_12	old data - do not loc	true
+effect_bundles_localised_title_vik_decree_compose_poem	Decree - An Epic Verse	true
+effect_bundles_localised_title_vik_spend_culture_18	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_17	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_16	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_15	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_12	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_11	Cultural Benefits	true
+effect_bundles_localised_title_vik_spend_culture_10	Cultural Benefits	true
+effect_bundles_localised_title_vik_politics_faction_allegiance	Faction Allegiance	true
+effect_bundles_localised_title_vik_incident_strip_estate_income	Embezzlement	true
+effect_bundles_localised_title_att_bundle_dummy	SPQR	true
+effect_bundles_localised_description_vik_trait_category_cowardly	Battle and its bloody ways are not for faint-hearted poltroons, whose timorous lack of spirit defines their waking hours. \n\n[[rgba:255:255:255:1]]When this trait group is active:[[/rgba]]	true
+effect_bundles_localised_description_vik_heroism_10	old data - do not loc	true
+effect_bundles_localised_description_vik_tribute_10	old data - do not loc	true
+effect_bundles_localised_description_vik_decree_supplies_for_army	This decree has ensured that our armies have all the supplies - and fresh recruits - they need whilst campaigning across our territory.	true
+effect_bundles_localised_description_vik_virtuous_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_food_faction_negative_1	Your faction consumes more food than it produces, so some people have to go hungry.	true
+effect_bundles_localised_description_vik_food_faction_negative_3	There is a great shortage of food across all your lands. Before long, the people will starve. Who will toil in your service then?	true
+effect_bundles_localised_description_vik_food_faction_negative_2	Your faction consumes more food than it produces, with the shortages becoming a large problem.	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_irish	Relations with the Irish	true
+effect_bundles_localised_description_vik_stance_patrol	Patrols the seas.	true
+effect_bundles_localised_description_vik_estate_desire_reward_campaign_movement	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_cowardly_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_welsh	Relations with the Welsh	true
+effect_bundles_localised_title_vik_here_king_english_9	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_english_8	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_english_3	Here King: English	true
+effect_bundles_localised_title_vik_here_king_english_2	Here King: English	true
+effect_bundles_localised_title_vik_here_king_english_1	Here King: English	true
+effect_bundles_localised_title_vik_here_king_english_0	Here King: English	true
+effect_bundles_localised_title_vik_here_king_english_7	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_english_6	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_english_5	old data - do not loc	true
+effect_bundles_localised_title_vik_here_king_english_4	old data - do not loc	true
+effect_bundles_localised_description_vik_kingdom_norse_gaelic_sea_dyflin	Norse Gaelic Sea gets the following bonuses:	true
+effect_bundles_localised_description_vik_tob_dilemma_recruitment_2_sword	The wronged blacksmiths are spreading word of your tyrannical behaviour.	true
+effect_bundles_localised_description_vik_estate_desire_reward_replenishment_rate	In return for granting them land, a noble has used their resources for our gain.	true
+effect_bundles_localised_title_vik_cowardly_trait_agricultural_estates	[PH]	true
+effect_bundles_localised_title_vik_incident_supply_bonus	Supplies	true
+effect_bundles_localised_title_vik_heroic_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_incident_strip_estate_allegiance	Stripping a noble's estate has caused them to work against the crown...	true
+effect_bundles_localised_title_vik_here_king_dilemma_1_army	Favour the Army	true
+effect_bundles_localised_description_vik_incident_seasonal_global_ice_and_snow	Everything is covered with a thick layer of snow; the accompanying film of ice has made roadways treacherous for all.	true
+effect_bundles_localised_title_vik_politics_incident_lose_when_stronger	What Doesn't Kill You…	true
+effect_bundles_localised_title_vik_faction_trait_mierce_campaign	Mierce	true
+effect_bundles_localised_title_vik_faction_trait_circenn	Circenn	true
+effect_bundles_localised_description_vik_brutish_trait_religious_estates	[PH]	true
+effect_bundles_localised_title_vik_faction_trait_caisil_campaign	Caisil	true
+effect_bundles_localised_description_vik_politics_incident_lazy	It's bad enough when one man can't be bothered to do his job, but the trouble really starts when his sloth begins to rub off on others - this way lies all manner of problems.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_6	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_7	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_4	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_5	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_2	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_3	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_1	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_8	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_miercna_treasury_noble_9	Investing in the nobility ensures loyalty, as well-provisioned men do not plot against their leader.	true
+effect_bundles_localised_description_vik_stance_mustering	Builds up this army's strength.	true
+effect_bundles_localised_description_vik_wise_trait_noble_estates	[PH]	true
+effect_bundles_localised_title_vik_tribute_max	Tribute	true
+effect_bundles_localised_description_vik_faction_trait_great_viking_army	Great Viking Army get the following bonuses:	true
+effect_bundles_localised_title_vik_sinful_trait_religious_estates	[PH]	true
+effect_bundles_localised_description_vik_here_king_army_8	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_army_9	old data - do not loc	true
+effect_bundles_localised_title_vik_politics_usurper_allegiance	Usurper Allegiance	true
+effect_bundles_localised_description_vik_here_king_army_0	Angry soldiers are even more dangerous, and even less forgiving, than would ordinarily be the case.\n\nIncrease the army's happiness by enacting decrees, researching military technologies, and declaring war on other factions.	true
+effect_bundles_localised_description_vik_here_king_army_1	Happiness within an army's ranks tends to lead to far less pillaging and indiscriminate murder.\n\nIncrease the army's happiness by enacting decrees, researching military technologies, and declaring war on other factions.	true
+effect_bundles_localised_description_vik_here_king_army_2	With rage in their hearts, men fight harder and longer, and give no quarter to the enemy.\n\nIncrease the army's happiness by enacting decrees, researching military technologies, and declaring war on other factions.	true
+effect_bundles_localised_description_vik_here_king_army_3	Having been victorious on a number of occasions, the men of the army are happy with their lot and eager to serve.	true
+effect_bundles_localised_description_vik_here_king_army_4	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_army_5	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_army_6	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_army_7	old data - do not loc	true
+effect_bundles_localised_title_vik_estate_desire_reward_construction_great_hall	Estate Desire Reward	true
+effect_bundles_localised_title_vik_faction_leader_noble_estates	Taxes from Estates	true
+effect_bundles_localised_description_vik_trait_category_malicious	In an age where intrigue and betrayal define the politics of power, baleful malignance can take a man to the very top of the pyramid. \n\n[[rgba:255:255:255:1]]When this trait groups is active:[[/rgba]]	true
+effect_bundles_localised_title_vik_sea_king_expedition_trade_positive_2	Trade Mission Succeeded	true
+effect_bundles_localised_description_vik_here_king_english_12	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_english_11	old data - do not loc	true
+effect_bundles_localised_description_vik_here_king_english_10	old data - do not loc	true
+effect_bundles_localised_description_vik_faction_trait_mierce_separatist	Mierce Separatists get the following bonuses:	true
+effect_bundles_localised_description_vik_politics_army_bribery	You've shored up your position with the army; naturally, their loyalty came at a price.	true
+effect_bundles_localised_description_vik_stance_mustering_navy	Builds up this fleet's strength.	true
+effect_bundles_localised_title_vik_incident_seasonal_global_rain_of_blood	Rain of Blood	true
+effect_bundles_localised_description_vik_war_fervour_1	War fervour measures your people's appetite for war. It's affected by the number of wars you are in as well as whether you border your opponents. Decrees, faction leader influence, as well as unique faction mechanics can all impact your factions War Fervour.\n\nOn higher difficulty settings you lose more war fervour for each war you are engaged in.	true
+effect_bundles_localised_description_vik_war_fervour_0	War fervour measures your people's appetite for war. It's affected by the number of wars you are in as well as whether you border your opponents. Decrees, faction leader influence, as well as unique faction mechanics can all impact your factions War Fervour.\n\nOn higher difficulty settings you lose more war fervour for each war you are engaged in.	true
+effect_bundles_localised_description_vik_war_fervour_3	War fervour measures your people's appetite for war. It's affected by the number of wars you are in as well as whether you border your opponents. Decrees, faction leader influence, as well as unique faction mechanics can all impact your factions War Fervour.\n\nOn higher difficulty settings you lose more war fervour for each war you are engaged in.	true
+effect_bundles_localised_description_vik_war_fervour_2	War fervour measures your people's appetite for war. It's affected by the number of wars you are in as well as whether you border your opponents. Decrees, faction leader influence, as well as unique faction mechanics can all impact your factions War Fervour.\n\nOn higher difficulty settings you lose more war fervour for each war you are engaged in.	true
+effect_bundles_localised_title_vik_midhe_fair_vik_religion_scots	Relations with the Scots	true
+effect_bundles_localised_description_vik_incident_seasonal_global_famine	The harvest has failed and there are insufficient supplies to feed everyone through the winter ahead; people are already dying due to lack of food.	true
+effect_bundles_localised_title_vik_decree_give_to_nobles	Decree - Our Futures Secured	true
+effect_bundles_localised_title_vik_politics_asserting_authority	Asserting Authority	true
+effect_bundles_localised_description_vik_faction_trait_caisil_separatist	Caisil get the following bonuses:	true

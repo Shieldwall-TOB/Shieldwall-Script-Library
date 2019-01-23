@@ -1,0 +1,13 @@
+Loc PackedFile
+Key	Text	Tooltip
+effects_description_shield_lords_share_food	%+n% Food produced from this Estate.	true
+effects_description_shield_lords_share_gold	%+n% Income from this Estate.	true
+effects_description_shield_lords_share_resources	%+n% Tradeable resource produced from this Estate.	true
+effects_description_shield_season_food	%+n Food Upkeep	true
+effects_description_shield_season_income	%+n% Income (All Settlements)	true
+effects_description_shield_season_movement	%+n% Movement Range (All Armies)	true
+effects_description_shield_season_supplies	%+n% Supplies per turn while in enemy territory. 	true
+shield_devastation_food	%+n% Food Production	true
+shield_devastation_gold	%+n% Income	true
+shield_devastation_resources	%+n% Tradable Resources Produced	true
+shield_devastation_supplies	%+n Supplies (Nearby Armies)	true
