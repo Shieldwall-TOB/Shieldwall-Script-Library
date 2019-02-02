@@ -171,73 +171,19 @@ end
 
 --v function(self: CHARACTER_DETAIL, region_key: string, chain_key: string)
 function character_detail.add_estate(self, region_key, chain_key)
-    if self._estates[region_key] == nil then
-        self._estates[region_key] = {}
-    end
-    self._estates[region_key][chain_key] = self._factionDetail._model:get_region(region_key):get_estate_detail(chain_key)
-    self._numEstates = self._numEstates + 1
+    
 end
 
---v function(self: CHARACTER_DETAIL, detail: ESTATE_DETAIL, appoint: boolean?)
-function character_detail.add_estate_with_detail(self, detail, appoint)
-    if self._estates[detail._regionName] == nil then
-        self._estates[detail._regionName] = {}
-    end
-    self._estates[detail._regionName][detail._chain] = detail
-    if appoint then
-        detail:appoint_owner(self)
-    end
-    self._numEstates = self._numEstates + 1
-end
 
 
 --v function(self: CHARACTER_DETAIL, region_key: string, chain_key: string, new_owner: CHARACTER_DETAIL?)
 function character_detail.remove_estate(self, region_key, chain_key, new_owner)
-    if self._estates[region_key] == nil or self._estates[region_key][chain_key] == nil then
-        self:log("WARNING: Asked character ["..self._cqi.."] to remove an estate at ["..region_key.."] and ["..chain_key.."] but this character doesn't own an estate there!")
-        return
-    end
-    local removed_estate = self._estates[region_key][chain_key]
-    self._estates[region_key][chain_key] = nil
-    if new_owner then
-        --# assume new_owner: CHARACTER_DETAIL
-        new_owner:add_estate_with_detail(removed_estate)
-    end
-    if region_key == self._homeEstate then
-        self._homeEstate = "no_estate"
-    end
-    self._numEstates = self._numEstates - 1
+
 end
 
 --v function(self: CHARACTER_DETAIL)
 function character_detail.check_start_pos_estates(self)
-    local char = dev.get_character(self:cqi())
-    local name_key = char:get_forename()
-    if char:is_faction_leader() then
-        local region_list = char:faction():region_list()
-        for i = 0, region_list:num_items() - 1 do
-            local region_det = self:faction_detail():model():get_region(region_list:item_at(i):name())
-            if not region_det:has_no_estates() then
-                for chain, estate in pairs(region_det:estates()) do
-                    if not estate:has_owner() then
-                        self:add_estate_with_detail(estate)
-                        estate:appoint_owner(self)
-                    end
-                end
-            end
-        end
-    end
-    local faction_pairs = character_detail._startPosEstates[char:faction():name()]
-    if faction_pairs then
-        for composite_key, start_pos_estate in pairs(faction_pairs) do
-            local reg_det = self:faction_detail():model():get_region(start_pos_estate._region)
-            if reg_det and reg_det:has_estate_with_chain(start_pos_estate._estateChain) and (start_pos_estate._ownerName == name_key) then
-                local estate_det = reg_det:get_estate_detail(start_pos_estate._estateChain)
-                self:add_estate_with_detail(estate_det)
-                estate_det:appoint_owner(self)
-            end
-        end
-    end
+
 end
 
 ----------------------------
@@ -269,109 +215,14 @@ end
 --v function(self: CHARACTER_DETAIL, log: boolean?) --> string
 function character_detail.get_home_estate(self, log)
     if self._homeEstate == "no_estate" then
-        if log then
-            self:log("Determining the home estate for a new character")
-        end
-        local chosen_estate --:string
-        local chosen_estate_level = 0 --:number
-        for region_key, building_pairs in pairs(self._estates) do
-            for chain_key, estate_object in pairs(building_pairs) do
-                local building_key = tostring(estate_object:building())
-                self:log("building key being checked "..building_key.." ")
-                local build_level_num = tonumber(building_key:gsub("%D", ""))
-                self:log("building level num is ["..build_level_num.."], the chosen level is ["..chosen_estate_level.."] ")
-                if (build_level_num > chosen_estate_level) then
-                    self:log("Passed check, the new chosen estate is ["..region_key.."]")
-                    chosen_estate = region_key
-                    chosen_estate_level = build_level_num
-                end
-            end
-        end
-        if chosen_estate  then
-            if log then
-                self:log("\tSet the home estate for character ["..self._cqi.."] as ["..chosen_estate.."] ")
-            end
-            self._homeEstate = chosen_estate
-        end
+        
     end
     return self._homeEstate
 end
 
 --v function(self: CHARACTER_DETAIL)
 function character_detail.update_title(self)
-    local char_obj = dev.get_character(self:cqi())
-    if char_obj:is_faction_leader() then
-        self:title_for_faction_leader()
-        --leaders get different ones, so run them through a different path.
-        return
-    end
-    local human = dev.get_character(self:cqi()):faction():is_human() --only log while human to avoid this shit.
-    if CONST.__write_output_to_logfile == false then
-        human = false
-    end
-    if human then
-        self:log("Updating title for character ["..self._cqi.."] who is NOT a king")
-    end
-    if self:landless() then
-        if self._title ~= "no_title" then
-            cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
-            self._title = "no_title"
-        end
-        if human then
-            self:log("\tCharacter is landless!")
-        end
-        return
-    end
-    local home_estate = self:get_home_estate(human)
-    --update their own estate.
-    if not (home_estate == "no_estate") then
-        local wealth = 0 --:number
-        local ed = _G.ed
-        for estate_region, estate_pair in pairs(self._estates) do
-            for estate_building, estate_object in pairs(estate_pair) do
-                if not not (ed.household_growth_for_estate_building_level(estate_object:building())) then
-                    wealth = wealth + ed.household_growth_for_estate_building_level(estate_object:building())
-                end
-            end
-        end
-        if human then
-            self:log("\tResolved wealth level to ["..wealth.."]")
-        end
-        local level --:number
-        if wealth > CONST.charm_level_three_trait_threshold then
-            level = 2
-        elseif wealth > CONST.charm_level_two_trait_threshold then
-            level = 1
-        elseif wealth > CONST.charm_level_one_trait_threshold then
-            level = 0
-        end
-        local subculture = dev.get_character(self:cqi()):faction():subculture()
-        if level and character_detail.sc_has_titles(subculture) then
-            local title = CONST.charm_title_prefix .. home_estate .. "_" .. character_detail.get_title_key_for_sc(subculture) .. "_" .. tostring(level)
-            if human then
-                self:log("\t Resolved title as ["..title.."]")
-            end
-            if self._title == title then
-                return
-            else
-                cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
-                cm:force_add_trait(dev.lookup(self:cqi()), title, true)
-                self._title = title
-            end
-        else
-            if human then
-                self:log("\tFailed to find a title level, or this character's sub doesn't have titles!")
-            end
-            if self._title ~= "no_title" then
-                cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
-                self._title = "no_title"
-            end
-        end
-    else
-        if human then
-            self:log("\tThis character holds no home estate!")
-        end
-    end
+    
 end
 
 --v function(self: CHARACTER_DETAIL, trigger: string, num: number, context: CA_CONTEXT)
@@ -403,37 +254,12 @@ end
 --v function(self: CHARACTER_DETAIL) --> table
 function character_detail.save(self)
     local sv_tab = dev.save(self, "_homeEstate", "_title")
-    -- Now, assembly an arbitrary field to store which regions we want this character to load as estates. 
-    --# assume sv_tab: map<string, map<string, map<string, string>>> 
-    --^ this isn't actually true but its a local assumption for this code to pass.
-    sv_tab._savedRegions = {}
-    for region_key, building_estate_pair in pairs(self._estates) do
-        sv_tab._savedRegions[region_key] = {}
-        for chain_key, estate_detail in pairs(building_estate_pair) do
-            sv_tab._savedRegions[region_key][chain_key] = estate_detail:estate_type()
-        end
-    end
-    --# assume sv_tab: table
-    --^ reset our assumption
     return sv_tab
 end
 
 --v function(faction_detail: FACTION_DETAIL, cqi: string, sv_tab: table) --> CHARACTER_DETAIL
 function character_detail.load(faction_detail, cqi, sv_tab)
     local self = character_detail.new(faction_detail, tostring(cqi))
-    --we assemble an arbitrary field in this object when we are saving it, so we should remove that from the save data first.
-    --# assume sv_tab: map<string, map<string, map<string, string>>> 
-    --^ this isn't actually true but its a local assumption for this code to pass.
-    if sv_tab._savedRegions then
-        for region_key, building_estate_type_pair in pairs(sv_tab._savedRegions) do
-            for chain_key, estate_type in pairs(building_estate_type_pair) do 
-                self:add_estate(region_key, chain_key)
-            end
-        end
-    end
-    sv_tab._savedRegions = nil -- remove the field
-    --# assume sv_tab: table
-    --^ reset our assumption then load as normal
     dev.load(sv_tab, self, "_homeEstate", "_title")
     return self
 end

@@ -175,19 +175,6 @@ function petty_kingdoms_manager.faction_became_vassal(self, vassal)
     end
 end
 
---v function(self: PKM, region_key: string, estate_chain: string) --> CHARACTER_DETAIL
-function petty_kingdoms_manager.get_estate_owner(self, region_key, estate_chain)
-    local region = self:get_region(region_key)
-    local estate = region:get_estate_detail(estate_chain)
-    if estate:owner() then
-        return estate:owner()
-    else
-        pkm:get_character(dev.get_region(region_key):owning_faction():faction_leader():cqi()):add_estate_with_detail(estate, true)
-        return estate:owner()
-    end
-
-end
-
 
 --Instantiate the model
 local pkm = petty_kingdoms_manager.init()
@@ -202,7 +189,6 @@ local function FirstTickObjectModel()
         local reg_det = pkm:get_region(region_list:item_at(i):name())
         reg_det:update_buildings()
         reg_det:get_ownership_tracker():set_current_owner()
-        reg_det:create_start_pos_estates()
     end
     local faction_list = dev.faction_list()
     for i = 0, faction_list:num_items() - 1 do
@@ -244,9 +230,6 @@ local function OnGameLoaded(context)
     --# assume tracker_bank: map<string, table>
     for region_key, region_save in pairs(region_bank) do
         local ld_region_detail = pkm:load_region(region_key, region_save)
-        for chain_key, building_key in pairs(ld_region_detail:estate_building_levels()) do
-            ld_region_detail:load_estate_detail(building_key)
-        end
         if tracker_bank[region_key] then
             ld_region_detail:load_ownership_tracker(tracker_bank[region_key])
         end
