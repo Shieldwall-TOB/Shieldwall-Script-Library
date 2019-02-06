@@ -231,7 +231,6 @@ local ok, err = pcall(function()
     require("ilex_verticillata/PettyKingdoms") 
     --EVENT HANDLERS:
     require("ilex_verticillata/event_handlers/RegionOccupationHandler")
-    require("ilex_verticillata/event_handlers/EstateEventsHandler")
 end)
 if not not ok then
     dev.log("Succeessfully loaded the object model!")
@@ -264,11 +263,11 @@ local ok, err = pcall(function()
 
     require("shieldwall/features/RestoreAllyTerritory")
 
-    require("shieldwall/content/TitlesSystemContent")
+    --require("shieldwall/content/TitlesSystemContent")
 
-    require("shieldwall/content/EstatesContent")
-    require("shieldwall/features/EstateFeatures")
-    require("shieldwall/features/CharacterLives")
+    --require("shieldwall/content/EstatesContent")
+    --require("shieldwall/features/EstateFeatures")
+    --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
 

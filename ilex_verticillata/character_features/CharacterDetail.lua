@@ -82,7 +82,7 @@ function character_detail.new(faction_detail, cqi)
     self._lastEXPTotal = 0 --:number
     self._title = "no_title"
     self._homeEstate = "no_estate" --:string!
-    self._estates = {} --:map<string, map<string, ESTATE_DETAIL>>
+    self._estates = {} --:map<string, map<string, number>>
     --estates are bound first to region then to the chain which hosts them. 
     self._numEstates = 0 --:number
     self._forceEffectsManager = nil --:UNIT_EFFECTS_MANAGER
@@ -151,15 +151,12 @@ function character_detail.num_estates(self)
     return self._numEstates
 end
 
---v function(self: CHARACTER_DETAIL, region_key: string) --> map<string, ESTATE_DETAIL>
+--v function(self: CHARACTER_DETAIL, region_key: string) --> map<string, number>
 function character_detail.get_estate_details(self, region_key)
-    if self._estates[region_key] == nil then
-        self:log("WARNING: Asked character ["..tostring(self._cqi).."] for the region ["..region_key.."] but this character does not have ownership of this region!")
-    end
-    return self._estates[region_key]
+   return {}
 end
 
---v function(self: CHARACTER_DETAIL) --> map<string, map<string, ESTATE_DETAIL>>
+--v function(self: CHARACTER_DETAIL) --> map<string, map<string, number>>
 function character_detail.estates(self) 
     return self._estates 
 end
@@ -227,7 +224,7 @@ end
 
 --v function(self: CHARACTER_DETAIL, trigger: string, num: number, context: CA_CONTEXT)
 function character_detail.grow_household(self, trigger, num, context)
-    effect.add_agent_experience(trigger, num, 0, context)
+    effect.add_agent_experience("Trigger_"..trigger, num, 0, context)
     self._lastEXPTotal = self._lastEXPTotal + num
 end
 

@@ -43,9 +43,6 @@ function region_detail.new(model, region_key)
     self._activeEffects = {} --:map<string, boolean>    
     self._effectCount = 0 --:number
 
-    self._estates = {} --:map<string, ESTATE_DETAIL>
-    self._estateBuildingLevels = {} --:map<string, string>
-    self._numEstates = 0 --:number
 
     self._ownershipTracker = nil --:OWNERSHIP_TRACKER
 
@@ -196,14 +193,14 @@ end
 ------------------------------------
 --v function(self: REGION_DETAIL) --> table
 function region_detail.save(self)
-    local sv_tab = dev.save(self, "_activeEffects", "_effectsClear", "_estateBuildingLevels")
+    local sv_tab = dev.save(self, "_activeEffects", "_effectsClear")
     return sv_tab
 end
 
 --v function(model: PKM, region_key: string, sv_tab: table) --> REGION_DETAIL
 function region_detail.load(model, region_key, sv_tab)
     local self = region_detail.new(model, region_key)
-    dev.load(sv_tab, self, "_activeEffects", "_effectsClear", "_estateBuildingLevels")
+    dev.load(sv_tab, self, "_activeEffects", "_effectsClear")
     return self
 end
 
