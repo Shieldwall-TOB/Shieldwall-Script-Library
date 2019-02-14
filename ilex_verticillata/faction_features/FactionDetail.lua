@@ -242,6 +242,17 @@ function faction_detail.get_character(self, cqi)
 end
 
 
+--------------------------------------
+-----FACTION FEATURES N DECREES-------
+--------------------------------------
+
+cultural_feature = require("ilex_verticillata/faction_features/CulturalFeature")
+_G.cf = cultural_feature
+
+
+
+
+
 return {
     --existence query
     has_faction = faction_detail.has_faction,

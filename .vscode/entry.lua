@@ -77,6 +77,7 @@ local ok, err = pcall(function()
     --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
+    require("shieldwall/ui_features/DecreeSwitching")
 
 end)
 if not not ok then

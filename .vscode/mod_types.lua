@@ -8,6 +8,7 @@
             --# assume global class POP_MANAGER
         --# assume global class FOOD_MANAGER
         --# assume global class PERSONALITY_MANAGER
+        --# assume global class CULT_FEATURE
     --# assume global class REGION_DETAIL
         --# assume global class ESTATE_DETAIL
         --# assume global class OWNERSHIP_TRACKER
