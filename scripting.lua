@@ -154,7 +154,7 @@ cm:register_first_tick_callback(
 -------------------------------------------------------
 
 require("vik_start");
-require("vik_burghal");
+--require("vik_burghal"); rewritten, required below
 require("vik_war_fervour");
 require("vik_rebels");
 require("vik_lists");
@@ -169,7 +169,7 @@ require("vik_starting_rebellions");
 require("vik_seasonal_events");
 require("vik_ai_events");
 require("vik_dyflin_factions_mechanics");
-require("vik_miercna_faction_mechanics");
+--require("vik_miercna_faction_mechanics");
 require("vik_sudreyar_faction_mechanics");
 require("vik_strat_clut_faction_mechanics");
 require("vik_northymbra_faction_mechanics");
@@ -179,7 +179,7 @@ require("vik_culture_mechanics_sea_kings");
 require("vik_culture_mechanics_viking_army");
 require("vik_culture_mechanics_gaelic");
 require("vik_culture_mechanics_welsh");
-require("vik_culture_mechanics_english");
+--require("vik_culture_mechanics_english");
 require("vik_culture_mechanics_common");
 require("vik_legendary_traits");
 require("vik_starting_traits");
@@ -191,6 +191,8 @@ require("vik_traits");
 require("vik_decrees");
 require("vik_ai_wars");
 require("vik_ai_peace");
+
+
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
@@ -263,13 +265,14 @@ local ok, err = pcall(function()
 
     require("shieldwall/features/RestoreAllyTerritory")
 
-    --require("shieldwall/content/TitlesSystemContent")
+    require("shieldwall/content/TitlesSystemContent")
 
     --require("shieldwall/content/EstatesContent")
     --require("shieldwall/features/EstateFeatures")
     --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
+    require("shieldwall/ui_features/DecreeSwitching")
 
 end)
 if not not ok then
@@ -280,3 +283,7 @@ else
     dev.log(tostring(err))
     dev.log("************************************************************")
 end
+
+
+--rewritten vanilla scripts
+require("vik_burghal");

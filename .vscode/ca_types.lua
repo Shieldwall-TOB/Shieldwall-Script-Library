@@ -56,6 +56,7 @@
 --# assume CA_UIContext.string: string
 
 -- UIC
+--# assume CA_UIC.InterfaceFunction: method(WHATEVER...) --> WHATEVER?
 --# assume CA_UIC.Address: method() --> CA_Component
 --# assume CA_UIC.Adopt: method(pointer: CA_Component)
 --# assume CA_UIC.Divorce: method(pointer: CA_Component)

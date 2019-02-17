@@ -1,3 +1,5 @@
+
+
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
@@ -88,3 +90,7 @@ else
     dev.log(tostring(err))
     dev.log("************************************************************")
 end
+
+
+--rewritten vanilla scripts
+require("vik_burghal");
