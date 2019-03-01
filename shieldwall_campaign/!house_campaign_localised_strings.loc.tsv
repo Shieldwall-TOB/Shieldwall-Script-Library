@@ -1,6 +1,0 @@
-Loc PackedFile
-Key	Text	Tooltip
-campaign_localised_strings_string_politics_ministerial_position_required_rank	Required Household Size:	true
-campaign_localised_strings_string_details_panel_skills_unlocked_rank	Unlocked at Household Rank:	true
-campaign_localised_strings_string_details_panel_skills_cannot_low_rank	This character has insufficient household size to learn this skill.	true
-campaign_localised_strings_string_unit_details_xp	Experience:	false
