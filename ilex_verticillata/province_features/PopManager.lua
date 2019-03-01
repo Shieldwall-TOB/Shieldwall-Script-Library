@@ -180,35 +180,46 @@ end
 ----STATE CHANGING FUNCTIONS-------
 -----------------------------------
 
---v function(self: POP_MANAGER, caste: POP_CASTE, old_value: number, change_value: number)
-function pop_manager.update_population_bundle(self, caste, old_value, change_value)
-    local bundle_thresholds --:number
-    if pop_manager._popCasteBundleChangeIntervals[caste] then
-        bundle_thresholds = pop_manager._popCasteBundleChangeIntervals[caste]
+--v function(self: POP_MANAGER, caste: POP_CASTE)
+function pop_manager.update_population_bundle(self, caste)
+    local bundle_threshold --:number
+    local bundle_maximum --:number
+    if pop_manager._popCasteBundleChangeIntervals[caste] and pop_manager._popCasteBundleMaximums[caste] then
+        bundle_threshold = pop_manager._popCasteBundleChangeIntervals[caste]
+        bundle_maximum = pop_manager._popCasteBundleMaximums[caste]
     else
         self:log("WARNING: Could not calculate the bundle effects of a change in population!")
-        self:log("\tNo caste bundle change interval is set for this caste")
+        self:log("\t A caste bundle change interval or bundle maximum is missing for this caste")
         return
     end
-    local old_bundle = self:get_pop_bundle_for_caste(caste)
-    local cap_difference = (old_value - old_bundle) + change_value
-    if (cap_difference >= bundle_thresholds) then
+    local old_bundle = self:get_pop_bundle_for_caste(caste) --get the old bundle
+    local new_pop = self:get_pop_of_caste(caste) --get the new pop
+    --see how many intervals they have exceeded, then multiple that by the interval quantity
+    local new_bundle = (math.floor(new_pop/bundle_threshold)+1)*bundle_threshold 
+    --clamp the value to the maximum bundle for this caste
+    if new_bundle > bundle_maximum then
+        new_bundle = bundle_maximum
+    elseif (new_bundle < 0) or (new_pop == 0) then
+        new_bundle = 0
+    end
+    if (new_bundle > old_bundle) then 
         --we have increased our bundle!
-        local new_bundle = old_bundle + bundle_thresholds
-    elseif (cap_difference < 0) then
+    elseif (new_bundle < old_bundle) then
         --we have decreased our bundle!
-        local new_bundle = old_bundle - bundle_thresholds
-        -- >>>>>>remove old bundle
-        self:province_detail():remove_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle))
-        -- >>>>>apply new bundle
-        self:province_detail():apply_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(new_bundle))
-        self._currentPopBundles[caste] = new_bundle
     else
         --our bundle has stayed the same
         if not self:province_detail():has_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle)) then
             self:province_detail():apply_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle))
         end
+        return
     end
+    -- >>>>>>remove old bundle
+    if self:province_detail():has_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle)) then
+        self:province_detail():remove_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(old_bundle))
+    end
+    -- >>>>>apply new bundle
+    self:province_detail():apply_effect_bundle(CONST.pop_bundle_prefix .. caste .. "_".. tostring(new_bundle))
+    self._currentPopBundles[caste] = new_bundle
 end
 
 --v function(self: POP_MANAGER)
@@ -255,11 +266,11 @@ function pop_manager.modify_population(self, caste, quantity, UICause, block_bun
     end
     --check where our current bundle is
     local bundle_thresholds --:number
-    if pop_manager._popCasteBundleChangeIntervals[caste] then
+    if pop_manager._popCasteBundleChangeIntervals[caste] and pop_manager._popCasteBundleMaximums[caste] then
         bundle_thresholds = pop_manager._popCasteBundleChangeIntervals[caste]
     else
         self:log("WARNING: Could not calculate the bundle effects of a change in population!")
-        self:log("\tNo caste bundle change interval is set for this caste")
+        self:log("\t A caste bundle change interval or bundle maximum is missing for this caste")
         return
     end
     local old_bundle = self:get_pop_bundle_for_caste(caste)
@@ -272,7 +283,7 @@ function pop_manager.modify_population(self, caste, quantity, UICause, block_bun
         self:log("Completed population change with no change in the bundle - change was blocked via arg")
         return
     end
-    self:update_population_bundle(caste, old_value, new_value)
+    self:update_population_bundle(caste)
 end
 
 
@@ -381,12 +392,7 @@ function pop_manager.set_start_pos_pops(self)
         local proportion = (54 + cm:random_number(18))/100
         local pop = math.ceil(pop_cap*proportion)
         self._populations[caste_key] = pop
-        local bundle = 0 --:number
-        local threshold = pop_manager._popCasteBundleChangeIntervals[caste_key]
-        while pop > bundle do
-            bundle = bundle + threshold
-        end
-        self._currentPopBundles[caste_key] = (bundle-threshold)
+        self:update_population_bundle(caste_key)
     end
 end
 
