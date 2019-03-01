@@ -34,6 +34,13 @@ function pop_manager.set_caste_change_interval(caste, interval)
     pop_manager._popCasteBundleChangeIntervals[caste] = interval
 end
 
+--// bundle maximum is the maximum quantity of population which gives a bundle for a given faction
+pop_manager._popCasteBundleMaximums = {} --:map<POP_CASTE, number>
+--v function(caste: POP_CASTE, max_bundle_quantity: number)
+function pop_manager.set_caste_bundle_maximum(caste, max_bundle_quantity)
+    pop_manager._popCasteBundleMaximums[caste] = max_bundle_quantity
+end
+
 --// Immigration scalar impacts how much immigration can occur to fill empty capacity
 pop_manager._immigrationEffectStrengths = {} --:map<POP_CASTE, number>
 --v function(caste: POP_CASTE, strength: number)
@@ -394,6 +401,7 @@ return {
     add_building_pop_cap_contribution = pop_manager.add_building_pop_cap_contribution,
     add_food_effect_function = pop_manager.add_food_effect_function,
     set_caste_change_interval = pop_manager.set_caste_change_interval,
+    set_caste_bundle_maximum = pop_manager.set_caste_bundle_maximum,
     set_immigration_strength_for_caste = pop_manager.set_immigration_strength_for_caste,
     set_immigration_activity_limit_for_caste = pop_manager.set_immigration_activity_limit_for_caste,
     set_mimimum_pos_growth_for_caste = pop_manager.set_mimimum_pos_growth_for_caste,

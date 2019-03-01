@@ -1,10 +1,18 @@
 local pm = _G.pm
 
 --caste change intervals
-pm.set_caste_change_interval("serf", 20)
-pm.set_caste_change_interval("monk", 2)
-pm.set_caste_change_interval("lord", 20)
-pm.set_caste_change_interval("foreign",30)
+pm.set_caste_change_interval("serf", 80)
+pm.set_caste_change_interval("monk", 3)
+pm.set_caste_change_interval("lord", 40)
+pm.set_caste_change_interval("foreign",60)
+
+--caste maximum bundles
+pm.set_caste_bundle_maximum("serf", 1040)
+pm.set_caste_bundle_maximum("monk", 39)
+pm.set_caste_bundle_maximum("lord", 520)
+pm.set_caste_bundle_maximum("foreign", 780)
+
+
 --immigration strengths // keep in mind these are capped to 10% of your pop cap per turn so if this number is higher it will go down. 
 pm.set_immigration_strength_for_caste("serf", 35)
 pm.set_immigration_strength_for_caste("monk", 1)
