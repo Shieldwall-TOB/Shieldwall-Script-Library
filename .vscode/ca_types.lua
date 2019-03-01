@@ -321,7 +321,7 @@
 --# assume CA_CHAR.get_forename: method() --> string
 --# assume CA_CHAR.get_surname: method() --> string
 --# assume CA_CHAR.command_queue_index: method() --> CA_CQI
---# assume CA_CHAR.cqi: method() --> CA_CQI
+---# assume CA_CHAR.cqi: method() --> CA_CQI
 --# assume CA_CHAR.rank: method() --> int
 --# assume CA_CHAR.won_battle: method() --> boolean
 --# assume CA_CHAR.battles_fought: method() --> number
