@@ -1,3 +1,19 @@
+
+local FACTION_DECREES = {
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
 cm:add_listener(
     "DegreePanelOpened",
     "PanelOpenedCampaign",

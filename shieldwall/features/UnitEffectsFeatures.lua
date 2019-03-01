@@ -7,7 +7,7 @@ cm:add_listener(
         return context:character():has_military_force() and context:character():faction():name() ~= "rebels"
     end,
     function(context)
-        local char_detail = pkm:get_character(context:character():cqi())
+        local char_detail = pkm:get_character(context:character():command_queue_index())
         local char_eum --:UNIT_EFFECTS_MANAGER
         if char_detail:has_unit_effects_manager() then
             char_eum = char_detail:get_unit_effects_manager()

@@ -107,9 +107,11 @@ local function update_burghal_ui(faction, season)
 		dev.log("Warning, the burghal condition for ["..faction:name().."] was nil!")
 		condition = 0
 	end
+	local effect = "vik_burghal_"..condition.."_"..season
 	cm:apply_effect_bundle("vik_burghal_"..condition.."_"..season, faction:name(), 0)
 	culture_mechanics_panel:InterfaceFunction("set_war_value", season, faction:name());
-	culture_mechanics_panel:InterfaceFunction("set_culture_mechanics_data", "vik_burghal_"..tostring(condition).."_"..tostring(season), faction:name());
+	culture_mechanics_panel:InterfaceFunction("set_culture_mechanics_data", effect, faction:name());
+	cm:set_saved_value("burghal_data_"..faction:name(), effect)
 	dev.log("Updated Burghal UI with condition ["..condition.."] and season ["..season.."] for faction ["..faction:name().."] ")
 end
 
@@ -124,9 +126,9 @@ local function update_fyrd_for_faction(faction)
 	for i = 0, region_list:num_items() - 1 do
 		local region = region_list:item_at(i)
 		if region:is_province_capital() then
-			if region:has_governor() and (not check_reg[region:governor():cqi()]) then
+			if region:has_governor() and (not check_reg[region:governor():command_queue_index()]) then
 				new_total = new_total+ 1;
-				check_reg[region:governor():cqi()] = true
+				check_reg[region:governor():command_queue_index()] = true
 				if region:governor():loyalty() >= 0 then 
 					 new_brughal = new_brughal + 1;
 				end
@@ -188,6 +190,31 @@ cm:add_listener(
 
 end;
 
+cm:add_listener(
+	"PanelClosedCampaignFyrd",
+	"PanelClosedCampaign",
+	function(context) return valid_factions[cm:get_local_faction(true)] end,
+	function(context)
+		local culture_mechanics_panel = dev.get_uic(cm:ui_root(), "culture_mechanics");
+		if not culture_mechanics_panel then
+			dev.log("ERORR: Could not find the culture mechanics UI element", "FYRD")
+			return
+		end
+		local faction_data = cm:get_saved_value("burghal_data_"..cm:get_local_faction(true))
+		if faction_data then
+			culture_mechanics_panel:InterfaceFunction("set_culture_mechanics_data", faction_data, cm:get_local_faction(true));
+			local Burghal = dev.get_uic(cm:ui_root(), "layout", "top_center_holder", "resources_bar", "culture_mechanics", "burghal")
+			if Burghal then
+				local Div = dev.get_uic(Burghal, "burghal_bar", "back")
+				Div:SetVisible(false)
+				local Div = dev.get_uic(Burghal, "burghal_bar", "frame")
+			end
+		else
+			dev.log("No burghal and fyrd data available!")
+		end
+	end,
+	true
+)
 
 
 dev.new_game(function(context)
