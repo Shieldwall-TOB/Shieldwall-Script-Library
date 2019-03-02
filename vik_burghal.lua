@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 BURGHAL_VALUES = {} --:map<string, boolean>
 FYRD_VALUES = {} --:map<string, string>
 DISBANDED_FYRD = {} --:map<string, number>
@@ -34,6 +26,13 @@ local raider_factions = {
 	["rebels"] = true
 }--:map<string, boolean>
 
+local burghal_state_to_uic_name = {
+	[0] = "burghal_negative_2",
+	[1] = "burghal_negative_1",
+	[2] = "burghal_neutral",
+	[3] = "burghal_positive_1",
+	[4] = "burghal_positive_2"
+}--:map<number, string>
 
 --# type global BURGHAL_RETURN = "raids" | "war" | "peace"
 --v function(player: CA_FACTION) --> BURGHAL_RETURN
@@ -70,7 +69,7 @@ local function update_fyrd_ui(faction, num_govs, happy_govs)
 	if num_govs > happy_govs then
 		culture_mechanics_panel:InterfaceFunction("set_culture_mechanics_data", "vik_english_peasant_negative", faction:name(), happy_govs, num_govs);
 		cm:apply_effect_bundle("vik_english_peasant_negative", faction:name(), 0);
-		dev.log("Burghal is contented for ["..faction:name().."] ", "FYRD")
+		dev.log("Burghal is discontented for ["..faction:name().."] ", "FYRD")
 		return false
 	else
 		culture_mechanics_panel:InterfaceFunction("set_culture_mechanics_data", "vik_english_peasant_positive", faction:name(), happy_govs, num_govs);
@@ -87,6 +86,10 @@ local function update_burghal_ui(faction, season)
 	if not culture_mechanics_panel then
 		dev.log("ERORR: Could not find the culture mechanics UI element", "FYRD")
 		return
+	end
+	local burghal_bar = dev.get_uic(culture_mechanics_panel, "burghal", "separater")
+	if not not burghal_bar then
+		burghal_bar:SetVisible(false)
 	end
 	local at_war = BurghalWarCheck(faction)
 	local condition --:number
@@ -205,9 +208,9 @@ cm:add_listener(
 			culture_mechanics_panel:InterfaceFunction("set_culture_mechanics_data", faction_data, cm:get_local_faction(true));
 			local Burghal = dev.get_uic(cm:ui_root(), "layout", "top_center_holder", "resources_bar", "culture_mechanics", "burghal")
 			if Burghal then
-				local Div = dev.get_uic(Burghal, "burghal_bar", "back")
-				Div:SetVisible(false)
-				local Div = dev.get_uic(Burghal, "burghal_bar", "frame")
+				--local Div = dev.get_uic(Burghal, "burghal_bar", "back")
+				--Div:SetVisible(false)
+				--local Div = dev.get_uic(Burghal, "burghal_bar", "frame")
 			end
 		else
 			dev.log("No burghal and fyrd data available!")

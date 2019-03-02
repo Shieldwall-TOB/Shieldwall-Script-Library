@@ -170,28 +170,33 @@ end
 --===============================
 
 local landmarks = {
-        ["vik_reg_aethelingaeg"] = "vik_wonder_discovered_athelingaeg", 
-        ["vik_reg_bebbanburg"] = "vik_wonder_discovered_bebbanburg", 
-        ["vik_reg_blascona"] = "vik_wonder_discovered_blascona", 
-        ["vik_reg_bodmine"] = "vik_wonder_discovered_bodmine", 
-        ["vik_reg_cissanbyrig"] = "vik_wonder_discovered_cissanbyrig",
-        ["vik_reg_cnodba"] = "vik_wonder_discovered_cnodba",
-        ["vik_reg_dun_sebuirgi"] = "vik_wonder_discovered_dun_sebuirgi",
-        ["vik_reg_hagustaldes"] = "vik_wonder_discovered_hagustaldes",
-        ["vik_reg_inber_nise"] = "vik_wonder_discovered_inber_nise",
-        ["vik_reg_loch_gabhair"] = "vik_wonder_discovered_loch_gabhair",
-        ["vik_reg_linns"] = "vik_wonder_discovered_linns",
-        ["vik_reg_rudglann"] = "vik_wonder_discovered_rudglann",
-        ["vik_reg_sancte_ye"] = "vik_wonder_discovered_sancte_ye",
-        ["vik_reg_snotingham"] = "vik_wonder_discovered_snotingham",
-        ["vik_reg_wiht"] = "vik_wonder_discovered_wiht",
-        ["vik_reg_wiltun"] = "vik_wonder_discovered_wiltun",
-        ["vik_reg_ros_ailithir"] = "vik_wonder_discovered_ros_ailithir",
-        ["vik_reg_hripum"] = "vik_wonder_discovered_hripum",
-        ["vik_reg_aporcrosan"] = "vik_wonder_discovered_aporcrosan",
-        ["vik_reg_cathair_commain"] = "vik_wonder_discovered_cathair_commain"
-
-} --:map<string, string>
+		["vik_reg_aethelingaeg"] = "vik_wonder_discovered_athelingaeg", 
+		["vik_reg_bebbanburg"] = "vik_wonder_discovered_bebbanburg", 
+		["vik_reg_blascona"] = "vik_wonder_discovered_blascona", 
+		["vik_reg_bodmine"] = "vik_wonder_discovered_bodmine", 
+		["vik_reg_cissanbyrig"] = "vik_wonder_discovered_cissanbyrig",
+		["vik_reg_cnodba"] = "vik_wonder_discovered_cnodba",
+		["vik_reg_dun_sebuirgi"] = "vik_wonder_discovered_dun_sebuirgi",
+		["vik_reg_hagustaldes"] = "vik_wonder_discovered_hagustaldes",
+		["vik_reg_inber_nise"] = "vik_wonder_discovered_inber_nise",
+		["vik_reg_loch_gabhair"] = "vik_wonder_discovered_loch_gabhair",
+		["vik_reg_linns"] = "vik_wonder_discovered_linns",
+		["vik_reg_rudglann"] = "vik_wonder_discovered_rudglann",
+		["vik_reg_sancte_ye"] = {"vik_wonder_discovered_sancte_ye","vik_wonder_discovered_sancte_ye1"},
+		["vik_reg_snotingaham"] = "vik_wonder_discovered_snotingaham",
+		["vik_reg_wiht"] = "vik_wonder_discovered_wiht",
+		["vik_reg_wiltun"] = "vik_wonder_discovered_wiltun",
+		["vik_reg_ros_ailithir"] = "vik_wonder_discovered_ros_ailithir",
+		["vik_reg_hripum"] = "vik_wonder_discovered_hripum",
+		["vik_reg_aporcrosan"] = "vik_wonder_discovered_aporcrosan",
+		["vik_reg_cathair_commain"] = "vik_wonder_discovered_cathair_commain",
+		["vik_reg_brideport"] = "vik_wonder_discovered_brideport",
+		["vik_reg_tintagol"] = "vik_wonder_discovered_tintagol",
+		["vik_reg_laewe"] = "vik_wonder_discovered_laewe",
+		["vik_reg_dofere"] = "vik_wonder_discovered_dofere",
+		["vik_reg_werham"] = "vik_wonder_discovered_werham",
+		["vik_reg_alt_clut"] = "vik_wonder_discovered_alt_clut"
+} --:map<string, (string | vector<string>)>
 
 cm:add_listener(
     "NamesAndPlacesConquest",
@@ -201,11 +206,60 @@ cm:add_listener(
     end,
     function(context)
         local region = context:garrison_residence():region():name()
+        local incident_string = landmarks[region]
         if cm:get_saved_value("landmark_regions_conquest_"..region) then
             return
+        elseif type(incident_string) == "table" then
+            local incidents = incident_string 
+            --# assume incidents: vector<string>
+            for i = 1, #incidents do
+                if cm:get_saved_value("landmark_regions_conquest_multiples_"..incidents[i]) then
+                    --return
+                else
+                    cm:trigger_incident(context:character():faction():name(), incidents[i], true)
+                    cm:set_saved_value("landmark_regions_conquest_multiples_"..incidents[i], true)
+                    return
+                end
+                cm:set_saved_value("landmark_regions_conquest_"..region, true)
+            end
         else
-            cm:trigger_incident(context:character():faction():name(), landmarks[region], true)
+            --# assume incident_string: string
+            cm:trigger_incident(context:character():faction():name(), incident_string, true)
             cm:set_saved_value("landmark_regions_conquest_"..region, true)
         end
-        end,
+    end,
 true)
+
+
+cm:add_listener(
+    "LandmarkIncidentsRegionTurns",
+    "RegionTurnStart",
+    function(context)
+        return( not not landmarks[context:region():name()]) and context:region():owning_faction():is_human()
+    end,
+    function(context)
+        local region = context:region():name()
+        local incident_string = landmarks[region]
+        if cm:get_saved_value("landmark_regions_conquest_"..region) then
+            return
+        elseif type(incident_string) == "table" then
+            local incidents = incident_string 
+            --# assume incidents: vector<string>
+            for i = 1, #incidents do
+                if cm:get_saved_value("landmark_regions_conquest_multiples_"..incidents[i]) then
+                    --return
+                elseif cm:random_number(100) < 6 then
+                    cm:trigger_incident(context:region():owning_faction():name(), incidents[i], true)
+                    cm:set_saved_value("landmark_regions_conquest_multiples_"..incidents[i], true)
+                    return
+                end
+                cm:set_saved_value("landmark_regions_conquest_"..region, true)
+            end
+        elseif cm:random_number(100) < 6 then
+            --# assume incident_string: string
+            cm:trigger_incident(context:region():owning_faction():name(), incident_string, true)
+            cm:set_saved_value("landmark_regions_conquest_"..region, true)
+        end
+    end,
+    true
+)
