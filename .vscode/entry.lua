@@ -81,6 +81,11 @@ local ok, err = pcall(function()
     require("shieldwall/ui_features/PopulationUI")
     require("shieldwall/ui_features/DecreeSwitching")
 
+
+
+    --events
+    require("events/trait_events")
+
 end)
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")

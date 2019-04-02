@@ -43,6 +43,9 @@ end
 
 --v function(model: PKM, key: string) --> FACTION_DETAIL
 function faction_detail.new(model, key)
+    if (not key) or (not model) then
+        faction_detail:log("ERROR: Attempted to create a faction detail with nil args!")
+    end
     local self = {} 
     setmetatable(self, {
         __index = faction_detail

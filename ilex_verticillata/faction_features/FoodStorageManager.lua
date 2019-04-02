@@ -28,10 +28,6 @@ function food_manager.new(faction)
         __tostring = function() return "FACTION_FOOD_MANAGER" end
     })--# assume self: FOOD_MANAGER
 
-    --v method() --> FOOD_MANAGER
-    function self:prototype()
-        return food_manager
-    end
 
     self._factionDetail = faction
     self._factionName = faction:name()
@@ -88,7 +84,7 @@ end
 --v function(self: FOOD_MANAGER, quantity: number)
 function food_manager.mod_food_storage(self, quantity)
     local faction = self._factionName
-    self:log("Modifying the food storage for faction ["..faction.."] by quantity ["..tostring(quantity).."] ")
+    self:log("Modifying the food storage for faction ["..tostring(faction).."] by quantity ["..tostring(quantity).."] ")
     local old_val = self:food_in_storage()
     local new_val = old_val + quantity
     --clamp the value to the nearest 5
@@ -189,6 +185,10 @@ end
 
 --v function(self: FOOD_MANAGER)
 function food_manager.calculate_draw_needs(self)
+    if self._factionName == "rebels" then
+        self:log("No food storage for rebels!")
+        return
+    end
     local faction = dev.get_faction(self._factionName)
     local current_draw = self:food_being_drawn()
     local total_food = faction:total_food()

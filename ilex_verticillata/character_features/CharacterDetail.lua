@@ -82,6 +82,7 @@ function character_detail.new(faction_detail, cqi)
     self._lastEXPTotal = 0 --:number
     self._title = "no_title"
     self._homeEstate = "no_estate" --:string!
+    self._titlePoints = 0 --:number
     self._estates = {} --:map<string, map<string, number>>
     --estates are bound first to region then to the chain which hosts them. 
     self._numEstates = 0 --:number
@@ -209,25 +210,20 @@ function character_detail.title_for_faction_leader(self)
     end
 end
 
---v function(self: CHARACTER_DETAIL, log: boolean?) --> string
-function character_detail.get_home_estate(self, log)
-    if self._homeEstate == "no_estate" then
-        
-    end
-    return self._homeEstate
+--v function(self: CHARACTER_DETAIL, region: string)
+function character_detail.set_home_estate(self, region)
+    self._homeEstate = "region"
 end
 
 --v function(self: CHARACTER_DETAIL)
 function character_detail.update_title(self)
-    
+    local character = dev.get_character(self:cqi())
+    if character:is_heir() or character:is_faction_leader() then
+        self:title_for_faction_leader()
+        return
+    end
+    --TODO add title points to the character, incrementing their title.
 end
-
---v function(self: CHARACTER_DETAIL, trigger: string, num: number, context: CA_CONTEXT)
-function character_detail.grow_household(self, trigger, num, context)
-    effect.add_agent_experience("Trigger_"..trigger, num, 0, context)
-    self._lastEXPTotal = self._lastEXPTotal + num
-end
-
 
 -----------------------------
 -----RECRUITMENT MANAGER-----
