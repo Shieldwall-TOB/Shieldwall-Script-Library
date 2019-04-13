@@ -11,7 +11,7 @@ end
 
 --v function(faction: CA_FACTION )
 local function BurghalRemoveBundle(faction)
-	dev.log("Removing Burghal bundles for "..faction:name(), "FYRD")
+	dev.log("Removing fyrd bundles for "..faction:name(), "FYRD")
 	for i = 0, 4 do
 		local a = i
 		for j = 0, 2 do
@@ -132,7 +132,7 @@ local function update_fyrd_for_faction(faction)
 			if region:has_governor() and (not check_reg[region:governor():command_queue_index()]) then
 				new_total = new_total+ 1;
 				check_reg[region:governor():command_queue_index()] = true
-				if region:governor():loyalty() >= 0 then 
+				if region:governor():loyalty() >= 5 then 
 					 new_brughal = new_brughal + 1;
 				end
 			end
