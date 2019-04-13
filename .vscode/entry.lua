@@ -36,9 +36,9 @@ end
 --Load Model
 local ok, err = pcall(function()
     --MODEL MANIFEST: 
-    require("ilex_verticillata/PettyKingdoms") 
+    require("petty_kingdoms/PettyKingdoms") 
     --EVENT HANDLERS:
-    require("ilex_verticillata/event_handlers/RegionOccupationHandler")
+    require("petty_kingdoms/event_handlers/RegionOccupationHandler")
 end)
 if not not ok then
     dev.log("Succeessfully loaded the object model!")

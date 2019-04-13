@@ -136,7 +136,7 @@ end
 -----------------------------
 ----FACTION FOOD MANAGER-----
 -----------------------------
-food_manager = require("ilex_verticillata/faction_features/FoodStorageManager")
+food_manager = require("petty_kingdoms/faction_features/FoodStorageManager")
 _G.fm = food_manager
 
 --v function(self: FACTION_DETAIL) --> FOOD_MANAGER
@@ -159,7 +159,7 @@ end
 --------------------------------
 ----PROVINCE DETAIL OBJECTS-----
 --------------------------------
-province_detail = require("ilex_verticillata/province_features/ProvinceDetail")
+province_detail = require("petty_kingdoms/province_features/ProvinceDetail")
 --v function(self: FACTION_DETAIL, province_key: string, save_data: table) --> PROVINCE_DETAIL
 function faction_detail.load_province(self, province_key, save_data)
     self._provinces[province_key] = province_detail.load(self, province_key, save_data)
@@ -220,7 +220,7 @@ end
 -----------------------------------
 -----CHARACTER DETAIL OBJECTS------
 -----------------------------------
-character_detail = require("ilex_verticillata/character_features/CharacterDetail")
+character_detail = require("petty_kingdoms/character_features/CharacterDetail")
 _G.cd = character_detail
 
 --v function(faction_detail: FACTION_DETAIL, cqi: CA_CQI) --> CHARACTER_DETAIL
@@ -245,12 +245,7 @@ function faction_detail.get_character(self, cqi)
 end
 
 
---------------------------------------
------FACTION FEATURES N DECREES-------
---------------------------------------
 
-cultural_feature = require("ilex_verticillata/faction_features/CulturalFeature")
-_G.cf = cultural_feature
 
 
 

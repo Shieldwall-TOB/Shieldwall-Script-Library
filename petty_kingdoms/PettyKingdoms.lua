@@ -54,7 +54,7 @@ end
 -----REGION DETAIL LIB------
 ----------------------------
 
-region_detail = require("ilex_verticillata/region_features/RegionDetail")
+region_detail = require("petty_kingdoms/region_features/RegionDetail")
 _G.rd = region_detail
 --v function(self: PKM, region_key: string, savedata: table) --> REGION_DETAIL
 function petty_kingdoms_manager.load_region(self, region_key, savedata)
@@ -78,7 +78,7 @@ end
 -----FACTION DETAIL LIB------
 -----------------------------
 
-faction_detail = require("ilex_verticillata/faction_features/FactionDetail")
+faction_detail = require("petty_kingdoms/faction_features/FactionDetail")
 _G.fd = faction_detail
 
 --v function(self: PKM, faction_key: string, savedata: table) --> FACTION_DETAIL

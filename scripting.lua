@@ -153,6 +153,7 @@ cm:register_first_tick_callback(
 --	additional script files to load
 -------------------------------------------------------
 
+local ok, err = pcall(function()
 require("vik_start");
 --require("vik_burghal"); rewritten, required below
 require("vik_war_fervour");
@@ -191,7 +192,31 @@ require("vik_traits");
 require("vik_decrees");
 require("vik_ai_wars");
 require("vik_ai_peace");
+end)
 
+if not not ok then
+	
+else
+    --v function(text: string, context: string?)
+	local function MODLOG(text, context)
+		if not CONST.__write_output_to_logfile then
+			return; 
+		end
+		local pre = context --:string
+		if not context then
+			pre = "DEV"
+		end
+		local logText = tostring(text)
+		local logTimeStamp = os.date("%d, %m %Y %X")
+		local popLog = io.open("sheildwall_logs.txt","a")
+		--# assume logTimeStamp: string
+		popLog :write(pre..":  [".. logTimeStamp .. "]:  "..logText .. "  \n")
+		popLog :flush()
+		popLog :close()
+	end
+	MODLOG("Error loading modified CA scripts", "CAS")
+	MODLOG(tostring(err), "CAS")
+end
 
 
 -----------------------
@@ -231,9 +256,9 @@ end
 --Load Model
 local ok, err = pcall(function()
     --MODEL MANIFEST: 
-    require("ilex_verticillata/PettyKingdoms") 
+    require("petty_kingdoms/PettyKingdoms") 
     --EVENT HANDLERS:
-    require("ilex_verticillata/event_handlers/RegionOccupationHandler")
+    require("petty_kingdoms/event_handlers/RegionOccupationHandler")
 end)
 if not not ok then
     dev.log("Succeessfully loaded the object model!")

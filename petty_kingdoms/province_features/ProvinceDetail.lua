@@ -29,6 +29,11 @@ end
 -------------------------
 -----STATIC CONTENT------
 -------------------------
+province_detail._buildingConcerns = {} --:map<string, string>
+--v function(building: string, concern: string)
+function province_detail.add_building_level_concern(building, concern)
+    province_detail._buildingConcerns[building] = concern
+end
 
 ----------------------------
 ----OBJECT CONSTRUCTOR------
@@ -54,6 +59,7 @@ function province_detail.new(faction_detail, province_key)
     self._effectsClear = true --:boolean
     self._lastCapital = nil --:string
     self._populationManager = nil --:POP_MANAGER
+    self._concerns = {} --:map<string, boolean>
     register_to_prototype(self._factionName, province_key, self)
     return self
 end
@@ -140,7 +146,7 @@ end
 -----POPULATION MANAGERS----
 ----------------------------
 
-pop_manager = require("ilex_verticillata/province_features/PopManager")
+pop_manager = require("petty_kingdoms/province_features/PopManager")
 _G.pm = pop_manager
 --v function(self: PROVINCE_DETAIL) --> boolean
 function province_detail.has_population(self)
@@ -277,6 +283,7 @@ return {
     has_province_for_faction = province_detail.has_province_for_faction,
     --Creation
     new = province_detail.new,
-    load = province_detail.load
+    load = province_detail.load,
     --Content API
+    add_building_level_concern = province_detail.add_building_level_concern
 }

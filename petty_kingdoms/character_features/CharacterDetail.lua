@@ -6,36 +6,8 @@ function character_detail:log(text)
 end
 
 -------------------------
-----INSTANCE REGISTER----
--------------------------
-character_detail._instances = {} --:map<string, CHARACTER_DETAIL>
---v function(cqi: string) --> boolean
-function character_detail.has_character(cqi) 
-    return not not character_detail._instances[cqi]
-end
-
---v function(cqi: string, object: CHARACTER_DETAIL)
-local function register_to_prototype(cqi, object)
-    character_detail._instances[cqi] = object
-end
-
--------------------------
 -----STATIC CONTENT------
 -------------------------
-character_detail._startPosEstates = {} --:map<string, map<string, START_POS_ESTATE>>
---v function(estate_region: string, estate_owner_name: string, estate_building: string, estate_chain: string, faction_key: string )
-function character_detail.register_startpos_estate(estate_region, estate_owner_name, estate_building, estate_chain, faction_key)
-    if character_detail._startPosEstates[faction_key] == nil then
-        character_detail._startPosEstates[faction_key] = {}
-    end
-    local holder = {}
-    holder._region = estate_region
-    holder._ownerName = estate_owner_name
-    holder._estateBuilding = estate_building
-    holder._estateChain = estate_chain
-    holder._faction = faction_key
-    character_detail._startPosEstates[faction_key][estate_region..estate_building] = holder
-end
 
 character_detail._subcultureTitleKeys = {} --:map<string, string>
 --v function(subculture: string, title_key: string)
@@ -83,13 +55,10 @@ function character_detail.new(faction_detail, cqi)
     self._title = "no_title"
     self._homeEstate = "no_estate" --:string!
     self._titlePoints = 0 --:number
-    self._estates = {} --:map<string, map<string, number>>
-    --estates are bound first to region then to the chain which hosts them. 
+    self._estates = {} --:map<string, number>
     self._numEstates = 0 --:number
     self._forceEffectsManager = nil --:UNIT_EFFECTS_MANAGER
     self._recruiterCharacter = nil --:RECRUITER
-
-    register_to_prototype(self._cqi, self)
     return self
 end
 
@@ -111,7 +80,7 @@ end
 -----UNIT EFFECT SUBOBJECTS-----
 --------------------------------
 
-unit_effects_manager = require("ilex_verticillata/character_features/UnitEffectsManager")
+unit_effects_manager = require("petty_kingdoms/character_features/UnitEffectsManager")
 _G.uem = unit_effects_manager
 --v function(self: CHARACTER_DETAIL) --> boolean
 function character_detail.has_unit_effects_manager(self)
@@ -152,12 +121,8 @@ function character_detail.num_estates(self)
     return self._numEstates
 end
 
---v function(self: CHARACTER_DETAIL, region_key: string) --> map<string, number>
-function character_detail.get_estate_details(self, region_key)
-   return {}
-end
 
---v function(self: CHARACTER_DETAIL) --> map<string, map<string, number>>
+--v function(self: CHARACTER_DETAIL) --> map<string, number>
 function character_detail.estates(self) 
     return self._estates 
 end
@@ -167,21 +132,30 @@ function character_detail.landless(self)
     return (self._numEstates == 0)
 end
 
---v function(self: CHARACTER_DETAIL, region_key: string, chain_key: string)
-function character_detail.add_estate(self, region_key, chain_key)
-    
+--v function(self: CHARACTER_DETAIL, estate_type: string, region_key: string?)
+function character_detail.add_estate(self, estate_type, region_key)
+    self._estates[estate_type] = self._estates[estate_type] + 1
+    self._numEstates = self._numEstates + 1
+    if region_key and self._homeEstate == "no_estate" then
+        --# assume region_key: string!
+        self._homeEstate = region_key
+    end
 end
 
 
 
---v function(self: CHARACTER_DETAIL, region_key: string, chain_key: string, new_owner: CHARACTER_DETAIL?)
-function character_detail.remove_estate(self, region_key, chain_key, new_owner)
-
+--v function(self: CHARACTER_DETAIL, estate_type: string, region_key: string?)
+function character_detail.remove_estate(self, estate_type, region_key)
+    self._estates[estate_type] = self._estates[estate_type] - 1
+    self._numEstates = self._numEstates - 1
+    if region_key == self._homeEstate then
+        self._homeEstate = "no_estate"
+    end
 end
 
 --v function(self: CHARACTER_DETAIL)
 function character_detail.check_start_pos_estates(self)
-
+    --do nothing
 end
 
 ----------------------------
@@ -225,18 +199,6 @@ function character_detail.update_title(self)
     --TODO add title points to the character, incrementing their title.
 end
 
------------------------------
------RECRUITMENT MANAGER-----
------------------------------
-recruiter_character = require("ilex_verticillata/character_features/Recruiter")
-_G.rc = recruiter_character
---v function(self: CHARACTER_DETAIL) --> RECRUITER
-function character_detail.recruiter(self)
-    if self._recruiterCharacter == nil then
-        self._recruiterCharacter = recruiter_character.new(self)
-    end
-    return self._recruiterCharacter
-end
 
 
 
@@ -268,7 +230,6 @@ return {
     new = character_detail.new,
     load = character_detail.load,
     --Content API
-    register_startpos_estate = character_detail.register_startpos_estate,
     set_title_key_for_sc = character_detail.set_title_key_for_sc,
     add_faction_leader_title_override = character_detail.add_faction_leader_title_override
 }
