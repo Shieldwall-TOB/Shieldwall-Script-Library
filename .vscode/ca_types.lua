@@ -41,7 +41,7 @@
 --# type global BUTTON_STATE = 
 --# "active" | "hover" | "down" | 
 --# "selected" | "selected_hover" | "selected_down" |
---# "drop_down"
+--# "drop_down" | "inactive"
 
 
 --# type global BATTLE_SIDE =
@@ -172,6 +172,9 @@
 --battles
 --# assume CM.win_next_autoresolve_battle: method(faction: string)
 --# assume CM.modify_next_autoresolve_battle: method(attacker_win_chance: number, defender_win_chance: number, attacker_losses_modifier: number, defender_losses_modifier: number, wipe_out_loser: boolean)
+--pending battles
+--# assume CM.pending_battle_cache_get_attacker: method(number) --> (CA_CQI, CA_CQI, string)
+--# assume CM.pending_battle_cache_get_defender: method(number) --> (CA_CQI, CA_CQI, string)
 --shroud
 --# assume CM.make_sea_region_seen_in_shroud: method(region: string) 
 --# assume CM.make_region_seen_in_shroud: method(faction_key: string, region_key: string)
@@ -200,7 +203,7 @@
 --# assume CA_WORLD.faction_exists: method(faction_key: string) --> boolean
 --# assume CA_WORLD.region_manager: method() --> CA_REGION_MANAGER
 --# assume CA_WORLD.ancillary_exists: method(ancillary_key: string)
---# assume CA_WORLD.whose_turn_is_it: method() --> string
+--# assume CA_WORLD.whose_turn_is_it: method() --> CA_FACTION
 --REGION MANAGER
 --# assume CA_REGION_MANAGER.region_list: method() --> CA_REGION_LIST
 --# assume CA_REGION_MANAGER.region_by_key: method(region_key: string) --> CA_REGION
@@ -358,6 +361,9 @@
 --# assume CA_PENDING_BATTLE.attacker: method() --> CA_CHAR
 --# assume CA_PENDING_BATTLE.defender: method() --> CA_CHAR
 --# assume CA_PENDING_BATTLE.ambush_battle: method() --> boolean
+--# assume CA_PENDING_BATTLE.attacker_battle_result: method() --> string
+--# assume CA_PENDING_BATTLE.defender_battle_result: method() --> string
+
 
 -- CA FORCE
 
@@ -372,6 +378,7 @@
 
 --CA UNIT
 --# assume CA_UNIT.unit_key: method() --> string
+--# assume CA_UNIT.faction: method() --> CA_FACTION
 
 --CA UNIT LIST
 --# assume CA_UNIT_LIST.num_items: method() --> number
@@ -385,6 +392,7 @@
 --# assume CA_CONTEXT.proposer: method() --> CA_FACTION
 --# assume CA_CONTEXT.recipient: method() --> CA_FACTION
 --# assume CA_CONTEXT.character: method() --> CA_CHAR
+--# assume CA_CONTEXT.unit: method() --> CA_UNIT
 --# assume CA_CONTEXT.component: CA_Component
 --# assume CA_CONTEXT.string: string
 --# assume CA_CONTEXT.dilemma: method() --> string

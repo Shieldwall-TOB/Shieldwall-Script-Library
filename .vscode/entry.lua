@@ -1,5 +1,4 @@
 
-
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
@@ -80,11 +79,7 @@ local ok, err = pcall(function()
     --UI
     require("shieldwall/ui_features/PopulationUI")
     require("shieldwall/ui_features/DecreeSwitching")
-
-
-
-    --events
-    require("events/trait_events")
+    require("shieldwall/ui_features/TechCleanup")
 
 end)
 if not not ok then
