@@ -149,75 +149,6 @@ cm:register_first_tick_callback(
 	end
 );
 
--------------------------------------------------------
---	additional script files to load
--------------------------------------------------------
-
-local ok, err = pcall(function()
-require("vik_start");
---require("vik_burghal"); rewritten, required below
-require("vik_war_fervour");
-require("vik_rebels");
-require("vik_lists");
-require("vik_kingdom_events");
-require("vik_ai_personalities");
-require("vik_trade_and_shroud");
-require("vik_common");
-require("vik_victory_conditions");
-require("vik_campaign_random_army");
-require("vik_invasions");
-require("vik_starting_rebellions");
-require("vik_seasonal_events");
-require("vik_ai_events");
-require("vik_dyflin_factions_mechanics");
---require("vik_miercna_faction_mechanics");
-require("vik_sudreyar_faction_mechanics");
-require("vik_strat_clut_faction_mechanics");
-require("vik_northymbra_faction_mechanics");
-require("vik_circenn_factions_mechanics");
-require("laura_test");
-require("vik_culture_mechanics_sea_kings");
-require("vik_culture_mechanics_viking_army");
-require("vik_culture_mechanics_gaelic");
-require("vik_culture_mechanics_welsh");
---require("vik_culture_mechanics_english");
-require("vik_culture_mechanics_common");
-require("vik_legendary_traits");
-require("vik_starting_traits");
-require("vik_tech_locks");
-require("vik_tech_unlocks");
-require("vik_faction_events");
-require("vik_advice");
-require("vik_traits");
-require("vik_decrees");
-require("vik_ai_wars");
-require("vik_ai_peace");
-end)
-
-if not not ok then
-	
-else
-    --v function(text: string, context: string?)
-	local function MODLOG(text, context)
-		if not CONST.__write_output_to_logfile then
-			return; 
-		end
-		local pre = context --:string
-		if not context then
-			pre = "DEV"
-		end
-		local logText = tostring(text)
-		local logTimeStamp = os.date("%d, %m %Y %X")
-		local popLog = io.open("sheildwall_logs.txt","a")
-		--# assume logTimeStamp: string
-		popLog :write(pre..":  [".. logTimeStamp .. "]:  "..logText .. "  \n")
-		popLog :flush()
-		popLog :close()
-	end
-	MODLOG("Error loading modified CA scripts", "CAS")
-	MODLOG(tostring(err), "CAS")
-end
-
 
 -----------------------
 --SHIELDWALL SCRIPTS---
@@ -252,6 +183,51 @@ else
     dev.log(tostring(err))
     dev.log("************************************************************")
 end
+
+
+-------------------------------------------------------
+--	additional script files to load
+-------------------------------------------------------
+
+require("vik_start");
+require("vik_burghal");
+require("vik_war_fervour");
+require("vik_rebels");
+require("vik_lists");
+require("vik_kingdom_events");
+require("vik_ai_personalities");
+require("vik_trade_and_shroud");
+require("vik_common");
+require("vik_victory_conditions");
+require("vik_campaign_random_army");
+require("vik_invasions");
+require("vik_starting_rebellions");
+require("vik_seasonal_events");
+require("vik_ai_events");
+require("vik_dyflin_factions_mechanics");
+require("vik_miercna_faction_mechanics");
+require("vik_sudreyar_faction_mechanics");
+require("vik_strat_clut_faction_mechanics");
+require("vik_northymbra_faction_mechanics");
+require("vik_circenn_factions_mechanics");
+require("laura_test");
+require("vik_culture_mechanics_sea_kings");
+require("vik_culture_mechanics_viking_army");
+require("vik_culture_mechanics_gaelic");
+require("vik_culture_mechanics_welsh");
+require("vik_culture_mechanics_english");
+require("vik_culture_mechanics_common");
+require("vik_legendary_traits");
+require("vik_starting_traits");
+require("vik_tech_locks");
+require("vik_tech_unlocks");
+require("vik_faction_events");
+require("vik_advice");
+require("vik_traits");
+require("vik_decrees");
+require("vik_ai_wars");
+require("vik_ai_peace");
+
 
 --Load Model
 local ok, err = pcall(function()
@@ -298,7 +274,6 @@ local ok, err = pcall(function()
     --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
-    require("shieldwall/ui_features/DecreeSwitching")
     require("shieldwall/ui_features/TechCleanup")
 
 end)
@@ -312,5 +287,3 @@ else
 end
 
 
---rewritten vanilla scripts
-require("vik_burghal");

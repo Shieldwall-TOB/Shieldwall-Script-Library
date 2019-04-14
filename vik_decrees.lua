@@ -637,6 +637,7 @@ function DecreesPayment(faction, event)
 		end
 	end
 	--shieldwall decree effects
+	get_eh():trigger_event("DecreeOccured", event, get_faction(faction))
 	if event == "vik_incident_decree_construction_effort" then
 		local character_list = cm:model():world():faction_by_key(faction):character_list()
 		for i = 0, character_list:num_items() - 1 do

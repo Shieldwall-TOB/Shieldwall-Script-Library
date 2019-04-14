@@ -175,6 +175,27 @@ function petty_kingdoms_manager.faction_became_vassal(self, vassal)
     end
 end
 
+--v function(self: PKM, faction: string, castes: vector<POP_CASTE>) --> boolean
+function petty_kingdoms_manager.does_faction_have_enough_population_to_levy(self, faction, castes)
+    local caste_pops = {} --:map<string, number>
+    for i = 1, #castes do
+        caste_pops[castes[i]] = 0
+    end
+    local faction_detail = self:get_faction(faction)
+    for province_key, province_detail in pairs(faction_detail._provinces) do
+        for i = 1, #castes do
+            caste_pops[castes[i]] = caste_pops[castes[i]] + province_detail:get_population_manager():get_pop_of_caste(castes[i])
+        end
+    end
+    for i = 1, #castes do
+        if caste_pops[castes[i]] < 80 then
+            return false
+        end
+    end
+    return true
+end
+
+
 
 --Instantiate the model
 local pkm = petty_kingdoms_manager.init()

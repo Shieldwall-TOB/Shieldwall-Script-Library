@@ -33,6 +33,14 @@ else
     dev.log("************************************************************")
 end
 
+-- vanilla goes here
+
+--rewritten vanilla scripts
+require("vik_burghal");
+
+
+---
+
 --Load Model
 local ok, err = pcall(function()
     --MODEL MANIFEST: 
@@ -78,7 +86,6 @@ local ok, err = pcall(function()
     --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
-    require("shieldwall/ui_features/DecreeSwitching")
     require("shieldwall/ui_features/TechCleanup")
 
 end)
@@ -91,6 +98,3 @@ else
     dev.log("************************************************************")
 end
 
-
---rewritten vanilla scripts
-require("vik_burghal");
