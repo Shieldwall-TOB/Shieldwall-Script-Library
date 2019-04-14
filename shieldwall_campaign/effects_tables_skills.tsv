@@ -1,3 +1,0 @@
-effects_tables	3
-effect	icon	priority	icon_negative	is_hidden
-vik_general_bodyguard_damage_mod	melee_damage.png	220	melee_damage.png	false

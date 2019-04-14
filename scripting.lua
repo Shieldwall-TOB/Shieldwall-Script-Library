@@ -149,6 +149,42 @@ cm:register_first_tick_callback(
 	end
 );
 
+
+-----------------------
+--SHIELDWALL SCRIPTS---
+-----------------------
+--[[
+    All shieldwall scripts are split into four sections
+    1. The library defines all development aids and UI functionality.
+    2. The object model tracks all necessary information in a regulated data structure.
+    3. The feature scripts add event handlers to actually make the mod work.
+    4. The CONST sections data drive script values.
+--]]
+
+--Load Constants
+CONST = require("shieldwall/ShieldWallConstants")
+
+--Load Libraries
+local ok, err = pcall(function()
+    --LIB MANIFEST:
+    dev = require("shieldwall/dev")
+    local ui_module = require("shieldwall/ui_script/ui_module")
+    
+    --UI Library Init
+    dev.pre_first_tick(function(context)
+        dev.ui_module = ui_module()
+    end)
+end)
+if not not ok then
+	dev.log("Successfully loaded shieldwall library!")
+else
+    dev.log("************************************************************")
+	dev.log("Error loading shieldwall library!")
+    dev.log(tostring(err))
+    dev.log("************************************************************")
+end
+
+
 -------------------------------------------------------
 --	additional script files to load
 -------------------------------------------------------
@@ -191,47 +227,14 @@ require("vik_traits");
 require("vik_decrees");
 require("vik_ai_wars");
 require("vik_ai_peace");
------------------------
---SHIELDWALL SCRIPTS---
------------------------
---[[
-    All shieldwall scripts are split into four sections
-    1. The library defines all development aids and UI functionality.
-    2. The object model tracks all necessary information in a regulated data structure.
-    3. The feature scripts add event handlers to actually make the mod work.
-    4. The CONST sections data drive script values.
---]]
 
---Load Constants
-CONST = require("shieldwall/ShieldWallConstants")
-
---Load Libraries
-local ok, err = pcall(function()
-    --LIB MANIFEST:
-    dev = require("shieldwall/dev")
-    local ui_module = require("shieldwall/ui_script/ui_module")
-    
-    --UI Library Init
-    dev.pre_first_tick(function(context)
-        dev.ui_module = ui_module()
-    end)
-end)
-if not not ok then
-	dev.log("Successfully loaded shieldwall library!")
-else
-    dev.log("************************************************************")
-	dev.log("Error loading shieldwall library!")
-    dev.log(tostring(err))
-    dev.log("************************************************************")
-end
 
 --Load Model
 local ok, err = pcall(function()
     --MODEL MANIFEST: 
-    require("ilex_verticillata/PettyKingdoms") 
+    require("petty_kingdoms/PettyKingdoms") 
     --EVENT HANDLERS:
-    require("ilex_verticillata/event_handlers/RegionOccupationHandler")
-    require("ilex_verticillata/event_handlers/EstateEventsHandler")
+    require("petty_kingdoms/event_handlers/RegionOccupationHandler")
 end)
 if not not ok then
     dev.log("Succeessfully loaded the object model!")
@@ -266,11 +269,12 @@ local ok, err = pcall(function()
 
     require("shieldwall/content/TitlesSystemContent")
 
-    require("shieldwall/content/EstatesContent")
-    require("shieldwall/features/EstateFeatures")
-    require("shieldwall/features/CharacterLives")
+    --require("shieldwall/content/EstatesContent")
+    --require("shieldwall/features/EstateFeatures")
+    --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
+    require("shieldwall/ui_features/TechCleanup")
 
 end)
 if not not ok then
@@ -281,3 +285,5 @@ else
     dev.log(tostring(err))
     dev.log("************************************************************")
 end
+
+

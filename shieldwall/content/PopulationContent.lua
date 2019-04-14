@@ -1,10 +1,18 @@
 local pm = _G.pm
 
 --caste change intervals
-pm.set_caste_change_interval("serf", 20)
-pm.set_caste_change_interval("monk", 2)
-pm.set_caste_change_interval("lord", 20)
-pm.set_caste_change_interval("foreign",30)
+pm.set_caste_change_interval("serf", 80)
+pm.set_caste_change_interval("monk", 3)
+pm.set_caste_change_interval("lord", 40)
+pm.set_caste_change_interval("foreign",60)
+
+--caste maximum bundles
+pm.set_caste_bundle_maximum("serf", 1040)
+pm.set_caste_bundle_maximum("monk", 39)
+pm.set_caste_bundle_maximum("lord", 520)
+pm.set_caste_bundle_maximum("foreign", 780)
+
+
 --immigration strengths // keep in mind these are capped to 10% of your pop cap per turn so if this number is higher it will go down. 
 pm.set_immigration_strength_for_caste("serf", 35)
 pm.set_immigration_strength_for_caste("monk", 1)
@@ -216,16 +224,16 @@ local building_pop_cap_settlements = {
 { ["building"] = "vik_cloth_1", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 20, ["value_damaged"] = 20, ["value_ruined"] = 0 },
 { ["building"] = "vik_cloth_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 30, ["value_damaged"] = 30, ["value_ruined"] = 0 },
 { ["building"] = "vik_cloth_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 40, ["value_damaged"] = 40, ["value_ruined"] = 0 },
-{ ["building"] = "vik_cloth_b_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 30, ["value_damaged"] = 30, ["value_ruined"] = 0 },
-{ ["building"] = "vik_cloth_b_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 40, ["value_damaged"] = 40, ["value_ruined"] = 0 },
+{ ["building"] = "vik_cloth_b_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 20, ["value_damaged"] = 20, ["value_ruined"] = 0 },
+{ ["building"] = "vik_cloth_b_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 20, ["value_damaged"] = 20, ["value_ruined"] = 0 },
 { ["building"] = "vik_pottery_1", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 80, ["value_damaged"] = 80, ["value_ruined"] = 0 },
 { ["building"] = "vik_pottery_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 120, ["value_damaged"] = 120, ["value_ruined"] = 0 },
 { ["building"] = "vik_pottery_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 160, ["value_damaged"] = 160, ["value_ruined"] = 0 },
-{ ["building"] = "vik_salt_1", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 60, ["value_damaged"] = 60, ["value_ruined"] = 0 },
-{ ["building"] = "vik_salt_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 80, ["value_damaged"] = 80, ["value_ruined"] = 0 },
-{ ["building"] = "vik_salt_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 100, ["value_damaged"] = 100, ["value_ruined"] = 0 },
-{ ["building"] = "vik_salt_b_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 100, ["value_damaged"] = 100, ["value_ruined"] = 0 },
-{ ["building"] = "vik_salt_b_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 140, ["value_damaged"] = 140, ["value_ruined"] = 0 },
+{ ["building"] = "vik_salt_1", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 10, ["value_damaged"] = 10, ["value_ruined"] = 0 },
+{ ["building"] = "vik_salt_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 25, ["value_damaged"] = 25, ["value_ruined"] = 0 },
+{ ["building"] = "vik_salt_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 40, ["value_damaged"] = 40, ["value_ruined"] = 0 },
+{ ["building"] = "vik_salt_b_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 10, ["value_damaged"] = 10, ["value_ruined"] = 0 },
+{ ["building"] = "vik_salt_b_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 20, ["value_damaged"] = 20, ["value_ruined"] = 0 },
 { ["building"] = "vik_tin_1", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 40, ["value_damaged"] = 40, ["value_ruined"] = 0 },
 { ["building"] = "vik_tin_2", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 80, ["value_damaged"] = 80, ["value_ruined"] = 0 },
 { ["building"] = "vik_tin_3", ["effect"] = "shield_scripted_pop_cap_serf", ["effect_scope"] = "region_to_region_own", ["value"] = 120, ["value_damaged"] = 120, ["value_ruined"] = 0 },
@@ -362,6 +370,7 @@ local building_pop_cap_settlements = {
 { ["building"] = "vik_school_ros_3", ["effect"] = "shield_scripted_pop_cap_monk", ["effect_scope"] = "region_to_region_own", ["value"] = 24, ["value_damaged"] = 24, ["value_ruined"] = 0 },
 { ["building"] = "vik_school_ros_4", ["effect"] = "shield_scripted_pop_cap_monk", ["effect_scope"] = "region_to_region_own", ["value"] = 30, ["value_damaged"] = 30, ["value_ruined"] = 0 },
 { ["building"] = "vik_school_ros_5", ["effect"] = "shield_scripted_pop_cap_monk", ["effect_scope"] = "region_to_region_own", ["value"] = 42, ["value_damaged"] = 42, ["value_ruined"] = 0 }
+
 } --:vector<{building: string, effect: string, effect_scope: string, value: number, value_damaged: number, value_ruined: number}>
 
 for i = 1, #building_pop_cap_settlements do

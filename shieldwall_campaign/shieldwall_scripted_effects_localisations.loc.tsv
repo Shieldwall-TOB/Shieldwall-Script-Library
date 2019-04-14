@@ -1,7 +1,0 @@
-Loc PackedFile
-Key	Text	Tooltip
-effects_description_shield_scripted_pop_cap_serf	%+n Population Capacity for Peasantry	true
-effects_description_shield_scripted_pop_cap_lord	%+n Population Capacity for Nobles	true
-effects_description_shield_scripted_pop_cap_foreign	%+n Population Capacity for Foreign Mercenaries	true
-effects_description_shield_scripted_pop_cap_monk	%+n Population Capacity for Monks	true
-effects_description_shield_scripted_household_growth	%+n Household Growth (Owner of this Estate)	true

@@ -1,3 +1,4 @@
+--[[
 cm:add_listener(
     "CharacterExtraLife",
     "PendingBattle",
@@ -32,4 +33,4 @@ cm:add_listener(
         end
     end,
     true
-)
+)--]]

@@ -1,8 +1,0 @@
-Loc PackedFile
-Key	Text	Tooltip
-effects_description_shield_seasons_food_farms	%+n% Food from Farming, Orchard, Pasture, and Hunting Buildings	true
-effects_description_shield_seasons_commerce	%+n% Income (COMMERCE) from Seasonal Economics	true
-effects_description_shield_seasons_supplies	%+n Supplies 	true
-effects_description_shield_seasons_movement_speed	%+n Land Army Movement	true
-effects_description_shield_seasons_farming_income	Harvest: %+n% Income (FARM) 	true
-effects_description_shield_seasons_hunting_event	Hunting Season: Characters who own hunting estates may embark on Hunts.	true

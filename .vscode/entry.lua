@@ -1,3 +1,4 @@
+
 -----------------------
 --SHIELDWALL SCRIPTS---
 -----------------------
@@ -32,13 +33,20 @@ else
     dev.log("************************************************************")
 end
 
+-- vanilla goes here
+
+--rewritten vanilla scripts
+require("vik_burghal");
+
+
+---
+
 --Load Model
 local ok, err = pcall(function()
     --MODEL MANIFEST: 
-    require("ilex_verticillata/PettyKingdoms") 
+    require("petty_kingdoms/PettyKingdoms") 
     --EVENT HANDLERS:
-    require("ilex_verticillata/event_handlers/RegionOccupationHandler")
-    require("ilex_verticillata/event_handlers/EstateEventsHandler")
+    require("petty_kingdoms/event_handlers/RegionOccupationHandler")
 end)
 if not not ok then
     dev.log("Succeessfully loaded the object model!")
@@ -73,11 +81,12 @@ local ok, err = pcall(function()
 
     require("shieldwall/content/TitlesSystemContent")
 
-    require("shieldwall/content/EstatesContent")
-    require("shieldwall/features/EstateFeatures")
-    require("shieldwall/features/CharacterLives")
+    --require("shieldwall/content/EstatesContent")
+    --require("shieldwall/features/EstateFeatures")
+    --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
+    require("shieldwall/ui_features/TechCleanup")
 
 end)
 if not not ok then
@@ -88,3 +97,4 @@ else
     dev.log(tostring(err))
     dev.log("************************************************************")
 end
+

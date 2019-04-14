@@ -330,7 +330,7 @@ cm:register_ui_created_callback( function()
         "CharacterSelected",
         true,
         function(context)
-            MODLOG("selected character with CQI ["..tostring(context:character():cqi()).."]", "SEL")
+            MODLOG("selected character with CQI ["..tostring(context:character():command_queue_index()).."]", "SEL")
             for i = 1, #char_selected_log_calls do
                 MODLOG("\t"..char_selected_log_calls[i](context:character()), "SEL")
             end
