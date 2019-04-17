@@ -16,6 +16,7 @@
 -- Customise costs based on each decree
 -- Work how to script influence costs
 
+
 -- This list is used to find and fire the events when buttons are clicked in the decrees panel
 DECREE_LIST = {
 	["vik_fact_west_seaxe"] = {
@@ -32,7 +33,7 @@ DECREE_LIST = {
 		[2] = {
 			["event"] = "vik_incident_decree_lower_taxes",
 			["duration"] = 6,
-			["gold_cost"] = -2500,
+			["gold_cost"] = -1400,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 12,
@@ -52,7 +53,7 @@ DECREE_LIST = {
 		[4] = {
 			["event"] = "vik_incident_decree_encourage_scholars",
 			["duration"] = 6,
-			["gold_cost"] = -1800,
+			["gold_cost"] = -1300,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 12,
@@ -65,25 +66,26 @@ DECREE_LIST = {
 		["decree_cost_reduction_event"] = "vik_incident_decree_new_laws_witan",
 		["decree_cost_reduction_factor"] = 0.1,
 		["decree_cost_reduction_turns_current"] = 0,
-		["decree_cost_reduction_turns"] = 10
+		["decree_cost_reduction_turns"] = 10,
+		["conscription_event"] = "vik_incident_decree_lower_taxes"
 	},
 	["vik_fact_mierce"] = {
 		[1] = {
 			["event"] = "vik_incident_decree_give_to_soldiers",
-			["duration"] = 5,
-			["gold_cost"] = -5000,
+			["duration"] = 6,
+			["gold_cost"] = -1500,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
-			["cooldown"] = 10,
+			["cooldown"] = 12,
 			["cooldown_current"] = 0,
-			["locked"] = true,
+			["locked"] = false,
 			["locked_counter"] = 0,
 			["locked_target"] = 40
 		},
 		[2] = {
 			["event"] = "vik_incident_decree_give_to_nobles",
 			["duration"] = 5,
-			["gold_cost"] = -5000,
+			["gold_cost"] = 0,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
 			["cooldown"] = 10,
@@ -95,26 +97,27 @@ DECREE_LIST = {
 		[3] = {
 			["event"] = "vik_incident_decree_give_to_people",
 			["duration"] = 5,
-			["gold_cost"] = -5000,
-			["currency"] = "influence",
-			["currency_cost"] = 0,
-			["cooldown"] = 10,
-			["cooldown_current"] = 0,
-			["locked"] = false
-		},
-		[4] = {
-			["event"] = "vik_incident_decree_give_to_church",
-			["duration"] = 3,
-			["gold_cost"] = -5000,
+			["gold_cost"] = 0,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
 			["cooldown"] = 10,
 			["cooldown_current"] = 0,
 			["locked"] = true
 		},
+		[4] = {
+			["event"] = "vik_incident_decree_give_to_church",
+			["duration"] = 1,
+			["gold_cost"] = -5000,
+			["currency"] = "influence",
+			["currency_cost"] = 0,
+			["cooldown"] = 1,
+			["cooldown_current"] = 0,
+			["locked"] = false
+		},
 		["global_cooldown"] = 5,
 		["global_cooldown_current"] = 0,
-		["cooldown_tech"] = "vik_miercna_civ_leader_6"
+		["cooldown_tech"] = "vik_miercna_civ_leader_6",
+		["conscription_event"] = "vik_incident_decree_give_to_soldiers"
 	},
 	["vik_fact_dyflin"] = {
 		[1] = {
@@ -649,7 +652,15 @@ function DecreesPayment(faction, event)
 			end
 		end
 	end
-	
+	if event == DECREE_LIST[faction]["conscription_event"] then
+		local region_list = cm:model():world():faction_by_key(faction):region_list()
+		for i = 0, region_list:num_items() - 1 do
+			local region = region_list:item_at(i)
+			if region:is_province_capital() and region:has_governor() then
+				get_eh():trigger_event("ProvincialCapitalStartsConscripts", event, region)
+			end
+		end
+	end
 	--Call the icon function to disable the alert
 	DecreesAlertIcon(faction)	
 	
