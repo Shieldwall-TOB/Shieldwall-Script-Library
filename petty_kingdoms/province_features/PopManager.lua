@@ -21,8 +21,8 @@ function pop_manager.add_building_pop_cap_contribution(building, pop_caste, quan
 end
 
 --// The Food Effect function impacts population growth numbers based upon the faction's values. 
-pop_manager._foodEffectFunctions = {} --:map<POP_CASTE, (function(quantity_in: number, food_manager: FOOD_MANAGER?) --> number)>
---v function(caste: POP_CASTE, food_func: (function(quantity_in: number, food_manager: FOOD_MANAGER?) --> number))
+pop_manager._foodEffectFunctions = {} --:map<POP_CASTE, (function(quantity_in: number, food_manager: FOOD_MANAGER?, is_end_turn: boolean?) --> number)>
+--v function(caste: POP_CASTE, food_func: (function(quantity_in: number, food_manager: FOOD_MANAGER?, is_end_turn: boolean?) --> number))
 function pop_manager.add_food_effect_function(caste, food_func)
     pop_manager._foodEffectFunctions[caste] = food_func
 end
@@ -233,6 +233,12 @@ end
 
 --v function(self: POP_MANAGER, caste: POP_CASTE, quantity: number, UICause: string, block_bundle_change: boolean?)
 function pop_manager.modify_population(self, caste, quantity, UICause, block_bundle_change)
+    local food_func = pop_manager._foodEffectFunctions[caste]
+    if food_func then
+        local food_manager = self:province_detail():faction_detail():get_food_manager()
+        local food_func_result = food_func(quantity, food_manager)
+        quantity = food_func_result
+    end
     --get cap, old pop value, and change value on vars
     local old_value = self:get_pop_of_caste(caste)
     local cap_value = self:get_pop_cap_for_caste(caste)
@@ -369,12 +375,11 @@ function pop_manager.evaluate_pop_growth(self)
                 pop_mod("Squalor and Overcrowding", decay_val)
             end
         end
-        
         --does whatever the food function does!
         if food_func then 
             local food_manager = self:province_detail():faction_detail():get_food_manager()
-            local food_func_result = food_func(pop, food_manager)
-            pop_mod("Food Supply", food_func_result)
+            local food_func_result = food_func(pop, food_manager, true)
+            pop_mod("Food Supply", (-1*pop)+food_func_result) --this food func returns what it wants the overall pop to be. this converts that to a difference.
         end
 
         --runs all the stuff through the change function.

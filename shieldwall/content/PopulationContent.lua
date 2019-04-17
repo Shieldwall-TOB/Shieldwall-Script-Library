@@ -1,5 +1,5 @@
 local pm = _G.pm
-
+local pkm = _G.pkm
 --caste change intervals
 pm.set_caste_change_interval("serf", 80)
 pm.set_caste_change_interval("monk", 3)
@@ -37,6 +37,110 @@ pm.set_growth_reduction_threshold_for_caste("serf", 625)
 pm.set_home_region_pop_cap_for_caste("serf", 160)
 pm.set_home_region_pop_cap_for_caste("lord", 80)
 
+--returns what tier, how much pop growth bonus to apply, or how much pop to decay due to famine.
+--v function(total_food: number) --> (number, number, number)
+local function get_food_level(total_food)
+    if total_food < (0-150) then
+        return 0, -30, 5
+    elseif total_food < (0-50) then
+        return 1, -30, 0
+    elseif total_food < (0) then
+        return 2, -15, 0
+    elseif total_food < 100 then
+        return 3, 10, 0
+    elseif total_food < 250 then
+        return 4, 20, 0
+    else
+        return 5, 30, 0
+    end
+end
+
+
+pm.add_food_effect_function("serf", function(q_in, food_manager, is_end_turn) 
+    if not food_manager then
+        pkm:log("Called Food Function without a food manager!")
+        return q_in
+    elseif is_end_turn then
+        --# assume food_manager: FOOD_MANAGER
+        local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if decay > 0 then
+            return q_in * (1 + (decay/100))
+        else
+            return q_in
+        end
+    else
+        --# assume food_manager: FOOD_MANAGER
+        local tier, growth, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if (q_in > 0 and growth > 0)  then --if the quantity and growth have the same sign
+            return (q_in * (1 + (math.abs(growth)/100)))
+        elseif (q_in > 0 and growth < 0)   then --if the quantity is positive, but we are reducing growth
+            return (q_in * (1 - (math.abs(growth)/100)))
+        elseif  (q_in < 0 and growth > 0) or (q_in < 0 and growth < 0) then --but we use this for costs, 
+            --so we don't want to make conscription take a different number of men based on food
+            return q_in
+        else
+            return q_in
+        end
+    end
+end)
+
+
+pm.add_food_effect_function("lord", function(q_in, food_manager, is_end_turn) 
+    if not food_manager then
+        pkm:log("Called Food Function without a food manager!")
+        return q_in
+    elseif is_end_turn then
+        --# assume food_manager: FOOD_MANAGER
+        local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if decay > 0 then
+            return q_in * (1 + (decay/100))
+        else
+            return q_in
+        end
+    else
+        --# assume food_manager: FOOD_MANAGER
+        local tier, growth, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if (q_in > 0 and growth > 0)  then --if the quantity and growth have the same sign
+            return (q_in * (1 + (math.abs(growth)/100)))
+        elseif (q_in > 0 and growth < 0)   then --if the quantity is positive, but we are reducing growth
+            return (q_in * (1 - (math.abs(growth)/100)))
+        elseif  (q_in < 0 and growth > 0) or (q_in < 0 and growth < 0) then --but we use this for costs, 
+            --so we don't want to make conscription take a different number of men based on food
+            return q_in
+        else
+            return q_in
+        end
+    end
+end)
+
+
+pm.add_food_effect_function("monk", function(q_in, food_manager, is_end_turn) 
+    if not food_manager then
+        pkm:log("Called Food Function without a food manager!")
+        return q_in
+    elseif is_end_turn then
+        --# assume food_manager: FOOD_MANAGER
+        local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if decay > 0 then
+            return q_in * (1 + (decay/100))
+        else
+            return q_in
+        end
+    else
+        --# assume food_manager: FOOD_MANAGER
+        local tier, growth, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if (q_in > 0 and growth > 0)  then --if the quantity and growth have the same sign
+            return (q_in * (1 + (math.abs(growth)/100)))
+        elseif (q_in > 0 and growth < 0)   then --if the quantity is positive, but we are reducing growth
+            return (q_in * (1 - (math.abs(growth)/100)))
+        elseif  (q_in < 0 and growth > 0) or (q_in < 0 and growth < 0) then --but we use this for costs, 
+            --so we don't want to make conscription take a different number of men based on food
+            return q_in
+        else
+            return q_in
+        end
+    end
+end)
 
 
 --settlement cop caps
