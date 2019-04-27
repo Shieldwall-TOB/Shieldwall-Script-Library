@@ -210,6 +210,7 @@
 
 --CA FACTION
 --# assume CA_FACTION.character_list: method() --> CA_CHAR_LIST
+--# assume CA_FACTION.has_technology: method(tech: string) --> boolean
 --# assume CA_FACTION.treasury: method() --> number
 --# assume CA_FACTION.name: method() --> string
 --# assume CA_FACTION.subculture: method() --> string
@@ -332,7 +333,8 @@
 --# assume CA_CHAR.is_faction_leader: method() --> boolean
 --# assume CA_CHAR.family_member: method() --> CA_FAMILY
 --# assume CA_CHAR.is_null_interface: method() --> boolean
-
+--# assume CA_CHAR.has_skill: method(skill: string) --> boolean
+--# assume CA_CHAR.age: method() --> int
 --# assume CA_CHAR.loyalty: method() --> number
 --# assume CA_CHAR.is_politician: method() --> boolean
 --# assume CA_CHAR.gravitas: method() --> number
@@ -342,6 +344,7 @@
 --# assume CA_CHAR.father: method() --> CA_FAMILY
 --# assume CA_CHAR.is_heir: method() --> boolean
 --# assume CA_CHAR.is_minister: method() --> boolean
+--# assume CA_CHAR.is_male: method() --> boolean
 
 --CA CHAR LIST
 --# assume CA_CHAR_LIST.item_at: method(i: number) --> CA_CHAR
@@ -372,6 +375,7 @@
 --# assume CA_FORCE.unit_list: method() --> CA_UNIT_LIST
 --# assume CA_FORCE.active_stance: method() --> string
 --# assume CA_FORCE.command_queue_index: method() --> CA_CQI
+--# assume CA_FORCE.faction: method() --> CA_FACTION
 --CA_FORCE_LIST
 --# assume CA_FORCE_LIST.num_items: method() --> number
 --# assume CA_FORCE_LIST.item_at: method(i: number) --> CA_FORCE
@@ -401,6 +405,7 @@
 --# assume CA_CONTEXT.region: method() --> CA_REGION
 --# assume CA_CONTEXT.building: method() --> CA_BUILDING
 --# assume CA_CONTEXT.pending_battle: method() --> CA_PENDING_BATTLE
+--# assume CA_CONTEXT.technology: method() --> string
 
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
