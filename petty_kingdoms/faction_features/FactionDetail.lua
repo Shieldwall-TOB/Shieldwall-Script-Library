@@ -52,11 +52,6 @@ function faction_detail.new(model, key)
     }) --# assume self: FACTION_DETAIL
 
     self._model = model
-
-    --v method() --> FACTION_DETAIL
-    function self:prototype()
-        return faction_detail
-    end
     self._name = key
     self._characters = {} --:map<string, CHARACTER_DETAIL>
     self._provinces = {} --:map<string, PROVINCE_DETAIL>

@@ -34,7 +34,7 @@ function food_manager.new(faction)
     self._storageCapRegionContributions = {} --:map<string, number>
     self._storageCap = CONST.food_storage_cap_base --:number
     self._storedFood = 0 --:number
-    self._drawnFood = 0
+    self._drawnFood = 0 --:number
     self._foodTradeAllowed = false --:boolean
 
     return self
@@ -198,7 +198,7 @@ function food_manager.calculate_draw_needs(self)
         if current_draw > 0 then
             cm:remove_effect_bundle(CONST.food_storage_bundle..(tostring(current_draw)), faction:name())
         end
-        local desired_new_draw = before_stores*-1
+        local desired_new_draw = before_stores*-1 --:number
         
         if desired_new_draw > stores then
             desired_new_draw = stores
@@ -208,6 +208,7 @@ function food_manager.calculate_draw_needs(self)
             desired_new_draw = (math.ceil((desired_new_draw/5)-0.5))*5
         end
         cm:apply_effect_bundle(CONST.food_storage_bundle..(tostring(desired_new_draw)), faction:name(), 0)
+        self._drawnFood = desired_new_draw
     else
         self._drawnFood = 0
         if current_draw > 0 then
@@ -224,13 +225,8 @@ end
 
 --v function(faction: FACTION_DETAIL, savetable: table) --> FOOD_MANAGER
 function food_manager.load(faction, savetable)
-    local self = {}
-    setmetatable(self, {
-        __index = food_manager,
-        __tostring = function() return "FACTION_FOOD_MANAGER" end
-    })--# assume self: FOOD_MANAGER
-
-    dev.load(savetable, self, "_storageCapRegionContributions", "_storageCap", "_storedFood", "_foodTradeAllowed", "_drawnFood")
+    local self = food_manager.new(faction)
+    dev.load(savetable, faction, "_storageCapRegionContributions", "_storageCap", "_storedFood", "_foodTradeAllowed", "_drawnFood")
     return self
 end
 

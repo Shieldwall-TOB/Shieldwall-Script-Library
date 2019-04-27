@@ -59,6 +59,15 @@ cm:add_listener(
                         pop_manager:modify_population("serf", -480, "Conscription")
                         pop_manager:modify_population("lord", -180, "Military Service")
                     end
+                    local prefix = incident_key:gsub(size, "")
+                    for size_key, sec_regions in pairs(REGION_CONSCRIPT_LEVELS) do
+                        if type(sec_regions) == "table" then
+                            if #sec_regions > 0 then
+                                cm:trigger_incident(context:faction():name(), prefix..size_key, true)
+                                return
+                            end
+                        end
+                    end
                     break;
                 end
             end
@@ -67,7 +76,12 @@ cm:add_listener(
     true
 )
 
-
+cm:add_listener(
+    "UnitTrained", "UnitTrained", true, function(context)
+        dev.log("unit ["..context:unit():unit_key().."] ["..context:unit():faction():name().."] ","debug")
+    end,
+    true
+)
 
 cm:register_loading_game_callback(
 	function(context)

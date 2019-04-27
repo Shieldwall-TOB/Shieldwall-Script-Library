@@ -103,6 +103,7 @@ function petty_kingdoms_manager.get_faction(self, faction_key)
                 local current_region_detail = self:get_region(current_region:name())
                 current_prov:add_region(current_region:name())
             end
+            --nor will their characters
         end
     end
     return self._factions[faction_key]
@@ -214,6 +215,9 @@ local function FirstTickObjectModel()
     local faction_list = dev.faction_list()
     for i = 0, faction_list:num_items() - 1 do
         local fact_det = pkm:get_faction(faction_list:item_at(i):name())
+        for j = 0, faction_list:item_at(i):character_list():num_items() - 1 do
+            pkm:get_character(faction_list:item_at(i):character_list():item_at(j):command_queue_index())
+        end
         for province_key, prov_det in pairs(fact_det:provinces()) do
             prov_det:get_population_manager():set_start_pos_pops()
             prov_det:get_population_manager():reapply_all_pop_bundles()

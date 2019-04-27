@@ -42,16 +42,9 @@ function character_detail.new(faction_detail, cqi)
         __index = character_detail
     }) --# assume self: CHARACTER_DETAIL
 
-    --access to prototype
-    --v method() --> CHARACTER_DETAIL
-    function self:prototype()
-        return character_detail
-    end
-
     self._cqi = tostring(cqi) --:string
     self._factionDetail = faction_detail
-
-    self._lastEXPTotal = 0 --:number
+    self._friendshipLevel = 2
     self._title = "no_title"
     self._homeEstate = "no_estate" --:string!
     self._titlePoints = 0 --:number

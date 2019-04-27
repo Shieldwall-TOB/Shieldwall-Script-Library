@@ -71,6 +71,52 @@ function evaluate_battle(context)
 	local defender_is_secondary = pkm:is_faction_vassal(defending_faction:name());
 	local player_factions = GetPlayerFactions()
 	MELOG("\n#### BATTLE ####\n"..attacking_faction:name().." v "..defending_faction:name());
+	do
+		local print = MELOG
+		print("DEBUGGING CODE: REMOVE AFTER SERVES PURPOSE.")
+		local a_mf = context:pending_battle():defender():military_force() --:CA_FORCE
+		local b_mf = context:pending_battle():attacker():military_force() --:CA_FORCE
+		local vec = {b_mf, a_mf} --:vector<CA_FORCE>
+		local name = "attacker"
+		print("Outputting battle info for crash debug")
+		--v function(t: string)
+		local function print(t) MELOG("\t"..t) end
+		print("is seige?: "..tostring(context:pending_battle():seige_battle()))
+		print("is night battle?: "..tostring(context:pending_battle():night_battle()))
+		print("is naval battle?: "..tostring(context:pending_battle():naval_battle()))
+		print("has contested garrison?: "..tostring(context:pending_battle():seige_battle()))
+		for i = 1, 2 do
+			print(name.." info:")
+			--v function(t: string)
+			local function print(t) MELOG("\t\t"..t) end
+			
+			local current_mf = vec[i]
+			print("faction ".. current_mf:faction():name())
+			if current_mf:has_general() then
+				print(name.." has general")
+				local gen = current_mf:general_character()
+				do
+					--v function(t: string)
+					local function print(t) MELOG("\t\t\t"..t) end
+					print("rank ".. tostring(gen:rank()))
+					print("is faction leader?" .. tostring(gen:is_faction_leader()))
+					if gen:region():is_null_interface() then
+						print("region null interface -- at sea")
+					else
+						print("region ".. gen:region():name())
+					end
+				end
+			end
+			print("Unit list: ")
+			--v function(t: string)
+			local function print(t) MELOG("\t\t"..t) end
+			for j = 0, current_mf:unit_list():num_items() - 1 do
+				print(current_mf:unit_list():item_at(j):unit_key())
+			end
+			name = "defender"
+		end
+	end
+		
 
 	if attacking_faction:is_human() == false and defending_faction:is_human() == false then
 		if defender_is_secondary == false and attacker_is_secondary == false then 
