@@ -220,7 +220,7 @@ cm:add_listener(
 )
 
 
-dev.new_game(function(context)
+dev.first_tick(function(context)
 	local humans = cm:get_human_factions()
 	for i = 1, #humans do
 		update_fyrd_for_faction(dev.get_faction(humans[i]))
