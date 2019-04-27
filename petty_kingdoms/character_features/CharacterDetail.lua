@@ -41,8 +41,7 @@ function character_detail.new(faction_detail, cqi)
     setmetatable(self, {
         __index = character_detail
     }) --# assume self: CHARACTER_DETAIL
-
-    self._cqi = tostring(cqi) --:string
+    self._cqi = cqi --:string
     self._factionDetail = faction_detail
     self._friendshipLevel = 2
     self._title = "no_title"
@@ -97,7 +96,7 @@ end
 --v function(self: CHARACTER_DETAIL) --> UNIT_EFFECTS_MANAGER
 function character_detail.create_unit_effects_manager(self)
     local character_obj = dev.get_character(self:cqi())
-    if not character_obj:has_military_force() then
+    if (not character_obj) or (not character_obj:has_military_force()) then
         return nil
     end
     local force_cqi = character_obj:military_force():command_queue_index()
@@ -185,6 +184,10 @@ end
 --v function(self: CHARACTER_DETAIL)
 function character_detail.update_title(self)
     local character = dev.get_character(self:cqi())
+    if character == nil then
+        self:log("character detail ["..self._cqi.."] points to a nill faction leader!")
+        return
+    end
     if character:is_heir() or character:is_faction_leader() then
         self:title_for_faction_leader()
         return
@@ -207,7 +210,7 @@ end
 
 --v function(faction_detail: FACTION_DETAIL, cqi: string, sv_tab: table) --> CHARACTER_DETAIL
 function character_detail.load(faction_detail, cqi, sv_tab)
-    local self = character_detail.new(faction_detail, tostring(cqi))
+    local self = character_detail.new(faction_detail, cqi)
     dev.load(sv_tab, self, "_homeEstate", "_title")
     return self
 end

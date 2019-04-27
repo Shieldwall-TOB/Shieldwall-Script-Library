@@ -345,6 +345,7 @@
 --# assume CA_CHAR.is_heir: method() --> boolean
 --# assume CA_CHAR.is_minister: method() --> boolean
 --# assume CA_CHAR.is_male: method() --> boolean
+--# assume CA_CHAR.character_type: method(string)
 
 --CA CHAR LIST
 --# assume CA_CHAR_LIST.item_at: method(i: number) --> CA_CHAR
@@ -376,6 +377,8 @@
 --# assume CA_FORCE.active_stance: method() --> string
 --# assume CA_FORCE.command_queue_index: method() --> CA_CQI
 --# assume CA_FORCE.faction: method() --> CA_FACTION
+--# assume CA_FORCE.is_army: method() --> boolean
+--# assume CA_FORCE.is_armed_citizenry: method() --> boolean
 --CA_FORCE_LIST
 --# assume CA_FORCE_LIST.num_items: method() --> number
 --# assume CA_FORCE_LIST.item_at: method(i: number) --> CA_FORCE

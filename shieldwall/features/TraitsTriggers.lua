@@ -143,4 +143,21 @@ cm:add_listener(
     true
 )--]]
 
+
+cm:add_listener(
+    "shieldwallTitles",
+    "CharacterTurnStart",
+    function(context)
+        return not ((context:character():faction():name() == "rebels") or pkm:get_character(context:character():command_queue_index()):landless())
+    end,
+    function(context)
+        local character =  pkm:get_character(context:character():command_queue_index())
+        character:update_title()
+    end,
+    true)
+
+
+
+
+
 end)

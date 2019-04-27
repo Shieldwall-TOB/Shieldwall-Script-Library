@@ -103,7 +103,14 @@ function petty_kingdoms_manager.get_faction(self, faction_key)
                 local current_region_detail = self:get_region(current_region:name())
                 current_prov:add_region(current_region:name())
             end
-            --nor will their characters
+            --nor their characters
+            local char_list = dev.get_faction(faction_key):character_list()
+            for i = 0, char_list:num_items() - 1 do
+                local character = char_list:item_at(i)
+                if character:character_type("general") and character:has_military_force() and character:military_force():is_army() and (not character:military_force():is_armed_citizenry()) then
+                    local current_char_detail = faction_detail:get_character(character:command_queue_index())
+                end
+            end
         end
     end
     return self._factions[faction_key]
@@ -215,9 +222,6 @@ local function FirstTickObjectModel()
     local faction_list = dev.faction_list()
     for i = 0, faction_list:num_items() - 1 do
         local fact_det = pkm:get_faction(faction_list:item_at(i):name())
-        for j = 0, faction_list:item_at(i):character_list():num_items() - 1 do
-            pkm:get_character(faction_list:item_at(i):character_list():item_at(j):command_queue_index())
-        end
         for province_key, prov_det in pairs(fact_det:provinces()) do
             prov_det:get_population_manager():set_start_pos_pops()
             prov_det:get_population_manager():reapply_all_pop_bundles()
@@ -308,6 +312,17 @@ local function OnGameLoaded(context)
             ld_faction_detail:load_food_manager(food_manager_bank[faction_key])
         end
     end
+    dev.pre_first_tick(function(context)
+        local region_list = dev.region_list()
+        for i = 0, region_list:num_items() - 1 do
+            local current_region = region_list:item_at(i)
+            local faction_detail = pkm:get_faction(current_region:owning_faction():name())
+            local current_prov = faction_detail:get_province(current_region:province_name())
+            local current_region_detail = pkm:get_region(current_region:name())
+            current_prov:add_region(current_region:name())
+        end
+    end)
+
     --done
     pkm:log("Finished loading PKM")
 end
