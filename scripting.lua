@@ -184,8 +184,67 @@ else
     dev.log("************************************************************")
 end
 
+--Load Model
+local ok, err = pcall(function()
+    --MODEL MANIFEST: 
+    require("petty_kingdoms/PettyKingdoms") 
+    --EVENT HANDLERS:
+    require("petty_kingdoms/event_handlers/RegionOccupationHandler")
+end)
+if not not ok then
+    dev.log("Succeessfully loaded the object model!")
+else
+    dev.log("************************************************************")
+    dev.log("Error loading the object model!")
+    dev.log(tostring(err))
+    dev.log("************************************************************")
+end
 
--------------------------------------------------------
+--Load Features
+local ok, err = pcall(function()
+    --FEATURES MANIFEST: 
+    require("shieldwall/standalone/CitiesLandmarks")
+
+    require("shieldwall/content/UnitEffectsContent")
+    require("shieldwall/features/UnitEffectsFeatures")
+
+    require("shieldwall/content/PopulationContent")
+    require("shieldwall/features/PopulationFeatures")
+
+    require("shieldwall/content/FoodStorageContent")
+    require("shieldwall/features/FoodStorageFeatures")
+
+    require("shieldwall/features/WarLimiter")
+
+    require("shieldwall/content/KingdomsContent")
+    require("shieldwall/features/VassalFeatures")
+    require("shieldwall/features/MajorEmpireFeatures")
+
+    require("shieldwall/features/RestoreAllyTerritory")
+
+    require("shieldwall/content/TitlesSystemContent")
+    require("shieldwall/features/DecreeFeatures")
+    require("shieldwall/features/SuppliesFeatures")
+    require("shieldwall/features/TraitsTriggers")
+    --require("shieldwall/content/EstatesContent")
+    --require("shieldwall/features/EstateFeatures")
+    --require("shieldwall/features/CharacterLives")
+    --UI
+    require("shieldwall/ui_features/PopulationUI")
+
+
+end)
+if not not ok then
+    dev.log("Succeessfully loaded shieldwall features!")
+else
+    dev.log("************************************************************")
+    dev.log("Error loading shieldwall features!")
+    dev.log(tostring(err))
+    dev.log("************************************************************")
+end
+
+
+--------------------------------------
 --	additional script files to load
 -------------------------------------------------------
 
@@ -227,63 +286,3 @@ require("vik_traits");
 require("vik_decrees");
 require("vik_ai_wars");
 require("vik_ai_peace");
-
-
---Load Model
-local ok, err = pcall(function()
-    --MODEL MANIFEST: 
-    require("petty_kingdoms/PettyKingdoms") 
-    --EVENT HANDLERS:
-    require("petty_kingdoms/event_handlers/RegionOccupationHandler")
-end)
-if not not ok then
-    dev.log("Succeessfully loaded the object model!")
-else
-    dev.log("************************************************************")
-    dev.log("Error loading the object model!")
-    dev.log(tostring(err))
-    dev.log("************************************************************")
-end
-
---Load Features
-local ok, err = pcall(function()
-    --FEATURES MANIFEST: 
-    require("shieldwall/standalone/CitiesLandmarks")
-
-    require("shieldwall/content/UnitEffectsContent")
-    require("shieldwall/features/UnitEffectsFeatures")
-
-    require("shieldwall/content/PopulationContent")
-    require("shieldwall/features/PopulationFeatures")
-
-    require("shieldwall/content/FoodStorageContent")
-    require("shieldwall/features/FoodStorageFeatures")
-
-    require("shieldwall/features/WarLimiter")
-
-    require("shieldwall/content/KingdomsContent")
-    require("shieldwall/features/VassalFeatures")
-    require("shieldwall/features/MajorEmpireFeatures")
-
-    require("shieldwall/features/RestoreAllyTerritory")
-
-    require("shieldwall/content/TitlesSystemContent")
-	require("shieldwall/features/DecreeFeatures")
-    --require("shieldwall/content/EstatesContent")
-    --require("shieldwall/features/EstateFeatures")
-    --require("shieldwall/features/CharacterLives")
-    --UI
-    require("shieldwall/ui_features/PopulationUI")
-    require("shieldwall/ui_features/TechCleanup")
-
-end)
-if not not ok then
-    dev.log("Succeessfully loaded shieldwall features!")
-else
-    dev.log("************************************************************")
-    dev.log("Error loading shieldwall features!")
-    dev.log(tostring(err))
-    dev.log("************************************************************")
-end
-
-
