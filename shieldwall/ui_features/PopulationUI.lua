@@ -149,56 +149,19 @@ cm:add_listener(
     true
 )
 
-
-
-
---[[
-    --stands for province display manager. It isn't a full formal object but I use it to store stuff I need!
-    dev.log("Displaying pop UI", "CUI")
-    --grab necessary objects
-    local faction_detail = pkm:get_faction(faction)
-    local province_detail = faction_detail:get_province(province)
-    local pm = province_detail:get_population_manager()
-    --create the frame, but first check if it exists.
-    local frame = dev.get_uic(cm:ui_root(), "PopulationFrame")
-    if not frame then
-        frame = dev.ui_module:new_mini_frame("PopulationFrame")
-        --get the details frame and position above it. 
-        local top_bar = dev.get_uic(cm:ui_root(), "menu_bar", "buttongroup", "button_academy")
-        local tbPosX, tbPosY = top_bar:Position()
-        local CurrentX, CurrentY = frame:Position()
-        --frame:Resize(frame:Width(), frame:Height()+60)
-        --dev.get_uic(frame, "info_panel_background"):Resize(frame:Width(), frame:Height()+60)
-        --frame:MoveTo(CurrentX, tbPosY+top_bar:Height()+5)
-        local CurrentX, CurrentY = frame:Position()
-        local CurrentBackX, CurrentBackY =  dev.get_uic(frame, "info_panel_background"):Position()
-        --dev.get_uic(frame, "info_panel_background"):MoveTo(CurrentBackX, CurrentY)
-
-        --name it.
-        local subframe = dev.get_uic(frame, "subpanel_character") 
-        dev.get_uic(subframe, "dy_type"):SetStateText("Population Details")
-        dev.get_uic(subframe, "dy_name"):SetStateText(get_province_loc(province))
-        
-        --get and deal with the second Hbar
-        --local hBar = dev.get_uic(subframe, "hbar")
-        local hBarX, hBarY = hBar:Position()
-        hBar:MoveTo(hBarX, hBarY+60)--
-        --get the former position of the portrait on this screen. it is the starting point for our list!
-        local window = dev.get_uic(subframe, "3D_window")
-        local startX, startY = window:Position()
-        local current_offset_y = 0 --a secondary loop variable for positioning the rows
-        local gap = 10  -- gap between icons
-        --create our caste icons. These are done through a loop, on this here list of castes.
-        local castes_list = {"serf", "lord", "monk", "foreign"} --:vector<POP_CASTE>
-        for i = 1, #castes_list do
-            local caste = castes_list[i]
-            local pop_icon = dev.ui_module.createComponent(caste.."_population_icon", subframe, "ui/campaign ui/region_info_pip")
-            pop_icon:Resize(40, 40)
-
-            pop_icon:SetStateText(tostring(pm:get_pop_of_caste(caste)))
-            pop_icon:MoveTo(startX, startY+current_offset_y)
-            current_offset_y = current_offset_y + 40 + gap
+cm:add_listener(
+    "CharacterSelectedPopUI",
+    "CharacterSelected",
+    function(context)
+        return true
+    end,
+    function(context)
+        local frame = dev.get_uic(cm:ui_root(), "PopulationFrame")
+        if frame then
+            frame:SetVisible(false)
         end
-    end
-    frame:SetVisible(true)
---]]
+    end,
+    true
+)
+
+

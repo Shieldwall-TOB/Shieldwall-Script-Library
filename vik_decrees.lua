@@ -583,6 +583,82 @@ function Add_Decrees_Listeners()
 	
 end
 
+
+local function calculate_levy_potential(faction, event, is_hypothetical)
+	local function out(t)
+		dev.log(t, "DCR")
+	end
+	out("Calcing levy potential for faction ["..faction.."] hypothetical flag: ["..tostring(is_hypothetical).."] ")
+	local region_list = cm:model():world():faction_by_key(faction):region_list()
+	local total_size = 0 --:number
+	local has_ok_region = false --:boolean
+
+	local function mod_pop(pop_manager, caste, cost, reason)
+		if (not is_hypothetical) then
+			pop_manager:modify_population(caste, cost, reason)
+		else
+			--do nothing
+		end
+	end
+	for i = 0, region_list:num_items() - 1 do
+		local region = region_list:item_at(i)
+		if region:is_province_capital() and region:has_governor() then
+			local pop_manager = pkm:get_region(region:name()):province_detail():get_population_manager()
+			if pop_manager then
+				out("\tChecking region ["..region:name().."] ")
+				local nob_pop = pop_manager:get_pop_of_caste("lord")
+				local pes_pop = pop_manager:get_pop_of_caste("serf")
+				local nob_cap = pop_manager:get_pop_cap_for_caste("lord")
+				local pes_cap = pop_manager:get_pop_cap_for_caste("serf")
+				--first, we need at least 100 nobles, or more than we have peasants to participate.
+				if (nob_pop < 75) or (pes_pop < 125) then
+					out("\t\tregion ["..region:name().."] is empty")
+					if total_size > 3 then
+						total_size = total_size - 1 
+					end
+				else
+					has_ok_region = true
+					--next, lets see how many peasants we have
+					if pes_pop > 500 then
+						total_size = total_size + 3
+						mod_pop(pop_manager, "serf", -300, "Conscription")
+						out("\t\tregion ["..region:name().."] is full of peasants")
+					elseif pes_pop > 250 then
+						total_size = total_size + 2
+						mod_pop(pop_manager, "serf", -180, "Conscription")
+						out("\t\tregion ["..region:name().."] has normal peasants")
+					elseif pes_pop > 125 then
+						mod_pop(pop_manager, "serf", -90, "Conscription")
+						out("\t\tregion ["..region:name().."] has enough peasants")
+					end
+					--next, if we have some nobles over a certain amount, increase for them.
+					if nob_pop >= 300 then
+						total_size = total_size + 2
+						mod_pop(pop_manager, "lord", -150, "Military Service")
+						out("\t\tregion ["..region:name().."] has many lords")
+					elseif nob_pop > 150 then
+						total_size = total_size + 1
+						mod_pop(pop_manager, "lord", -75, "Military Service")
+						out("\t\tregion ["..region:name().."] has a few lords")
+					else
+						out("\t\tregion ["..region:name().."] has insufficent lords to levy them")
+						if total_size > 3 then
+							total_size = total_size - 1 
+						end
+					end
+				end
+			end
+		end
+	end
+	out("\t returning ["..tostring(total_size).."] ")
+	if total_size == 0 and has_ok_region then
+		return 1
+	end
+	return total_size
+end
+
+
+
 -- Deduct the costs and update scripted currencies for enacting the decree
 function DecreesPayment(faction, event)
 	if DECREE_LIST[faction]["decree_cost_reduction_event"] and (event == DECREE_LIST[faction]["decree_cost_reduction_event"]) then
@@ -653,12 +729,9 @@ function DecreesPayment(faction, event)
 		end
 	end
 	if event == DECREE_LIST[faction]["conscription_event"] then
-		local region_list = cm:model():world():faction_by_key(faction):region_list()
-		for i = 0, region_list:num_items() - 1 do
-			local region = region_list:item_at(i)
-			if region:is_province_capital() and region:has_governor() then
-				get_eh():trigger_event("ProvincialCapitalStartsConscripts", event, region)
-			end
+		local total_size = calculate_levy_potential(faction, event, false)
+		if total_size > 0 then
+			cm:trigger_incident(faction, "sw_decrees_levy_"..total_size, true)
 		end
 	end
 	--Call the icon function to disable the alert
@@ -880,6 +953,7 @@ function DecreesUnlocks(faction)
 
 	if faction == "vik_fact_west_seaxe" then
 		DECREE_LIST[faction][1]["locked"] = not BURGHAL_VALUES[faction] 
+		DECREE_LIST[faction][2]["locked"] = not (calculate_levy_potential(faction, DECREE_LIST[faction]["conscription_event"], true) > 0 )
 		get_eh():trigger_event("DecreeUnlocks", get_faction(faction))
 		--TODO wessex unlock conditions
 	elseif faction == "vik_fact_mierce" then

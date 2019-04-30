@@ -79,9 +79,9 @@ local ok, err = pcall(function()
 
     require("shieldwall/features/RestoreAllyTerritory")
 
-    require("shieldwall/content/TitlesSystemContent")
 
-    require("shieldwall/features/DecreeFeatures")
+    require("shieldwall/content/TitlesSystemContent")
+    --require("shieldwall/features/DecreeFeatures")
     require("shieldwall/features/SuppliesFeatures")
     require("shieldwall/features/TraitsTriggers")
     --require("shieldwall/content/EstatesContent")

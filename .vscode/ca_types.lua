@@ -409,6 +409,7 @@
 --# assume CA_CONTEXT.building: method() --> CA_BUILDING
 --# assume CA_CONTEXT.pending_battle: method() --> CA_PENDING_BATTLE
 --# assume CA_CONTEXT.technology: method() --> string
+--# assume CA_CONTEXT.stored_table: table
 
 --CA_EFFECT
 --# assume CA_EFFECT.advance_scripted_advice_thread: function(key: string, prioritiy: number)
