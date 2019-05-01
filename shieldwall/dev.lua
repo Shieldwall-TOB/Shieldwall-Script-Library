@@ -459,6 +459,13 @@ local function dev_get_character(cqi)
 	return nil;
 end
 
+--v function(character: CA_CHAR) --> boolean
+local function dev_is_char_normal_general(character)
+    return character:character_type("general") and character:has_military_force() and character:military_force():is_army() and (not character:military_force():is_armed_citizenry()) 
+end
+
+
+
 
 --v function() --> CA_REGION_LIST
 local function dev_region_list()
@@ -626,6 +633,7 @@ return {
     get_faction = dev_get_faction,
     get_region = dev_get_region,
     get_character = dev_get_character,
+    is_char_normal_general = dev_is_char_normal_general,
     get_force = dev_get_force,
     lookup = char_lookup_str,
     region_list = dev_region_list,

@@ -20,13 +20,13 @@ pm.set_immigration_strength_for_caste("lord", 10)
 pm.set_immigration_strength_for_caste("foreign", 20)
 --immigration limits
 pm.set_immigration_activity_limit_for_caste("serf", 0.7)
-pm.set_immigration_activity_limit_for_caste("monk", 0.99)
-pm.set_immigration_activity_limit_for_caste("lord", 0.5)
-pm.set_immigration_activity_limit_for_caste("foreign", 0.99)
+pm.set_immigration_activity_limit_for_caste("monk", 1)
+pm.set_immigration_activity_limit_for_caste("lord", 0.4)
+pm.set_immigration_activity_limit_for_caste("foreign", 1)
 --minimum positive growths
 pm.set_mimimum_pos_growth_for_caste("serf", 5)
 pm.set_mimimum_pos_growth_for_caste("lord", 5)
-pm.set_mimimum_pos_growth_for_caste("foreign", 5)
+pm.set_mimimum_pos_growth_for_caste("foreign", 4)
 pm.set_mimimum_pos_growth_for_caste("monk", 1)
 --natural rates of growth
 pm.set_natural_growth_for_caste("serf", 0.05) 
@@ -67,65 +67,7 @@ pm.add_food_effect_function("serf", function(q_in, food_manager, is_end_turn)
         --# assume food_manager: FOOD_MANAGER
         local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
         if decay > 0 then
-            return q_in * (1 + (decay/100))
-        else
-            return q_in
-        end
-    else
-        --# assume food_manager: FOOD_MANAGER
-        local tier, growth, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
-        if (q_in > 0 and growth > 0)  then --if the quantity and growth have the same sign
-            return (q_in * (1 + (math.abs(growth)/100)))
-        elseif (q_in > 0 and growth < 0)   then --if the quantity is positive, but we are reducing growth
-            return (q_in * (1 - (math.abs(growth)/100)))
-        elseif  (q_in < 0 and growth > 0) or (q_in < 0 and growth < 0) then --but we use this for costs, 
-            --so we don't want to make conscription take a different number of men based on food
-            return q_in
-        else
-            return q_in
-        end
-    end
-end)
-
-
-pm.add_food_effect_function("lord", function(q_in, food_manager, is_end_turn) 
-    if not food_manager then
-        pkm:log("Called Food Function without a food manager!")
-        return q_in
-    elseif is_end_turn then
-        --# assume food_manager: FOOD_MANAGER
-        local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
-        if decay > 0 then
-            return q_in * (1 + (decay/100))
-        else
-            return q_in
-        end
-    else
-        --# assume food_manager: FOOD_MANAGER
-        local tier, growth, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
-        if (q_in > 0 and growth > 0)  then --if the quantity and growth have the same sign
-            return (q_in * (1 + (math.abs(growth)/100)))
-        elseif (q_in > 0 and growth < 0)   then --if the quantity is positive, but we are reducing growth
-            return (q_in * (1 - (math.abs(growth)/100)))
-        elseif  (q_in < 0 and growth > 0) or (q_in < 0 and growth < 0) then --but we use this for costs, 
-            --so we don't want to make conscription take a different number of men based on food
-            return q_in
-        else
-            return q_in
-        end
-    end
-end)
-
-
-pm.add_food_effect_function("monk", function(q_in, food_manager, is_end_turn) 
-    if not food_manager then
-        pkm:log("Called Food Function without a food manager!")
-        return q_in
-    elseif is_end_turn then
-        --# assume food_manager: FOOD_MANAGER
-        local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
-        if decay > 0 then
-            return math.ceil(q_in * (1 + (decay/100)))
+            return math.ceil(q_in * (1 - (decay/100)))
         else
             return q_in
         end
@@ -144,6 +86,75 @@ pm.add_food_effect_function("monk", function(q_in, food_manager, is_end_turn)
         end
     end
 end)
+
+
+pm.add_food_effect_function("lord", function(q_in, food_manager, is_end_turn) 
+    if not food_manager then
+        pkm:log("Called Food Function without a food manager!")
+        return q_in
+    elseif is_end_turn then
+        --# assume food_manager: FOOD_MANAGER
+        local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if decay > 0 then
+            return math.ceil(q_in * (1 - (decay/100)))
+        else
+            return q_in
+        end
+    else
+        --# assume food_manager: FOOD_MANAGER
+        local tier, growth, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if (q_in > 0 and growth > 0)  then --if the quantity and growth have the same sign
+            return math.ceil(q_in * (1 + (math.abs(growth)/100)))
+        elseif (q_in > 0 and growth < 0)   then --if the quantity is positive, but we are reducing growth
+            return math.ceil(q_in * (1 - (math.abs(growth)/100)))
+        elseif  (q_in < 0 and growth > 0) or (q_in < 0 and growth < 0) then --but we use this for costs, 
+            --so we don't want to make conscription take a different number of men based on food
+            return q_in
+        else
+            return q_in
+        end
+    end
+end)
+
+
+pm.add_food_effect_function("monk", function(q_in, food_manager, is_end_turn) 
+    if not food_manager then
+        pkm:log("Called Food Function without a food manager!")
+        return q_in
+    elseif is_end_turn then
+        --# assume food_manager: FOOD_MANAGER
+        local tier, _, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if decay > 0 then
+            return math.ceil(q_in * (1 - (decay/100)))
+        else
+            return q_in
+        end
+    else
+        --# assume food_manager: FOOD_MANAGER
+        local tier, growth, decay = get_food_level(dev.get_faction(food_manager._factionName):total_food())
+        if (q_in > 0 and growth > 0)  then --if the quantity and growth have the same sign
+            return math.ceil(q_in * (1 + (math.abs(growth)/100)))
+        elseif (q_in > 0 and growth < 0)   then --if the quantity is positive, but we are reducing growth
+            return math.ceil(q_in * (1 - (math.abs(growth)/100)))
+        elseif  (q_in < 0 and growth > 0) or (q_in < 0 and growth < 0) then --but we use this for costs, 
+            --so we don't want to make conscription take a different number of men based on food
+            return q_in
+        else
+            return q_in
+        end
+    end
+end)
+
+
+--unit size Scalar
+--if you're trying to make the game playable with larger units, this is what you're looking for.
+local unit_size_mode_scalar = 0.5 --0.5 is shieldwall's default sizes.
+
+
+
+
+
+
 
 
 --settlement cop caps

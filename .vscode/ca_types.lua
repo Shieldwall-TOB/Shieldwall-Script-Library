@@ -386,6 +386,9 @@
 --CA UNIT
 --# assume CA_UNIT.unit_key: method() --> string
 --# assume CA_UNIT.faction: method() --> CA_FACTION
+--# assume CA_UNIT.has_force_commander: method() --> boolean
+--# assume CA_UNIT.force_commander: method() --> CA_CHAR
+--# assume CA_UNIT.military_force: method() --> CA_FORCE
 
 --CA UNIT LIST
 --# assume CA_UNIT_LIST.num_items: method() --> number

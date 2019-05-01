@@ -99,6 +99,16 @@ pop_manager._homeRegionPopCaps = {} --:map<string, number>
 function pop_manager.set_home_region_pop_cap_for_caste(caste, pop_cap)
     pop_manager._homeRegionPopCaps[caste] = pop_cap
 end
+
+--// sets the size of each unit according to their unit key
+pop_manager._unitPopSizes = {} --:map<string, number>
+pop_manager._unitCastes = {} --:map<string, string>
+--v function(unit: string, caste: POP_CASTE, num_men: number)
+function pop_manager.set_unit_man_count_and_caste_for_population(unit, caste, num_men)
+    pop_manager._unitPopSizes[unit] = num_men
+end
+
+
 ----------------------------
 ----OBJECT CONSTRUCTOR------
 ----------------------------
@@ -239,6 +249,8 @@ function pop_manager.modify_population(self, caste, quantity, UICause, block_bun
         local food_func_result = food_func(quantity, food_manager)
         quantity = food_func_result
     end
+    local quantity = math.ceil(quantity -0.5) --# assume quantity: number
+    -- ^i just don't like how kailua checks the int type.
     --get cap, old pop value, and change value on vars
     local old_value = self:get_pop_of_caste(caste)
     local cap_value = self:get_pop_cap_for_caste(caste)
@@ -339,13 +351,14 @@ function pop_manager.evaluate_pop_growth(self)
         local num_mods = 0
         --v function(ui_growth: string, growth_quantity: number)
         local function pop_mod(ui_growth, growth_quantity)
-            pop_mods[ui_growth] = growth_quantity
+            pop_mods[ui_growth] = pop_mods[ui_growth] or 0
+            pop_mods[ui_growth] = pop_mods[ui_growth] + growth_quantity
             num_mods = num_mods + 1
         end
 
         --grows by growth% of pop
         if growth then
-            if growth_reducing_threshold and pop > growth_reducing_threshold then
+            if growth_reducing_threshold and (pop/pop_cap) > growth_reducing_threshold then
                 growth = growth/2
             end
             local nat_growth = math.ceil(pop*growth) --:number
@@ -420,5 +433,6 @@ return {
     set_overcrowding_strength_for_caste = pop_manager.set_overcrowding_strength_for_caste,
     set_overcrowding_lower_limit_for_caste = pop_manager.set_overcrowding_lower_limit_for_caste,
     set_growth_reduction_threshold_for_caste = pop_manager.set_growth_reduction_threshold_for_caste,
-    set_home_region_pop_cap_for_caste = pop_manager.set_home_region_pop_cap_for_caste
+    set_home_region_pop_cap_for_caste = pop_manager.set_home_region_pop_cap_for_caste,
+    set_unit_man_count_and_caste_for_population = pop_manager.set_unit_man_count_and_caste_for_population
 }
