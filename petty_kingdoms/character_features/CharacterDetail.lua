@@ -178,7 +178,7 @@ end
 
 --v function(self: CHARACTER_DETAIL, region: string)
 function character_detail.set_home_estate(self, region)
-    self._homeEstate = "region"
+    self._homeEstate = region
 end
 
 --v function(self: CHARACTER_DETAIL)

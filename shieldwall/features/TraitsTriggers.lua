@@ -1,4 +1,8 @@
 local pkm = _G.pkm
+--v function(t: any)
+local function log(t)
+    dev.log(tostring(t), "TRT")
+end
 
 --v function(char: CA_CHAR, trait_name: string)
 local function apply_trait_dilemma_for_character(char, trait_name)
@@ -13,6 +17,31 @@ local function apply_trait_dilemma_for_character(char, trait_name)
             cm:set_saved_value("trait_trigger_last_turn", cm:model():turn_number())
         end
     end
+end
+
+--v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR))
+local function trait_listener(trait_name, event, conditional_function)
+    cm:add_listener(
+        "TraitTrigger"..trait_name,
+        event,
+        true,
+        function(context)
+            log("Evaluating trait validity ".. trait_name)
+            local valid, char = conditional_function(context)
+            if valid then
+                log("Trait dilemma trigger is valid!")
+                apply_trait_dilemma_for_character(char, trait_name)
+            else
+                log("invalid trigger")
+                if char:has_trait(trait_name.."_flag") then
+                    cm:force_remove_trait(dev.lookup(char), trait_name.."_flag")
+                end
+            end
+        end,
+        true
+        
+    )
+
 end
 
 
@@ -50,7 +79,7 @@ end
 
 dev.first_tick(function(context)
 --removes flags after a trait choice so that you don't get spammed with the same one.
-cm:add_listener(
+    cm:add_listener(
     "DilemmaChoiceMadeEventRemoveFlags",
     "DilemmaChoiceMadeEvent",
     function(context)
@@ -66,17 +95,17 @@ cm:add_listener(
         end
     end,
     true
-)
+    )
 
 
-cm:add_listener(
-    "shield_faithful_repententTrigger",
+trait_listener(
+    "shield_faithful_repentent",
     "CharacterTurnStart",
     function(context)
         --must be in a religious settlement.
         local region = context:character():region()
         if region:is_null_interface() or region:owning_faction():name() ~= context:character():faction():name() then
-            return false 
+            return false, nil
         end
         local pop_manager = pkm:get_region(region:name()):province_detail():get_population_manager()
         local is_in_religious_settlement =  (pop_manager:get_pop_of_caste("monk") > 30)
@@ -84,17 +113,12 @@ cm:add_listener(
         local has_bad_trait = is_char_brute_or_tyrant(context:character())
         --must not be a pagan
         local not_pagan = not is_char_or_char_king_pagan(context:character())
-        return is_in_religious_settlement and has_bad_trait and not_pagan
-    end,
-    function(context)
-        apply_trait_dilemma_for_character(context:character(), "shield_faithful_repentent")
-    end,
-    true
-)
+        return (is_in_religious_settlement and has_bad_trait and not_pagan), context:character()
+    end)
 
 
-cm:add_listener(
-    "shield_scholar_educatedTrigger",
+trait_listener(
+    "shield_scholar_educated",
     "CharacterTurnStart",
     function(context)
         --needs to have a dad
@@ -103,30 +127,18 @@ cm:add_listener(
         local is_correct_age = (context:character():age() > 10) and  (context:character():age() < 20)
         --needs to be a potential general/governor
         local period_accurate_sexism = context:character():is_male()
-        return is_correct_age and period_accurate_sexism
+        return (is_correct_age and period_accurate_sexism), context:character()
         --return has_daddy_to_pay_tuition_money and is_correct_age and period_accurate_sexism--]]
-    end,
-    function(context)
-        apply_trait_dilemma_for_character(context:character(), "shield_scholar_educated")
-    end,
-    true
-)
+    end)
 
 
 ---doubled up one
-cm:add_listener(
+    trait_listener(
     "shield_scholar_wiseTrigger",
     "ResearchCompleted",
     function(context)
-
-    return context:faction():faction_leader():has_trait("shield_scholar_educated") and context:faction():faction_leader():age() > 40
-
-    end,
-    function(context)
-        apply_trait_dilemma_for_character(context:faction():faction_leader(), "shield_scholar_wise")
-    end,
-    true
-)
+        return (context:faction():faction_leader():has_trait("shield_scholar_educated") and context:faction():faction_leader():age() > 40), context:faction():faction_leader()
+    end)
 
 --ends
 
