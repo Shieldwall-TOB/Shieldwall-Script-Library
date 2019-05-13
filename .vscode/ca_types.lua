@@ -267,6 +267,7 @@
 --CA REGION LIST
 --# assume CA_REGION_LIST.num_items: method() --> number
 --# assume CA_REGION_LIST.item_at: method(i: number) --> CA_REGION
+--# assume CA_REGION_LIST.is_empty: method() --> boolean
 
 
 --CA GARRISON RESIDENCE
