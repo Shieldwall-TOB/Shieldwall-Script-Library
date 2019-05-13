@@ -1,9 +1,13 @@
 local pkm = _G.pkm
+ALREADY_TRIGGERED_TRAITS = {} --:map<string, map<string, boolean>>
+TRAITS_OUT_FOR_TRIGGER = {} --:map<string, boolean>
+
 --v function(t: any)
 local function log(t)
     dev.log(tostring(t), "TRT")
 end
 
+--sets up a character to recieve a trait dilemma or incident.
 --v function(char: CA_CHAR, trait_name: string)
 local function apply_trait_dilemma_for_character(char, trait_name)
     if not char:faction():is_human() then
@@ -12,35 +16,76 @@ local function apply_trait_dilemma_for_character(char, trait_name)
     if (not char:has_trait(trait_name)) and (not char:has_trait(trait_name.."_flag")) then
         cm:force_add_trait(dev.lookup(char) ,trait_name.."_flag", false)
         dev.log("Added trait trigger ["..trait_name.."] to character ["..tostring(char:command_queue_index()).."] from faction ["..char:faction():name().."] ")
-        if cm:model():world():whose_turn_is_it() == char:faction():name() and (not cm:get_saved_value("trait_trigger_last_turn") == cm:model():turn_number()) then
-            cm:trigger_dilemma(char:faction():name(), trait_name.."_choice", true)
-            cm:set_saved_value("trait_trigger_last_turn", cm:model():turn_number())
-        end
+        TRAITS_OUT_FOR_TRIGGER[trait_name] = true
     end
 end
 
---v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR))
-local function trait_listener(trait_name, event, conditional_function)
+--v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR), on_trigger: (function(context: WHATEVER))?)
+local function trait_listener(trait_name, event, conditional_function, on_trigger)
+    local flag = trait_name.."_flag"
+    ALREADY_TRIGGERED_TRAITS[flag] = ALREADY_TRIGGERED_TRAITS[flag] or {}
     cm:add_listener(
         "TraitTrigger"..trait_name,
         event,
-        true,
+        function(context)
+            return TRAITS_OUT_FOR_TRIGGER[trait_name] ~= true
+        end,
         function(context)
             log("Evaluating trait validity ".. trait_name)
             local valid, char = conditional_function(context)
+            if ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] then
+                log("already occured for character")
+                if char:has_trait(flag) then
+                    cm:force_remove_trait(dev.lookup(char), flag)
+                end
+                return
+            end
             if valid then
                 log("Trait dilemma trigger is valid!")
                 apply_trait_dilemma_for_character(char, trait_name)
             else
                 log("invalid trigger")
-                if char:has_trait(trait_name.."_flag") then
-                    cm:force_remove_trait(dev.lookup(char), trait_name.."_flag")
+                if char:has_trait(flag) then
+                    cm:force_remove_trait(dev.lookup(char), flag)
                 end
             end
         end,
         true
         
     )
+    --removes flags after a trait choice so that you don't get spammed with the same one.
+    cm:add_listener(
+        "DilemmaChoiceMadeEventRemoveFlagsTraitName",
+        "DilemmaChoiceMadeEvent",
+        function(context)
+            return context:dilemma() == trait_name.."_choice"
+        end,
+        function(context)
+            for i = 0, context:faction():character_list():num_items() - 1 do
+                local char = context:faction():character_list():item_at(i)
+                if char:has_trait(flag) then
+                    cm:force_remove_trait(dev.lookup(char), flag) --ensures we don't repeat the same event over and over
+                    ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] = true --saves the fact its happened for this character
+                    TRAITS_OUT_FOR_TRIGGER[trait_name] = false -- lets the event happen to other characters again
+                end
+            end
+        end, true)
+    cm:add_listener(
+        "IncidentOccuredEventRemoveFlags",
+        "IncidentOccuredEvent",
+        function(context)
+            return context:dilemma() == trait_name.."_event"
+        end,
+        function(context)
+            for i = 0, context:faction():character_list():num_items() - 1 do
+                local char = context:faction():character_list():item_at(i)
+                if char:has_trait(flag) then
+                    cm:force_remove_trait(dev.lookup(char), flag) --ensures we don't repeat the same event over and over
+                    ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] = true --saves the fact its happened for this character
+                    TRAITS_OUT_FOR_TRIGGER[trait_name] = false -- lets the event happen to other characters again
+                end
+            end
+        end, true)
 
 end
 
@@ -78,24 +123,7 @@ end
 
 
 dev.first_tick(function(context)
---removes flags after a trait choice so that you don't get spammed with the same one.
-    cm:add_listener(
-    "DilemmaChoiceMadeEventRemoveFlags",
-    "DilemmaChoiceMadeEvent",
-    function(context)
-        return ( not not context:dilemma():find("_choice"))
-    end,
-    function(context)
-        local trait = context:dilemma():gsub("_choice", "_flag")
-        for i = 0, context:faction():character_list():num_items() - 1 do
-            local char = context:faction():character_list():item_at(i)
-            if char:has_trait(trait) then
-                cm:force_remove_trait(dev.lookup(char), trait) --ensures we don't repeat the same event over and over
-            end
-        end
-    end,
-    true
-    )
+
 
 
 trait_listener(
@@ -173,3 +201,18 @@ cm:add_listener(
 
 
 end)
+
+
+cm:register_loading_game_callback(
+    function(context)
+        TRAITS_OUT_FOR_TRIGGER = cm:load_value("TRAITS_OUT_FOR_TRIGGER", {}, context);
+		ALREADY_TRIGGERED_TRAITS = cm:load_value("ALREADY_TRIGGERED_TRAITS", {}, context);
+	end
+);
+
+cm:register_saving_game_callback(
+	function(context)
+        cm:save_value("TRAITS_OUT_FOR_TRIGGER", TRAITS_OUT_FOR_TRIGGER, context);
+        cm:save_value("ALREADY_TRIGGERED_TRAITS", ALREADY_TRIGGERED_TRAITS, context);
+	end
+);
