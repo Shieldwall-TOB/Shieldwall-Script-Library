@@ -418,7 +418,8 @@ cm:add_listener(
     end,
     function(context)
         local character =  pkm:get_character(context:character():command_queue_index())
-        character:update_title()
+        character:update_title(false)
+        character:update_character_friendship()
     end,
     true)
 

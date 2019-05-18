@@ -17,6 +17,7 @@ return {
     food_storage_percentage = 0.5, -- percentage of food stored at the end of each turn
     season_bundle_prefix = "shield_season_", --bundle prefix from effect_bundles_tables
     charm_title_prefix = "shield_title_", --bundle prefix from effect_bundles_tables
+    cross_loyalty_result_prefix = "shield_friendship_", --trait key prefix for friendship traits.
     charm_leader_title_prefix = "shield_leader_titles_", --bundle prefix from effect_bundles_tables
     titles_localisation = function() -- don't touch this. 
         if _G.traits_localized_content == nil then

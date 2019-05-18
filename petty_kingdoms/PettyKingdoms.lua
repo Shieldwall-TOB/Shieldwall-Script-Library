@@ -228,7 +228,7 @@ local function FirstTickObjectModel()
         end
         for cqi_as_string, char_det in pairs(fact_det:characters()) do
             char_det:check_start_pos_estates()
-            char_det:update_title()
+            char_det:update_title(true)
             if char_det:create_unit_effects_manager() then
                 char_det:get_unit_effects_manager():evaluate_force()
             end

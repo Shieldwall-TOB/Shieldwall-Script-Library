@@ -31,6 +31,14 @@ function character_detail.add_faction_leader_title_override(faction_key)
     character_detail._leaderTitleOverrideFactions[faction_key] = true
 end
 
+character_detail._traitToTraitCrossLoyalties = {} --:map<string, map<string, number>>
+--v function(trait_key: string, to_trait: string, effect_bonus_value: number)
+function character_detail.add_trait_cross_loyalty_to_trait(trait_key, to_trait, effect_bonus_value)
+    character_detail._traitToTraitCrossLoyalties[trait_key] = character_detail._traitToTraitCrossLoyalties[trait_key] or {}
+    character_detail._traitToTraitCrossLoyalties[trait_key][to_trait] = effect_bonus_value
+end
+
+
 ----------------------------
 ----OBJECT CONSTRUCTOR------
 ----------------------------
@@ -154,8 +162,19 @@ end
 -----TITLES AND ESTATES-----
 ----------------------------
 
---v function(self: CHARACTER_DETAIL)
-function character_detail.title_for_faction_leader(self)
+--v function(self: CHARACTER_DETAIL) --> number
+function character_detail.get_title_points(self)
+    return self._titlePoints
+end
+
+--v function(self: CHARACTER_DETAIL) --> string
+function character_detail.current_title(self)
+    return self._title
+end
+
+
+--v function(self: CHARACTER_DETAIL, first_turn: boolean)
+function character_detail.title_for_faction_leader(self, first_turn)
     local level = self._factionDetail:kingdom_level()
     local character = dev.get_faction(self:faction_detail():name()):faction_leader()
     local title --:string
@@ -169,9 +188,11 @@ function character_detail.title_for_faction_leader(self)
     else
         title = CONST.charm_leader_title_prefix.."king"
     end
-    if title then
-        cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
-        cm:force_add_trait(dev.lookup(self:cqi()), title, true)
+    if title and not (self._title == title) then
+        if character:has_trait(self._title) then
+            cm:force_remove_trait(dev.lookup(self:cqi()), self._title)
+        end
+        cm:force_add_trait(dev.lookup(self:cqi()), title, not first_turn)
         self._title = title
     end
 end
@@ -181,21 +202,69 @@ function character_detail.set_home_estate(self, region)
     self._homeEstate = region
 end
 
---v function(self: CHARACTER_DETAIL)
-function character_detail.update_title(self)
+--v function(self: CHARACTER_DETAIL, first_turn: boolean)
+function character_detail.update_title(self, first_turn)
     local character = dev.get_character(self:cqi())
     if character == nil then
-        self:log("character detail ["..self._cqi.."] points to a nill faction leader!")
+        self:log("character detail ["..self._cqi.."] points to a nil character!")
         return
     end
-    if character:is_heir() or character:is_faction_leader() then
-        self:title_for_faction_leader()
+    if character:is_faction_leader() then
+        self:title_for_faction_leader(first_turn)
         return
     end
-    --TODO add title points to the character, incrementing their title.
+    if self._homeEstate == "no_estate" then
+        return
+    end
+    while self._numEstates/3 > self._titlePoints and self._titlePoints <= 3 do
+        self._titlePoints = self._titlePoints + 1
+    end
+    local title = CONST.charm_title_prefix .. self._homeEstate .. "_" .. (self._titlePoints-1) 
+    if title and not (self._title == title) then
+        if character:has_trait(self._title) then
+            cm:force_remove_trait(dev.lookup(character), self._title)
+        end
+        cm:force_add_trait(dev.lookup(self:cqi()), title, not first_turn)
+        self._title = title
+    end
 end
 
-
+--v function(self: CHARACTER_DETAIL)
+function character_detail.update_character_friendship(self)
+    --friendship traits apply a loyalty modifier based on how the traits of the character and the traits of the king like eachother.
+    local character = dev.get_character(self:cqi())
+    if character == nil then
+        --this character is *probably* dead, lets just abort. 
+        return
+    end
+    if character:is_faction_leader() then
+        --this character doesn't need a friendship trait, they are the king!
+        return
+    end
+    local old_friendship = self._friendshipLevel
+    local king = character:faction():faction_leader()
+    local friendship = 2 --:number
+    --good candidate for testing this clock vs. save usage. Might be worth caching if more traits added. 
+    for trait_key, relation_pairs in pairs(character_detail._traitToTraitCrossLoyalties) do
+        if character:has_trait(trait_key) then
+            --we have a trait which has cross loyalty effects.
+            for trait_key, change_value in pairs(relation_pairs) do
+                --if the king has the trait that is cross loyalty, apply the change
+                if king:has_trait(trait_key) then
+                    friendship = friendship + change_value
+                end
+            end
+        end
+    end
+    local friendship = dev.clamp(friendship, 0, 4)
+    if old_friendship ~= friendship and character:has_trait(CONST.cross_loyalty_result_prefix..old_friendship) then
+        cm:force_remove_trait(dev.lookup(character), CONST.cross_loyalty_result_prefix..old_friendship)
+    end
+    if not character:has_trait(CONST.cross_loyalty_result_prefix..friendship) then
+        cm:force_add_trait(dev.lookup(character), CONST.cross_loyalty_result_prefix..friendship, (friendship ~= 2)) 
+        --only show the trait being added when it is not 2, which is "indifferent"
+    end
+end
 
 
 ------------------------------------
@@ -227,5 +296,6 @@ return {
     load = character_detail.load,
     --Content API
     set_title_key_for_sc = character_detail.set_title_key_for_sc,
-    add_faction_leader_title_override = character_detail.add_faction_leader_title_override
+    add_faction_leader_title_override = character_detail.add_faction_leader_title_override,
+    add_trait_cross_loyalty_to_trait = character_detail.add_trait_cross_loyalty_to_trait
 }

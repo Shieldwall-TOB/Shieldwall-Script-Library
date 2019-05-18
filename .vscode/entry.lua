@@ -83,13 +83,15 @@ local ok, err = pcall(function()
     require("shieldwall/content/TitlesSystemContent")
     --require("shieldwall/features/DecreeFeatures")
     require("shieldwall/features/SuppliesFeatures")
+
+    require("shieldwall/content/CrossLoyaltyTraits")
     require("shieldwall/features/TraitsTriggers")
     --require("shieldwall/content/EstatesContent")
     --require("shieldwall/features/EstateFeatures")
     --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
-
+    require("shieldwall/ui_features/TitlesUI")
 end)
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")

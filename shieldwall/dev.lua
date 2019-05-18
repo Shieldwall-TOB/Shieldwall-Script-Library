@@ -366,6 +366,19 @@ cm:register_ui_created_callback( function()
     )
 end)
 
+--v [NO_CHECK] function(item:number, min:number?, max:number?) --> number
+function dev_clamp(item, min, max)
+    local ret = item 
+    if max and ret > max then
+        ret = max
+    elseif min and ret < min then
+        ret = min
+    end
+    return ret
+end
+
+
+
 --v function(call: function(CA_REGION) --> string)
 local function dev_add_settlement_select_log_call(call)
     table.insert(settlement_selected_log_calls, call)
@@ -638,6 +651,7 @@ return {
     lookup = char_lookup_str,
     region_list = dev_region_list,
     faction_list = dev_faction_list,
+    clamp = dev_clamp,
     add_settlement_selected_log = dev_add_settlement_select_log_call,
     add_character_selected_log = dev_add_character_select_log_call,
     as_read_only = dev_readonlytable,

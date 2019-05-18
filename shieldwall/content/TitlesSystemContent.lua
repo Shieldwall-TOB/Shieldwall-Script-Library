@@ -3834,7 +3834,7 @@ traits_localized_content = {
 { ["loc"] = "Uchelwr of Suthsae", ["trait_key"] = "character_trait_levels_onscreen_name_shield_title_vik_sea_suthsae_welsh_0", ["nada"] = "1" },
 { ["loc"] = "Tywsog of Suthsae", ["trait_key"] = "character_trait_levels_onscreen_name_shield_title_vik_sea_suthsae_welsh_1", ["nada"] = "1" },
 { ["loc"] = "Teyrn of Suthsae", ["trait_key"] = "character_trait_levels_onscreen_name_shield_title_vik_sea_suthsae_welsh_2", ["nada"] = "1" },
-{ ["loc"] = "No Titles", ["trait_key"] = "no_title", ["nada"] = "1"}
+{ ["loc"] = "Of Common Birth", ["trait_key"] = "no_title", ["nada"] = "1"}
 } --:vector<{loc: string, trait_key: string, nada: string}>
 organized_traits_localized_content = {} --:map<string, string>
 for i = 1, #traits_localized_content do
