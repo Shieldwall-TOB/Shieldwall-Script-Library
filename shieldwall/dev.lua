@@ -490,15 +490,17 @@ local function dev_faction_list()
     return cm:model():world():faction_list()
 end
 
---v [NO_CHECK] function(t: table) --> table
+--v [NO_CHECK] function(t: table)
 local function dev_readonlytable(t)
-    return setmetatable({}, {
-        __index = table,
-        __newindex = function(table, key, value)
-                        error("Attempt to modify read-only table")
-                    end,
-        __metatable = false
-    });
+    local mt = getmetatable(t)
+    if not mt then
+        MODLOG("Tried to make a table read only, but the table has a private metatable!", "DEV")
+        return
+    end
+    mt.__newindex = function(t, key, value)
+                    error("Attempt to modify read-only table")
+                end
+    setmetatable(t, mt)
 end
 
 --v function (callback: function(), timer: number?, name: string?)
