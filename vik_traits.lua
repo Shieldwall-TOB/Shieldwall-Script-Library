@@ -10,7 +10,7 @@
 
 function Add_Special_Traits_Listeners()
 output("#### Adding Additional Traits Listeners ####")
-
+--[[
 	cm:add_listener(
 		"AdditionalTraits",
 		"CharacterTurnStart",
@@ -25,8 +25,8 @@ output("#### Adding Additional Traits Listeners ####")
 		function(context) return context:character():faction():is_human() == true end,
 		function(context) EstateGivenTraits(context) end,
 		true
-	);
-	
+	);--]]
+	--[[
 	cm:add_listener(
 		"RemoveTraits",
 		"CharacterTurnStart",
@@ -41,7 +41,7 @@ output("#### Adding Additional Traits Listeners ####")
 		function(context) return context:character():faction():is_human() == true end,
 		function(context) GiveEventTraits(context) end,
 		true
-	);
+	);]]
 	
 	cm:add_listener(
 		"GovernorGeneralTraits",
@@ -1069,10 +1069,20 @@ function GovernorGeneralTraits (context)
 	end
 	
 	-- remove hidden general trait, add lost trait
-	if context:character():has_trait("vik_general_hidden")
-	and not (char_is_general_with_army(context:character()) and not char_is_governor(context:character())) then
-		cm:force_remove_trait("character_cqi:"..context:character():command_queue_index(), "vik_general_hidden")
-		cm:force_add_trait("character_cqi:"..context:character():command_queue_index(), general_lost_trait, true)
+	for i = 0,1 do
+		if context:character():has_trait("vik_general_hidden") and (not char_is_governor(context:character())) then
+			if (not char_is_general_with_army(context:character())) then  --not a general anymore.
+				if character:has_trait("shield_trait_general_"..i) then
+					cm:force_remove_trait("character_cqi:"..context:character():command_queue_index(), "shield_trait_general_"..i)
+				end
+				cm:force_add_trait("character_cqi:"..context:character():command_queue_index(), general_lost_trait, true)
+			elseif (context:character():military_force():unit_list():num_items() < (12*i)) --if we have less than 12 units and i is 1, we should remove a trait.
+			or (context:character():military_force():unit_list():num_items() >= 12 and (i == 0)) then --if we have more than 12 units and i is 0, we should remove a trait.
+				if character:has_trait("shield_trait_general_"..trait_num) then
+					cm:force_remove_trait("character_cqi:"..context:character():command_queue_index(), "shield_trait_general_"..trait_num)
+				end
+			end
+		end
 	end
 	
 	-- add governor trait
@@ -1094,7 +1104,28 @@ function GovernorGeneralTraits (context)
 		if context:character():has_trait(general_lost_trait) then
 			cm:force_remove_trait("character_cqi:"..context:character():command_queue_index(), general_lost_trait)
 		end
-		cm:force_add_trait("character_cqi:"..context:character():command_queue_index(), "vik_general_hidden", true)
+		local num_men = context:character():military_force():unit_list():num_items()
+		local trait_num = 0
+		if num_men >= 12 then
+			trait_num = 1
+		end
+		cm:force_add_trait("character_cqi:"..context:character():command_queue_index(), "shield_trait_general_"..trait_num, true)
+	end
+
+	if context:character():loyalty() >= 5 then
+		if context:character():has_trait("shield_trait_disloyal") then
+			cm:force_remove_trait("character_cqi:"..context:character():command_queue_index(), "shield_trait_disloyal")
+		end
+		if not context:character():has_trait("shield_trait_loyal") then
+			cm:force_add_trait("character_cqi:"..context:character():command_queue_index(), "shield_trait_loyal", false)
+		end
+	else
+		if context:character():has_trait("shield_trait_loyal") then
+			cm:force_remove_trait("character_cqi:"..context:character():command_queue_index(), "shield_trait_loyal")
+		end
+		if not context:character():has_trait("shield_trait_disloyal") then
+			cm:force_add_trait("character_cqi:"..context:character():command_queue_index(), "shield_trait_disloyal", false)
+		end
 	end
 
 end

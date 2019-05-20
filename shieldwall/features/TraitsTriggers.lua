@@ -20,7 +20,7 @@ local function apply_trait_dilemma_for_character(char, trait_name)
     end
 end
 
---v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR), on_trigger: (function(context: WHATEVER))?)
+--v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR!), on_trigger: (function(cqi: CA_CQI,context: WHATEVER))?)
 local function trait_listener(trait_name, event, conditional_function, on_trigger)
     local flag = trait_name.."_flag"
     ALREADY_TRIGGERED_TRAITS[flag] = ALREADY_TRIGGERED_TRAITS[flag] or {}
@@ -33,21 +33,30 @@ local function trait_listener(trait_name, event, conditional_function, on_trigge
         function(context)
             log("Evaluating trait validity ".. trait_name)
             local valid, char = conditional_function(context)
-            if ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] then
-                log("already occured for character")
-                if char:has_trait(flag) then
-                    cm:force_remove_trait(dev.lookup(char), flag)
+            if char:faction():is_human() then
+                if ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] then
+                    log("already occured for character")
+                    if char:has_trait(flag) then
+                        cm:force_remove_trait(dev.lookup(char), flag)
+                    end
+                    return
                 end
-                return
-            end
-            if valid then
-                log("Trait dilemma trigger is valid!")
-                apply_trait_dilemma_for_character(char, trait_name)
+                if valid then
+                    log("Trait dilemma trigger is valid!")
+                    apply_trait_dilemma_for_character(char, trait_name)
+                else
+                    log("invalid trigger")
+                    if char:has_trait(flag) then
+                        cm:force_remove_trait(dev.lookup(char), flag)
+                    end
+                end
+            elseif valid and cm:random_number(25) > 20 then
+                log("ai chance passed")
+                cm:force_add_trait(dev.lookup(char),trait_name, false)
+            elseif valid then
+                log("ai chance failed")
             else
                 log("invalid trigger")
-                if char:has_trait(flag) then
-                    cm:force_remove_trait(dev.lookup(char), flag)
-                end
             end
         end,
         true
@@ -64,6 +73,10 @@ local function trait_listener(trait_name, event, conditional_function, on_trigge
             for i = 0, context:faction():character_list():num_items() - 1 do
                 local char = context:faction():character_list():item_at(i)
                 if char:has_trait(flag) then
+                    if on_trigger then
+                        --# assume on_trigger: function(cqi: CA_CQI,context: WHATEVER)
+                        on_trigger(char:command_queue_index(), context)
+                    end
                     cm:force_remove_trait(dev.lookup(char), flag) --ensures we don't repeat the same event over and over
                     ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] = true --saves the fact its happened for this character
                     TRAITS_OUT_FOR_TRIGGER[trait_name] = false -- lets the event happen to other characters again
@@ -80,6 +93,10 @@ local function trait_listener(trait_name, event, conditional_function, on_trigge
             for i = 0, context:faction():character_list():num_items() - 1 do
                 local char = context:faction():character_list():item_at(i)
                 if char:has_trait(flag) then
+                    if on_trigger then
+                        --# assume on_trigger: function(cqi: CA_CQI,context: WHATEVER)
+                        on_trigger(char:command_queue_index(), context)
+                    end
                     cm:force_remove_trait(dev.lookup(char), flag) --ensures we don't repeat the same event over and over
                     ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] = true --saves the fact its happened for this character
                     TRAITS_OUT_FOR_TRIGGER[trait_name] = false -- lets the event happen to other characters again
@@ -219,6 +236,61 @@ function count_brute_traits_on_character(char)
     return ret
 end
 
+--how many tyrant traits does this character have?
+--v function(char: CA_CHAR) --> number
+function count_tyrant_traits_on_character(char)
+    local tyrant_traits = {
+        "shield_tyrant_subjugator",
+        "shield_tyrant_oppressor",
+        "shield_tyrant_treasonous",
+        "shield_tyrant_legendary_tyrant"
+    } --:vector<string>
+    local ret = 0 --:number
+    for i = 1, #tyrant_traits do
+        if char:has_trait(tyrant_traits[i]) then
+            ret = ret + 1
+        end
+    end
+    return ret
+end
+
+--how many heathen traits does this character have?
+--v function(char: CA_CHAR) --> number
+function count_heathen_traits_on_character(char)
+    local heathen_traits = {
+        "shield_heathen_old_ways",
+        "shield_heathen_sailor",
+        "shield_heathen_legendary_bearskin",
+        "shield_heathen_legendary_wolfskin",
+        "shield_heathen_beast_slayer"
+    } --:vector<string>
+    local ret = 0 --:number
+    for i = 1, #heathen_traits do
+        if char:has_trait(heathen_traits[i]) then
+            ret = ret + 1
+        end
+    end
+    return ret
+end
+
+--how many heathen traits does this character have?
+--v function(char: CA_CHAR) --> number
+function count_saint_traits_on_character(char)
+    local saint_traits = {
+        "shield_faithful_charitable",
+        "shield_faithful_repentent",
+        "shield_faithful_friend_of_the_church",
+        "shield_faithful_legendary_saint"
+    } --:vector<string>
+    local ret = 0 --:number
+    for i = 1, #saint_traits do
+        if char:has_trait(saint_traits[i]) then
+            ret = ret + 1
+        end
+    end
+    return ret
+end
+
 --what is the distance between two points?
 --v function(ax: number, ay: number, bx: number, by: number) --> number
 local function distance_2D(ax, ay, bx, by)
@@ -270,8 +342,44 @@ function is_any_church_nearby(char)
     return false
 end
 
+--v function(character: CA_CHAR) --> boolean
+function does_char_region_have_saint_building(character)
+    local saints = {"vik_nunnaminster",
+    "vik_school_ros",
+    "vik_scoan_abbey",
+    "vik_st_brigit",
+    "vik_st_ciaran",
+    "vik_st_columbe",
+    "vik_st_cuthbert",
+    "vik_st_dewi",
+    "vik_st_edmund",
+    "vik_st_patraic",
+    "vik_st_ringan",
+    "vik_st_swithun" 
+    }--:vector<string>
+    local region = character:region()
+    if region:is_null_interface() then
+        return false
+    else
+        for i = 1, #saints do
+            if region:building_superchain_exists(saints[i]) then
+                return true
+            end
+        end
+    end
+    return false
+end
 
 
+
+--v function(char: CA_CHAR) --> boolean
+function is_char_from_viking_faction(char)
+    local viking_sc = {
+        vik_sub_cult_viking_gael = true,
+        vik_sub_cult_anglo_viking = true
+    } --:map<string, boolean>
+    return not not viking_sc[char:faction():subculture()]
+end
 dev.first_tick(function(context)
 
     trait_listener(
@@ -281,7 +389,7 @@ dev.first_tick(function(context)
             --must be in a religious settlement.
             local region = context:character():region()
             if region:is_null_interface() or region:owning_faction():name() ~= context:character():faction():name() then
-                return false, nil
+                return false, context:character()
             end
             local pop_manager = pkm:get_region(region:name()):province_detail():get_population_manager()
             local is_in_religious_settlement =  (pop_manager:get_pop_of_caste("monk") > 30)
@@ -291,8 +399,11 @@ dev.first_tick(function(context)
             local not_pagan = not is_char_or_char_king_pagan(context:character())
             return (is_in_religious_settlement and has_bad_trait and not_pagan), context:character()
         end,
-        function(context)
-            remove_sinful_traits_for_repentence(context:character())   
+        function(cqi, context)
+            local char = dev.get_character(cqi)
+            if context:choice() == 0 then
+                remove_sinful_traits_for_repentence(char)   
+            end
         end)
 
     trait_listener(
@@ -330,21 +441,22 @@ dev.first_tick(function(context)
             "shield_noble_princely",
             "CharacterTurnStart",
             function(context)
+                local char = context:character() --:CA_CHAR
                 if context:character():is_heir() and context:character():age() < 20 then
-                    return true, context:character()
+                    return true, char
                 else
-                    return false, nil
+                    return false, char
                 end
             end)
     trait_listener(
         "shield_scholar_lawyer",
         "CharacterTurnStart",
         function(context)
-            local char = context:character()
-            if char:has_region() and char:age() > 30 and char:has_trait("shield_scholar_educated") and does_region_have_court(char:region()) then
+            local char = context:character() --:CA_CHAR
+            if (not char:region():is_null_interface()) and char:age() > 30 and char:has_trait("shield_scholar_educated") and does_region_have_court(char:region()) then
                 return true, char
             else
-                return false, nil
+                return false, char
             end
         end
     )
@@ -364,6 +476,14 @@ dev.first_tick(function(context)
     end)
 
     trait_listener(
+        "shield_noble_proud",
+        "GarrisonOccupiedEvent",
+        function(context)
+            local char = context:character() --:CA_CHAR
+            return (context:garrison_residence():region():is_province_capital() and char:gravitas() > 7), char
+        end)
+
+    trait_listener(
         "shield_noble_high_born",
         "CharacterTurnStart",
         function(context)
@@ -373,7 +493,7 @@ dev.first_tick(function(context)
             elseif char:family_member():has_father() and char:family_member():father():has_trait("shield_noble_high_born") then
                 return true, char
             end
-            return false, nil
+            return false, char
         end
     )
 
@@ -381,8 +501,9 @@ dev.first_tick(function(context)
         "shield_tyrant_subjugator",
         "GarrisonOccupiedEvent",
         function(context)
-            local char = context:character()
-            local chance = cm:random_number(100) < 30 --30%
+            local char = context:character() --:CA_CHAR
+            local chance = cm:random_number(100) < 50 --50%
+            local own_allegience_region = (context:region():majority_religion() == char:faction():state_religion())
             return chance and (not does_char_have_anti_tyrant_or_brute_traits(char)), char
         end
     )
@@ -391,7 +512,7 @@ dev.first_tick(function(context)
         "shield_brute_violent",
         "SettlementSacked",
         function(context)
-            local char = context:character()
+            local char = context:character() --:CA_CHAR
             local chance = cm:random_number(100) < 30 --30%
             return chance and (not does_char_have_anti_tyrant_or_brute_traits(char)), char
         end
@@ -404,6 +525,62 @@ dev.first_tick(function(context)
             return count_brute_traits_on_character(context:character()) >= 2, context:character()
         end
     )
+
+    trait_listener(
+        "shield_heathen_sailor",
+        "CharacterTurnStart",
+        function(context)
+            local chance = 3 --:number
+            local char = context:character() --:CA_CHAR
+            if dev.is_char_normal_general(char) and char:turns_at_sea() then
+                chance = chance * char:turns_at_sea()
+                if is_char_from_viking_faction(char) then
+                    chance = chance*2
+                end
+                return cm:random_number(100) < chance, char
+            else
+                return false, char
+            end
+        end)
+
+    trait_listener(
+        "shield_heathen_old_ways",
+        "CharacterTurnStart",
+        function(context)
+            local chance = 2 --:number
+            local char = context:character() --:CA_CHAR
+            if not is_char_from_viking_faction(char) then
+                return false, char
+            end
+            if not char:faction():is_human() then
+                return cm:random_number(100) > 10, char
+            end
+            local list = dev.faction_list()
+            for i = 0, list:num_items() - 1 do
+                if char:faction():name() ~= list:item_at(i):name() then
+                    if char:faction():is_trading_with(list:item_at(i)) then
+                        chance = chance + 4
+                    end
+                end
+            end
+            local list = char:faction():character_list()
+            for i = 0, list:num_items() - 1 do 
+                if not (list:item_at(i):command_queue_index() == char:command_queue_index()) then
+                    chance = chance + count_heathen_traits_on_character(list:item_at(i))
+                end
+            end
+            return cm:random_number(100) < chance, char
+        end
+    )
+
+    trait_listener(
+        "shield_faithful_legendary_saint",
+        "CharacterTurnStart",
+        function(context)
+            local char = context:character() --:CA_CHAR
+            local bad_trait_sum = count_brute_traits_on_character(char) + count_heathen_traits_on_character(char) + count_tyrant_traits_on_character(char)
+            return does_char_region_have_saint_building(char) and count_saint_traits_on_character(char) > 2 and bad_trait_sum == 0, char
+        end )
 
 
 --ends

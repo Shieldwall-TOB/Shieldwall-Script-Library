@@ -2,6 +2,7 @@ local pkm = _G.pkm
 POP_CACHE = {}
 POP_CACHE.current_mercenary_event_region = {} --:map<string, string>
 POP_CACHE.mercenary_event_failsafe_turn = {} --:map<string, number>
+POP_CACHE.characters = {} --:map<string, map<string, number>>
 --
 cm:add_listener(
     "WritingDownShit",
@@ -100,8 +101,48 @@ end, function(context)
 end, true)
 
 
+cm:add_listener("ReplenCharacterTurnEnd", "CharacterTurnEnd", function(context) return context:character():faction():is_human() and dev.is_char_normal_general(context:character()) end,
+function(context) 
+    local force = context:character():military_force()
+    POP_CACHE.characters[tostring(context:character():command_queue_index())] = {}
+    local cache_character = POP_CACHE.characters[tostring(context:character():command_queue_index())]
+    for i=0,force:unit_list():num_items()-1 do
+        cache_character[force:unit_list():item_at(i):unit_key()] = cache_character[force:unit_list():item_at(i):unit_key()] or 0
+        cache_character[force:unit_list():item_at(i):unit_key()] = cache_character[force:unit_list():item_at(i):unit_key()] + force:unit_list():item_at(i):percentage_proportion_of_full_strength()
+    end
+end,
+true)
 
-
+cm:add_listener("ReplenCharacterTurnEnd", "CharacterTurnStart", function(context) 
+    return (context:character():faction():is_human() and 
+    dev.is_char_normal_general(context:character()) and 
+    (not not POP_CACHE.characters[tostring(context:character():command_queue_index())]) and
+    (not context:character():region():is_null_interface()))
+end,
+function(context) 
+    local force = context:character():military_force()
+    local fake_cache = {} --:map<string, number>
+    for i=0,force:unit_list():num_items()-1 do
+        fake_cache[force:unit_list():item_at(i):unit_key()] = fake_cache[force:unit_list():item_at(i):unit_key()] or 0
+        fake_cache[force:unit_list():item_at(i):unit_key()] = fake_cache[force:unit_list():item_at(i):unit_key()] + force:unit_list():item_at(i):percentage_proportion_of_full_strength()
+    end
+    local cache_character = POP_CACHE.characters[tostring(context:character():command_queue_index())]
+    for key, value in pairs(fake_cache) do
+        if cache_character[key] then
+            local old_q = cache_character[key]
+            local new_q = fake_cache[key]
+            if new_q > old_q then
+                local replen_q = new_q - old_q
+                --this is the percentage of a full unit of that type we've gained during the end turn.
+                local pm = pkm:get_faction(context:character():faction():name()):get_province(context:character():region():province_name()):get_population_manager()
+                pm:apply_replenishment_cost(key, replen_q)
+            end
+        else
+            
+        end
+    end
+end,
+true)
 
 
 cm:register_loading_game_callback(

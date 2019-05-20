@@ -234,6 +234,7 @@
 --# assume CA_FACTION.state_religion: method() --> string
 --# assume CA_FACTION.state_religion_percentage: method() --> number
 --# assume CA_FACTION.mercenary_pool: method() --> WHATEVER
+--# assume CA_FACTION.is_trading_with: method(faction: CA_FACTION) --> boolean
 
 -- FACTION LIST
 --# assume CA_FACTION_LIST.num_items: method() --> number
@@ -347,6 +348,7 @@
 --# assume CA_CHAR.is_minister: method() --> boolean
 --# assume CA_CHAR.is_male: method() --> boolean
 --# assume CA_CHAR.character_type: method(string)
+--# assume CA_CHAR.turns_at_sea: method() --> int
 
 --CA CHAR LIST
 --# assume CA_CHAR_LIST.item_at: method(i: number) --> CA_CHAR
@@ -390,6 +392,7 @@
 --# assume CA_UNIT.has_force_commander: method() --> boolean
 --# assume CA_UNIT.force_commander: method() --> CA_CHAR
 --# assume CA_UNIT.military_force: method() --> CA_FORCE
+--# assume CA_UNIT.percentage_proportion_of_full_strength: method() --> number
 
 --CA UNIT LIST
 --# assume CA_UNIT_LIST.num_items: method() --> number

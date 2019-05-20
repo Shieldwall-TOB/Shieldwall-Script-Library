@@ -102,10 +102,11 @@ end
 
 --// sets the size of each unit according to their unit key
 pop_manager._unitPopSizes = {} --:map<string, number>
-pop_manager._unitCastes = {} --:map<string, string>
+pop_manager._unitCastes = {} --:map<string, POP_CASTE>
 --v function(unit: string, caste: POP_CASTE, num_men: number)
 function pop_manager.set_unit_man_count_and_caste_for_population(unit, caste, num_men)
     pop_manager._unitPopSizes[unit] = num_men
+    pop_manager._unitCastes[unit] = caste
 end
 
 
@@ -304,6 +305,18 @@ function pop_manager.modify_population(self, caste, quantity, UICause, block_bun
     self:update_population_bundle(caste)
 end
 
+--v function(self: POP_MANAGER, unit: string, percent_growth: number)
+function pop_manager.apply_replenishment_cost(self, unit, percent_growth)
+    local caste = pop_manager._unitCastes[unit]
+    local size = pop_manager._unitPopSizes[unit]
+    if caste and size then
+        self:log("Applying replenishment cost of unit ["..unit.."] for percent growth ["..percent_growth.."], size ["..(-1/100)*math.ceil(size*percent_growth).."] in caste ["..caste.."] ")
+        self:modify_population(caste, (-1/100)*math.ceil(size*percent_growth), "Replenishment", false)
+    else
+        self:log("WARNING: Caste or size is missing for replenished unit ["..unit.."] ")
+    end
+
+end
 
 --v function(self: POP_MANAGER)
 function pop_manager.evaluate_pop_cap(self)
