@@ -164,6 +164,7 @@
 --# assume CM.force_add_skill: method(lookup: string, skill_key: string)
 --# assume CM.force_add_trait: method(lookup: string, trait_key: string, showMessage: boolean)
 --# assume CM.force_remove_trait: method(lookup: string, trait_key: string)
+--# assume CM.kill_character: method(lookup: string, kill_force: boolean, command_queue: boolean)
 --technology
 --# assume CM.lock_technology: method(faction: string, technology: string)
 --# assume CM.unlock_technology: method(faction: string, technology: string)
@@ -248,7 +249,6 @@
 --# assume CA_REGION.garrison_residence: method() --> CA_GARRISON_RESIDENCE
 --# assume CA_REGION.name: method() --> string
 --# assume CA_REGION.province_name: method() --> string
---# assume CA_REGION.public_order: method() --> number
 --# assume CA_REGION.majority_religion: method() --> string
 --# assume CA_REGION.majority_religion_percentage: method() --> number
 --# assume CA_REGION.has_governor: method() --> boolean
@@ -264,6 +264,8 @@
 --# assume CA_REGION.adjacent_region_list: method() --> CA_REGION_LIST
 --# assume CA_REGION.last_building_constructed_key: method() --> string
 --# assume CA_REGION.slot_type_exists: method(key: string) --> boolean
+--# assume CA_REGION.sanitation: method() --> number
+--# assume CA_REGION.squalor: method() --> number
 
 --CA REGION LIST
 --# assume CA_REGION_LIST.num_items: method() --> number

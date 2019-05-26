@@ -9,7 +9,7 @@ end
 
 --sets up a character to recieve a trait dilemma or incident.
 --v function(char: CA_CHAR, trait_name: string)
-local function apply_trait_dilemma_for_character(char, trait_name)
+function apply_trait_dilemma_for_character(char, trait_name)
     if not char:faction():is_human() then
         return 
     end
@@ -20,6 +20,37 @@ local function apply_trait_dilemma_for_character(char, trait_name)
     end
 end
 
+--v function(context: WHATEVER) --> boolean
+local function is_context_target_valid(context)
+    local bad_touch = false --:boolean
+    local method_paths = {
+        {"faction", "name"},
+        {"region", "owning_faction", "name"},
+        {"character", "faction", "name"},
+        {"garrison_residence", "faction", "name"}
+    } --:vector<vector<string>>
+
+    for i = 1, #method_paths do
+       
+        local method_nodes = method_paths[i]
+        local ok, err = pcall(function()
+            local last_object = context --:WHATEVER
+            for j = 1, #method_nodes do
+             local method = method_nodes[j]
+             if j == #method_nodes then
+                --last method
+                bad_touch = bad_touch or (last_object:name() == "rebels")
+             else
+                --intermediate method
+                last_object = last_object[method](last_object)
+             end
+            end
+        end) 
+        --if a method path is invalid for a given context, the pcall will catch the tripped error silently. It can't contain a rebel if it don't exist.
+    end
+    return not bad_touch
+end
+
 --v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR!), on_trigger: (function(cqi: CA_CQI,context: WHATEVER))?)
 local function trait_listener(trait_name, event, conditional_function, on_trigger)
     local flag = trait_name.."_flag"
@@ -28,7 +59,7 @@ local function trait_listener(trait_name, event, conditional_function, on_trigge
         "TraitTrigger"..trait_name,
         event,
         function(context)
-            return TRAITS_OUT_FOR_TRIGGER[trait_name] ~= true
+            return TRAITS_OUT_FOR_TRIGGER[trait_name] ~= true and is_context_target_valid(context)
         end,
         function(context)
             log("Evaluating trait validity ".. trait_name)
@@ -504,7 +535,7 @@ dev.first_tick(function(context)
             local char = context:character() --:CA_CHAR
             local chance = cm:random_number(100) < 50 --50%
             local own_allegience_region = (context:region():majority_religion() == char:faction():state_religion())
-            return chance and (not does_char_have_anti_tyrant_or_brute_traits(char)), char
+            return chance and (not own_allegience_region) and (not does_char_have_anti_tyrant_or_brute_traits(char)), char
         end
     )
 

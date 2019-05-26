@@ -119,6 +119,9 @@ end
 --v function(self: PKM, character_cqi: CA_CQI) --> CHARACTER_DETAIL
 function petty_kingdoms_manager.get_character(self, character_cqi)
     local char = dev.get_character(character_cqi)
+    if char:faction():name() == "rebels" then
+        return nil
+    end
     local faction = self:get_faction(char:faction():name())
     return faction:get_character(character_cqi)
 end

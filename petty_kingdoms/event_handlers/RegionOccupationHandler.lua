@@ -15,7 +15,7 @@ cm:add_listener(
     "EBSRegionOccupiedEvent",
     "GarrisonOccupiedEvent",
     function(context)
-        return (not context:character():faction():name() == "rebels")
+        return (not string.find(context:character():faction():name(), "rebels"))
     end,
     function(context)
         onRegionOccupied(context:garrison_residence():region(), context:character())
@@ -26,10 +26,12 @@ cm:add_listener(
 
 --v function(region: CA_REGION)
 local function onRegionOccupiedByRebels(region)
+    --[[
     local reg_detail = pkm:get_region(region:name())
     local old_province = reg_detail:province_detail()
     reg_detail:get_ownership_tracker():transfer_region("rebels")
     old_province:remove_region(region:name())
+    --]]
 end
 
 
@@ -41,7 +43,7 @@ cm:add_listener(
         return (context:character():faction():name() == "rebels")
     end,
     function(context)
-        onRegionOccupiedByRebels(context:garrison_residence():region())
+        --onRegionOccupiedByRebels(context:garrison_residence():region())
     end,
     true
 )
