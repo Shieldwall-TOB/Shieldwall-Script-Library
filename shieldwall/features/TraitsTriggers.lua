@@ -613,7 +613,54 @@ dev.first_tick(function(context)
             return does_char_region_have_saint_building(char) and count_saint_traits_on_character(char) > 2 and bad_trait_sum == 0, char
         end )
 
+    trait_listener(
+        "shield_heathen_legendary_bearskin",
+        "CharacterCompletedBattle",
+        function(context)
+            local char = context:character() --:CA_CHAR
+            local pb = context:pending_battle() --:CA_PENDING_BATTLE
+            if not char:faction():subculture() == "vik_sub_cult_anglo_viking" then
+                return false, char
+            end
+            if (not char:has_trait("shield_heathen_pagan")) or (not char:has_trait("shield_heathen_beast_slayer")) then
+                return false, char
+            end
+            local attacker_victory = (pb:attacker_battle_result() == "decisive_victory" or pb:attacker_battle_result() == "heroic_victory")
+            local defender_victory = (pb:defender_battle_result () == "decisive_victory" or pb:defender_battle_result() == "heroic_victory")
+            if pb:has_attacker() and pb:attacker():command_queue_index() == char:command_queue_index() then
+                return attacker_victory, char
+            elseif pb:has_defender() and pb:defender():command_queue_index() == char:command_queue_index() then
+                return defender_victory, char
+            else
+                return false, char
+            end
+        end
+    )
+    
 
+    trait_listener(
+        "shield_heathen_legendary_wolfskin",
+        "CharacterCompletedBattle",
+        function(context)
+            local char = context:character() --:CA_CHAR
+            local pb = context:pending_battle() --:CA_PENDING_BATTLE
+            if not char:faction():subculture() == "vik_sub_cult_viking_gael" then
+                return false, char
+            end
+            if (not char:has_trait("shield_heathen_pagan")) or (not char:has_trait("shield_heathen_beast_slayer")) then
+                return false, char
+            end
+            local attacker_victory = (pb:attacker_battle_result() == "decisive_victory" or pb:attacker_battle_result() == "heroic_victory")
+            local defender_victory = (pb:defender_battle_result () == "decisive_victory" or pb:defender_battle_result() == "heroic_victory")
+            if pb:has_attacker() and pb:attacker():command_queue_index() == char:command_queue_index() then
+                return attacker_victory, char
+            elseif pb:has_defender() and pb:defender():command_queue_index() == char:command_queue_index() then
+                return defender_victory, char
+            else
+                return false, char
+            end
+        end
+    )
 --ends
 
 
