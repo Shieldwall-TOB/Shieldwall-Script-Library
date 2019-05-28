@@ -191,6 +191,16 @@ cm:add_listener(
 	true
 );
 
+cm:add_listener(
+	"IncidentOccuredEvent_Burghal",
+	"IncidentOccuredEvent",
+	function(context) return not not valid_factions[context:faction():name()] end,
+	function(context)
+		update_fyrd_for_faction(context:faction())
+	end,
+	true
+)
+
 end;
 
 cm:add_listener(
@@ -223,7 +233,9 @@ cm:add_listener(
 dev.first_tick(function(context)
 	local humans = cm:get_human_factions()
 	for i = 1, #humans do
-		update_fyrd_for_faction(dev.get_faction(humans[i]))
+		if valid_factions[humans[i]] then
+			update_fyrd_for_faction(dev.get_faction(humans[i]))
+		end
 	end
 end)
 
