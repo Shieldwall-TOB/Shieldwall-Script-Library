@@ -102,7 +102,7 @@ function RebellionCheck(context)
 						end)
 						cm:trigger_incident(faction_name, incident, true)
 					elseif pkm:get_faction(faction_name):get_province(region:province_name()):get_population_manager():get_pop_of_caste("lord") > 40 then
-						local incident = "shield_rebellion_target_nobles_"..region_name
+						local incident = "shield_rebellion_nobles_"..region_name
 						respond_to_incident(incident, function(context)
 							local region = dev.get_region(region_name)
 							pkm:get_faction(faction_name):get_province(region:province_name()):get_population_manager():modify_population("lord", -40, "Riots")
