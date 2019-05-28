@@ -323,6 +323,7 @@
 --# assume CA_CHAR.character_subtype_key: method() --> string
 --# assume CA_CHAR.region: method() --> CA_REGION
 --# assume CA_CHAR.faction: method() --> CA_FACTION
+--# assume CA_CHAR.has_garrison_residence: method() --> boolean
 --# assume CA_CHAR.has_military_force: method() --> boolean
 --# assume CA_CHAR.military_force: method() --> CA_FORCE
 --# assume CA_CHAR.character_subtype: method(subtype: string) --> boolean

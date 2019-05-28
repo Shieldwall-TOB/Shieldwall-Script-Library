@@ -661,6 +661,29 @@ dev.first_tick(function(context)
             end
         end
     )
+
+    trait_listener(
+        "shield_elder_beloved",
+        "FactionTurnStart",
+        function(context)
+            local char = context:faction():faction_leader() --:CA_CHAR
+            local list = context:faction():character_list() --:CA_CHAR_LIST
+            local total = 0
+            local loyal = 0
+            for i = 0, list:num_items() - 1 do
+                local char = list:item_at(i)
+                if char:has_military_force() or char:has_garrison_residence() or char:is_politician() then
+                    if (not char:is_faction_leader()) then
+                        total = total + 1
+                        if char:loyalty() > 5 then
+                            loyal = loyal + 1
+                        end
+                    end
+                end
+            end
+            return loyal == total, char
+        end
+    )
 --ends
 
 
