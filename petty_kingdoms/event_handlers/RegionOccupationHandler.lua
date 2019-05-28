@@ -10,24 +10,18 @@ local function onRegionOccupied(region, character)
     --population transfer
     local castes = {"lord", "serf", "monk", "foreign"} --:vector<string>
     local old_popm = old_province:get_population_manager()
-    --cache the existing populations of the province that just recieved a region
-    local transfer_cache_new_existing = {} --:map<string, number>
-    if new_province:has_population() then
-        for caste, cap in pairs(new_province:get_population_manager()._popCaps) do
-            transfer_cache_new_existing[caste] = cap
-        end
-    else --no pop manager exists in the province.
-        for i = 1, #castes do
-            transfer_cache_new_existing[castes[i]] = 0
-        end
-    end
-    --this will define a pop manager if one didn't exist above.
     local new_popm = new_province:get_population_manager()
+
+    --these gets will define any pop managers that don't exist.
+    --don't code anything that drops this out of this func until they have capacity initialized.
+    local region_pop_cap_cache = {} --:map<string, number>
+    for pop_caste, pop_cap in pairs(new_popm._popCaps) do
+        region_pop_cap_cache[pop_caste] = new_popm:get_pop_cap_of_region_for_caste(reg_detail, pop_caste)
+    end -- this caches the value of the region in terms of caps.
     --get the capacity available on the new province.
     new_popm:evaluate_pop_cap() 
     for caste, capacity in pairs(old_popm._popCaps) do
-        local captured_province_new_pop = new_popm._popCaps[caste] - transfer_cache_new_existing[caste]
-        local new_cap = capacity - captured_province_new_pop
+        local new_cap = capacity - region_pop_cap_cache[caste]
         local change_mult = 1 - new_cap/capacity
         --the capacity has decreased by change_mult in the old province.
         local old_province_current_pop = old_popm:get_pop_of_caste(caste)

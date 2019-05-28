@@ -318,23 +318,30 @@ function pop_manager.apply_replenishment_cost(self, unit, percent_growth)
 
 end
 
+--v function(self: POP_MANAGER, region_detail: REGION_DETAIL, caste_key: POP_CASTE) --> number
+function pop_manager.get_pop_cap_of_region_for_caste(self, region_detail, caste_key)
+    local region_cap = 0 --:number
+    local buildings = region_detail:buildings()
+    local is_capital = (dev.get_faction(dev.get_region(region_detail:name()):owning_faction():name()):home_region():name() == region_detail:name())
+    if is_capital and pop_manager._homeRegionPopCaps[caste_key] then 
+        region_cap = region_cap + pop_manager._homeRegionPopCaps[caste_key]
+    end
+    for building_key, _ in pairs(buildings) do
+        local cap_contrib = pop_manager._buildingPopCapContributions[building_key]
+        if cap_contrib and cap_contrib[caste_key] then
+            region_cap = region_cap + cap_contrib[caste_key]
+        end
+    end
+    return region_cap
+end
+
 --v function(self: POP_MANAGER)
 function pop_manager.evaluate_pop_cap(self)
     for caste_key, pop_capacity in pairs(pop_manager._popCasteBundleChangeIntervals) do
         local regions = self:province_detail():regions()
         local cap = 0 --:number
         for region_key, region_detail in pairs(regions) do
-            local buildings = region_detail:buildings()
-            local is_capital = (dev.get_region(region_key) == region_key)
-            if is_capital and pop_manager._homeRegionPopCaps[caste_key] then 
-                cap = cap + pop_manager._homeRegionPopCaps[caste_key]
-            end
-            for building_key, _ in pairs(buildings) do
-                local cap_contrib = pop_manager._buildingPopCapContributions[building_key]
-                if cap_contrib and cap_contrib[caste_key] then
-                    cap = cap + cap_contrib[caste_key]
-                end
-            end
+            cap = cap + self:get_pop_cap_of_region_for_caste(region_detail, caste_key)
         end
         local c_pop = self:get_pop_of_caste(caste_key)
         if (cap < c_pop) then

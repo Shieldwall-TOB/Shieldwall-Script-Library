@@ -144,6 +144,27 @@ function(context)
 end,
 true)
 
+cm:add_listener( "CharacterSackedSettlementPop", "CharacterSackedSettlement", true,
+    function(context)
+        local region = context:region() --:CA_REGION
+        local province_key = region:province_name()
+        local province_detail = pkm:get_faction(region:owning_faction():name()):get_province(province_key)
+        local region_detail = pkm:get_region(region:name())
+        if province_detail:has_population() then
+            local pm = province_detail:get_population_manager()
+            for caste, value in pairs(pm._populations) do
+                local region_capacity = pm:get_pop_cap_of_region_for_caste(region_detail, caste)
+                local max_loss = value/2
+                local loss = region_capacity*0.80
+                if loss > max_loss then
+                    loss = max_loss
+                end
+                pm:modify_population(caste, math.floor((loss*-1)+0.5), "Settlement Sacked")
+            end
+        end
+    end,
+    true)
+
 
 cm:register_loading_game_callback(
 	function(context)
