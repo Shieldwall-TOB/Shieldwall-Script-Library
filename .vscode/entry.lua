@@ -64,9 +64,9 @@ local ok, err = pcall(function()
 
     require("shieldwall/content/UnitEffectsContent")
     require("shieldwall/features/UnitEffectsFeatures")
-
-    require("shieldwall/content/PopulationContent")
-    require("shieldwall/features/PopulationFeatures")
+    --TODO implement pop features
+    --require("shieldwall/content/PopulationContent")
+    --require("shieldwall/features/PopulationFeatures") 
 
     require("shieldwall/content/FoodStorageContent")
     require("shieldwall/features/FoodStorageFeatures")
@@ -90,7 +90,8 @@ local ok, err = pcall(function()
     --require("shieldwall/features/EstateFeatures")
     --require("shieldwall/features/CharacterLives")
     --UI
-    require("shieldwall/ui_features/PopulationUI")
+    --require("shieldwall/ui_features/PopulationUI") 
+    --TODO reimplement pop UI
     require("shieldwall/ui_features/TitlesUI")
 end)
 if not not ok then

@@ -54,7 +54,8 @@ function faction_detail.new(model, key)
     self._model = model
     self._name = key
     self._characters = {} --:map<string, CHARACTER_DETAIL>
-    self._provinces = {} --:map<string, PROVINCE_DETAIL>
+    self._regions = {} --:map<string, REGION_DETAIL> 
+    --TODO bind regions and factions
     self._factionFoodManager = nil --:FOOD_MANAGER
     self._personalityManager = nil --:PERSONALITY_MANAGER 
 
@@ -80,10 +81,6 @@ function faction_detail.name(self)
     return self._name
 end
 
---v function(self: FACTION_DETAIL) --> map<string, PROVINCE_DETAIL>
-function faction_detail.provinces(self)
-    return self._provinces
-end
 
 --v function(self: FACTION_DETAIL) --> map<string, CHARACTER_DETAIL>
 function faction_detail.characters(self)
@@ -151,25 +148,6 @@ end
 function faction_detail.has_food_manager(self)
     return not not self._factionFoodManager
 end
---------------------------------
-----PROVINCE DETAIL OBJECTS-----
---------------------------------
-province_detail = require("petty_kingdoms/province_features/ProvinceDetail")
---v function(self: FACTION_DETAIL, province_key: string, save_data: table) --> PROVINCE_DETAIL
-function faction_detail.load_province(self, province_key, save_data)
-    self._provinces[province_key] = province_detail.load(self, province_key, save_data)
-    return self._provinces[province_key]
-end
-
---v function(self: FACTION_DETAIL, province_key: string) --> PROVINCE_DETAIL
-function faction_detail.get_province(self, province_key)
-    if self._provinces[province_key] == nil then
-        self._provinces[province_key] = province_detail.new(self, province_key)
-    end
-    return self._provinces[province_key]
-end
-
-
 
 ---------------------------
 ----VASSAL CONNECTIONS-----

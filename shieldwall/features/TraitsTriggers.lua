@@ -425,8 +425,8 @@ dev.first_tick(function(context)
             if region:is_null_interface() or region:owning_faction():name() ~= context:character():faction():name() then
                 return false, context:character()
             end
-            local pop_manager = pkm:get_region(region:name()):province_detail():get_population_manager()
-            local is_in_religious_settlement =  (pop_manager:get_pop_of_caste("monk") > 30)
+            --local pop_manager = pkm:get_region(region:name()):province_detail():get_population_manager()
+            local is_in_religious_settlement =  false --TODO reimplement this trait for new pop system 
             --must have at least one bad trait
             local has_bad_trait = is_char_brute_or_tyrant(context:character())
             --must not be a pagan

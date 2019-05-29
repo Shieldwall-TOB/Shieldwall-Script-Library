@@ -98,10 +98,7 @@ function petty_kingdoms_manager.get_faction(self, faction_key)
             --if the faction didn't exist, that means neither will their regions nor their provinces.
             local region_list = dev.get_faction(faction_key):region_list()
             for i = 0, region_list:num_items() - 1 do
-                local current_region = region_list:item_at(i)
-                local current_prov = faction_detail:get_province(current_region:province_name())
-                local current_region_detail = self:get_region(current_region:name())
-                current_prov:add_region(current_region:name())
+                --TODO associate regions with factions
             end
             --nor their characters
             local char_list = dev.get_faction(faction_key):character_list()
@@ -188,22 +185,7 @@ end
 
 --v function(self: PKM, faction: string, castes: vector<POP_CASTE>) --> boolean
 function petty_kingdoms_manager.does_faction_have_enough_population_to_levy(self, faction, castes)
-    local caste_pops = {} --:map<string, number>
-    for i = 1, #castes do
-        caste_pops[castes[i]] = 0
-    end
-    local faction_detail = self:get_faction(faction)
-    for province_key, province_detail in pairs(faction_detail._provinces) do
-        for i = 1, #castes do
-            caste_pops[castes[i]] = caste_pops[castes[i]] + province_detail:get_population_manager():get_pop_of_caste(castes[i])
-        end
-    end
-    for i = 1, #castes do
-        if caste_pops[castes[i]] < 80 then
-            return false
-        end
-    end
-    return true
+    return false
 end
 
 
@@ -225,10 +207,9 @@ local function FirstTickObjectModel()
     local faction_list = dev.faction_list()
     for i = 0, faction_list:num_items() - 1 do
         local fact_det = pkm:get_faction(faction_list:item_at(i):name())
-        for province_key, prov_det in pairs(fact_det:provinces()) do
-            prov_det:get_population_manager():set_start_pos_pops()
-            prov_det:get_population_manager():reapply_all_pop_bundles()
-        end
+        --for province_key, prov_det in pairs(fact_det:provinces()) do
+            --TODO Population first tick setup
+        --end
         for cqi_as_string, char_det in pairs(fact_det:characters()) do
             char_det:check_start_pos_estates()
             char_det:update_title(true)
@@ -285,6 +266,7 @@ local function OnGameLoaded(context)
         local ld_faction_detail = pkm:load_faction(faction_key, faction_save)
         local faction_province_bank = province_bank[faction_key]
         --load provinces
+        --[[
         if faction_province_bank then
             for province_key, province_save in pairs(faction_province_bank) do
                 local ld_province_detail = ld_faction_detail:load_province(province_key, province_save)
@@ -295,7 +277,8 @@ local function OnGameLoaded(context)
                     ld_province_detail:get_population_manager()
                 end
             end
-        end
+        end--]] 
+        --TODO figure out how much loading and saving is necessary for new province and pop system
         --load characters
         local faction_character_bank = character_bank[faction_key]
         if faction_character_bank then
@@ -320,9 +303,10 @@ local function OnGameLoaded(context)
         for i = 0, region_list:num_items() - 1 do
             local current_region = region_list:item_at(i)
             local faction_detail = pkm:get_faction(current_region:owning_faction():name())
-            local current_prov = faction_detail:get_province(current_region:province_name())
+            --local current_prov = faction_detail:get_province(current_region:province_name())
             local current_region_detail = pkm:get_region(current_region:name())
-            current_prov:add_region(current_region:name())
+            --current_prov:add_region(current_region:name()) 
+            --TODO preconstructor for new pop and region systems
         end
     end)
 
@@ -363,13 +347,14 @@ local function OnGameSaved(context)
         local fact_prov_bank = province_bank[faction_key]
         local fact_char_bank = character_bank[faction_key]
         -- save provinces
+        --[[
         for province_key, province_detail_obj in pairs(faction_detail_obj:provinces()) do
             fact_prov_bank[province_key] = province_detail_obj:save()
             -- check for a pop manager and save it
             if province_detail_obj:has_population() then
                 pop_manager_bank[province_key.."_"..faction_key] = province_detail_obj:get_population_manager():save()
             end
-        end
+        end--]] --TODO saving function for pop
         -- save characters
         for cqi_as_string, character_detail_obj in pairs(faction_detail_obj:characters()) do
             fact_char_bank[cqi_as_string] = character_detail_obj:save()

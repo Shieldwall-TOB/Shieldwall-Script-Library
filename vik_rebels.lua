@@ -101,13 +101,13 @@ function RebellionCheck(context)
 							pkm:get_faction(faction_name):get_food_manager():mod_food_storage(pkm:get_faction(faction_name):get_food_manager():food_in_storage() * (-0.25))
 						end)
 						cm:trigger_incident(faction_name, incident, true)
-					elseif pkm:get_faction(faction_name):get_province(region:province_name()):get_population_manager():get_pop_of_caste("lord") > 40 then
+					--[[elseif pkm:get_faction(faction_name):get_province(region:province_name()):get_population_manager():get_pop_of_caste("lord") > 40 then
 						local incident = "shield_rebellion_nobles_"..region_name
 						respond_to_incident(incident, function(context)
-							local region = dev.get_region(region_name)
+							local region = dev.get_region(region_name) --TODO reimplement noble deaths rebel event.
 							pkm:get_faction(faction_name):get_province(region:province_name()):get_population_manager():modify_population("lord", -40, "Riots")
 						end)
-						cm:trigger_incident(faction_name, incident, true)
+						cm:trigger_incident(faction_name, incident, true)--]]
 					end
 				else
 					--cm:apply_effect_bundle_to_region("vik_rebels_bandits", region, 6);
