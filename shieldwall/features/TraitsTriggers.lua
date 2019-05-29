@@ -1,10 +1,13 @@
 local pkm = _G.pkm
 ALREADY_TRIGGERED_TRAITS = {} --:map<string, map<string, boolean>>
 TRAITS_OUT_FOR_TRIGGER = {} --:map<string, boolean>
-
+local LOG_TRAIT_TRIGGERS = false
 --v function(t: any)
 local function log(t)
-    dev.log(tostring(t), "TRT")
+    if not LOG_TRAIT_TRIGGERS then
+        return
+    end
+    dev.log(tostring(t), "TRAITS")
 end
 
 --sets up a character to recieve a trait dilemma or incident.

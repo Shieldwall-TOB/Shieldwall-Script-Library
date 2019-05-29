@@ -138,12 +138,11 @@ end
 -- Removes bandits/rebels bundles from a region when it is occupied
 --v function(context: CA_CONTEXT)
 function RebellionResetRegion(context)
-	cm:remove_effect_bundle_from_region("shield_unrest_bundle", context:region():name());
-	cm:remove_effect_bundle_from_region("shield_rioting", context:region():name());
+	--cm:remove_effect_bundle_from_region("shield_unrest_bundle", context:region():name());
+	--cm:remove_effect_bundle_from_region("shield_rioting", context:region():name());
 	--cm:remove_effect_bundle_from_region("vik_rebels_bandits", context:region():name());
 	REBELLION_REBELS[context:region():name()] = nil;
 	REBELLION_BANDITS[context:region():name()] = nil;
-
 end
 
 

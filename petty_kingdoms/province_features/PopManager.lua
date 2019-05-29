@@ -244,6 +244,14 @@ end
 
 --v function(self: POP_MANAGER, caste: POP_CASTE, quantity: number, UICause: string, block_bundle_change: boolean?)
 function pop_manager.modify_population(self, caste, quantity, UICause, block_bundle_change)
+    if self._provinceDetail._numRegions == 0 then
+        --this province has no regions, its probably currently being destroyed. Lets just abort.
+        return
+    end
+    if dev.get_faction(self._provinceDetail._factionName):is_dead() or dev.get_faction(self._provinceDetail._factionName):region_list():num_items() == 0 then
+        --this faction is basically dead. Ignore them.
+        return
+    end
     local food_func = pop_manager._foodEffectFunctions[caste]
     if food_func then
         local food_manager = self:province_detail():faction_detail():get_food_manager()
@@ -322,10 +330,10 @@ end
 function pop_manager.get_pop_cap_of_region_for_caste(self, region_detail, caste_key)
     local region_cap = 0 --:number
     local buildings = region_detail:buildings()
-    local is_capital = (dev.get_faction(dev.get_region(region_detail:name()):owning_faction():name()):home_region():name() == region_detail:name())
+    --[[local is_capital = (dev.get_faction(dev.get_region(region_detail:name()):owning_faction():name()):home_region():name() == region_detail:name())
     if is_capital and pop_manager._homeRegionPopCaps[caste_key] then 
         region_cap = region_cap + pop_manager._homeRegionPopCaps[caste_key]
-    end
+    end--]]
     for building_key, _ in pairs(buildings) do
         local cap_contrib = pop_manager._buildingPopCapContributions[building_key]
         if cap_contrib and cap_contrib[caste_key] then

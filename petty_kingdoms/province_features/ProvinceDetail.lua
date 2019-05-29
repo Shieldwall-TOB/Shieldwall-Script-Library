@@ -123,6 +123,9 @@ end
 
 --v function(self: PROVINCE_DETAIL, bundle: string)
 function province_detail.apply_effect_bundle(self, bundle)
+    if self._numRegions == 0 then
+        return
+    end
     cm:apply_effect_bundle_to_region(bundle, self:get_capital(), 0)
     self._activeEffects[bundle] = true
 end
@@ -216,7 +219,12 @@ function province_detail.remove_region(self, region_key, new_province)
     end
     self._regions[region_key] = nil
     self._numRegions = self._numRegions - 1 
-
+    if self._numRegions == 0 then
+        self:log("Removed the last region of the province ["..self._name.."] from faction ["..self._factionName.."]")
+        self:log("Destroying the province object")
+        self._factionDetail._provinces[self._name] = nil
+        return 
+    end
     --check our effects
     local transfer_effects = {} --:map<string, boolean>
     if region_key == self._lastCapital then

@@ -43,6 +43,11 @@ pm.set_home_region_pop_cap_for_caste("lord", 80)
 --returns what tier, how much pop growth bonus to apply, or how much pop to decay due to famine.
 --v function(total_food: number) --> (number, number, number)
 local function get_food_level(total_food)
+	if not is_number(total_food) then
+		dev.log("Get Food level recieved a non_number argument!", "BUG")
+		dev.log(debug.traceback(), "BUG")
+		return 3, 0, 0
+	end
     if total_food < (0-150) then
         return 0, -30, 5
     elseif total_food < (0-50) then
