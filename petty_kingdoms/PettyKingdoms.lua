@@ -40,6 +40,9 @@ function petty_kingdoms_manager.init()
     --core storage of objects:
     self._factions = {} --:map<string, FACTION_DETAIL>
     self._regions = {}  --:map<string, REGION_DETAIL>
+    --storage of province rgions
+    self._provinceToContainedRegions = {} --:map<string, vector<string>>
+
     --storage of selections:
     self._selectedProvince = nil
     self._selectedCharacter = nil
@@ -48,6 +51,13 @@ function petty_kingdoms_manager.init()
 
     _G.pkm = self
     return self
+end
+
+
+--v function(self: PKM, region: CA_REGION) 
+function petty_kingdoms_manager.register_region_province(self, region)
+    self._provinceToContainedRegions[region:province_name()] = self._provinceToContainedRegions[region:province_name()] or {}
+    table.insert(self._provinceToContainedRegions[region:province_name()], region:name())
 end
 
 ----------------------------
@@ -147,6 +157,7 @@ function petty_kingdoms_manager.grant_faction_vassal(self, faction, vassal)
         end
     end
 end
+
 
 --v function(self: PKM, faction_name: string) --> boolean
 function petty_kingdoms_manager.is_faction_vassal(self, faction_name)
@@ -250,8 +261,6 @@ local function OnGameLoaded(context)
     --[[ Loaded tables ]]
     local faction_bank = cm:load_value("pkm_faction_detail", {}, context)
     --# assume faction_bank: map<string, table>
-    local province_bank = cm:load_value("pkm_province_detail", {}, context)
-    --# assume province_bank: map<string, map<string, table>>
     local food_manager_bank = cm:load_value("pkm_faction_food_manager", {}, context)
     --# assume food_manager_bank:map<string, table>
     local pop_manager_bank = cm:load_value("pkm_province_pop_manager", {}, context)
@@ -264,7 +273,7 @@ local function OnGameLoaded(context)
     --load factions
     for faction_key, faction_save in pairs(faction_bank) do
         local ld_faction_detail = pkm:load_faction(faction_key, faction_save)
-        local faction_province_bank = province_bank[faction_key]
+        --local faction_province_bank = province_bank[faction_key]
         --load provinces
         --[[
         if faction_province_bank then
@@ -301,12 +310,7 @@ local function OnGameLoaded(context)
     dev.pre_first_tick(function(context)
         local region_list = dev.region_list()
         for i = 0, region_list:num_items() - 1 do
-            local current_region = region_list:item_at(i)
-            local faction_detail = pkm:get_faction(current_region:owning_faction():name())
-            --local current_prov = faction_detail:get_province(current_region:province_name())
-            local current_region_detail = pkm:get_region(current_region:name())
-            --current_prov:add_region(current_region:name()) 
-            --TODO preconstructor for new pop and region systems
+           pkm:register_region_province(region_list:item_at(i))
         end
     end)
 
@@ -319,7 +323,6 @@ local function OnGameSaved(context)
     local region_bank = {} --:map<string, table>
     local tracker_bank = {} --:map<string, table>
     local faction_bank = {} --:map<string, table>
-    local province_bank = {} --:map<string, map<string, table>>
     local food_manager_bank = {} --:map<string, table>
     local pop_manager_bank = {} --:map<string, table>
     local character_bank = {} --:map<string, map<string, table>>
@@ -342,19 +345,9 @@ local function OnGameSaved(context)
             food_manager_bank[faction_key] = faction_detail_obj:get_food_manager():save()
         end
         --set up blank save 
-        province_bank[faction_key] = {}
         character_bank[faction_key] = {}
-        local fact_prov_bank = province_bank[faction_key]
         local fact_char_bank = character_bank[faction_key]
-        -- save provinces
-        --[[
-        for province_key, province_detail_obj in pairs(faction_detail_obj:provinces()) do
-            fact_prov_bank[province_key] = province_detail_obj:save()
-            -- check for a pop manager and save it
-            if province_detail_obj:has_population() then
-                pop_manager_bank[province_key.."_"..faction_key] = province_detail_obj:get_population_manager():save()
-            end
-        end--]] --TODO saving function for pop
+         --TODO saving function for pop
         -- save characters
         for cqi_as_string, character_detail_obj in pairs(faction_detail_obj:characters()) do
             fact_char_bank[cqi_as_string] = character_detail_obj:save()
@@ -369,7 +362,7 @@ local function OnGameSaved(context)
     cm:save_value("pkm_region_detail", region_bank, context)
     cm:save_value("pkm_region_ownership_tracker", tracker_bank, context)
     cm:save_value("pkm_faction_detail", faction_bank, context)
-    cm:save_value("pkm_province_detail", province_bank, context)
+
     cm:save_value("pkm_faction_food_manager", food_manager_bank, context)
     cm:save_value("pkm_province_pop_manager", pop_manager_bank, context)
     cm:save_value("pkm_character_detail", character_bank, context)
