@@ -58,6 +58,7 @@ function faction_detail.new(model, key)
     --TODO bind regions and factions
     self._factionFoodManager = nil --:FOOD_MANAGER
     self._personalityManager = nil --:PERSONALITY_MANAGER 
+    self._popManagers = {} --:map<string, POP_MANAGER>
 
     self._kingdomLevel = 0 
     self._isMajor = not not faction_detail._majorFactions[key]
@@ -148,6 +149,14 @@ end
 function faction_detail.has_food_manager(self)
     return not not self._factionFoodManager
 end
+
+-----------------------------
+----FACTION FOOD MANAGER-----
+-----------------------------
+local pop_manager = require("petty_kingdoms/faction_features/PopManager")
+
+
+
 
 ---------------------------
 ----VASSAL CONNECTIONS-----

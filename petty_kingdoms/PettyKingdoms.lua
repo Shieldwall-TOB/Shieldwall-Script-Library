@@ -42,7 +42,7 @@ function petty_kingdoms_manager.init()
     self._regions = {}  --:map<string, REGION_DETAIL>
     --storage of province rgions
     self._provinceToContainedRegions = {} --:map<string, vector<string>>
-
+    self._provinceToCapitalRegion = {} --:map<string, string>
     --storage of selections:
     self._selectedProvince = nil
     self._selectedCharacter = nil
@@ -212,7 +212,6 @@ local function FirstTickObjectModel()
     local region_list = dev.region_list()
     for i = 0, region_list:num_items() - 1 do
         local reg_det = pkm:get_region(region_list:item_at(i):name())
-        reg_det:update_buildings()
         reg_det:get_ownership_tracker():set_current_owner()
     end
     local faction_list = dev.faction_list()
