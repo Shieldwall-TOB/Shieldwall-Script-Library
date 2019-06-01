@@ -29,6 +29,13 @@ function pop_manager.exclude_pop_caste_from_natural_factors(pop_caste)
     pop_manager._popCastesNaturalGrowthExclusions[pop_caste] = true
 end
 
+--// Set the "base" value of each population. This impacts how quickly recruiting units drains it. 
+pop_manager._popBaseValues = {}--:map<POP_CASTE, number>
+--v function(pop_caste: POP_CASTE, base: number)
+function pop_manager.set_base_value_for_pop(pop_caste, base)
+    pop_manager._popBaseValues[pop_caste] = base
+end
+
 --v function(faction_detail: FACTION_DETAIL, caste_key: POP_CASTE)
 function pop_manager.new(faction_detail, caste_key)
     local self = {}
@@ -42,7 +49,7 @@ function pop_manager.new(faction_detail, caste_key)
     --maps the province name to the percentage of cap present there.
     self._regionsForBaseValue = {} --:vector<string>
     self._UIGrowthFactors = {} --:map<string, map<string, number>>
-    self._armyCache = {} --:map<string, number>
+    self._armyCache = {} --:map<string, map<string, number>>
 end
 
 --v function(self: POP_MANAGER, province_key: string) --> boolean
@@ -80,6 +87,20 @@ function pop_manager.modify_population(self, province_key, quantity, UICause)
         self._UIGrowthFactors[province_key][UICause] = self._UIGrowthFactors[province_key][UICause] + delta
         self._populations[province_key] = self._populations[province_key] + delta
     end
+end
+
+--v function(self: POP_MANAGER, character: CA_CHAR) --> map<string, number>
+function pop_manager.generate_cache_entry_for_force(self, character)
+    if not dev.is_char_normal_general(character) then
+        return {}
+    end
+    local force = character:military_force()
+    local cache_entry = {} --:map<string, number>
+    for i=0,force:unit_list():num_items()-1 do
+        cache_entry[force:unit_list():item_at(i):unit_key()] = cache_entry[force:unit_list():item_at(i):unit_key()] or 0
+        cache_entry[force:unit_list():item_at(i):unit_key()] = cache_entry[force:unit_list():item_at(i):unit_key()] + force:unit_list():item_at(i):percentage_proportion_of_full_strength()
+    end
+    return cache_entry
 end
 
 --v function(self: POP_MANAGER, faction_obj: CA_FACTION) --> (number, string)
@@ -155,6 +176,11 @@ end
 function pop_manager.update_population(self)
     self._canModify = true
     local faction = dev.get_faction(self._factionDetail:name())
+    if not faction:is_human() then
+        --TODO ai path
+        self._canModify = false
+        return
+    end
     self._UIGrowthFactors = {}
     --first, loop through all regions this faction owns.
     local region_list = faction:region_list()
@@ -183,11 +209,27 @@ function pop_manager.update_population(self)
         end
     end
     for province_key, population_quantity in pairs(self._populations) do
-        
         self:apply_growth_for_province(province_key)
-        
     end
 
+    for i = 0, faction:character_list():num_items() - 1 do
+        local character = faction:character_list():item_at(i)
+        if dev.is_char_normal_general(character) and not not self._armyCache[tostring(character:command_queue_index())] then
+            local fake_cache = self:generate_cache_entry_for_force(character)
+            local cache_character = self._armyCache[tostring(character:command_queue_index())]
+            for key, value in pairs(fake_cache) do
+                if cache_character[key] then
+                    local old_q = cache_character[key]
+                    local new_q = fake_cache[key]
+                    if new_q > old_q then
+                        local replen_q = new_q - old_q
+                        --this is the percentage of a full unit of that type we've gained during the end turn.
+                        --TODO calculate replenishment cost and apply it. 
+                    end
+                end
+            end
+        end
+    end
 
     --costs come last, otherwise the player could use them to offset growth reductions.
     --TODO apply replenishment costs
@@ -226,5 +268,7 @@ return {
     --constructor
     new = pop_manager.new,
     --content
-    add_building_pop_growth = pop_manager.add_building_pop_growth
+    add_building_pop_growth = pop_manager.add_building_pop_growth,
+    set_absolute_pop_cap_for_caste = pop_manager.set_absolute_pop_cap_for_caste,
+    exclude_pop_caste_from_natural_factors = pop_manager.exclude_pop_caste_from_natural_factors
 }
