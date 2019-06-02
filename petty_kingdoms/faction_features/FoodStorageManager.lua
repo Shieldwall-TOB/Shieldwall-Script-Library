@@ -226,7 +226,7 @@ end
 --v function(faction: FACTION_DETAIL, savetable: table) --> FOOD_MANAGER
 function food_manager.load(faction, savetable)
     local self = food_manager.new(faction)
-    dev.load(savetable, faction, "_storageCapRegionContributions", "_storageCap", "_storedFood", "_foodTradeAllowed", "_drawnFood")
+    dev.load(savetable, self, "_storageCapRegionContributions", "_storageCap", "_storedFood", "_foodTradeAllowed", "_drawnFood")
     return self
 end
 

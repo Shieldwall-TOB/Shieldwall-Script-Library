@@ -62,33 +62,6 @@ function region_detail.model(self)
 end
 
 
------------------------------
------PROVINCE ATTACHMENT-----
------------------------------
-
---gets if there is currently a province attached
---v function(self: REGION_DETAIL) --> boolean
-function region_detail.has_province(self)
-    return not not self._factionProvince
-end
-
---returns the attached province for this region
---v function(self: REGION_DETAIL) --> PROVINCE_DETAIL
-function region_detail.province_detail(self)
-    if self._factionProvince == nil then
-        self:log("Warning: Asked the region detail ["..self._name.."] for an attached province, but none exists. Try wrapping your code in a check for has_province")
-        return nil
-    end
-    return self._factionProvince
-end
-
---attaches a new province to this region. Obviously not for external use. 
---v function(self: REGION_DETAIL, province: PROVINCE_DETAIL)
-function region_detail.add_province(self, province)
-    self._factionProvince = province
-end
-
-
 
 
 -------------------

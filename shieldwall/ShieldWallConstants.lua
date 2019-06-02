@@ -29,7 +29,6 @@ return {
     charm_level_three_trait_threshold = 30,
     estates_king_owner_bundle = "shield_owned_estate",
     pop_bundle_prefix = "shield_pop_bundle_",
-    pop_caste_enum = {"lord", "serf", "monk", "foreign"},
     pop_natural_growth = 4,
     pop_max_growth_before_reduction = 5
 }

@@ -4,6 +4,16 @@ function pop_manager:log(t)
     dev.log(tostring(t), "POP")
 end
 
+
+--//castes
+pop_manager.available_castes = {
+    "lord",
+    "serf",
+    "monk",
+    "foreign"
+}--:vector<POP_CASTE>
+
+
 --// Building Pop Contributions add pop growth via a building effect
 pop_manager._buildingPopGrowth = {} --:map<string, map<POP_CASTE, number>>
 --v function(building: string, pop_caste: string, quantity: number)
@@ -36,7 +46,18 @@ function pop_manager.set_base_value_for_pop(pop_caste, base)
     pop_manager._popBaseValues[pop_caste] = base
 end
 
---v function(faction_detail: FACTION_DETAIL, caste_key: POP_CASTE)
+--// sets the size of each unit according to their unit key
+pop_manager._unitPopSizes = {} --:map<string, number>
+pop_manager._unitCastes = {} --:map<string, POP_CASTE>
+--v function(unit: string, caste: POP_CASTE, num_men: number)
+function pop_manager.set_unit_man_count_and_caste_for_population(unit, caste, num_men)
+    pop_manager._unitPopSizes[unit] = num_men
+    pop_manager._unitCastes[unit] = caste
+end
+
+
+
+--v function(faction_detail: FACTION_DETAIL, caste_key: POP_CASTE) --> POP_MANAGER
 function pop_manager.new(faction_detail, caste_key)
     local self = {}
     setmetatable(self, {
@@ -50,6 +71,18 @@ function pop_manager.new(faction_detail, caste_key)
     self._regionsForBaseValue = {} --:vector<string>
     self._UIGrowthFactors = {} --:map<string, map<string, number>>
     self._armyCache = {} --:map<string, map<string, number>>
+
+    return self
+end
+
+--v function(self: POP_MANAGER) --> string
+function pop_manager.caste_key(self)
+    return self._caste
+end
+
+--v function(self: POP_MANAGER, province: string) --> number
+function pop_manager.display_value_in_province(self, province)
+    return math.ceil(((self._populations[province] or 0)*(pop_manager._popBaseValues[self._caste]))/100)
 end
 
 --v function(self: POP_MANAGER, province_key: string) --> boolean
@@ -63,11 +96,17 @@ function pop_manager.modify_population(self, province_key, quantity, UICause)
         self:log("Called modify population for unitialized province ["..province_key.."]")
         return
     end
+    if not is_number(quantity) then
+        self:log("Called modify population with quantity that is not a number; provided UICause was ["..tostring(UICause).."] !")
+        self:log(debug.traceback())
+        return
+    end
     if not self._canModify then
         self:log("Called modify population for a province with canModify set to false!")
         return
     end
     local delta = math.floor(quantity+0.5) 
+    self:log("Modifying population in province ["..province_key.."] by quantity ["..delta.."] for reason ["..tostring(UICause).."] ")
     --# assume delta: number
     -- i do not like how kailua treats "int"
     if delta > 0 and pop_manager._absolutePopCaps[self._caste] and self._populations[province_key] + delta > pop_manager._absolutePopCaps[self._caste] then
@@ -97,8 +136,11 @@ function pop_manager.generate_cache_entry_for_force(self, character)
     local force = character:military_force()
     local cache_entry = {} --:map<string, number>
     for i=0,force:unit_list():num_items()-1 do
-        cache_entry[force:unit_list():item_at(i):unit_key()] = cache_entry[force:unit_list():item_at(i):unit_key()] or 0
-        cache_entry[force:unit_list():item_at(i):unit_key()] = cache_entry[force:unit_list():item_at(i):unit_key()] + force:unit_list():item_at(i):percentage_proportion_of_full_strength()
+        local unit_key = force:unit_list():item_at(i):unit_key()
+        if pop_manager._unitCastes[unit_key] == self._caste then
+            cache_entry[unit_key] = cache_entry[unit_key] or 0
+            cache_entry[unit_key] = cache_entry[unit_key] + force:unit_list():item_at(i):percentage_proportion_of_full_strength()
+        end
     end
     return cache_entry
 end
@@ -161,12 +203,12 @@ function pop_manager.apply_growth_for_province(self, province_key)
     if not pop_manager._popCastesNaturalGrowthExclusions[self._caste] then
         local overcrowding_factor = 0 --:number
         if current_pop > 100 then 
-            overcrowding_factor = -1*(current_pop-100)/20
+            overcrowding_factor = (current_pop-100)/20
         end
         local total_growth = self._populations[province_key] - current_pop
         if total_growth > CONST.pop_max_growth_before_reduction then
             local overage = total_growth - CONST.pop_max_growth_before_reduction
-            overcrowding_factor = overcrowding_factor + (overage*100/current_pop)
+            overcrowding_factor = -1*(overcrowding_factor + (overage*100/current_pop))
         end
         self:modify_population(province_key, overcrowding_factor, "Overcrowding")
     end
@@ -174,8 +216,9 @@ end
 
 --v function(self: POP_MANAGER)
 function pop_manager.update_population(self)
-    self._canModify = true
     local faction = dev.get_faction(self._factionDetail:name())
+    self:log("Updating ["..self._caste.."] populations for faction ["..faction:name().."]")
+    self._canModify = true
     if not faction:is_human() then
         --TODO ai path
         self._canModify = false
@@ -188,7 +231,6 @@ function pop_manager.update_population(self)
         local current_region = region_list:item_at(i)
         local province_key = current_region:province_name()
         --if we don't have that province, add it to our base growth list.
-        self:log("Updating populations for faction ["..faction:name().."]")
         if not self:has_province(province_key) then
             table.insert(self._regionsForBaseValue, current_region:name())
         end
@@ -197,24 +239,29 @@ function pop_manager.update_population(self)
         local current_region = dev.get_region(self._regionsForBaseValue[i])
         local province_key = current_region:province_name()
         local slot_list = current_region:slot_list()
-        self._populations[province_key] = self._populations[province_key] or 0
+        local base = 25
+        if pop_manager._popCastesNaturalGrowthExclusions[self._caste] then
+            base = 0
+        end
+        self._populations[province_key] = self._populations[province_key] or base
         for j = 0, slot_list:num_items() - 1 do
             local slot = slot_list:item_at(j)
             if slot:has_building() then
                 local building = slot:building():name()
                 if pop_manager._buildingPopGrowth[building] and pop_manager._buildingPopGrowth[building][self._caste] then
-                    self._populations[province_key] = self._populations[province_key] + (pop_manager._buildingPopGrowth[building][self._caste]*12)
+                    self._populations[province_key] = self._populations[province_key] + (pop_manager._buildingPopGrowth[building][self._caste]*3)
                 end
             end
         end
     end
+    self._regionsForBaseValue = {}
     for province_key, population_quantity in pairs(self._populations) do
         self:apply_growth_for_province(province_key)
     end
 
     for i = 0, faction:character_list():num_items() - 1 do
         local character = faction:character_list():item_at(i)
-        if dev.is_char_normal_general(character) and not not self._armyCache[tostring(character:command_queue_index())] then
+        if dev.is_char_normal_general(character) and (not character:region():is_null_interface() ) and (not not self._armyCache[tostring(character:command_queue_index())]) then
             local fake_cache = self:generate_cache_entry_for_force(character)
             local cache_character = self._armyCache[tostring(character:command_queue_index())]
             for key, value in pairs(fake_cache) do
@@ -222,9 +269,11 @@ function pop_manager.update_population(self)
                     local old_q = cache_character[key]
                     local new_q = fake_cache[key]
                     if new_q > old_q then
-                        local replen_q = new_q - old_q
-                        --this is the percentage of a full unit of that type we've gained during the end turn.
-                        --TODO calculate replenishment cost and apply it. 
+                        local replen_q = new_q - old_q --this is the percentage of a full unit of that type we've gained during the end turn.
+                        local men_replen = -1* math.floor((pop_manager._unitPopSizes[key]*replen_q) / (pop_manager._popBaseValues[self._caste])+0.5)
+                        --this converts it to a % of the cap
+                        --example numbers, replen 100% of a 100 man peasant unit, -1*(100*100/400) = -25%
+                        self:modify_population(character:region():province_name(), men_replen, "Recruitment")
                     end
                 end
             end
@@ -232,43 +281,48 @@ function pop_manager.update_population(self)
     end
 
     --costs come last, otherwise the player could use them to offset growth reductions.
-    --TODO apply replenishment costs
     self._canModify = false
 end
 
---[[
+--v function(self: POP_MANAGER)
+function pop_manager.cache_replenishment(self)
+    local faction = dev.get_faction(self._factionDetail:name())
+    for i = 0, faction:character_list():num_items() - 1 do
+        local character = faction:character_list():item_at(i)
+        if dev.is_char_normal_general(character) then
+            self._armyCache[tostring(character:command_queue_index())] = self:generate_cache_entry_for_force(character)
+        end
+    end
+end
 
-local current_pop = self._populations[province_key]
-            --only happens once per 
-            if not provinces_processed[province_key] then
-                --if we do have this province, we can calculate its growth as normal.
-                -- births
-                local faction_food_factor, food_factor_string = self:get_food_effect(faction)
-                local nat_growth_factor = CONST.pop_natural_growth
-                self:modify_population(province_key, faction_food_factor, food_factor_string)
-                self:modify_population(province_key, nat_growth_factor, "Births and Immigration")
-                local deaths_factor = -1 * (current_pop/10)
-                self:modify_population(province_key, deaths_factor, "Deaths and Emigration")
-            end
-            --stuff that happens for every single region
-            -- loop through buildings and do their growth
-            local slot_list = current_region:slot_list()
-            for j = 0, slot_list:num_items() - 1 do
-                local slot = slot_list:item_at(j)
-                if slot:has_building() then
-                    local building = slot:building():name()
-                    if pop_manager._buildingPopGrowth[building] and pop_manager._buildingPopGrowth[building][self._caste] then
-                        self:modify_population(province_key, pop_manager._buildingPopGrowth[building][self._caste], "Buildings")
-                    end
-                end
-            end
-]]
+
+------------------------------------
+----SAVING AND LOADING FUNCTIONS----
+------------------------------------
+
+--v function(faction: FACTION_DETAIL, caste: POP_CASTE, savetable: table) --> POP_MANAGER
+function pop_manager.load(faction, caste, savetable)
+    local self = pop_manager.new(faction, caste)
+    dev.load(savetable, self, "_populations", "_UIGrowthFactors", "_armyCache")
+    return self
+end
+
+--v function(self: POP_MANAGER) --> table
+function pop_manager.save(self)
+    return dev.save(self, "_populations", "_UIGrowthFactors", "_armyCache")
+end
+
 
 return {
+    --castes
+    available_castes = pop_manager.available_castes,
     --constructor
     new = pop_manager.new,
+    load = pop_manager.load,
     --content
     add_building_pop_growth = pop_manager.add_building_pop_growth,
     set_absolute_pop_cap_for_caste = pop_manager.set_absolute_pop_cap_for_caste,
-    exclude_pop_caste_from_natural_factors = pop_manager.exclude_pop_caste_from_natural_factors
+    set_base_value_for_pop = pop_manager.set_base_value_for_pop,
+    exclude_pop_caste_from_natural_factors = pop_manager.exclude_pop_caste_from_natural_factors,
+    set_unit_man_count_and_caste_for_population = pop_manager.set_unit_man_count_and_caste_for_population
 }

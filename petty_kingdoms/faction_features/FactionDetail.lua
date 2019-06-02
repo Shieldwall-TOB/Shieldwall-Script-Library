@@ -151,9 +151,65 @@ function faction_detail.has_food_manager(self)
 end
 
 -----------------------------
-----FACTION FOOD MANAGER-----
+----FACTION POP MANAGER-----
 -----------------------------
 local pop_manager = require("petty_kingdoms/faction_features/PopManager")
+_G.pm = pop_manager
+--v function(self: FACTION_DETAIL) --> vector<POP_MANAGER>
+function faction_detail.pop_manager_list(self)
+    local ret = {} --:vector<POP_MANAGER>
+    for k,v in pairs(self._popManagers) do ret[#ret+1] = v end
+    return ret
+end
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.update_population(self)
+    for caste, manager in pairs(self._popManagers) do
+        manager:update_population()
+    end
+end
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.cache_replenishment(self)
+    for caste, manager in pairs(self._popManagers) do
+        manager:cache_replenishment()
+    end
+end
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.initialize_population(self)
+    local castes = pop_manager.available_castes
+    for i = 1, #castes do
+        if self._popManagers[castes[i]] == nil then
+            self._popManagers[castes[i]] = pop_manager.new(self, castes[i])
+        end
+    end
+end
+
+--v function(self: FACTION_DETAIL, caste_key: POP_CASTE) --> POP_MANAGER
+function faction_detail.pop_manager_by_key(self, caste_key)
+    if self._popManagers[caste_key] == nil then
+        self:initialize_population()
+        if self._popManagers[caste_key] == nil then
+            self:log("Asked for pop manager on caste key ["..caste_key.."] which does not exist and could not be created!")
+            return nil
+        end
+    end
+    return self._popManagers[caste_key]
+end
+
+
+
+--v function(self: FACTION_DETAIL, sv_tab: table) 
+function faction_detail.load_pop_managers(self, sv_tab)
+    local castes = pop_manager.available_castes
+    for i = 1, #castes do
+        if self._popManagers[castes[i]] == nil then
+            --# assume sv_tab: map<POP_CASTE, table>
+            self._popManagers[castes[i]] = pop_manager.load(self, castes[i], sv_tab[castes[i]])
+        end
+    end
+end
 
 
 
