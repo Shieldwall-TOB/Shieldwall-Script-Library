@@ -206,9 +206,14 @@ function pop_manager.apply_growth_for_province(self, province_key)
             overcrowding_factor = (current_pop-100)/20
         end
         local total_growth = self._populations[province_key] - current_pop
-        if total_growth > CONST.pop_max_growth_before_reduction then
-            local overage = total_growth - CONST.pop_max_growth_before_reduction
-            overcrowding_factor = -1*(overcrowding_factor + (overage*100/current_pop))
+        if total_growth > CONST.pop_max_growth_before_reduction and current_pop > 25 then
+            local overage_factor = current_pop/200
+            if overage_factor > 0.75 then
+                overage_factor = 0.75
+            end
+            local overage = overage_factor*(total_growth - CONST.pop_max_growth_before_reduction)
+
+            overcrowding_factor = -1*(overcrowding_factor + overage)
         end
         self:modify_population(province_key, overcrowding_factor, "Overcrowding")
     end
