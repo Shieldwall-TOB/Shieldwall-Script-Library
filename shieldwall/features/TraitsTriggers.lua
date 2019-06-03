@@ -421,17 +421,15 @@ dev.first_tick(function(context)
         "CharacterTurnStart",
         function(context)
             --must be in a religious settlement.
-            local region = context:character():region()
-            if region:is_null_interface() or region:owning_faction():name() ~= context:character():faction():name() then
-                return false, context:character()
+            local char = context:character() --:CA_CHAR
+            local region = char:region()
+            if region:is_null_interface() or region:owning_faction():name() ~= char:faction():name() then
+                return false, char
             end
-            --local pop_manager = pkm:get_region(region:name()):province_detail():get_population_manager()
-            local is_in_religious_settlement =  false --TODO reimplement this trait for new pop system 
-            --must have at least one bad trait
-            local has_bad_trait = is_char_brute_or_tyrant(context:character())
-            --must not be a pagan
-            local not_pagan = not is_char_or_char_king_pagan(context:character())
-            return (is_in_religious_settlement and has_bad_trait and not_pagan), context:character()
+            if is_char_brute_or_tyrant(char) and is_any_church_nearby(char) and not is_char_or_char_king_pagan(char) then
+                return (cm:random_number(5) > 3), char
+            end
+            return false, char
         end,
         function(cqi, context)
             local char = dev.get_character(cqi)
@@ -471,17 +469,17 @@ dev.first_tick(function(context)
             return (is_correct_age and period_accurate_sexism), context:character()
             --return has_daddy_to_pay_tuition_money and is_correct_age and period_accurate_sexism--]]
         end)
-        trait_listener(
-            "shield_noble_princely",
-            "CharacterTurnStart",
-            function(context)
-                local char = context:character() --:CA_CHAR
-                if context:character():is_heir() and context:character():age() < 20 then
-                    return true, char
-                else
-                    return false, char
-                end
-            end)
+    trait_listener(
+        "shield_noble_princely",
+        "CharacterTurnStart",
+        function(context)
+            local char = context:character() --:CA_CHAR
+            if context:character():is_heir() and context:character():age() < 20 then
+                return true, char
+            else
+                return false, char
+            end
+        end)
     trait_listener(
         "shield_scholar_lawyer",
         "CharacterTurnStart",
