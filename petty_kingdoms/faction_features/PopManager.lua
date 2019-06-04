@@ -67,6 +67,8 @@ function pop_manager.new(faction_detail, caste_key)
     self._factionDetail = faction_detail
     self._caste = caste_key
     self._populations = {} --:map<string, number>
+    self._bundleLocations = {} --:map<string, string>
+    self._bundlesOut = {} --:map<string, string>
     --maps the province name to the percentage of cap present there.
     self._regionsForBaseValue = {} --:vector<string>
     self._UIGrowthFactors = {} --:map<string, map<string, number>>
@@ -89,6 +91,65 @@ end
 function pop_manager.has_province(self, province_key)
     return not not self._populations[province_key]
 end
+
+
+--v function(self: POP_MANAGER)
+function pop_manager.apply_bundles(self)
+    local faction = dev.get_faction(self._factionDetail:name())
+    local interval = 25
+    if not faction:is_human() then
+        interval = 100
+    end
+
+    for province_key, population in pairs(self._populations) do
+        local region_array = self._factionDetail._model._provinceToContainedRegions[province_key]
+        --find the bundle key
+        local prefix = "shield_pop_bundle_"
+        local bundle_number = 0
+        if population > 0 then
+            local bundle_level = math.floor(population/interval)
+            bundle_number = interval*bundle_level
+        end
+        local pop_bundle = prefix .. self._caste .. "_" .. bundle_number
+        --find the capital and apply it
+        local capital = self._factionDetail._model._provinceToCapitalRegion[province_key]
+        if dev.get_region(capital):owning_faction():name() == faction:name() then
+            --if we have an old bundle and we still own that region, remove it.
+            local old_region = self._bundleLocations[province_key]
+            local old_bundle = self._bundlesOut[province_key]
+            if old_bundle and old_region then
+                if dev.get_region(old_region):owning_faction():name() == faction:name() then
+                    cm:remove_effect_bundle_from_region(old_bundle, old_region)
+                end
+            end
+            cm:apply_effect_bundle_to_region(pop_bundle, capital, 0)
+            self._bundlesOut[province_key] = pop_bundle
+            self._bundleLocations[province_key] = capital
+            --we own the capital
+        else
+            for j = 1, #region_array do
+                local region = region_array[j]
+                if dev.get_region(region):owning_faction():name() == faction:name() then
+                    --if we have an old bundle and we still own that region, remove it.
+                    local old_region = self._bundleLocations[province_key]
+                    local old_bundle = self._bundlesOut[province_key]
+                    if old_bundle and old_region then
+                        if dev.get_region(old_region):owning_faction():name() == faction:name() then
+                            cm:remove_effect_bundle_from_region(old_bundle, old_region)
+                        end
+                    end
+                    cm:apply_effect_bundle_to_region(pop_bundle, region, 0)
+                    self._bundlesOut[province_key] = pop_bundle
+                    self._bundleLocations[province_key] = region
+                    break --only apply once
+                end
+            end
+        end
+    end
+end
+
+
+
 
 --v function(self: POP_MANAGER, province_key: string, quantity: number, UICause: string)
 function pop_manager.modify_population(self, province_key, quantity, UICause)
@@ -220,12 +281,24 @@ function pop_manager.apply_growth_for_province(self, province_key)
 end
 
 --v function(self: POP_MANAGER)
+function pop_manager.ai_faction_pop_update(self)
+    local faction = dev.get_faction(self._factionDetail:name())
+    local region_list = faction:region_list()
+    for i = 0, region_list:num_items() - 1 do
+        local current_region = region_list:item_at(i)
+        local province_key = current_region:province_name()
+        self._populations[province_key] = (self._populations[province_key] or 0) + 3
+    end
+    self:apply_bundles()
+end
+
+--v function(self: POP_MANAGER)
 function pop_manager.update_population(self)
     local faction = dev.get_faction(self._factionDetail:name())
     self:log("Updating ["..self._caste.."] populations for faction ["..faction:name().."]")
     self._canModify = true
     if not faction:is_human() then
-        --TODO ai path
+        self:ai_faction_pop_update()
         self._canModify = false
         return
     end
@@ -263,7 +336,7 @@ function pop_manager.update_population(self)
     for province_key, population_quantity in pairs(self._populations) do
         self:apply_growth_for_province(province_key)
     end
-
+    --costs come last, otherwise the player could use them to offset growth reductions.
     for i = 0, faction:character_list():num_items() - 1 do
         local character = faction:character_list():item_at(i)
         if dev.is_char_normal_general(character) and (not character:region():is_null_interface() ) and (not not self._armyCache[tostring(character:command_queue_index())]) then
@@ -285,7 +358,7 @@ function pop_manager.update_population(self)
         end
     end
 
-    --costs come last, otherwise the player could use them to offset growth reductions.
+    self:apply_bundles()
     self._canModify = false
 end
 
@@ -308,13 +381,13 @@ end
 --v function(faction: FACTION_DETAIL, caste: POP_CASTE, savetable: table) --> POP_MANAGER
 function pop_manager.load(faction, caste, savetable)
     local self = pop_manager.new(faction, caste)
-    dev.load(savetable, self, "_populations", "_UIGrowthFactors", "_armyCache")
+    dev.load(savetable, self, "_populations", "_UIGrowthFactors", "_armyCache", "_bundleLocations", "_bundlesOut")
     return self
 end
 
 --v function(self: POP_MANAGER) --> table
 function pop_manager.save(self)
-    return dev.save(self, "_populations", "_UIGrowthFactors", "_armyCache")
+    return dev.save(self, "_populations", "_UIGrowthFactors", "_armyCache", "_bundleLocations", "_bundlesOut")
 end
 
 

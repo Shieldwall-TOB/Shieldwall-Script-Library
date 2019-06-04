@@ -58,6 +58,9 @@ end
 function petty_kingdoms_manager.register_region_province(self, region)
     self._provinceToContainedRegions[region:province_name()] = self._provinceToContainedRegions[region:province_name()] or {}
     table.insert(self._provinceToContainedRegions[region:province_name()], region:name())
+    if region:is_province_capital() then
+        self._provinceToCapitalRegion[region:province_name()] = region:name()
+    end
 end
 
 ----------------------------
