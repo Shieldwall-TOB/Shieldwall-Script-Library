@@ -247,32 +247,27 @@ end)
 
 --v function(context: CA_CONTEXT)
 local function OnGameLoaded(context)
-    --[[ pre load all regions 
-        Object constructors should never include any game interface calls!
-    --]]
+    --[[ Loaded tables ]]
     local region_bank = cm:load_value("pkm_region_detail", {}, context) 
     --# assume region_bank: map<string, table>
     local tracker_bank = cm:load_value("pkm_region_ownership_tracker", {}, context)
     --# assume tracker_bank: map<string, table>
+    local faction_bank = cm:load_value("pkm_faction_detail", {}, context)
+    --# assume faction_bank: map<string, table>
+    local character_bank = cm:load_value("pkm_character_detail", {}, context)
+    --# assume character_bank: map<string, map<string, table>>
+    local unit_effects_manager_bank = cm:load_value("pkm_character_unit_effects_manager", {}, context)
+    --# assume unit_effects_manager_bank: map<string, map<string, table>>
+
+    --[[ pre load all regions 
+        Object constructors should never include any game interface calls!
+    --]]
     for region_key, region_save in pairs(region_bank) do
         local ld_region_detail = pkm:load_region(region_key, region_save)
         if tracker_bank[region_key] then
             ld_region_detail:load_ownership_tracker(tracker_bank[region_key])
         end
     end
-    --[[ Loaded tables ]]
-    local faction_bank = cm:load_value("pkm_faction_detail", {}, context)
-    --# assume faction_bank: map<string, table>
-    local food_manager_bank = cm:load_value("pkm_faction_food_manager", {}, context)
-    --# assume food_manager_bank:map<string, table>
-    local pop_manager_bank = cm:load_value("pkm_faction_pop_managers", {}, context)
-    --# assume pop_manager_bank: map<string, map<string, table>>
-    local pop_manager_bank = cm:load_value("pkm_province_pop_manager", {}, context)
-    --# assume pop_manager_bank:map<string, table>
-    local character_bank = cm:load_value("pkm_character_detail", {}, context)
-    --# assume character_bank: map<string, map<string, table>>
-    local unit_effects_manager_bank = cm:load_value("pkm_character_unit_effects_manager", {}, context)
-    --# assume unit_effects_manager_bank: map<string, map<string, table>>
 
     --load factions
     for faction_key, faction_save in pairs(faction_bank) do
@@ -291,14 +286,7 @@ local function OnGameLoaded(context)
                 end
             end
         end
-        --load food manager
-        if food_manager_bank[faction_key] then
-            ld_faction_detail:load_food_manager(food_manager_bank[faction_key])
-        end
-        --load pop managers
-        if pop_manager_bank[faction_key] then
-            ld_faction_detail:load_pop_managers(pop_manager_bank[faction_key])
-        end
+
     end
     dev.pre_first_tick(function(context)
         local region_list = dev.region_list()
@@ -316,8 +304,6 @@ local function OnGameSaved(context)
     local region_bank = {} --:map<string, table>
     local tracker_bank = {} --:map<string, table>
     local faction_bank = {} --:map<string, table>
-    local food_manager_bank = {} --:map<string, table>
-    local pop_manager_bank = {} --:map<string, map<string, table>>
     local character_bank = {} --:map<string, map<string, table>>
     local unit_effects_manager_bank = {} --:map<string, map<string, table>>
     
@@ -331,19 +317,8 @@ local function OnGameSaved(context)
     end
 
     --save factions
-    for faction_key, faction_detail_obj in pairs(faction_detail.get_instances()) do
+    for faction_key, faction_detail_obj in pairs(pkm._factions) do
         faction_bank[faction_key] = faction_detail_obj:save()
-        --check for a food manager and save it
-        if faction_detail_obj:has_food_manager() then
-            food_manager_bank[faction_key] = faction_detail_obj:get_food_manager():save()
-        end
-        --set up a space to save the pop managers
-        pop_manager_bank[faction_key] = {}
-        local pop_manager_list = faction_detail_obj:pop_manager_list()
-        for i = 1, #pop_manager_list do
-            local pop_manager = pop_manager_list[i]
-            pop_manager_bank[faction_key][pop_manager:caste_key()] = pop_manager:save()
-        end
         --set up blank save 
         character_bank[faction_key] = {}
         local fact_char_bank = character_bank[faction_key]
@@ -361,9 +336,6 @@ local function OnGameSaved(context)
     cm:save_value("pkm_region_detail", region_bank, context)
     cm:save_value("pkm_region_ownership_tracker", tracker_bank, context)
     cm:save_value("pkm_faction_detail", faction_bank, context)
-
-    cm:save_value("pkm_faction_food_manager", food_manager_bank, context)
-    cm:save_value("pkm_province_pop_manager", pop_manager_bank, context)
     cm:save_value("pkm_character_detail", character_bank, context)
     cm:save_value("pkm_character_unit_effects_manager", unit_effects_manager_bank, context)
     pkm:log("Finished saving PKM")

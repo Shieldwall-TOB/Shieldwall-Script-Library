@@ -61,11 +61,13 @@ end
 function pop_manager.new(faction_detail, caste_key)
     local self = {}
     setmetatable(self, {
-        __index = pop_manager
+        __index = pop_manager,
+        __tostring = function() return "POP_MANAGER" end
     })--# assume self: POP_MANAGER
     self._canModify = false --:boolean
     self._factionDetail = faction_detail
     self._caste = caste_key
+    self._saveName = "pop_manager_"..faction_detail:name() .. caste_key
     self._populations = {} --:map<string, number>
     self._bundleLocations = {} --:map<string, string>
     self._bundlesOut = {} --:map<string, string>
@@ -76,6 +78,26 @@ function pop_manager.new(faction_detail, caste_key)
 
     return self
 end
+
+------------------------------------
+----SAVING AND LOADING FUNCTIONS----
+------------------------------------
+
+--v function(self: POP_MANAGER)
+function pop_manager.save(self)
+    for cqi_as_string, army_cache in pairs(self._armyCache) do
+        local savestring = "" --:string
+            
+        for key,value in pairs(army_cache) do
+            savestring = savestring..key..","..value..",;"
+        end
+        cm:set_saved_value(self._saveName.."_army_"..cqi_as_string, savestring)
+    end
+    for province, pop in pairs(self._populations) do
+        cm:set_saved_value(self._saveName..province, pop)
+    end
+end
+
 
 --v function(self: POP_MANAGER, province: string)
 function pop_manager.apply_unrest(self, province)
@@ -92,6 +114,13 @@ end
 
 --v function(self: POP_MANAGER, province: string) --> number
 function pop_manager.display_value_in_province(self, province)
+    if self._populations[province] == nil then
+        local load = cm:get_saved_value(self._saveName..province)
+        if load then
+            --# assume load: number
+            self._populations[province] = load
+        end
+    end
     return math.ceil(((self._populations[province] or 0)*(pop_manager._popBaseValues[self._caste]))/100)
 end
 
@@ -126,32 +155,32 @@ function pop_manager.apply_bundles(self)
         local capital = self._factionDetail._model._provinceToCapitalRegion[province_key]
         if dev.get_region(capital):owning_faction():name() == faction:name() then
             --if we have an old bundle and we still own that region, remove it.
-            local old_region = self._bundleLocations[province_key]
-            local old_bundle = self._bundlesOut[province_key]
+            local old_region = cm:get_saved_value(self._saveName..province_key.."_bundle_region")
+            local old_bundle = cm:get_saved_value(self._saveName..province_key.."_bundle_number")
             if old_bundle and old_region then
                 if dev.get_region(old_region):owning_faction():name() == faction:name() then
-                    cm:remove_effect_bundle_from_region(old_bundle, old_region)
+                    cm:remove_effect_bundle_from_region(prefix .. self._caste .. "_" .. old_bundle, old_region)
                 end
             end
             cm:apply_effect_bundle_to_region(pop_bundle, capital, 0)
-            self._bundlesOut[province_key] = pop_bundle
-            self._bundleLocations[province_key] = capital
+            cm:set_saved_value(self._saveName..province_key.."_bundle_region", capital)
+            cm:set_saved_value(self._saveName..province_key.."_bundle_number", bundle_number)
             --we own the capital
         else
             for j = 1, #region_array do
                 local region = region_array[j]
                 if dev.get_region(region):owning_faction():name() == faction:name() then
                     --if we have an old bundle and we still own that region, remove it.
-                    local old_region = self._bundleLocations[province_key]
-                    local old_bundle = self._bundlesOut[province_key]
+                    local old_region = cm:get_saved_value(self._saveName..province_key.."_bundle_region")
+                    local old_bundle = cm:get_saved_value(self._saveName..province_key.."_bundle_number")
                     if old_bundle and old_region then
                         if dev.get_region(old_region):owning_faction():name() == faction:name() then
-                            cm:remove_effect_bundle_from_region(old_bundle, old_region)
+                            cm:remove_effect_bundle_from_region(prefix .. self._caste .. "_" .. old_bundle, old_region)
                         end
                     end
                     cm:apply_effect_bundle_to_region(pop_bundle, region, 0)
-                    self._bundlesOut[province_key] = pop_bundle
-                    self._bundleLocations[province_key] = region
+                    cm:set_saved_value(self._saveName..province_key.."_bundle_region", region)
+                    cm:set_saved_value(self._saveName..province_key.."_bundle_number", bundle_number)
                     break --only apply once
                 end
             end
@@ -253,7 +282,7 @@ function pop_manager.apply_growth_for_province(self, province_key)
         local nat_growth_factor = CONST.pop_natural_growth
         self:modify_population(province_key, faction_food_factor, food_factor_string)
         self:modify_population(province_key, nat_growth_factor, "Births and Immigration")
-        local deaths_factor = -1 * (current_pop/10)
+        local deaths_factor = -1 * (current_pop/15)
         self:modify_population(province_key, deaths_factor, "Deaths and Emigration")
     end
     --get all the regions in the province out of the model.
@@ -275,10 +304,10 @@ function pop_manager.apply_growth_for_province(self, province_key)
     if not pop_manager._popCastesNaturalGrowthExclusions[self._caste] then
         local overcrowding_factor = 0 --:number
         if current_pop > 150 then 
-            overcrowding_factor = (current_pop-100)/20
+            overcrowding_factor = (current_pop-150)/15
         end
         local total_growth = self._populations[province_key] - current_pop
-        if total_growth > CONST.pop_max_growth_before_reduction and current_pop > 25 then
+        if total_growth > CONST.pop_max_growth_before_reduction and current_pop > 75 then
             local overage_factor = current_pop/200
             if overage_factor > 0.75 then
                 overage_factor = 0.75
@@ -298,7 +327,16 @@ function pop_manager.ai_faction_pop_update(self)
     for i = 0, region_list:num_items() - 1 do
         local current_region = region_list:item_at(i)
         local province_key = current_region:province_name()
-        self._populations[province_key] = (self._populations[province_key] or 0) + 3
+        if self._populations[province_key] == nil then
+            local load = cm:get_saved_value(self._saveName..province_key.."_bundle_number")
+            if load then
+                --# assume load: number
+                self._populations[province_key] = load
+            else
+                self._populations[province_key] = 80
+            end
+        end
+        self._populations[province_key] = self._populations[province_key] + 3
     end
     self:apply_bundles()
 end
@@ -321,18 +359,25 @@ function pop_manager.update_population(self)
         local province_key = current_region:province_name()
         --if we don't have that province, add it to our base growth list.
         if not self:has_province(province_key) then
-            table.insert(self._regionsForBaseValue, current_region:name())
+            --first check if we can load it
+            local load = cm:get_saved_value(self._saveName..province_key)
+            if load then
+                --# assume load: number
+                self._populations[province_key] = load
+            else
+                table.insert(self._regionsForBaseValue, current_region:name())
+            end
         end
     end
     for i = 1, #self._regionsForBaseValue do
         local current_region = dev.get_region(self._regionsForBaseValue[i])
         local province_key = current_region:province_name()
         local slot_list = current_region:slot_list()
-        local base = 60 + cm:random_number(20)
-        local growth_mult = 2
+        local base = 90 + cm:random_number(20)
+        local growth_mult = 1
         if pop_manager._popCastesNaturalGrowthExclusions[self._caste] then
             base = 0
-            growth_mult = 12
+            growth_mult = 24
         end
         self._populations[province_key] = self._populations[province_key] or base
         for j = 0, slot_list:num_items() - 1 do
@@ -352,9 +397,29 @@ function pop_manager.update_population(self)
     --costs come last, otherwise the player could use them to offset growth reductions.
     for i = 0, faction:character_list():num_items() - 1 do
         local character = faction:character_list():item_at(i)
-        if dev.is_char_normal_general(character) and (not character:region():is_null_interface() ) and (not not self._armyCache[tostring(character:command_queue_index())]) then
+        local cqi_as_string = tostring(character:command_queue_index())
+        local should_check = not not self._armyCache[cqi_as_string] --:boolean
+        if not should_check then
+            local load = cm:get_saved_value(self._saveName.."_army_"..cqi_as_string)
+            if load then
+                --v [NO_CHECK] function(savestring: string) --> map<string, number>
+                local function get_saved_pairs(savestring)
+                    local tab = {}
+                    if savestring ~= "" then
+                        local first_split = dev.split_string(savestring, ";");
+                        for i = 1, #first_split do
+                            local second_split = dev.split_string(first_split[i], ",");
+                            tab[second_split[1]] = second_split[2];
+                        end
+                    end
+                    return tab
+                end
+                self._armyCache[cqi_as_string] = get_saved_pairs(load)
+            end
+        end
+        if should_check and dev.is_char_normal_general(character) and (not character:region():is_null_interface()) then
             local fake_cache = self:generate_cache_entry_for_force(character)
-            local cache_character = self._armyCache[tostring(character:command_queue_index())]
+            local cache_character = self._armyCache[cqi_as_string]
             for key, value in pairs(fake_cache) do
                 if cache_character[key] then
                     local old_q = cache_character[key]
@@ -373,6 +438,7 @@ function pop_manager.update_population(self)
 
     self:apply_bundles()
     self._canModify = false
+    self:save()
 end
 
 --v function(self: POP_MANAGER)
@@ -387,21 +453,7 @@ function pop_manager.cache_replenishment(self)
 end
 
 
-------------------------------------
-----SAVING AND LOADING FUNCTIONS----
-------------------------------------
 
---v function(faction: FACTION_DETAIL, caste: POP_CASTE, savetable: table) --> POP_MANAGER
-function pop_manager.load(faction, caste, savetable)
-    local self = pop_manager.new(faction, caste)
-    dev.load(savetable, self, "_populations", "_UIGrowthFactors", "_armyCache", "_bundleLocations", "_bundlesOut")
-    return self
-end
-
---v function(self: POP_MANAGER) --> table
-function pop_manager.save(self)
-    return dev.save(self, "_populations", "_UIGrowthFactors", "_armyCache", "_bundleLocations", "_bundlesOut")
-end
 
 
 return {
@@ -409,7 +461,6 @@ return {
     available_castes = pop_manager.available_castes,
     --constructor
     new = pop_manager.new,
-    load = pop_manager.load,
     --content
     add_building_pop_growth = pop_manager.add_building_pop_growth,
     set_absolute_pop_cap_for_caste = pop_manager.set_absolute_pop_cap_for_caste,

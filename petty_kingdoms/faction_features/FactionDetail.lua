@@ -140,11 +140,6 @@ function faction_detail.get_food_manager(self)
     return self._factionFoodManager
 end
 
---v function(self: FACTION_DETAIL, sv_tab: table) 
-function faction_detail.load_food_manager(self, sv_tab)
-    self._factionFoodManager = food_manager.load(self, sv_tab)
-end
-
 --v function(self: FACTION_DETAIL) --> boolean
 function faction_detail.has_food_manager(self)
     return not not self._factionFoodManager
@@ -155,26 +150,6 @@ end
 -----------------------------
 local pop_manager = require("petty_kingdoms/faction_features/PopManager")
 _G.pm = pop_manager
---v function(self: FACTION_DETAIL) --> vector<POP_MANAGER>
-function faction_detail.pop_manager_list(self)
-    local ret = {} --:vector<POP_MANAGER>
-    for k,v in pairs(self._popManagers) do ret[#ret+1] = v end
-    return ret
-end
-
---v function(self: FACTION_DETAIL)
-function faction_detail.update_population(self)
-    for caste, manager in pairs(self._popManagers) do
-        manager:update_population()
-    end
-end
-
---v function(self: FACTION_DETAIL)
-function faction_detail.cache_replenishment(self)
-    for caste, manager in pairs(self._popManagers) do
-        manager:cache_replenishment()
-    end
-end
 
 --v function(self: FACTION_DETAIL)
 function faction_detail.initialize_population(self)
@@ -185,6 +160,28 @@ function faction_detail.initialize_population(self)
         end
     end
 end
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.update_population(self)
+    if self._popManagers["serf"] == nil then
+        self:initialize_population()
+    end
+    for caste, manager in pairs(self._popManagers) do
+        manager:update_population()
+    end
+end
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.cache_replenishment(self)
+    if self._popManagers["serf"] == nil then
+        self:initialize_population()
+    end
+    for caste, manager in pairs(self._popManagers) do
+        manager:cache_replenishment()
+    end
+end
+
+
 
 --v function(self: FACTION_DETAIL, caste_key: POP_CASTE) --> POP_MANAGER
 function faction_detail.pop_manager_by_key(self, caste_key)
@@ -198,18 +195,6 @@ function faction_detail.pop_manager_by_key(self, caste_key)
     return self._popManagers[caste_key]
 end
 
-
-
---v function(self: FACTION_DETAIL, sv_tab: table) 
-function faction_detail.load_pop_managers(self, sv_tab)
-    local castes = pop_manager.available_castes
-    for i = 1, #castes do
-        if self._popManagers[castes[i]] == nil then
-            --# assume sv_tab: map<POP_CASTE, table>
-            self._popManagers[castes[i]] = pop_manager.load(self, castes[i], sv_tab[castes[i]])
-        end
-    end
-end
 
 
 
