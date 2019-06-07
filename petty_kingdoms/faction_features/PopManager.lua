@@ -77,6 +77,14 @@ function pop_manager.new(faction_detail, caste_key)
     return self
 end
 
+--v function(self: POP_MANAGER, province: string)
+function pop_manager.apply_unrest(self, province)
+    if self._populations[province] < 10 then
+        return
+    end
+    self._populations[province] = self._populations[province] - 10
+end
+
 --v function(self: POP_MANAGER) --> string
 function pop_manager.caste_key(self)
     return self._caste
@@ -108,6 +116,9 @@ function pop_manager.apply_bundles(self)
         local bundle_number = 0
         if population > 0 then
             local bundle_level = math.floor(population/interval)
+            if bundle_level == 0 then
+                bundle_level = 1
+            end
             bundle_number = interval*bundle_level
         end
         local pop_bundle = prefix .. self._caste .. "_" .. bundle_number
@@ -263,7 +274,7 @@ function pop_manager.apply_growth_for_province(self, province_key)
     --figure out if we need to reduce growth for overcrowding
     if not pop_manager._popCastesNaturalGrowthExclusions[self._caste] then
         local overcrowding_factor = 0 --:number
-        if current_pop > 100 then 
+        if current_pop > 150 then 
             overcrowding_factor = (current_pop-100)/20
         end
         local total_growth = self._populations[province_key] - current_pop
@@ -317,9 +328,11 @@ function pop_manager.update_population(self)
         local current_region = dev.get_region(self._regionsForBaseValue[i])
         local province_key = current_region:province_name()
         local slot_list = current_region:slot_list()
-        local base = 25
+        local base = 60 + cm:random_number(20)
+        local growth_mult = 2
         if pop_manager._popCastesNaturalGrowthExclusions[self._caste] then
             base = 0
+            growth_mult = 12
         end
         self._populations[province_key] = self._populations[province_key] or base
         for j = 0, slot_list:num_items() - 1 do
@@ -327,7 +340,7 @@ function pop_manager.update_population(self)
             if slot:has_building() then
                 local building = slot:building():name()
                 if pop_manager._buildingPopGrowth[building] and pop_manager._buildingPopGrowth[building][self._caste] then
-                    self._populations[province_key] = self._populations[province_key] + (pop_manager._buildingPopGrowth[building][self._caste]*3)
+                    self._populations[province_key] = self._populations[province_key] + (pop_manager._buildingPopGrowth[building][self._caste]*growth_mult)
                 end
             end
         end
