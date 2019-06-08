@@ -3,6 +3,7 @@ local pkm = _G.pkm
 local function onRegionOccupied(region, character)
     dev.log("Faction: ["..character:faction():name().."] captured region ["..region:name().."] ","EH")
     local reg_detail = pkm:get_region(region:name())
+    reg_detail:get_ownership_tracker():transfer_region(character:faction():name())
     --TODO region transfer in object model
     --TODO population handler on conquest
 end
