@@ -377,6 +377,24 @@ function dev_clamp(item, min, max)
     return ret
 end
 
+--v function(num: number, mult: number) --> number
+function dev_mround(num, mult)
+    --round num to the nearest multiple of num
+    return (math.floor((num/mult)+0.5))*mult
+end
+
+--v [NO_CHECK] function(str: string, delim:string) --> table
+function dev_split_string(str, delim)
+    local res = { };
+    local pattern = string.format("([^%s]+)%s()", delim, delim);
+    while (true) do
+        line, pos = str:match(pattern, pos);
+        if line == nil then break end;
+        table.insert(res, line);
+    end
+    return res;
+end
+
 
 
 --v function(call: function(CA_REGION) --> string)
@@ -654,6 +672,8 @@ return {
     region_list = dev_region_list,
     faction_list = dev_faction_list,
     clamp = dev_clamp,
+    mround = dev_mround,
+    split_string = dev_split_string,
     add_settlement_selected_log = dev_add_settlement_select_log_call,
     add_character_selected_log = dev_add_character_select_log_call,
     as_read_only = dev_readonlytable,

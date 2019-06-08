@@ -3,22 +3,16 @@ cm:add_listener(
     "FoodStorageFactionTurnStart",
     "FactionTurnStart",
     function(context)
-        return context:faction():has_home_region() and (not (cm:model():turn_number() == 1))
+        return context:faction():is_human() and context:faction():has_home_region() and (not (cm:model():turn_number() == 1)) 
     end,
     function(context)
         local faction = context:faction() --:CA_FACTION
         local fm = pkm:get_faction(faction:name()):get_food_manager()
-        local food_value = faction:total_food()
-        local food_after_storage = food_value - fm:food_being_drawn()
-        if food_after_storage > 0 then
-            food_after_storage = math.ceil(food_after_storage*CONST.food_storage_percentage)
-        end
-        fm:mod_food_storage(food_after_storage)
-        fm:calculate_draw_needs()
+        fm:update_food_storage()
     end,
     true
 )
-
+--[[ --TODO make food storage react to losing regions
 cm:add_listener(
     "FoodStorageFactionLostRegion",
     "FactionLostRegion",
@@ -46,7 +40,7 @@ cm:add_listener(
         fm:calc_food_storage_cap(context:building():region())
     end,
     true
-)
+)--]]
 
 
 cm:add_listener(
@@ -76,14 +70,14 @@ cm:add_listener(
                 BuildingTitle:SetStateText("[[col:"..col.."]]"..before_stores.."[[/col]] Net Food This Turn")
                 --oldText = DescriptionWindow:GetStateText()
 
-                if before_stores >= 0 then
+                if before_stores >= stores_drawn then
                     local raw_change = (before_stores*CONST.food_storage_percentage)
                     local cap = fm:food_store_cap()
                     local increase_val = fm:calculate_potential_food_change(stores, cap, raw_change)
                     DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your stores will increase by [[col:green]]"..increase_val.."[[/col]] next turn.")
                 else
                     local cap = fm:food_store_cap()
-                    local decrease_val = fm:calculate_potential_food_change(stores, cap, before_stores)
+                    local decrease_val = stores_drawn
                     DescriptionWindow:SetStateText("You have "..stores.."/"..cap.." Food Stores. Your Stores will decrease by [[col:red]]"..decrease_val.."[[/col]] next turn.")
                 end
             end

@@ -89,7 +89,7 @@ function RebellionCheck(context)
 				end)
 				cm:trigger_incident(faction_name, incident, true)
 			elseif region:owning_faction():total_food() < 50 and
-			(pkm:get_faction(faction_name):get_food_manager():get_food_storage_cap_contrib_from_region(region_name) > 0) and
+			pkm:get_faction(faction_name):get_food_manager():does_region_have_food_storage(region) and
 			(pkm:get_faction(faction_name):get_food_manager():food_in_storage() > 0) then
 				local incident = "shield_rebellion_food_storage_"..region_name
 				respond_to_incident(incident, function(context)
