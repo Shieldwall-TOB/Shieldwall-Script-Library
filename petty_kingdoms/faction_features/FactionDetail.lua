@@ -54,9 +54,11 @@ function faction_detail.new(model, key)
     self._model = model
     self._name = key
     self._characters = {} --:map<string, CHARACTER_DETAIL>
-    self._provinces = {} --:map<string, PROVINCE_DETAIL>
+    self._regions = {} --:map<string, REGION_DETAIL> 
+    --TODO bind regions and factions
     self._factionFoodManager = nil --:FOOD_MANAGER
     self._personalityManager = nil --:PERSONALITY_MANAGER 
+    self._popManagers = {} --:map<string, POP_MANAGER>
 
     self._kingdomLevel = 0 
     self._isMajor = not not faction_detail._majorFactions[key]
@@ -80,10 +82,6 @@ function faction_detail.name(self)
     return self._name
 end
 
---v function(self: FACTION_DETAIL) --> map<string, PROVINCE_DETAIL>
-function faction_detail.provinces(self)
-    return self._provinces
-end
 
 --v function(self: FACTION_DETAIL) --> map<string, CHARACTER_DETAIL>
 function faction_detail.characters(self)
@@ -142,32 +140,62 @@ function faction_detail.get_food_manager(self)
     return self._factionFoodManager
 end
 
---v function(self: FACTION_DETAIL, sv_tab: table) 
-function faction_detail.load_food_manager(self, sv_tab)
-    self._factionFoodManager = food_manager.load(self, sv_tab)
-end
-
 --v function(self: FACTION_DETAIL) --> boolean
 function faction_detail.has_food_manager(self)
     return not not self._factionFoodManager
 end
---------------------------------
-----PROVINCE DETAIL OBJECTS-----
---------------------------------
-province_detail = require("petty_kingdoms/province_features/ProvinceDetail")
---v function(self: FACTION_DETAIL, province_key: string, save_data: table) --> PROVINCE_DETAIL
-function faction_detail.load_province(self, province_key, save_data)
-    self._provinces[province_key] = province_detail.load(self, province_key, save_data)
-    return self._provinces[province_key]
+
+-----------------------------
+----FACTION POP MANAGER-----
+-----------------------------
+local pop_manager = require("petty_kingdoms/faction_features/PopManager")
+_G.pm = pop_manager
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.initialize_population(self)
+    local castes = pop_manager.available_castes
+    for i = 1, #castes do
+        if self._popManagers[castes[i]] == nil then
+            self._popManagers[castes[i]] = pop_manager.new(self, castes[i])
+        end
+    end
 end
 
---v function(self: FACTION_DETAIL, province_key: string) --> PROVINCE_DETAIL
-function faction_detail.get_province(self, province_key)
-    if self._provinces[province_key] == nil then
-        self._provinces[province_key] = province_detail.new(self, province_key)
+--v function(self: FACTION_DETAIL)
+function faction_detail.update_population(self)
+    if self._popManagers["serf"] == nil then
+        self:initialize_population()
     end
-    return self._provinces[province_key]
+    for caste, manager in pairs(self._popManagers) do
+        manager:update_population()
+    end
 end
+
+--v function(self: FACTION_DETAIL)
+function faction_detail.cache_replenishment(self)
+    if self._popManagers["serf"] == nil then
+        self:initialize_population()
+    end
+    for caste, manager in pairs(self._popManagers) do
+        manager:cache_replenishment()
+    end
+end
+
+
+
+--v function(self: FACTION_DETAIL, caste_key: POP_CASTE) --> POP_MANAGER
+function faction_detail.pop_manager_by_key(self, caste_key)
+    if self._popManagers[caste_key] == nil then
+        self:initialize_population()
+        if self._popManagers[caste_key] == nil then
+            self:log("Asked for pop manager on caste key ["..caste_key.."] which does not exist and could not be created!")
+            return nil
+        end
+    end
+    return self._popManagers[caste_key]
+end
+
+
 
 
 

@@ -143,9 +143,9 @@ local function update_fyrd_for_faction(faction)
 	
 	local season = cm:model():season()
 	if season <= 1 then
-		update_burghal_ui(faction, 0)
+		--update_burghal_ui(faction, 0)
 	else
-		update_burghal_ui(faction, season-1)
+		--update_burghal_ui(faction, season-1)
 	end
 end
 
@@ -172,7 +172,9 @@ cm:add_listener(
 	function(context) 
 		local humans = cm:get_human_factions()
 		for i = 1, #humans do
-			update_fyrd_for_faction(dev.get_faction(humans[i]))
+			if valid_factions[humans[i]] then
+				update_fyrd_for_faction(dev.get_faction(humans[i]))
+			end
 		end
 	end,
 	true
@@ -185,7 +187,9 @@ cm:add_listener(
 	function(context) 
 		local humans = cm:get_human_factions()
 		for i = 1, #humans do
-			update_fyrd_for_faction(dev.get_faction(humans[i]))
+			if valid_factions[humans[i]] then
+				update_fyrd_for_faction(dev.get_faction(humans[i]))
+			end
 		end
 	end,
 	true

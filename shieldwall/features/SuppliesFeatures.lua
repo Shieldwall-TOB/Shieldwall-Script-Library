@@ -67,10 +67,10 @@ new_army_visits_settlement_event("sw_warehouse_resupply_", "", "", 3,
                 skill_key = faction_to_follower_trait[type(skill_key)]
             end
             if region:governor():has_skill(skill_key.."_4") then    
-                dev.log("DF TEST PASSED")
+                --dev.log("DF TEST PASSED")
                 return 3
             elseif region:governor():has_skill(skill_key.."_1") then
-                dev.log("DF TEST PASSED")
+                --dev.log("DF TEST PASSED")
                 return 2
             end
         end
@@ -85,7 +85,7 @@ new_army_visits_settlement_event("sw_warehouse_resupply_", "", "", 3,
             local bonus = 0
             for i = 1, 5 do 
                 if army:general_character():has_skill("vik_follower_quartermaster_"..i) then
-                    dev.log("DF TEST PASSED")
+                    --dev.log("DF TEST PASSED")
                     bonus = i
                 end
             end

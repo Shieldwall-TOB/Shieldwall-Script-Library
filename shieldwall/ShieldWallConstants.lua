@@ -12,9 +12,9 @@ return {
     landed_estate_type = "vik_estate_agricultural", -- the estates_tables key of this type of estate.
     church_estate_type = "vik_estate_religious", -- the estates_tables key of this type of estate.
     food_storage_cap_absolute = 2000, --absolute limit any faction can store. 
-    food_storage_cap_base = 175, -- base limit all factions have access to.
+    food_storage_cap_base = 100, -- base limit all factions have access to.
     food_storage_bundle = "shield_food_storage_bundle_", --bundle prefix from effect_bundles_tables
-    food_storage_percentage = 0.5, -- percentage of food stored at the end of each turn
+    food_storage_percentage = 1, -- percentage of food stored at the end of each turn
     season_bundle_prefix = "shield_season_", --bundle prefix from effect_bundles_tables
     charm_title_prefix = "shield_title_", --bundle prefix from effect_bundles_tables
     cross_loyalty_result_prefix = "shield_friendship_", --trait key prefix for friendship traits.
@@ -28,7 +28,9 @@ return {
     charm_level_two_trait_threshold = 15,
     charm_level_three_trait_threshold = 30,
     estates_king_owner_bundle = "shield_owned_estate",
-    pop_bundle_prefix = "shield_pop_bundle_"
+    pop_bundle_prefix = "shield_pop_bundle_",
+    pop_natural_growth = 4,
+    pop_max_growth_before_reduction = 5
 }
 
 

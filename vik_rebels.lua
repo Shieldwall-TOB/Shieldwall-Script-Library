@@ -74,50 +74,48 @@ function RebellionCheck(context)
 	local region_name = region:name()
 	local public_order = region:squalor() - region:sanitation()
 	local faction_name = region:owning_faction():name()
+	--if they aren't currently on riot-event cooldown cooldown
 	if REBELLION_REBELS[region_name] == nil then
-		if public_order > 0 then
+		--if they are rioting
+		if REBELLION_BANDITS[region_name] ~= nil and region:is_province_capital() and region:owning_faction():is_human() then				
+			REBELLION_REBELS[region_name] = 2
+			dev.log("Secondary riot event in ["..region_name.."] ", "RIOT");
+			if region:has_governor() and cm:random_number(100) > 50 then
+				local incident = "shield_rebellion_stoning_"..region_name
+				respond_to_incident(incident, function(context)
+					local region = dev.get_region(region_name)
+					local gov = region:governor():command_queue_index()
+					cm:kill_character("character_cqi:"..tostring(gov), false, true)
+				end)
+				cm:trigger_incident(faction_name, incident, true)
+			elseif region:owning_faction():total_food() < 50 and
+			pkm:get_faction(faction_name):get_food_manager():does_region_have_food_storage(region) and
+			(pkm:get_faction(faction_name):get_food_manager():food_in_storage() > 0) then
+				local incident = "shield_rebellion_food_storage_"..region_name
+				respond_to_incident(incident, function(context)
+					local region = dev.get_region(region_name)
+					pkm:get_faction(faction_name):get_food_manager():mod_food_storage(pkm:get_faction(faction_name):get_food_manager():food_in_storage() * (-0.25))
+				end)
+				cm:trigger_incident(faction_name, incident, true)
+			elseif pkm:get_faction(faction_name):pop_manager_by_key("serf"):display_value_in_province(region:province_name()) > 40 then
+				local incident = "shield_rebellion_nobles_"..region_name
+				respond_to_incident(incident, function(context)
+					local region = dev.get_region(region_name) 
+					pkm:get_faction(faction_name):pop_manager_by_key("serf"):apply_unrest(region:province_name())
+				end)
+				cm:trigger_incident(faction_name, incident, true)
+			end
+			--not currently rioting but have negative PO
+		elseif public_order > 0 then
+			--chance to begin riots
 			if public_order > cm:random_number(100) then	
-				if REBELLION_BANDITS[region_name] ~= nil and region:is_province_capital() and region:owning_faction():is_human() then				
-					--cm:set_public_order_of_province_for_region(region, -500);
-					--cm:remove_effect_bundle_from_region("vik_rebels_bandits", context:region():name());
-					--cm:apply_effect_bundle_to_region("vik_rebels_rebels", region, 6);	
-					--REBELLION_BANDITS[region_name] = nil
-					REBELLION_REBELS[region_name] = 2
-					dev.log("Secondary riot event in ["..region_name.."] ", "RIOT");
-					if region:has_governor() and cm:random_number(100) > 50 then
-						local incident = "shield_rebellion_stoning_"..region_name
-						respond_to_incident(incident, function(context)
-							local region = dev.get_region(region_name)
-							local gov = region:governor():command_queue_index()
-							cm:kill_character("character_cqi:"..tostring(gov), false, true)
-						end)
-						cm:trigger_incident(faction_name, incident, true)
-					elseif region:owning_faction():total_food() < 50 and
-					(pkm:get_faction(faction_name):get_food_manager():get_food_storage_cap_contrib_from_region(region_name) > 0) and
-					(pkm:get_faction(faction_name):get_food_manager():food_in_storage() > 0) then
-						local incident = "shield_rebellion_food_storage_"..region_name
-						respond_to_incident(incident, function(context)
-							local region = dev.get_region(region_name)
-							pkm:get_faction(faction_name):get_food_manager():mod_food_storage(pkm:get_faction(faction_name):get_food_manager():food_in_storage() * (-0.25))
-						end)
-						cm:trigger_incident(faction_name, incident, true)
-					elseif pkm:get_faction(faction_name):get_province(region:province_name()):get_population_manager():get_pop_of_caste("lord") > 40 then
-						local incident = "shield_rebellion_nobles_"..region_name
-						respond_to_incident(incident, function(context)
-							local region = dev.get_region(region_name)
-							pkm:get_faction(faction_name):get_province(region:province_name()):get_population_manager():modify_population("lord", -40, "Riots")
-						end)
-						cm:trigger_incident(faction_name, incident, true)
-					end
+				--riot duration
+				REBELLION_BANDITS[region_name] = 10
+				dev.log("riot begins in ["..region_name.."]!!!!", "RIOT");
+				if region:is_province_capital() and region:owning_faction():is_human() then
+					cm:trigger_incident(faction_name, "shield_rebellion_rioting_"..region_name , true)
 				else
-					--cm:apply_effect_bundle_to_region("vik_rebels_bandits", region, 6);
-					REBELLION_BANDITS[region_name] = 10
-					dev.log("riot begins in ["..region_name.."]!!!!", "RIOT");
-					if region:is_province_capital() and region:owning_faction():is_human() then
-						cm:trigger_incident(faction_name, "shield_rebellion_rioting_"..region_name , true)
-					else
-						cm:apply_effect_bundle_to_region("shield_unrest_bundle", region_name, 10)
-					end
+					cm:apply_effect_bundle_to_region("shield_unrest_bundle", region_name, 10)
 				end
 			end
 		end
@@ -138,12 +136,11 @@ end
 -- Removes bandits/rebels bundles from a region when it is occupied
 --v function(context: CA_CONTEXT)
 function RebellionResetRegion(context)
-	cm:remove_effect_bundle_from_region("shield_unrest_bundle", context:region():name());
-	cm:remove_effect_bundle_from_region("shield_rioting", context:region():name());
+	--cm:remove_effect_bundle_from_region("shield_unrest_bundle", context:region():name());
+	--cm:remove_effect_bundle_from_region("shield_rioting", context:region():name());
 	--cm:remove_effect_bundle_from_region("vik_rebels_bandits", context:region():name());
 	REBELLION_REBELS[context:region():name()] = nil;
 	REBELLION_BANDITS[context:region():name()] = nil;
-
 end
 
 
