@@ -54,8 +54,8 @@ local function is_context_target_valid(context)
     return not bad_touch
 end
 
---v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR!), on_trigger: (function(cqi: CA_CQI,context: WHATEVER))?)
-local function trait_listener(trait_name, event, conditional_function, on_trigger)
+--v function (trait_name: string, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR?), on_trigger: (function(cqi: CA_CQI,context: WHATEVER))?)
+function trait_listener(trait_name, event, conditional_function, on_trigger)
     local flag = trait_name.."_flag"
     ALREADY_TRIGGERED_TRAITS[flag] = ALREADY_TRIGGERED_TRAITS[flag] or {}
     cm:add_listener(
@@ -67,30 +67,29 @@ local function trait_listener(trait_name, event, conditional_function, on_trigge
         function(context)
             log("Evaluating trait validity ".. trait_name)
             local valid, char = conditional_function(context)
-            if char:faction():is_human() then
-                if ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] then
-                    log("already occured for character")
-                    if char:has_trait(flag) then
-                        cm:force_remove_trait(dev.lookup(char), flag)
+            if char then --if we don't have a char, its probably a weird invalid case
+                --# assume char: CA_CHAR
+                if char:faction():is_human() then
+                    if ALREADY_TRIGGERED_TRAITS[flag][tostring(char:command_queue_index())] then
+                        log("already occured for character")
+                        if char:has_trait(flag) then
+                            cm:force_remove_trait(dev.lookup(char), flag)
+                        end
+                        return
                     end
-                    return
-                end
-                if valid then
-                    log("Trait dilemma trigger is valid!")
-                    apply_trait_dilemma_for_character(char, trait_name)
-                else
-                    log("invalid trigger")
-                    if char:has_trait(flag) then
-                        cm:force_remove_trait(dev.lookup(char), flag)
+                    if valid then
+                        log("Trait dilemma trigger is valid!")
+                        apply_trait_dilemma_for_character(char, trait_name)
+                    else
+                        log("invalid trigger")
+                        if char:has_trait(flag) then
+                            cm:force_remove_trait(dev.lookup(char), flag)
+                        end
                     end
+                elseif valid and cm:random_number(25) > 20 then
+                    log("ai chance passed")
+                    cm:force_add_trait(dev.lookup(char),trait_name, false)
                 end
-            elseif valid and cm:random_number(25) > 20 then
-                log("ai chance passed")
-                cm:force_add_trait(dev.lookup(char),trait_name, false)
-            elseif valid then
-                log("ai chance failed")
-            else
-                log("invalid trigger")
             end
         end,
         true

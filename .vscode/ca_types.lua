@@ -179,6 +179,9 @@
 --shroud
 --# assume CM.make_sea_region_seen_in_shroud: method(region: string) 
 --# assume CM.make_region_seen_in_shroud: method(faction_key: string, region_key: string)
+--forces
+--# assume CM.zero_action_points: method(lookup: string)
+--# assume CM.replenish_action_points: method(lookup: string)
 
 --MODEL
 --# assume CA_MODEL.world: method() --> CA_WORLD

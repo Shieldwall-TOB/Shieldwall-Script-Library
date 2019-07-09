@@ -99,12 +99,16 @@ function pop_manager.save(self)
 end
 
 
---v function(self: POP_MANAGER, province: string)
-function pop_manager.apply_unrest(self, province)
-    if self._populations[province] < 10 then
+--v function(self: POP_MANAGER, province: string, size: number?)
+function pop_manager.apply_unrest(self, province, size)
+    if not size then
+        size = 10
+    end--# assume size: number
+    if self._populations[province] < size then
+        self._populations[province] = 0
         return
     end
-    self._populations[province] = self._populations[province] - 10
+    self._populations[province] = self._populations[province] - size
 end
 
 --v function(self: POP_MANAGER) --> string
@@ -158,9 +162,7 @@ function pop_manager.apply_bundles(self)
             local old_region = cm:get_saved_value(self._saveName..province_key.."_bundle_region")
             local old_bundle = cm:get_saved_value(self._saveName..province_key.."_bundle_number")
             if old_bundle and old_region then
-                if dev.get_region(old_region):owning_faction():name() == faction:name() then
-                    cm:remove_effect_bundle_from_region(prefix .. self._caste .. "_" .. old_bundle, old_region)
-                end
+                cm:remove_effect_bundle_from_region(prefix .. self._caste .. "_" .. old_bundle, old_region)
             end
             cm:apply_effect_bundle_to_region(pop_bundle, capital, 0)
             cm:set_saved_value(self._saveName..province_key.."_bundle_region", capital)
@@ -174,9 +176,7 @@ function pop_manager.apply_bundles(self)
                     local old_region = cm:get_saved_value(self._saveName..province_key.."_bundle_region")
                     local old_bundle = cm:get_saved_value(self._saveName..province_key.."_bundle_number")
                     if old_bundle and old_region then
-                        if dev.get_region(old_region):owning_faction():name() == faction:name() then
-                            cm:remove_effect_bundle_from_region(prefix .. self._caste .. "_" .. old_bundle, old_region)
-                        end
+                        cm:remove_effect_bundle_from_region(prefix .. self._caste .. "_" .. old_bundle, old_region)
                     end
                     cm:apply_effect_bundle_to_region(pop_bundle, region, 0)
                     cm:set_saved_value(self._saveName..province_key.."_bundle_region", region)
@@ -322,7 +322,7 @@ end
 
 --v function(self: POP_MANAGER)
 function pop_manager.ai_faction_pop_update(self)
-    local faction = dev.get_faction(self._factionDetail:name())
+   --[[ local faction = dev.get_faction(self._factionDetail:name())
     local region_list = faction:region_list()
     for i = 0, region_list:num_items() - 1 do
         local current_region = region_list:item_at(i)
@@ -338,7 +338,7 @@ function pop_manager.ai_faction_pop_update(self)
         end
         self._populations[province_key] = self._populations[province_key] + 3
     end
-    self:apply_bundles()
+    self:apply_bundles()--]]
 end
 
 --v function(self: POP_MANAGER)
