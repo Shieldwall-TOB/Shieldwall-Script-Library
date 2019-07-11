@@ -16,76 +16,70 @@
 -- Customise costs based on each decree
 -- Work how to script influence costs
 
-
 -- This list is used to find and fire the events when buttons are clicked in the decrees panel
 DECREE_LIST = {
 	["vik_fact_west_seaxe"] = {
 		[1] = {
 			["event"] = "vik_incident_decree_new_laws_witan",
 			["duration"] = 10,
-			["gold_cost"] = -750,
+			["gold_cost"] = -2500,
 			["currency"] = "influence",
-			["currency_cost"] = -2,
-			["cooldown"] = 12,
+			["currency_cost"] = -1,
+			["cooldown"] = 20,
 			["cooldown_current"] = 0,
 			["locked"] = false
 		},
 		[2] = {
 			["event"] = "vik_incident_decree_lower_taxes",
-			["duration"] = 6,
-			["gold_cost"] = -1400,
+			["duration"] = 10,
+			["gold_cost"] = -2500,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
-			["cooldown"] = 12,
+			["cooldown"] = 20,
 			["cooldown_current"] = 0,
 			["locked"] = false
 		},
 		[3] = {
 			["event"] = "vik_incident_decree_construction_effort",
-			["duration"] = 4,
-			["gold_cost"] = -5000,
+			["duration"] = 5,
+			["gold_cost"] = -2500,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
-			["cooldown"] = 12,
+			["cooldown"] = 20,
 			["cooldown_current"] = 0,
-			["locked"] = false
+			["locked"] = true
 		},
 		[4] = {
 			["event"] = "vik_incident_decree_encourage_scholars",
-			["duration"] = 6,
-			["gold_cost"] = -1300,
+			["duration"] = 3,
+			["gold_cost"] = -2500,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
-			["cooldown"] = 12,
+			["cooldown"] = 20,
 			["cooldown_current"] = 0,
-			["locked"] = false
+			["locked"] = true
 		},
-		["global_cooldown"] = 0,
+		["global_cooldown"] = 10,
 		["global_cooldown_current"] = 0,
-		["cooldown_tech"] = "vik_westsexa_civ_leader_6",
-		["decree_cost_reduction_event"] = "vik_incident_decree_new_laws_witan",
-		["decree_cost_reduction_factor"] = 0.1,
-		["decree_cost_reduction_turns_current"] = 0,
-		["decree_cost_reduction_turns"] = 10,
-		["conscription_event"] = "vik_incident_decree_lower_taxes"
+		["cooldown_tech"] = "vik_westsexa_civ_leader_6"
 	},
 	["vik_fact_mierce"] = {
 		[1] = {
 			["event"] = "vik_incident_decree_give_to_soldiers",
-			["duration"] = 6,
-			["gold_cost"] = -1500,
+			["duration"] = 5,
+			["gold_cost"] = -5000,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
-			["cooldown"] = 12,
+			["cooldown"] = 10,
 			["cooldown_current"] = 0,
-			["locked"] = false,
+			["locked"] = true,
 			["locked_counter"] = 0,
 			["locked_target"] = 40
 		},
 		[2] = {
 			["event"] = "vik_incident_decree_give_to_nobles",
 			["duration"] = 5,
-			["gold_cost"] = 0,
+			["gold_cost"] = -5000,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
 			["cooldown"] = 10,
@@ -97,27 +91,26 @@ DECREE_LIST = {
 		[3] = {
 			["event"] = "vik_incident_decree_give_to_people",
 			["duration"] = 5,
-			["gold_cost"] = 0,
+			["gold_cost"] = -5000,
+			["currency"] = "influence",
+			["currency_cost"] = 0,
+			["cooldown"] = 10,
+			["cooldown_current"] = 0,
+			["locked"] = false
+		},
+		[4] = {
+			["event"] = "vik_incident_decree_give_to_church",
+			["duration"] = 3,
+			["gold_cost"] = -5000,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
 			["cooldown"] = 10,
 			["cooldown_current"] = 0,
 			["locked"] = true
 		},
-		[4] = {
-			["event"] = "vik_incident_decree_give_to_church",
-			["duration"] = 1,
-			["gold_cost"] = -5000,
-			["currency"] = "influence",
-			["currency_cost"] = 0,
-			["cooldown"] = 1,
-			["cooldown_current"] = 0,
-			["locked"] = false
-		},
 		["global_cooldown"] = 5,
 		["global_cooldown_current"] = 0,
-		["cooldown_tech"] = "vik_miercna_civ_leader_6",
-		["conscription_event"] = "vik_incident_decree_give_to_soldiers"
+		["cooldown_tech"] = "vik_miercna_civ_leader_6"
 	},
 	["vik_fact_dyflin"] = {
 		[1] = {
@@ -583,23 +576,12 @@ function Add_Decrees_Listeners()
 	
 end
 
-
-
-
 -- Deduct the costs and update scripted currencies for enacting the decree
 function DecreesPayment(faction, event)
-	if DECREE_LIST[faction]["decree_cost_reduction_event"] and (event == DECREE_LIST[faction]["decree_cost_reduction_event"]) then
-		DECREE_LIST[faction]["decree_cost_reduction_turns_current"] = DECREE_LIST[faction]["decree_cost_reduction_turns"] 
-	end
+
 	for i = 1,4 do
 		if DECREE_LIST[faction][i]["event"] == event then
-			local gold_quantity = DECREE_LIST[faction][i]["gold_cost"]
-			if faction == "vik_fact_west_seaxe" then
-				if DECREE_LIST[faction]["decree_cost_reduction_turns_current"] > 0 then
-					gold_quantity = (gold_quantity * DECREE_LIST[faction]["decree_cost_reduction_factor"])
-				end
-			end
-			cm:treasury_mod(faction, gold_quantity);
+			cm:treasury_mod(faction, DECREE_LIST[faction][i]["gold_cost"]);
 			if faction == "vik_fact_dyflin" then
 				if DECREE_LIST[faction][i]["currency"] == "slaves" then
 					DYFLIN_SLAVES = DYFLIN_SLAVES + DECREE_LIST[faction][i]["currency_cost"]
@@ -642,22 +624,7 @@ function DecreesPayment(faction, event)
 			end
 		end
 	end
-	--shieldwall decree effects
-	get_eh():trigger_event("DecreeOccured", event, get_faction(faction))
-	if event == "vik_incident_decree_construction_effort" then
-		local character_list = cm:model():world():faction_by_key(faction):character_list()
-		for i = 0, character_list:num_items() - 1 do
-			local character = character_list:item_at(i)
-			if character:character_type("general") and character:has_military_force() and character:military_force():is_army() and (not character:military_force():is_armed_citizenry()) then
-				add_callback(function()
-					cm:replenish_action_points(char_lookup_str(character:command_queue_index()))
-				end, 0.1) --this is on a callback so that they gain the full movement after the bonus
-			end
-		end
-	end
-	if event == DECREE_LIST[faction]["conscription_event"] then
-
-	end
+	
 	--Call the icon function to disable the alert
 	DecreesAlertIcon(faction)	
 	
@@ -681,9 +648,7 @@ function DecreesDecreaseCooldown(context)
 		end
 		DECREE_LIST[faction]["cooldown_tech"] = nil;
 	end
-	if DECREE_LIST[faction]["decree_cost_reduction_turns_current"] and (DECREE_LIST[faction]["decree_cost_reduction_turns_current"] > 0) then
-		DECREE_LIST[faction]["decree_cost_reduction_turns_current"] = DECREE_LIST[faction]["decree_cost_reduction_turns_current"] - 1
-	end
+	
 	--Reduces the existing cooldown
 	if DECREE_LIST[faction]["global_cooldown_current"] > 0 then
 		DECREE_LIST[faction]["global_cooldown_current"] = DECREE_LIST[faction]["global_cooldown_current"] - 1
@@ -707,11 +672,7 @@ function DecreesAlertIcon(faction)
 		local alert_icon = false;
 		if DECREE_LIST[faction]["global_cooldown_current"] == 0 then
 			for i=1,4 do
-				local gold_cost = DECREE_LIST[faction][i]["gold_cost"]
-				if DECREE_LIST[faction]["decree_cost_reduction_turns_current"] and (DECREE_LIST[faction]["decree_cost_reduction_turns_current"] > 0) then
-					gold_cost = (gold_cost * DECREE_LIST[faction]["decree_cost_reduction_factor"])
-				end
-				if DECREE_LIST[faction][i]["locked"] == false and DECREE_LIST[faction][i]["cooldown_current"] == 0 and get_faction(faction):treasury() >= (0 - gold_cost) then
+				if DECREE_LIST[faction][i]["locked"] == false and DECREE_LIST[faction][i]["cooldown_current"] == 0 and get_faction(faction):treasury() >= (0 - DECREE_LIST[faction][i]["gold_cost"]) then
 					if DECREE_LIST[faction][i]["currency"] == "influence" and get_faction(faction):faction_leader():gravitas() >= (0 - DECREE_LIST[faction][i]["currency_cost"]) then
 						alert_icon = true;
 						break;
@@ -791,11 +752,7 @@ function DecreesUpdateDecreesPanel()
 		else
 			UIComponent(UIComponent(UIComponent(template):Find("button_enact")):Find("turns_corner")):SetVisible(false)
 		end
-		local gold_cost = DECREE_LIST[faction][i]["gold_cost"]
-		if DECREE_LIST[faction]["decree_cost_reduction_turns_current"] and (DECREE_LIST[faction]["decree_cost_reduction_turns_current"] > 0) then
-			gold_cost = (gold_cost * DECREE_LIST[faction]["decree_cost_reduction_factor"])
-		end
-		UIComponent(UIComponent(template):Find("dy_value")):SetStateText(gold_cost);
+		UIComponent(UIComponent(template):Find("dy_value")):SetStateText(DECREE_LIST[faction][i]["gold_cost"]);
 		if DECREE_LIST[faction][i]["currency_cost"] == 0 then
 			UIComponent(UIComponent(template):Find("other_cost")):SetVisible(false);
 		else
@@ -824,7 +781,7 @@ function DecreesUpdateDecreesPanel()
 			UIComponent(UIComponent(template):Find("dy_condition")):SetState("cooldown");
 		else
 			local can_afford = false
-			if get_faction(faction):treasury() < (0 - gold_cost) then
+			if get_faction(faction):treasury() < (0 - DECREE_LIST[faction][i]["gold_cost"]) then
 				UIComponent(UIComponent(template):Find("dy_condition")):SetState("too_expensive");
 			elseif DECREE_LIST[faction][i]["currency"] == "influence" and get_faction(faction):faction_leader():gravitas() < (0 - DECREE_LIST[faction][i]["currency_cost"]) then
 				UIComponent(UIComponent(template):Find("dy_condition")):SetState("too_expensive");
@@ -876,10 +833,25 @@ end
 function DecreesUnlocks(faction)
 
 	if faction == "vik_fact_west_seaxe" then
-		DECREE_LIST[faction][1]["locked"] = not BURGHAL_VALUES[faction] 
-		DECREE_LIST[faction][2]["locked"] = true
-		get_eh():trigger_event("DecreeUnlocks", get_faction(faction))
-		--TODO wessex unlock conditions
+		if DECREE_LIST[faction][3]["locked"] == true then
+			for i = 0, get_faction(faction):region_list():num_items() - 1 do
+				if get_faction(faction):region_list():item_at(i):building_exists("vik_great_hall_5") then
+					DECREE_LIST[faction][3]["locked"] = false;
+					break;
+				end
+			end
+		end
+		if DECREE_LIST[faction][4]["locked"] then
+			if faction == TECH_PLAYER_1["faction_name"] then
+				if TECH_PLAYER_1["army_locked"] == false or TECH_PLAYER_1["farm_locked"] == false or TECH_PLAYER_1["industry_locked"] == false or TECH_PLAYER_1["leader_locked"] == false or TECH_PLAYER_1["market_locked"] == false or TECH_PLAYER_1["religion_locked"] == false or TECH_PLAYER_1["bodyguard_locked"] == false or TECH_PLAYER_1["cap_1_locked"] == false or TECH_PLAYER_1["cap_2_locked"] == false or TECH_PLAYER_1["cap_3_locked"] == false or TECH_PLAYER_1["cap_4_locked"] == false or TECH_PLAYER_1["cavalry_2_locked"] == false or TECH_PLAYER_1["land_locked"] == false or TECH_PLAYER_1["melee_locked"] == false or TECH_PLAYER_1["missile_1_locked"] == false or TECH_PLAYER_1["siege_locked"] == false or TECH_PLAYER_1["spearmen_1_locked"] == false then
+					DECREE_LIST[faction][4]["locked"] = false;
+				end
+			elseif faction == TECH_PLAYER_2["faction_name"] then
+				if TECH_PLAYER_2["army_locked"] == false or TECH_PLAYER_2["farm_locked"] == false or TECH_PLAYER_2["industry_locked"] == false or TECH_PLAYER_2["leader_locked"] == false or TECH_PLAYER_2["market_locked"] == false or TECH_PLAYER_2["religion_locked"] == false or TECH_PLAYER_2["bodyguard_locked"] == false or TECH_PLAYER_2["cap_1_locked"] == false or TECH_PLAYER_2["cap_2_locked"] == false or TECH_PLAYER_2["cap_3_locked"] == false or TECH_PLAYER_2["cap_4_locked"] == false or TECH_PLAYER_2["cavalry_2_locked"] == false or TECH_PLAYER_2["land_locked"] == false or TECH_PLAYER_2["melee_locked"] == false or TECH_PLAYER_2["missile_1_locked"] == false or TECH_PLAYER_2["siege_locked"] == false or TECH_PLAYER_2["spearmen_1_locked"] == false then
+					DECREE_LIST[faction][4]["locked"] = false;
+				end
+			end
+		end	
 	elseif faction == "vik_fact_mierce" then
 		if DECREE_LIST[faction][1]["locked"] and DECREE_LIST[faction][1]["locked_counter"] >= DECREE_LIST[faction][1]["locked_target"] then
 			DECREE_LIST[faction][1]["locked"] = false;
@@ -1132,11 +1104,7 @@ decrees_panel
 
 cm:register_loading_game_callback(
 	function(context)
-	if cm:get_saved_value("first_load_decree_from_script") then
 		DECREE_LIST = cm:load_value("DECREE_LIST", DECREE_LIST, context);
-	else
-	cm:set_saved_value("first_load_decree_from_script") 
-end
 	end
 );
 

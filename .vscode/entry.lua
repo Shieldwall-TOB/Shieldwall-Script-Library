@@ -82,6 +82,7 @@ local ok, err = pcall(function()
     require("shieldwall/content/TitlesSystemContent")
     --require("shieldwall/features/DecreeFeatures")
     require("shieldwall/features/SuppliesFeatures")
+    require("shieldwall/features/ManOfTheHour")
 
     require("shieldwall/content/CrossLoyaltyTraits")
     require("shieldwall/features/TraitsTriggers")

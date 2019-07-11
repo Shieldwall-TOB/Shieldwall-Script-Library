@@ -378,6 +378,8 @@
 --# assume CA_PENDING_BATTLE.ambush_battle: method() --> boolean
 --# assume CA_PENDING_BATTLE.attacker_battle_result: method() --> string
 --# assume CA_PENDING_BATTLE.defender_battle_result: method() --> string
+--# assume CA_PENDING_BATTLE.secondary_attackers: method() --> CA_CHAR_LIST
+--# assume CA_PENDING_BATTLE.secondary_defenders: method() --> CA_CHAR_LIST
 
 
 -- CA FORCE

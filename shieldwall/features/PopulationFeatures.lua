@@ -8,7 +8,7 @@ POP_CACHE.characters = {} --:map<string, map<string, number>>
 
 
 
-
+dev.first_tick(function(context)
 cm:add_listener(
     "PopulationFactionTurnStart",
     "FactionTurnStart",
@@ -34,18 +34,9 @@ cm:add_listener(
     end,
     true
 )
-
+end)
 --AI recruits a unit.
 
-cm:add_listener( -- Unit trained - West Seaxe
-"UnitTrained_Westsexa_Culture",
-"UnitTrained",
-function(context) return context:unit():faction():is_human() == false and context:unit():has_force_commander() and dev.is_char_normal_general(context:unit():force_commander()) end,
-function(context) 
-
-end,
-true
-);
 
 
 --mercenaries dilemmas

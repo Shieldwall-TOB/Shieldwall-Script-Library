@@ -223,14 +223,12 @@ local ok, err = pcall(function()
     require("shieldwall/features/RestoreAllyTerritory")
 
     require("shieldwall/content/TitlesSystemContent")
-    --require("shieldwall/features/DecreeFeatures")
 	require("shieldwall/features/SuppliesFeatures")
-	
+	require("shieldwall/features/ManOfTheHour")
+
+
 	require("shieldwall/content/CrossLoyaltyTraits")
     require("shieldwall/features/TraitsTriggers")
-    --require("shieldwall/content/EstatesContent")
-    --require("shieldwall/features/EstateFeatures")
-    --require("shieldwall/features/CharacterLives")
     --UI
     require("shieldwall/ui_features/PopulationUI")
     require("shieldwall/ui_features/TitlesUI")
@@ -249,7 +247,7 @@ pkm = _G.pkm
 --------------------------------------
 --	additional script files to load
 -------------------------------------------------------
-
+local ok, err = pcall(function()
 require("vik_start");
 require("vik_burghal");
 require("vik_war_fervour");
@@ -288,3 +286,12 @@ require("vik_traits");
 require("vik_decrees");
 require("vik_ai_wars");
 require("vik_ai_peace");
+end)
+if not not ok then
+    dev.log("Succeessfully loaded vanilla scripts!")
+else
+    dev.log("************************************************************")
+    dev.log("Error loading vanilla scripts!")
+    dev.log(tostring(err))
+    dev.log("************************************************************")
+end
