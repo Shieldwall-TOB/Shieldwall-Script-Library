@@ -86,7 +86,7 @@ end
 local function can_region_rebel(faction, region_name, public_order)
 	local roll = cm:random_number(100)
 	dev.log("Checking if ["..region_name.."] can rebel with a PO ["..public_order.."]. They rolled ["..roll.."] ", "RIOT")
-	--if public_order > roll then -- public order / 100 chance
+	if public_order > roll then -- public order / 100 chance
 		dev.log("Chance check passed", "RIOT")
 		local character_list = faction:character_list()
 		for i = 0, character_list:num_items() - 1 do
@@ -105,8 +105,8 @@ local function can_region_rebel(faction, region_name, public_order)
 		end
 		dev.log("Checks passed, region can rebel", "RIOT")
 		return true
-	--end
-	--return false
+	end
+	return false
 end
 
 --v function(character: CA_CHAR) --> boolean
