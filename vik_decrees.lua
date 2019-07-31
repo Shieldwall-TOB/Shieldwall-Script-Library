@@ -61,6 +61,8 @@ DECREE_LIST = {
 		},
 		["global_cooldown"] = 10,
 		["global_cooldown_current"] = 0,
+		["zero_cost_timer_current"] = 0,
+		["zero_cost_timer"] = 10,
 		["cooldown_tech"] = "vik_westsexa_civ_leader_6"
 	},
 	["vik_fact_mierce"] = {
@@ -576,12 +578,21 @@ function Add_Decrees_Listeners()
 	
 end
 
+function apply_decrees_effect(faction, index, event)
+
+
+end
+
+
 -- Deduct the costs and update scripted currencies for enacting the decree
 function DecreesPayment(faction, event)
 
 	for i = 1,4 do
 		if DECREE_LIST[faction][i]["event"] == event then
-			cm:treasury_mod(faction, DECREE_LIST[faction][i]["gold_cost"]);
+			if (not DECREE_LIST[faction]["zero_cost_timer_current"]) or DECREE_LIST[faction]["zero_cost_timer_current"] == 0 then
+				cm:treasury_mod(faction, DECREE_LIST[faction][i]["gold_cost"]);
+			end
+			apply_decrees_effect(faction, i, event)
 			if faction == "vik_fact_dyflin" then
 				if DECREE_LIST[faction][i]["currency"] == "slaves" then
 					DYFLIN_SLAVES = DYFLIN_SLAVES + DECREE_LIST[faction][i]["currency_cost"]
@@ -630,6 +641,17 @@ function DecreesPayment(faction, event)
 	
 end
 
+local function can_faction_afford_decree_number(faction, index)
+	local decree = DECREE_LIST[faction][index]
+	if DECREE_LIST[faction]["zero_cost_timer_current"] and DECREE_LIST[faction]["zero_cost_timer_current"] > 0 then
+		--decree is free, it can always be afforded
+		return true
+	end
+	--else, return if they have enough treasury.
+	return(get_faction(faction):treasury() >= (0 - DECREE_LIST[faction][i]["gold_cost"]))
+end
+
+
 -- Decreases cooldown and global cooldown for decrees at the start of the faction's turn
 function DecreesDecreaseCooldown(context)
 
@@ -653,6 +675,9 @@ function DecreesDecreaseCooldown(context)
 	if DECREE_LIST[faction]["global_cooldown_current"] > 0 then
 		DECREE_LIST[faction]["global_cooldown_current"] = DECREE_LIST[faction]["global_cooldown_current"] - 1
 	end
+	if DECREE_LIST[faction]["zero_cost_timer_current"] > 0 then
+		DECREE_LIST[faction]["zero_cost_timer_current"] = DECREE_LIST[faction]["zero_cost_timer_current"] - 1
+	end
 	for i = 1,4 do
 		if DECREE_LIST[faction][i]["cooldown_current"] > 0 then
 			DECREE_LIST[faction][i]["cooldown_current"] = DECREE_LIST[faction][i]["cooldown_current"] - 1
@@ -672,7 +697,7 @@ function DecreesAlertIcon(faction)
 		local alert_icon = false;
 		if DECREE_LIST[faction]["global_cooldown_current"] == 0 then
 			for i=1,4 do
-				if DECREE_LIST[faction][i]["locked"] == false and DECREE_LIST[faction][i]["cooldown_current"] == 0 and get_faction(faction):treasury() >= (0 - DECREE_LIST[faction][i]["gold_cost"]) then
+				if DECREE_LIST[faction][i]["locked"] == false and DECREE_LIST[faction][i]["cooldown_current"] == 0 and can_faction_afford_decree_number(faction, i) then
 					if DECREE_LIST[faction][i]["currency"] == "influence" and get_faction(faction):faction_leader():gravitas() >= (0 - DECREE_LIST[faction][i]["currency_cost"]) then
 						alert_icon = true;
 						break;
@@ -753,6 +778,9 @@ function DecreesUpdateDecreesPanel()
 			UIComponent(UIComponent(UIComponent(template):Find("button_enact")):Find("turns_corner")):SetVisible(false)
 		end
 		UIComponent(UIComponent(template):Find("dy_value")):SetStateText(DECREE_LIST[faction][i]["gold_cost"]);
+		if DECREE_LIST[faction]["zero_cost_timer_current"] and DECREE_LIST[faction]["zero_cost_timer_current"] > 0 then
+			UIComponent(UIComponent(template):Find("dy_value")):SetStateText("0");
+		end
 		if DECREE_LIST[faction][i]["currency_cost"] == 0 then
 			UIComponent(UIComponent(template):Find("other_cost")):SetVisible(false);
 		else
@@ -781,7 +809,7 @@ function DecreesUpdateDecreesPanel()
 			UIComponent(UIComponent(template):Find("dy_condition")):SetState("cooldown");
 		else
 			local can_afford = false
-			if get_faction(faction):treasury() < (0 - DECREE_LIST[faction][i]["gold_cost"]) then
+			if not can_faction_afford_decree_number(faction, i) then
 				UIComponent(UIComponent(template):Find("dy_condition")):SetState("too_expensive");
 			elseif DECREE_LIST[faction][i]["currency"] == "influence" and get_faction(faction):faction_leader():gravitas() < (0 - DECREE_LIST[faction][i]["currency_cost"]) then
 				UIComponent(UIComponent(template):Find("dy_condition")):SetState("too_expensive");
