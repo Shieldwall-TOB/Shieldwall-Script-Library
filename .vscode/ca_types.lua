@@ -179,6 +179,9 @@
 --shroud
 --# assume CM.make_sea_region_seen_in_shroud: method(region: string) 
 --# assume CM.make_region_seen_in_shroud: method(faction_key: string, region_key: string)
+--forces
+--# assume CM.zero_action_points: method(lookup: string)
+--# assume CM.replenish_action_points: method(lookup: string)
 
 --MODEL
 --# assume CA_MODEL.world: method() --> CA_WORLD
@@ -375,6 +378,8 @@
 --# assume CA_PENDING_BATTLE.ambush_battle: method() --> boolean
 --# assume CA_PENDING_BATTLE.attacker_battle_result: method() --> string
 --# assume CA_PENDING_BATTLE.defender_battle_result: method() --> string
+--# assume CA_PENDING_BATTLE.secondary_attackers: method() --> CA_CHAR_LIST
+--# assume CA_PENDING_BATTLE.secondary_defenders: method() --> CA_CHAR_LIST
 
 
 -- CA FORCE

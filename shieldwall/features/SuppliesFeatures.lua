@@ -67,10 +67,10 @@ new_army_visits_settlement_event("sw_warehouse_resupply_", "", "", 3,
                 skill_key = faction_to_follower_trait[type(skill_key)]
             end
             if region:governor():has_skill(skill_key.."_4") then    
-                dev.log("DF TEST PASSED")
+                --dev.log("DF TEST PASSED")
                 return 3
             elseif region:governor():has_skill(skill_key.."_1") then
-                dev.log("DF TEST PASSED")
+                --dev.log("DF TEST PASSED")
                 return 2
             end
         end
@@ -85,7 +85,7 @@ new_army_visits_settlement_event("sw_warehouse_resupply_", "", "", 3,
             local bonus = 0
             for i = 1, 5 do 
                 if army:general_character():has_skill("vik_follower_quartermaster_"..i) then
-                    dev.log("DF TEST PASSED")
+                    --dev.log("DF TEST PASSED")
                     bonus = i
                 end
             end
@@ -109,35 +109,4 @@ new_army_visits_settlement_event("sw_warehouse_resupply_", "", "", 3,
 
 new_army_visits_settlement_event("sw_alehouse_drinks_", "", "",  1, false, 3, function(region, army)
     return region:building_exists("vik_alehouse_1")
-end)
-
-new_army_visits_settlement_event("shield_force_harassed_", "", "", 1, false, 3, function(region, army)
-    --# assume REBELLION_BANDITS: map<string, number>
-    if REBELLION_BANDITS and (REBELLION_BANDITS[region:name()] ~= nil) and (region:squalor() > region:sanitation()) then
-        local size = 0 --:number
-        for i = 0, army:unit_list():num_items() - 1 do
-            size = size + army:unit_list():item_at(i):percentage_proportion_of_full_strength()
-        end
-        return (size < 450)
-    else
-        return false
-    end
-end)
-
-new_army_visits_settlement_event("", "shield_force_repression_", "", 1, false, 6, function(region, army)
-    --# assume REBELLION_BANDITS: map<string, number>
-    if REBELLION_BANDITS and (REBELLION_BANDITS[region:name()] ~= nil) and (region:squalor() > region:sanitation()) then
-        local size = 0 --:number
-        for i = 0, army:unit_list():num_items() - 1 do
-            size = size + army:unit_list():item_at(i):percentage_proportion_of_full_strength()
-        end
-        if size > 500 then
-            get_eh():trigger_event("RegionRiotRepressed", region, army:general_character())
-            return true
-        else
-            return false
-        end
-    else 
-        return false
-    end
 end)

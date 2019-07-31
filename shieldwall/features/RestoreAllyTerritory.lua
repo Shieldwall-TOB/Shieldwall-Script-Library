@@ -56,7 +56,7 @@ cm:add_listener(
                 local faction = dev.get_faction(faction_name)
                 if human:allied_with(faction) or faction:is_vassal_of(human) then
                     for i = 1, #regions do
-                        region_name = regions[i]
+                        local region_name = regions[i]
                         local tracker = pkm:get_region(region_name):get_ownership_tracker()
                         if tracker:has_previous_owner(human:name()) then
                             dev.log("AI faction ["..faction_name.."] is returning region ["..region_name.."] to human faction ["..human:name().."] who is player ["..k.."]", "RAR")
