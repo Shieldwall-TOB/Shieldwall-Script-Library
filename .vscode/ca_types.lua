@@ -239,6 +239,7 @@
 --# assume CA_FACTION.state_religion_percentage: method() --> number
 --# assume CA_FACTION.mercenary_pool: method() --> WHATEVER
 --# assume CA_FACTION.is_trading_with: method(faction: CA_FACTION) --> boolean
+--# assume CA_FACTION.has_effect_bundle: method(bundle: string) --> boolean
 
 -- FACTION LIST
 --# assume CA_FACTION_LIST.num_items: method() --> number

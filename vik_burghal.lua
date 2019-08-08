@@ -5,8 +5,12 @@ DISBANDED_FYRD = {} --:map<string, number>
 
 --v function(faction: CA_FACTION)
 local function EnglishRemoveEffect(faction)
-	cm:remove_effect_bundle("vik_english_peasant_positive", faction:name());
-	cm:remove_effect_bundle("vik_english_peasant_negative", faction:name());
+	if faction:has_effect_bundle("vik_english_peasant_positive") then
+		cm:remove_effect_bundle("vik_english_peasant_positive", faction:name());
+	end
+	if faction:has_effect_bundle("vik_english_peasant_negative") then
+		cm:remove_effect_bundle("vik_english_peasant_negative", faction:name());
+	end
 end
 
 --v function(faction: CA_FACTION )
@@ -118,10 +122,19 @@ local function update_burghal_ui(faction, season)
 	dev.log("Updated Burghal UI with condition ["..condition.."] and season ["..season.."] for faction ["..faction:name().."] ")
 end
 
+local valid_factions = {
+	["vik_fact_west_seaxe"] = true ,
+	["vik_fact_mierce"] = true,
+	["vik_fact_northleode"] = true
+} --:map<string, boolean>
 
 
 --v function(faction: CA_FACTION)
 local function update_fyrd_for_faction(faction)
+	if not valid_factions[faction:name()] then
+		EnglishRemoveEffect(faction)
+		return
+	end
 	local region_list = faction:region_list()
 	local new_brughal = 0 --:number
 	local new_total = 0 --:number
@@ -149,11 +162,7 @@ local function update_fyrd_for_faction(faction)
 	end
 end
 
-local valid_factions = {
-	["vik_fact_west_seaxe"] = true ,
-	["vik_fact_mierce"] = true,
-	["vik_fact_northleode"] = true
-} --:map<string, boolean>
+
 
 function Add_Burghal_Listeners()
 
