@@ -10,7 +10,7 @@
 
 function Add_Starting_Traits_Listeners()
 output("#### Adding Starting trait Listeners ####")
-	
+	--[[
 	cm:add_listener(
 		"StartingTraits",
 		"CharacterCreated",
@@ -35,7 +35,7 @@ output("#### Adding Starting trait Listeners ####")
 		true
 	);
 	
-	
+	--]]
 end
 
 
