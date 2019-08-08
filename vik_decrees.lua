@@ -20,9 +20,9 @@
 DECREE_LIST = {
 	["vik_fact_west_seaxe"] = {
 		[1] = {
-			["event"] = "vik_incident_decree_new_laws_witan",
+			["event"] = "sw_decree_wessex_ad_hoc_levy",
 			["duration"] = 10,
-			["gold_cost"] = -2500,
+			["gold_cost"] = -2000,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 20,
@@ -30,9 +30,9 @@ DECREE_LIST = {
 			["locked"] = false
 		},
 		[2] = {
-			["event"] = "vik_incident_decree_lower_taxes",
+			["event"] = "sw_decree_wessex_fyrd",
 			["duration"] = 10,
-			["gold_cost"] = -2500,
+			["gold_cost"] = -2000,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 20,
@@ -40,9 +40,9 @@ DECREE_LIST = {
 			["locked"] = false
 		},
 		[3] = {
-			["event"] = "vik_incident_decree_construction_effort",
-			["duration"] = 5,
-			["gold_cost"] = -2500,
+			["event"] = "sw_decree_wessex_scholarship",
+			["duration"] = 10,
+			["gold_cost"] = -2000,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 20,
@@ -50,16 +50,16 @@ DECREE_LIST = {
 			["locked"] = true
 		},
 		[4] = {
-			["event"] = "vik_incident_decree_encourage_scholars",
-			["duration"] = 3,
-			["gold_cost"] = -2500,
+			["event"] = "sw_decree_wessex_witan",
+			["duration"] = 10,
+			["gold_cost"] = 0,
 			["currency"] = "influence",
-			["currency_cost"] = -1,
+			["currency_cost"] = -2,
 			["cooldown"] = 20,
 			["cooldown_current"] = 0,
 			["locked"] = true
 		},
-		["global_cooldown"] = 10,
+		["global_cooldown"] = 0,
 		["global_cooldown_current"] = 0,
 		["zero_cost_timer_current"] = 0,
 		["zero_cost_timer"] = 10,
@@ -67,52 +67,104 @@ DECREE_LIST = {
 	},
 	["vik_fact_mierce"] = {
 		[1] = {
-			["event"] = "vik_incident_decree_give_to_soldiers",
-			["duration"] = 5,
-			["gold_cost"] = -5000,
-			["currency"] = "influence",
-			["currency_cost"] = 0,
+			["event"] = "sw_decree_mierce_warriors",
+			["duration"] = 10,
+			["gold_cost"] = 0,
+			["currency"] = "fyrd",
+			["currency_cost"] = -1,
 			["cooldown"] = 10,
 			["cooldown_current"] = 0,
-			["locked"] = true,
+			["locked"] = false,
 			["locked_counter"] = 0,
 			["locked_target"] = 40
 		},
 		[2] = {
-			["event"] = "vik_incident_decree_give_to_nobles",
-			["duration"] = 5,
+			["event"] = "sw_decree_mierce_lords",
+			["duration"] = 10,
+			["gold_cost"] = 0,
+			["currency"] = "fyrd",
+			["currency_cost"] = -1,
+			["cooldown"] = 10,
+			["cooldown_current"] = 0,
+			["locked"] = false,
+			["locked_counter"] = 0,
+			["locked_target"] = 5
+		},
+		[3] = {
+			["event"] = "sw_decree_mierce_church",
+			["duration"] = 10,
+			["gold_cost"] = 0,
+			["currency"] = "fyrd",
+			["currency_cost"] = -1,
+			["cooldown"] = 10,
+			["cooldown_current"] = 0,
+			["locked"] = false
+		},
+		[4] = {
+			["event"] = "sw_decree_mierce_pay_hoards",
+			["duration"] = 10,
 			["gold_cost"] = -5000,
+			["currency"] = "fyrd",
+			["currency_cost"] = 1,
+			["cooldown"] = 10,
+			["cooldown_current"] = 0,
+			["locked"] = false
+		},
+		["global_cooldown"] = 0,
+		["global_cooldown_current"] = 0,
+		["cooldown_tech"] = "vik_miercna_civ_leader_6",
+		["current_hoards"] = 1,
+		["max_hoards"] = 3
+	},
+	["vik_fact_northleode"] = {
+		[1] = {
+			["event"] = "sw_decree_northleode_eoferwic",
+			["duration"] = 6,
+			["gold_cost"] = -1000,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
 			["cooldown"] = 10,
 			["cooldown_current"] = 0,
 			["locked"] = true,
-			["locked_counter"] = 0,
-			["locked_target"] = 5
+			["locked_region"] = "vik_reg_eoferwic"
+		},
+		[2] = {
+			["event"] = "sw_decree_northleode_tamworthige",
+			["duration"] = 6,
+			["gold_cost"] = -1500,
+			["currency"] = "influence",
+			["currency_cost"] = 0,
+			["cooldown"] = 10,
+			["cooldown_current"] = 0,
+			["locked"] = true,
+			["locked_region"] = "vik_reg_tamworthige"
 		},
 		[3] = {
-			["event"] = "vik_incident_decree_give_to_people",
-			["duration"] = 5,
-			["gold_cost"] = -5000,
+			["event"] = "sw_decree_northleode_dun_foither",
+			["duration"] = 6,
+			["gold_cost"] = -1200,
+			["currency"] = "influence",
+			["currency_cost"] = 0,
+			["cooldown"] = 10,
+			["cooldown_current"] = 0,
+			["locked"] = true,
+			["locked_region"] = "vik_reg_dun_foither"
+		},
+		[4] = {
+			["event"] = "sw_decree_northleode_bebbanburg",
+			["duration"] = 6,
+			["gold_cost"] = -750,
 			["currency"] = "influence",
 			["currency_cost"] = 0,
 			["cooldown"] = 10,
 			["cooldown_current"] = 0,
 			["locked"] = false
 		},
-		[4] = {
-			["event"] = "vik_incident_decree_give_to_church",
-			["duration"] = 3,
-			["gold_cost"] = -5000,
-			["currency"] = "influence",
-			["currency_cost"] = 0,
-			["cooldown"] = 10,
-			["cooldown_current"] = 0,
-			["locked"] = true
-		},
 		["global_cooldown"] = 5,
 		["global_cooldown_current"] = 0,
-		["cooldown_tech"] = "vik_miercna_civ_leader_6"
+		["cooldown_tech"] = "vik_miercna_civ_leader_6",
+		["confederation_enabled"] = false,
+		["turn_disable_confed"] = 0
 	},
 	["vik_fact_dyflin"] = {
 		[1] = {
@@ -575,12 +627,59 @@ function Add_Decrees_Listeners()
 	);
 	
 	DecreesAlertIcon(cm:model():world():whose_turn_is_it():name())
-	
+	if get_faction("vik_fact_mierce"):is_human() then
+		update_hoards()
+	end
+	local faction_list = cm:model():world():faction_list();
+	for i = 0, faction_list:num_items() - 1 do 
+		local faction = faction_list:item_at(i)
+		if faction:subculture() == "vik_sub_cult_english" and (not DECREE_LIST[faction:name()]["confederation_enabled"]) then
+			enable_confed(faction:name(), false)
+		end
+	end
 end
 
+local function enable_confed(faction, enable)
+	local faction_list = cm:model():world():faction_list();
+	for j = 0, faction_list:num_items() - 1 do
+		local temp_faction = faction_list:item_at(j)
+		
+		if temp_faction:name() ~= faction and temp_faction:subculture() == get_faction(faction):subculture() then
+			cm:force_diplomacy(faction, temp_faction:name(), "form confederation", enable, enable);
+			cm:force_diplomacy(temp_faction:name(), faction, "form confederation", enable, enable);
+		end
+	end
+end
+
+function update_hoards(new_value)
+	local mierce = get_faction("vik_fact_mierce")
+	local mierce_decrees = DECREE_LIST["vik_fact_mierce"]
+	local current_hoards = mierce_decrees["current_hoards"]
+	if new_value and new_value ~= current_hoards then
+		if mierce:has_effect_bundle("sw_hoards_"..current_hoards) then
+			cm:remove_effect_bundle("sw_hoards_"..current_hoards, "vik_fact_mierce")
+		end
+		DECREE_LIST["vik_fact_mierce"]["current_hoards"] = new_value
+		cm:apply_effect_bundle("sw_hoards_"..new_value, "vik_fact_mierce", 0)
+	else
+		if not mierce:has_effect_bundle("sw_hoards_"..current_hoards) then
+			cm:apply_effect_bundle("sw_hoards_"..current_hoards, "vik_fact_mierce", 0)
+		end
+	end
+end
+
+
 function apply_decrees_effect(faction, index, event)
+	dev.log("scripted effect for faction ["..faction.."] from decree ["..index.."] and event ["..event.."] ")
+	--TODO wessex scripted effects
+	--TODO mierce scripted effects
 
-
+	--northleode scripted effects
+	if faction == "vik_fact_northleode" and event == "sw_decree_northleode_tamworthige" then
+		DECREE_LIST[faction]["turn_disable_confed"] = cm:model():turn_number() + 6
+		DECREE_LIST[faction]["confederation_enabled"] = true
+		enable_confed(faction, true)
+	end
 end
 
 
@@ -593,7 +692,9 @@ function DecreesPayment(faction, event)
 				cm:treasury_mod(faction, DECREE_LIST[faction][i]["gold_cost"]);
 			end
 			apply_decrees_effect(faction, i, event)
-			if faction == "vik_fact_dyflin" then
+			if faction == "vik_fact_mierce" then
+				update_hoards(DECREE_LIST[faction]["current_hoards"] + DECREE_LIST[faction][i]["currency_cost"])
+			elseif faction == "vik_fact_dyflin" then
 				if DECREE_LIST[faction][i]["currency"] == "slaves" then
 					DYFLIN_SLAVES = DYFLIN_SLAVES + DECREE_LIST[faction][i]["currency_cost"]
 					UpdateDyflinBar("vik_fact_dyflin");
@@ -648,7 +749,7 @@ local function can_faction_afford_decree_number(faction, index)
 		return true
 	end
 	--else, return if they have enough treasury.
-	return(get_faction(faction):treasury() >= (0 - DECREE_LIST[faction][i]["gold_cost"]))
+	return (get_faction(faction):treasury() >= (0 - DECREE_LIST[faction][index]["gold_cost"]))
 end
 
 
@@ -683,9 +784,11 @@ function DecreesDecreaseCooldown(context)
 			DECREE_LIST[faction][i]["cooldown_current"] = DECREE_LIST[faction][i]["cooldown_current"] - 1
 		end
 	end
-	
+	if DECREE_LIST[faction]["confederation_enabled"] and DECREE_LIST[faction]["turn_disable_confed"] and DECREE_LIST[faction]["turn_disable_confed"] <= cm:model():turn_number() then
+		enable_confed(faction, false)
+		DECREE_LIST[faction]["confederation_enabled"] = false
+	end
 	DecreesAlertIcon(faction)
-	
 end
 
 -- Checks if any decrees are available, and updates the icon on the button
@@ -1036,8 +1139,15 @@ function DecreesUnlocks(faction)
 				end
 			end
 		end
+	elseif faction == "vik_fact_northleode" then
+		for i = 1, 4 do
+			if (DECREE_LIST[faction][i]["locked"] == true) and DECREE_LIST[faction][i]["locked_region"] then
+				if cm:model():world():region_manager():region_by_key(DECREE_LIST[faction][i]["locked_region"]):owning_faction() == faction then
+					DECREE_LIST[faction][i]["locked"] = false;
+				end
+			end
+		end
 	end
-
 end
 
 -- Updates the scripted unlocks when the player recruits units
@@ -1131,7 +1241,11 @@ decrees_panel
 
 cm:register_loading_game_callback(
 	function(context)
-		DECREE_LIST = cm:load_value("DECREE_LIST", DECREE_LIST, context);
+		if cm:get_saved_value("DecreeFirstRun") then
+			DECREE_LIST = cm:load_value("DECREE_LIST", DECREE_LIST, context);
+		else
+			cm:set_saved_value("DecreeFirstRun", true)
+		end
 	end
 );
 
