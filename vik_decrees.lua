@@ -21,8 +21,8 @@ DECREE_LIST = {
 	["vik_fact_west_seaxe"] = {
 		[1] = {
 			["event"] = "sw_decree_wessex_ad_hoc_levy",
-			["duration"] = 10,
-			["gold_cost"] = -2000,
+			["duration"] = 6,
+			["gold_cost"] = -1500,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 20,
@@ -31,8 +31,8 @@ DECREE_LIST = {
 		},
 		[2] = {
 			["event"] = "sw_decree_wessex_fyrd",
-			["duration"] = 10,
-			["gold_cost"] = -2000,
+			["duration"] = 6,
+			["gold_cost"] = -1200,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 20,
@@ -41,8 +41,8 @@ DECREE_LIST = {
 		},
 		[3] = {
 			["event"] = "sw_decree_wessex_scholarship",
-			["duration"] = 10,
-			["gold_cost"] = -2000,
+			["duration"] = 6,
+			["gold_cost"] = -1000,
 			["currency"] = "influence",
 			["currency_cost"] = -1,
 			["cooldown"] = 20,
@@ -51,8 +51,8 @@ DECREE_LIST = {
 		},
 		[4] = {
 			["event"] = "sw_decree_wessex_witan",
-			["duration"] = 10,
-			["gold_cost"] = 0,
+			["duration"] = 6,
+			["gold_cost"] = -250,
 			["currency"] = "influence",
 			["currency_cost"] = -2,
 			["cooldown"] = 20,
@@ -672,14 +672,26 @@ end
 function apply_decrees_effect(faction, index, event)
 	dev.log("scripted effect for faction ["..faction.."] from decree ["..index.."] and event ["..event.."] ")
 	--TODO wessex scripted effects
-	--TODO mierce scripted effects
-
+	if faction == "vik_fact_west_seaxe" then
+		if event == "sw_decree_wessex_witan" then
+			DECREE_LIST[faction]["zero_cost_timer_current"] = 6
+		elseif event == "sw_decree_wessex_ad_hoc_levy" then
+			local char_list = get_faction(faction):character_list()
+			for j = 0, char_list:num_items() - 1 do
+				local char = char_list:item_at(j)
+				if dev.is_char_normal_general(char) then
+					cm:replenish_action_points(dev.lookup(char))
+				end
+			end
+		end
+	end
 	--northleode scripted effects
 	if faction == "vik_fact_northleode" and event == "sw_decree_northleode_tamworthige" then
 		DECREE_LIST[faction]["turn_disable_confed"] = cm:model():turn_number() + 6
 		DECREE_LIST[faction]["confederation_enabled"] = true
 		enable_confed(faction, true)
 	end
+
 end
 
 
@@ -694,6 +706,15 @@ function DecreesPayment(faction, event)
 			apply_decrees_effect(faction, i, event)
 			if faction == "vik_fact_mierce" then
 				update_hoards(DECREE_LIST[faction]["current_hoards"] + DECREE_LIST[faction][i]["currency_cost"])
+				for i = 1, 4 do
+					if (DECREE_LIST[faction]["current_hoards"] + DECREE_LIST[faction][i]["currency_cost"]) < 0 then
+						DECREE_LIST[faction][i]["locked"] = true;
+					elseif (DECREE_LIST[faction]["current_hoards"] + DECREE_LIST[faction][i]["currency_cost"]) > DECREE_LIST[faction]["max_hoards"] then
+						DECREE_LIST[faction][i]["locked"] = true;
+					else
+						DECREE_LIST[faction][i]["locked"] = false;
+					end
+				end
 			elseif faction == "vik_fact_dyflin" then
 				if DECREE_LIST[faction][i]["currency"] == "slaves" then
 					DYFLIN_SLAVES = DYFLIN_SLAVES + DECREE_LIST[faction][i]["currency_cost"]
@@ -776,7 +797,7 @@ function DecreesDecreaseCooldown(context)
 	if DECREE_LIST[faction]["global_cooldown_current"] > 0 then
 		DECREE_LIST[faction]["global_cooldown_current"] = DECREE_LIST[faction]["global_cooldown_current"] - 1
 	end
-	if DECREE_LIST[faction]["zero_cost_timer_current"] > 0 then
+	if DECREE_LIST[faction]["zero_cost_timer_current"] and DECREE_LIST[faction]["zero_cost_timer_current"] > 0 then
 		DECREE_LIST[faction]["zero_cost_timer_current"] = DECREE_LIST[faction]["zero_cost_timer_current"] - 1
 	end
 	for i = 1,4 do
@@ -964,45 +985,40 @@ end
 function DecreesUnlocks(faction)
 
 	if faction == "vik_fact_west_seaxe" then
+		if cm:model():season() < 2 then
+			DECREE_LIST[faction][2]["locked"] = false
+			DECREE_LIST[faction][1]["locked"] = false
+		else
+			DECREE_LIST[faction][2]["locked"] = true
+			DECREE_LIST[faction][1]["locked"] = true
+			if get_faction(faction):has_effect_bundle("sw_decree_wessex_fyrd") then
+				cm:remove_effect_bundle("sw_decree_wessex_fyrd", faction)
+			end
+			if get_faction(faction):has_effect_bundle("sw_decree_wessex_ad_hoc_levy") then
+				cm:remove_effect_bundle("sw_decree_wessex_ad_hoc_levy", faction)
+			end
+		end
+		if get_faction(faction):has_effect_bundle("vik_english_peasant_negative") then
+			DECREE_LIST[faction][4]["locked"] = true
+		else
+			DECREE_LIST[faction][4]["locked"] = false
+		end
 		if DECREE_LIST[faction][3]["locked"] == true then
 			for i = 0, get_faction(faction):region_list():num_items() - 1 do
-				if get_faction(faction):region_list():item_at(i):building_exists("vik_great_hall_5") then
+				if get_faction(faction):region_list():item_at(i):building_exists("vik_court_school_3") then
 					DECREE_LIST[faction][3]["locked"] = false;
 					break;
 				end
 			end
 		end
-		if DECREE_LIST[faction][4]["locked"] then
-			if faction == TECH_PLAYER_1["faction_name"] then
-				if TECH_PLAYER_1["army_locked"] == false or TECH_PLAYER_1["farm_locked"] == false or TECH_PLAYER_1["industry_locked"] == false or TECH_PLAYER_1["leader_locked"] == false or TECH_PLAYER_1["market_locked"] == false or TECH_PLAYER_1["religion_locked"] == false or TECH_PLAYER_1["bodyguard_locked"] == false or TECH_PLAYER_1["cap_1_locked"] == false or TECH_PLAYER_1["cap_2_locked"] == false or TECH_PLAYER_1["cap_3_locked"] == false or TECH_PLAYER_1["cap_4_locked"] == false or TECH_PLAYER_1["cavalry_2_locked"] == false or TECH_PLAYER_1["land_locked"] == false or TECH_PLAYER_1["melee_locked"] == false or TECH_PLAYER_1["missile_1_locked"] == false or TECH_PLAYER_1["siege_locked"] == false or TECH_PLAYER_1["spearmen_1_locked"] == false then
-					DECREE_LIST[faction][4]["locked"] = false;
-				end
-			elseif faction == TECH_PLAYER_2["faction_name"] then
-				if TECH_PLAYER_2["army_locked"] == false or TECH_PLAYER_2["farm_locked"] == false or TECH_PLAYER_2["industry_locked"] == false or TECH_PLAYER_2["leader_locked"] == false or TECH_PLAYER_2["market_locked"] == false or TECH_PLAYER_2["religion_locked"] == false or TECH_PLAYER_2["bodyguard_locked"] == false or TECH_PLAYER_2["cap_1_locked"] == false or TECH_PLAYER_2["cap_2_locked"] == false or TECH_PLAYER_2["cap_3_locked"] == false or TECH_PLAYER_2["cap_4_locked"] == false or TECH_PLAYER_2["cavalry_2_locked"] == false or TECH_PLAYER_2["land_locked"] == false or TECH_PLAYER_2["melee_locked"] == false or TECH_PLAYER_2["missile_1_locked"] == false or TECH_PLAYER_2["siege_locked"] == false or TECH_PLAYER_2["spearmen_1_locked"] == false then
-					DECREE_LIST[faction][4]["locked"] = false;
-				end
-			end
-		end	
 	elseif faction == "vik_fact_mierce" then
-		if DECREE_LIST[faction][1]["locked"] and DECREE_LIST[faction][1]["locked_counter"] >= DECREE_LIST[faction][1]["locked_target"] then
-			DECREE_LIST[faction][1]["locked"] = false;
-		end
-		if DECREE_LIST[faction][2]["locked"] then
-			for i = 0, get_faction(faction):character_list():num_items() - 1 do
-				if get_faction(faction):character_list():item_at(i):rank() >= DECREE_LIST[faction][2]["locked_target"] then
-					DECREE_LIST[faction][2]["locked"] = false;
-					break;
-				elseif get_faction(faction):character_list():item_at(i):rank() > DECREE_LIST[faction][2]["locked_counter"] then
-					DECREE_LIST[faction][2]["locked_counter"] = get_faction(faction):character_list():item_at(i):rank();
-				end
-			end
-		end
-		if DECREE_LIST[faction][4]["locked"] == true then
-			for i = 0, get_faction(faction):region_list():num_items() - 1 do
-				if get_faction(faction):region_list():item_at(i):building_exists("vik_church_3") or get_faction(faction):region_list():item_at(i):building_exists("vik_benedictine_abbey_5") then
-					DECREE_LIST[faction][4]["locked"] = false;
-					break;
-				end
+		for i = 1, 4 do
+			if (DECREE_LIST[faction]["current_hoards"] + DECREE_LIST[faction][i]["currency_cost"]) < 0 then
+				DECREE_LIST[faction][i]["locked"] = true;
+			elseif (DECREE_LIST[faction]["current_hoards"] + DECREE_LIST[faction][i]["currency_cost"]) > DECREE_LIST[faction]["max_hoards"] then
+				DECREE_LIST[faction][i]["locked"] = true;
+			else
+				DECREE_LIST[faction][i]["locked"] = false;
 			end
 		end
 	elseif faction == "vik_fact_dyflin" then
