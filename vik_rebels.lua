@@ -13,8 +13,8 @@
 -- If it passes true again during this window there will be a rebellion.
 
 -- Tables used to store regions that are rebelling or have bandits
-REBELLION_REBELS = {} --:map<string, number>
-REBELLION_BANDITS = {} --:map<string, number>
+RIOT_COOLDOWNS = {} --:map<string, number>
+RIOTING_REGIONS = {} --:map<string, number>
 REPRESSING_ARMIES = {} --:map<string, number>
 
 -- Variable to store the turn number so we can check if it's a new turn
@@ -35,19 +35,19 @@ end
 -- Decreases timers by 1 and resets regions at 0
 function RebellionNewTurn()
 
-	for key,value in pairs(REBELLION_REBELS) do
+	for key,value in pairs(RIOT_COOLDOWNS) do
 		if tonumber(value) <= 1 then
-			REBELLION_REBELS[key] = nil
+			RIOT_COOLDOWNS[key] = nil
 		else 
-			REBELLION_REBELS[key] = tonumber(value) - 1
+			RIOT_COOLDOWNS[key] = tonumber(value) - 1
 		end
 	end
 
-	for key,value in pairs(REBELLION_BANDITS) do
+	for key,value in pairs(RIOTING_REGIONS) do
 		if tonumber(value) <= 1 then
-			REBELLION_BANDITS[key] = nil
+			RIOTING_REGIONS[key] = nil
 		else 
-			REBELLION_BANDITS[key] = tonumber(value) - 1
+			RIOTING_REGIONS[key] = tonumber(value) - 1
 		end
 	end
 	
@@ -141,7 +141,7 @@ end
 --v function(region: CA_REGION, faction_name: string, public_order: number)
 function region_rioting_event(region, faction_name, public_order)
 	local region_name = region:name()
-	REBELLION_REBELS[region_name] = 2
+	RIOT_COOLDOWNS[region_name] = 2
 	dev.log("Secondary riot event in ["..region_name.."] ", "RIOT");
 	--governor events
 	if region:has_governor() then
@@ -195,11 +195,11 @@ function RebellionCheck(context)
 	local region_name = region:name()
 	local public_order = region:squalor() - region:sanitation() --:number
 	local faction_name = region:owning_faction():name()
-	dev.log("Checking region ["..region_name.."] with public order ["..-1*public_order.."], which is rioting ["..tostring(not not REBELLION_BANDITS[region_name]).."] ", "RIOT")
-	if public_order < 0 and REBELLION_BANDITS[region_name] ~= nil then --public order is restored!
+	dev.log("Checking region ["..region_name.."] with public order ["..-1*public_order.."], which is rioting ["..tostring(not not RIOTING_REGIONS[region_name]).."] ", "RIOT")
+	if public_order < 0 and RIOTING_REGIONS[region_name] ~= nil then --public order is restored!
 		dev.log("Riot ends in this region")
-		REBELLION_BANDITS[region_name] = nil
-		REBELLION_REBELS[region_name] = nil
+		RIOTING_REGIONS[region_name] = nil
+		RIOT_COOLDOWNS[region_name] = nil
 		cm:trigger_incident(faction_name, "shield_rioting_ends_"..region_name, true)
 		--remove the governor trait flag if it exists
 		if region:has_governor() and region:governor():has_trait("shield_tyrant_opressor_flag") then
@@ -207,9 +207,9 @@ function RebellionCheck(context)
 		end
 	end
 	--if they aren't currently on riot-event cooldown cooldown
-	if REBELLION_REBELS[region_name] == nil then
+	if RIOT_COOLDOWNS[region_name] == nil then
 		--if they are rioting
-		if REBELLION_BANDITS[region_name] ~= nil and region:owning_faction():is_human() then	
+		if RIOTING_REGIONS[region_name] ~= nil and region:owning_faction():is_human() then	
 			region_rioting_event(region, faction_name, public_order)
 		else --not currently rioting 
 			if public_order > 0 then
@@ -218,7 +218,7 @@ function RebellionCheck(context)
 				if can_region_rebel(dev.get_faction(faction_name), region_name, public_order) then	
 					dev.log("Region can rebel", "RIOT")
 					--riot duration
-					REBELLION_BANDITS[region_name] = 10
+					RIOTING_REGIONS[region_name] = 10
 					if region:owning_faction():is_human() then
 						dev.log("riot begins in ["..region_name.."]!!!!", "RIOT");
 						cm:trigger_incident(faction_name, "shield_rebellion_rioting_"..region_name , true)
@@ -235,8 +235,8 @@ function RebellionResetRegion(context)
 	--cm:remove_effect_bundle_from_region("shield_unrest_bundle", context:region():name());
 	--cm:remove_effect_bundle_from_region("shield_rioting", context:region():name());
 	--cm:remove_effect_bundle_from_region("vik_rebels_bandits", context:region():name());
-	REBELLION_REBELS[context:region():name()] = nil;
-	REBELLION_BANDITS[context:region():name()] = nil;
+	RIOT_COOLDOWNS[context:region():name()] = nil;
+	RIOTING_REGIONS[context:region():name()] = nil;
 end
 
 --v function(context: CA_CONTEXT)
@@ -257,8 +257,8 @@ local function RebellionCharacterEnters(context)
 		cm:trigger_incident(character:faction():name(), "sw_army_too_small_rebellion", true)
 		cm:apply_effect_bundle_to_characters_force("shield_force_harassed_1", character:command_queue_index(), 3, true)
 	elseif size <= 1200 then
-		REBELLION_REBELS[region:name()] = nil;
-		REBELLION_BANDITS[region:name()] = nil;
+		RIOT_COOLDOWNS[region:name()] = nil;
+		RIOTING_REGIONS[region:name()] = nil;
 		--choice
 		respond_to_dilemma("sw_rebels_soldiers_arrive_"..region:name(),
 		function(context)
@@ -273,8 +273,8 @@ local function RebellionCharacterEnters(context)
 		end)
 		cm:trigger_dilemma(character:faction():name(), "sw_rebels_soldiers_arrive_"..region:name(), true)
 	elseif size > 1200 then
-		REBELLION_REBELS[region:name()] = nil;
-		REBELLION_BANDITS[region:name()] = nil;
+		RIOT_COOLDOWNS[region:name()] = nil;
+		RIOTING_REGIONS[region:name()] = nil;
 		cm:trigger_incident(character:faction():name(), "sw_army_puts_down_rebellion", true)
 		--riot ends.
 	end
@@ -346,7 +346,7 @@ function Add_Rebellion_Listeners()
 			"CharacterEntersGarrison_Rebellion",
 			"CharacterEntersGarrison",
 			function(context)
-				return REBELLION_BANDITS[context:garrison_residence():region():name()] ~= nil
+				return RIOTING_REGIONS[context:garrison_residence():region():name()] ~= nil
 			end,
 			function(context)
 				RebellionCharacterEnters(context)
@@ -357,7 +357,7 @@ function Add_Rebellion_Listeners()
 			"CharacterLeavesGarrison_Rebellion",
 			"CharacterLeavesGarrison",
 			function(context)
-				return REBELLION_BANDITS[context:garrison_residence():region():name()] ~= nil and dev.is_char_normal_general(context:character())
+				return RIOTING_REGIONS[context:garrison_residence():region():name()] ~= nil and dev.is_char_normal_general(context:character())
 			end,
 			function(context)
 				RebellionCharacterLeaves(context)
@@ -372,7 +372,7 @@ function Add_Rebellion_Listeners()
 				if not region:has_governor() then
 					return false, nil
 				end
-				return REBELLION_BANDITS[region:name()] ~= nil, region:governor()
+				return RIOTING_REGIONS[region:name()] ~= nil, region:governor()
 			end
 		)
 end
@@ -422,8 +422,8 @@ end
 cm:register_loading_game_callback(
 	function(context)
 		REBELLION_TURN_NUMBER = cm:load_value("REBELLION_TURN_NUMBER", 0, context);
-		REBELLION_REBELS = LoadKeyPairTable(context, "REBELLION_REBELS");
-		REBELLION_BANDITS = LoadKeyPairTable(context, "REBELLION_BANDITS");
+		RIOT_COOLDOWNS = LoadKeyPairTable(context, "RIOT_COOLDOWNS");
+		RIOTING_REGIONS = LoadKeyPairTable(context, "RIOTING_REGIONS");
 		REPRESSING_ARMIES = LoadKeyPairTable(context, "REPRESSING_ARMIES")
 	end
 );
@@ -431,8 +431,8 @@ cm:register_loading_game_callback(
 cm:register_saving_game_callback(
 	function(context)
 		cm:save_value("REBELLION_TURN_NUMBER", REBELLION_TURN_NUMBER, context);
-		SaveKeyPairTable(context, REBELLION_REBELS, "REBELLION_REBELS");
-		SaveKeyPairTable(context, REBELLION_BANDITS, "REBELLION_BANDITS");
+		SaveKeyPairTable(context, RIOT_COOLDOWNS, "RIOT_COOLDOWNS");
+		SaveKeyPairTable(context, RIOTING_REGIONS, "RIOTING_REGIONS");
 		SaveKeyPairTable(context, REPRESSING_ARMIES, "REPRESSING_ARMIES")
 	end
 );
