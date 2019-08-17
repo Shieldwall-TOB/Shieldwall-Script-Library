@@ -26,6 +26,7 @@ local factions_with_trait_overrides = {
     "vik_fact_west_seaxe",
     "vik_fact_east_engle",
     "vik_fact_northymbre",
+    "vik_fact_northleode"
 } --:vector<string>
 for i = 1, #factions_with_trait_overrides do
     cd.add_faction_leader_title_override(factions_with_trait_overrides[i])
@@ -37,6 +38,9 @@ end
 
 
 traits_localized_content = {
+{ ["loc"] = "King of Northanhymbra", ["trait_key"] = "character_trait_levels_onscreen_name_shield_leader_titles_vik_fact_west_seaxe_0", ["nada"] = "1" },
+{ ["loc"] = "King of the Saxons", ["trait_key"] = "character_trait_levels_onscreen_name_shield_leader_titles_vik_fact_west_seaxe_1", ["nada"] = "1" },
+{ ["loc"] = "Brytenwalda", ["trait_key"] = "character_trait_levels_onscreen_name_shield_leader_titles_vik_fact_west_seaxe_2", ["nada"] = "1" },
 { ["loc"] = "King", ["trait_key"] = "character_trait_levels_onscreen_name_shield_leader_titles_king", ["nada"] = "1" },
 { ["loc"] = "Vassal", ["trait_key"] = "character_trait_levels_onscreen_name_shield_leader_titles_vassal", ["nada"] = "1" },
 { ["loc"] = "King of Circenn", ["trait_key"] = "character_trait_levels_onscreen_name_shield_leader_titles_vik_fact_circenn_0", ["nada"] = "1" },
