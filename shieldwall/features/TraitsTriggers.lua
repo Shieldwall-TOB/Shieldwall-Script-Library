@@ -514,19 +514,6 @@ dev.first_tick(function(context)
             return (context:garrison_residence():region():is_province_capital() and char:gravitas() > 7), char
         end)
 
-    trait_listener(
-        "shield_noble_high_born",
-        "CharacterTurnStart",
-        function(context)
-            local char = context:character()
-            if pkm:get_character(char:command_queue_index()):get_title_points() == 3 then
-                return true, char
-            elseif char:family_member():has_father() and char:family_member():father():has_trait("shield_noble_high_born") then
-                return true, char
-            end
-            return false, char
-        end
-    )
 
     trait_listener(
         "shield_tyrant_subjugator",

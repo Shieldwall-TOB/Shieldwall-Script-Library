@@ -207,9 +207,8 @@ local ok, err = pcall(function()
 
     require("shieldwall/content/UnitEffectsContent")
     require("shieldwall/features/UnitEffectsFeatures")
-
     require("shieldwall/content/PopulationContent")
-    require("shieldwall/features/PopulationFeatures")
+    require("shieldwall/features/PopulationFeatures") 
 
     require("shieldwall/content/FoodStorageContent")
     require("shieldwall/features/FoodStorageFeatures")
@@ -222,23 +221,46 @@ local ok, err = pcall(function()
 
     require("shieldwall/features/RestoreAllyTerritory")
 
+
     require("shieldwall/content/TitlesSystemContent")
-	require("shieldwall/features/SuppliesFeatures")
-	require("shieldwall/features/ManOfTheHour")
+    --require("shieldwall/features/DecreeFeatures")
+    require("shieldwall/features/SuppliesFeatures")
+    require("shieldwall/features/ManOfTheHour")
 
-
-	require("shieldwall/content/CrossLoyaltyTraits")
+    require("shieldwall/content/CrossLoyaltyTraits")
     require("shieldwall/features/TraitsTriggers")
+    --require("shieldwall/content/EstatesContent")
+    --require("shieldwall/features/EstateFeatures")
+    --require("shieldwall/features/CharacterLives")
     --UI
-    require("shieldwall/ui_features/PopulationUI")
+    require("shieldwall/ui_features/PopulationUI") 
+    --TODO reimplement pop UI
     require("shieldwall/ui_features/TitlesUI")
 end)
-
 if not not ok then
     dev.log("Succeessfully loaded shieldwall features!")
 else
     dev.log("************************************************************")
     dev.log("Error loading shieldwall features!")
+    dev.log(tostring(err))
+    dev.log("************************************************************")
+end
+
+--load trait triggers
+local ok, err = pcall(function()
+    --FEATURES MANIFEST: 
+    traits_manager = require("traits/helpers/trait_manager")
+    local traits_list = require("traits/TraitTriggers")
+    --# assume traits_list: vector<string>
+    for i = 1, #traits_list do 
+        require("traits/"..traits_list[i])
+    end
+end)
+if not not ok then
+    dev.log("Succeessfully loaded shieldwall trait triggers!")
+else
+    dev.log("************************************************************")
+    dev.log("Error loading  shieldwall trait triggers!")
     dev.log(tostring(err))
     dev.log("************************************************************")
 end

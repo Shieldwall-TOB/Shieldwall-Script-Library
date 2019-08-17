@@ -103,6 +103,24 @@ else
     dev.log("************************************************************")
 end
 
+--load trait triggers
+local ok, err = pcall(function()
+    --FEATURES MANIFEST: 
+    traits_manager = require("traits/helpers/trait_manager")
+    local traits_list = require("traits/TraitTriggers")
+    --# assume traits_list: vector<string>
+    for i = 1, #traits_list do 
+        require("traits/"..traits_list[i])
+    end
+end)
+if not not ok then
+    dev.log("Succeessfully loaded shieldwall trait triggers!")
+else
+    dev.log("************************************************************")
+    dev.log("Error loading  shieldwall trait triggers!")
+    dev.log(tostring(err))
+    dev.log("************************************************************")
+end
 
 
 require("vik_rebels")
