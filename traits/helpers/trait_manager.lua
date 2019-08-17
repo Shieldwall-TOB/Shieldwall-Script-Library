@@ -1,5 +1,6 @@
 --this object helps handle the implementation of a given trait.
-
+local pkm = _G.pkm
+local cd = _G.cd
 local TM_TRIGGERED_DILEMMA = {} --:map<string, map<string, boolean>>
 
 --# assume global class TRAIT_MANAGER
@@ -12,6 +13,8 @@ function trait_manager.new(trait_key)
     }) --# assume self: TRAIT_MANAGER
     --stores the name
     self.key = trait_key
+    self.first_tick = false
+    dev.first_tick(function(context) self.first_tick = true end)
     --handle the trait's flag for normal character dilemmas
     self.flagged_cqi = cm:get_saved_value("tm_"..self.key.."_flagged_cqi") or -1 --:CA_CQI
     self.out_for_trigger = not not cm:get_saved_value("tm_"..self.key.."_out_for_trigger")
@@ -29,6 +32,16 @@ function trait_manager.log(self, text)
     dev.log(tostring(text), "TM-")
 end
 
+--v function(self: TRAIT_MANAGER, callback:function())
+function trait_manager.wait(self, callback)
+    if self.first_tick then
+        callback()
+    else
+        dev.first_tick(function(context)
+            callback()
+        end)
+    end
+end
 
 
 --v function(self: TRAIT_MANAGER)
@@ -80,37 +93,36 @@ end
 --v function(self: TRAIT_MANAGER, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR?), on_trigger: (function(cqi: CA_CQI))? )
 function trait_manager.add_dilemma_flag_listener(self, event, conditional_function, on_trigger)
     local flag = self.key .."_flag"
-    TM_TRIGGERED_DILEMMA[flag] = TM_TRIGGERED_DILEMMA[flag] or {}
-    --listen for trigger
-    cm:add_listener(
-        "TraitTrigger"..self.key,
-        event,
-        function(context)
-
-            return true
-        end,
-        function(context)
-            self:log("Evaluating trait validity ".. self.key)
-            local valid, char = conditional_function(context)
-            --exclude case, no character returned
-            if not char then
-                return 
-            end
-            --# assume char: CA_CHAR
-
-            --case: out for trigger and trigger char now invalid
-            if self.out_for_trigger and (not valid) then
-                if char:command_queue_index() == self.flagged_cqi then
-                    cm:force_remove_trait(dev.lookup(char), flag)
-                    self:clear_trait_flag()
+    self:wait(function()
+        --listen for trigger
+        cm:add_listener(
+            "TraitTrigger"..self.key,
+            event,
+            function(context)
+                return true
+            end,
+            function(context)
+                local flag = self.key .."_flag"
+                self:log("Evaluating trait validity ".. self.key)
+                local valid, char = conditional_function(context)
+                --exclude case, no character returned
+                --# assume char: CA_CHAR
+                if (not char) or char:is_null_interface() then
+                    return 
                 end
-            end
-            --case: valid, not yet out for a trigger, not previously triggered for this CQI
-            if valid and (not self.out_for_trigger) and (not TM_TRIGGERED_DILEMMA[flag][tostring(char:command_queue_index())]) then
-                apply_trait_dilemma_for_character(self, char)
-            end
-        end,
-        true)
+                --case: out for trigger and trigger char now invalid
+                if self.out_for_trigger and (not valid) then
+                    if char:command_queue_index() == self.flagged_cqi then
+                        cm:force_remove_trait(dev.lookup(char), flag)
+                        self:clear_trait_flag()
+                    end
+                end
+                --case: valid, not yet out for a trigger, not previously triggered for this CQI
+                if valid and (not self.out_for_trigger) and ((not TM_TRIGGERED_DILEMMA[flag]) or (not TM_TRIGGERED_DILEMMA[flag][tostring(char:command_queue_index())])) then
+                    apply_trait_dilemma_for_character(self, char)
+                end
+            end,
+            true)
 
         --removes flags after a trait choice so that you don't get spammed with the same one.
         --also handles responses
@@ -127,6 +139,9 @@ function trait_manager.add_dilemma_flag_listener(self, event, conditional_functi
                         if on_trigger then
                             --# assume on_trigger: function(cqi: CA_CQI)
                             on_trigger(char:command_queue_index())
+                        end
+                        if TM_TRIGGERED_DILEMMA[flag] == nil then
+                            TM_TRIGGERED_DILEMMA[flag] = {}
                         end
                         TM_TRIGGERED_DILEMMA[flag][tostring(char:command_queue_index())] = true --saves the fact its happened for this character
                         cm:force_remove_trait(dev.lookup(char), flag) --ensures we don't repeat the same event over and over
@@ -149,32 +164,38 @@ function trait_manager.add_dilemma_flag_listener(self, event, conditional_functi
                             on_trigger(char:command_queue_index())
                         end
                         cm:force_remove_trait(dev.lookup(char), flag) --ensures we don't repeat the same event over and over
+                        if TM_TRIGGERED_DILEMMA[flag] == nil then
+                            TM_TRIGGERED_DILEMMA[flag] = {}
+                        end
                         TM_TRIGGERED_DILEMMA[flag][tostring(char:command_queue_index())] = true --saves the fact its happened for this character
                         self:clear_trait_flag() --makes the trait available again for new characters to take
                     end
                 end
             end, true)
+    end)
 end
 
 
 --v function(self: TRAIT_MANAGER, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR?))
 function trait_manager.add_normal_trait_trigger(self, event, conditional_function) 
-    cm:add_listener(
-        "TMTraitTriggerNormal"..self.key,
-        event,
-        true,
-        function(context)
-            local valid, char = conditional_function(context)
-            --case: function returned a valid character
-            if valid and char then
-                --# assume char: CA_CHAR
-                if not char:has_trait(self.key) then
-                    cm:force_add_trait(dev.lookup(char), self.key, true)
+    self:wait(function()
+        cm:add_listener(
+            "TMTraitTriggerNormal"..self.key,
+            event,
+            true,
+            function(context)
+                local valid, char = conditional_function(context)
+                --case: function returned a valid character
+                if valid and char then
+                    --# assume char: CA_CHAR
+                    if not char:has_trait(self.key) then
+                        cm:force_add_trait(dev.lookup(char), self.key, true)
+                    end
                 end
-            end
-        end,
-        true
-    )
+            end,
+            true
+        )
+    end)
 end
 
 --v function(self: TRAIT_MANAGER, ...:string)
@@ -189,8 +210,70 @@ function trait_manager.set_start_pos_characters(self, ...)
     end)
 end
 
+--v function(self: TRAIT_MANAGER, other_trait: string, effect: number)
+function trait_manager.set_cross_loyalty(self, other_trait, effect)
+    cd.add_trait_cross_loyalty_to_trait(self.key, other_trait, 1)
+end
 
-
+--v function(self: TRAIT_MANAGER, event: string, conditional_function: (function(context:WHATEVER) --> (boolean, CA_FACTION)))
+function trait_manager.set_loyalty_event_condition(self, event, conditional_function)
+    self:wait(function()
+    cm:add_listener(
+        "TMLoyaltyEvent"..self.key,
+        event,
+        function(context)
+            return true
+        end,
+        function(context)
+            local valid, faction = conditional_function(context)
+            if valid and faction then
+                self:log("Loyalty event occured for trait ["..self.key.."]")
+                local chars = faction:character_list() 
+                for i = 0, chars:num_items() - 1 do
+                    local char = chars:item_at(i)
+                    if char:has_trait(self.key) then
+                        cm:force_add_trait(dev.lookup(char), self.key.."_loyalty_event_flag", false)
+                    end
+                end
+            end
+        end,
+        true
+    )
+    --removes flags after a trait loyalty event so that you don't get spammed with the same one.
+    cm:add_listener(
+        "DilemmaChoiceMadeEventRemoveFlagsTraitName",
+        "DilemmaChoiceMadeEvent",
+        function(context)
+            return context:dilemma() == self.key.."_loyalty_event"
+        end,
+        function(context)
+            local faction = context:faction()
+            local chars = faction:character_list() 
+            for i = 0, chars:num_items() - 1 do
+                local char = chars:item_at(i)
+                if char:has_trait(self.key.."_loyalty_event_flag") then
+                    cm:force_remove_trait(dev.lookup(char), self.key.."_loyalty_event_flag")
+                end
+            end
+        end, true)
+    cm:add_listener(
+        "IncidentOccuredEventRemoveFlags",
+        "IncidentOccuredEvent",
+        function(context)
+            return context:dilemma() == self.key.."_loyalty_event"
+        end,
+        function(context)
+            local faction = context:faction()
+            local chars = faction:character_list() 
+            for i = 0, chars:num_items() - 1 do
+                local char = chars:item_at(i)
+                if char:has_trait(self.key.."_loyalty_event_flag") then
+                    cm:force_remove_trait(dev.lookup(char), self.key.."_loyalty_event_flag")
+                end
+            end
+        end, true)
+    end)
+end
 
 cm:register_loading_game_callback(
     function(context)

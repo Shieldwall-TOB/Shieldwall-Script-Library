@@ -61,42 +61,6 @@ cm:register_ui_created_callback(
 );
 ]]-- 
 
-cm:add_listener(
-	"loading_screen_dismissed",
-	"LoadingScreenDismissed",
-	true,
-	function()
-		output("scripting.lua - LoadingScreenDismissed event has been received");
-		local_faction = cm:get_local_faction();
-		
-		-- load up the faction file
-		if not (local_faction == "") then
-			output("Loading faction script for faction " .. local_faction);
-			inc_tab();
-			_G.script_env = getfenv(1);
-			
-			-- faction scripts loaded here
-			if load_faction_script(local_faction) and load_faction_script(local_faction .. "_intro") then
-				dec_tab();
-				output("Faction scripts loaded");
-			else
-				dec_tab();
-			end;
-		end
-		
-		-- once that is loaded we can start the game for the factions
-		if is_function(start_game_for_faction) then
-			start_game_for_faction(true);		-- set to false to not show cutscene
-		else
-			script_error("start_game_for_faction() function is being called but hasn't been loaded - the script has gone wrong somewhere else, investigate!");
-		end;
-		
-		start_game_all_factions();
-	end,
-	false
-);
-
-
 -- try and load a faction script
 function load_faction_script(scriptname)
 	local success, err_code = pcall(function() require(scriptname) end);
@@ -113,42 +77,6 @@ function load_faction_script(scriptname)
 	
 	return success;
 end;
-
-
-
--------------------------------------------------------
---	function to call when the first tick occurs
--------------------------------------------------------
-cm:register_first_tick_callback(
-	function()
-		if (cm:model():is_multiplayer() == true) then
-			local_faction = cm:get_local_faction();
-			
-			if not (local_faction == "") then
-				output("Loading faction script for faction " .. local_faction);
-				inc_tab();
-				_G.script_env = getfenv(1);
-				
-				-- faction scripts loaded here
-				if load_faction_script(local_faction) and load_faction_script(local_faction .. "_intro") then
-					dec_tab();
-					output("Faction scripts loaded");
-				else
-					dec_tab();
-				end;
-			end;
-			
-			if is_function(start_game_for_faction) then
-				start_game_for_faction(true);		-- set to false to not show cutscene
-			else
-				script_error("start_game_for_faction() function is being called but hasn't been loaded - the script has gone wrong somewhere else, investigate!");
-			end;
-			
-			start_game_all_factions();
-		end;
-	end
-);
-
 
 -----------------------
 --SHIELDWALL SCRIPTS---
@@ -202,6 +130,7 @@ end
 
 --Load Features
 local ok, err = pcall(function()
+    Check = require("shieldwall/checks")
     --FEATURES MANIFEST: 
     require("shieldwall/standalone/CitiesLandmarks")
 
@@ -227,7 +156,6 @@ local ok, err = pcall(function()
     require("shieldwall/features/SuppliesFeatures")
     require("shieldwall/features/ManOfTheHour")
 
-    require("shieldwall/content/CrossLoyaltyTraits")
     require("shieldwall/features/TraitsTriggers")
     --require("shieldwall/content/EstatesContent")
     --require("shieldwall/features/EstateFeatures")
@@ -266,6 +194,99 @@ else
 end
 
 pkm = _G.pkm
+
+cm:add_listener(
+	"loading_screen_dismissed",
+	"LoadingScreenDismissed",
+	true,
+	function()
+		output("scripting.lua - LoadingScreenDismissed event has been received");
+		local_faction = cm:get_local_faction();
+		
+		-- load up the faction file
+		if not (local_faction == "") then
+			output("Loading faction script for faction " .. local_faction);
+			inc_tab();
+			_G.script_env = getfenv(1);
+			
+			-- faction scripts loaded here
+			if load_faction_script(local_faction) and load_faction_script(local_faction .. "_intro") then
+				dec_tab();
+				output("Faction scripts loaded");
+			else
+				dec_tab();
+			end;
+		end
+		
+		-- once that is loaded we can start the game for the factions
+		if is_function(start_game_for_faction) then
+			start_game_for_faction(true);		-- set to false to not show cutscene
+		else
+			script_error("start_game_for_faction() function is being called but hasn't been loaded - the script has gone wrong somewhere else, investigate!");
+		end;
+		dev.log("its a me, mario!")
+		start_game_all_factions();
+	end,
+	false
+);
+
+
+
+
+
+
+-------------------------------------------------------
+--	function to call when the first tick occurs
+-------------------------------------------------------
+cm:register_first_tick_callback(
+	function()
+		if (cm:model():is_multiplayer() == true) then
+			local_faction = cm:get_local_faction();
+			
+			if not (local_faction == "") then
+				output("Loading faction script for faction " .. local_faction);
+				inc_tab();
+				_G.script_env = getfenv(1);
+				
+				-- faction scripts loaded here
+				if load_faction_script(local_faction) and load_faction_script(local_faction .. "_intro") then
+					dec_tab();
+					output("Faction scripts loaded");
+				else
+					dec_tab();
+				end;
+			end;
+			
+			if is_function(start_game_for_faction) then
+				start_game_for_faction(true);		-- set to false to not show cutscene
+			else
+				script_error("start_game_for_faction() function is being called but hasn't been loaded - the script has gone wrong somewhere else, investigate!");
+			end;
+			dev.log("its a me, luigi!")
+			start_game_all_factions();
+		end;
+	end
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 --------------------------------------
 --	additional script files to load
 -------------------------------------------------------

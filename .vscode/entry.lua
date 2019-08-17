@@ -59,6 +59,7 @@ end
 
 --Load Features
 local ok, err = pcall(function()
+    Check = require("shieldwall/checks")
     --FEATURES MANIFEST: 
     require("shieldwall/standalone/CitiesLandmarks")
 
@@ -84,7 +85,6 @@ local ok, err = pcall(function()
     require("shieldwall/features/SuppliesFeatures")
     require("shieldwall/features/ManOfTheHour")
 
-    require("shieldwall/content/CrossLoyaltyTraits")
     require("shieldwall/features/TraitsTriggers")
     --require("shieldwall/content/EstatesContent")
     --require("shieldwall/features/EstateFeatures")

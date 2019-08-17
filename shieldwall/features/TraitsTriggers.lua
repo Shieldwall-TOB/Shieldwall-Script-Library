@@ -405,14 +405,7 @@ end
 
 
 
---v function(char: CA_CHAR) --> boolean
-function is_char_from_viking_faction(char)
-    local viking_sc = {
-        vik_sub_cult_viking_gael = true,
-        vik_sub_cult_anglo_viking = true
-    } --:map<string, boolean>
-    return not not viking_sc[char:faction():subculture()]
-end
+
 dev.first_tick(function(context)
 
     trait_listener(
@@ -552,7 +545,7 @@ dev.first_tick(function(context)
             local char = context:character() --:CA_CHAR
             if dev.is_char_normal_general(char) and char:turns_at_sea() then
                 chance = chance * char:turns_at_sea()
-                if is_char_from_viking_faction(char) then
+                if Check.is_char_from_viking_faction(char) then
                     chance = chance*2
                 end
                 return cm:random_number(100) < chance, char
@@ -561,35 +554,7 @@ dev.first_tick(function(context)
             end
         end)
 
-    trait_listener(
-        "shield_heathen_old_ways",
-        "CharacterTurnStart",
-        function(context)
-            local chance = 2 --:number
-            local char = context:character() --:CA_CHAR
-            if not is_char_from_viking_faction(char) then
-                return false, char
-            end
-            if not char:faction():is_human() then
-                return cm:random_number(100) > 10, char
-            end
-            local list = dev.faction_list()
-            for i = 0, list:num_items() - 1 do
-                if char:faction():name() ~= list:item_at(i):name() then
-                    if char:faction():is_trading_with(list:item_at(i)) then
-                        chance = chance + 4
-                    end
-                end
-            end
-            local list = char:faction():character_list()
-            for i = 0, list:num_items() - 1 do 
-                if not (list:item_at(i):command_queue_index() == char:command_queue_index()) then
-                    chance = chance + count_heathen_traits_on_character(list:item_at(i))
-                end
-            end
-            return cm:random_number(100) < chance, char
-        end
-    )
+
 
     trait_listener(
         "shield_faithful_legendary_saint",
@@ -684,11 +649,20 @@ cm:add_listener(
     function(context)
         local character =  pkm:get_character(context:character():command_queue_index())
         character:update_title(false)
+    end,
+    true)
+cm:add_listener(
+    "shieldwallTitles",
+    "CharacterTurnStart",
+    function(context)
+        return context:character():faction():is_human()
+    end,
+    function(context)
+        local character =  pkm:get_character(context:character():command_queue_index())
         character:update_character_friendship()
     end,
     true)
-
-
+    
 end)
 
 

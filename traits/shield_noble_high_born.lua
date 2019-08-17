@@ -25,5 +25,14 @@ function(context)
 end)
 
 tm:set_start_pos_characters(
-    "faction:vik_fact_west_seaxe,forename:2147363229"
+    "faction:vik_fact_west_seaxe,forename:2147363229",
+    "faction:vik_fact_west_seaxe,forename:2147363123",
+    "faction:vik_fact_west_seaxe,forename:2147363108",
+    "faction:vik_fact_west_seaxe,forename:2147363513",
+    "faction:vik_fact_mierce,forename:2147363290",
+    "faction:vik_fact_mierce,forename:2147363513",
+    "faction:vik_fact_mierce,forename:2147363335",
+    "faction:vik_fact_mierce,forename:2147363481"
 )
+
+tm:set_cross_loyalty("shield_noble_high_born", 1)
