@@ -633,13 +633,13 @@ function Add_Decrees_Listeners()
 	local faction_list = cm:model():world():faction_list();
 	for i = 0, faction_list:num_items() - 1 do 
 		local faction = faction_list:item_at(i)
-		if faction:subculture() == "vik_sub_cult_english" and (not DECREE_LIST[faction:name()]["confederation_enabled"]) then
+		if DECREE_LIST[faction:name()] and faction:subculture() == "vik_sub_cult_english" and (not DECREE_LIST[faction:name()]["confederation_enabled"]) then
 			enable_confed(faction:name(), false)
 		end
 	end
 end
 
-local function enable_confed(faction, enable)
+function enable_confed(faction, enable)
 	local faction_list = cm:model():world():faction_list();
 	for j = 0, faction_list:num_items() - 1 do
 		local temp_faction = faction_list:item_at(j)
