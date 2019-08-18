@@ -514,7 +514,7 @@ dev.first_tick(function(context)
         function(context)
             local char = context:character() --:CA_CHAR
             local chance = cm:random_number(100) < 50 --50%
-            local own_allegience_region = (context:region():majority_religion() == char:faction():state_religion())
+            local own_allegience_region = (context:garrison_residence():region():majority_religion() == char:faction():state_religion())
             return chance and (not own_allegience_region) and (not does_char_have_anti_tyrant_or_brute_traits(char)), char
         end
     )

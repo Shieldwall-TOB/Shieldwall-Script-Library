@@ -16,7 +16,7 @@ end)
 tm:add_normal_trait_trigger("CharacterCreated",
 function(context)
     local char = context:character()
-    if char:age() > 20 then
+    if char:age() > 20 and char:is_male() then
         if cm:random_number(100) < NEW_CHARACTER_TRAIT_CHANCE then
             return true, char
         end
