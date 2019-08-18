@@ -261,6 +261,8 @@ function EventsFactionCheck(newturn)
 		EventsMide(turn, newturn)
 	elseif cm:model():world():whose_turn_is_it():name() == "vik_fact_circenn" and cm:model():world():faction_by_key("vik_fact_circenn"):is_human() then
 		EventsCircenn(turn, newturn)
+    elseif cm:model():world():whose_turn_is_it():name() == "vik_fact_northleode" and cm:model():world():faction_by_key("vik_fact_northleode"):is_human() then
+		EventsNorthleode(turn, newturn)
 	end
 end
 
@@ -284,6 +286,8 @@ function EventsDilemmas(context)
 		EventsDilemmasMide(context, turn)
 	elseif cm:model():world():faction_by_key("vik_fact_circenn"):is_human() then
 		EventsDilemmasCircenn(context, turn)
+    elseif cm:model():world():faction_by_key("vik_fact_northleode"):is_human() then
+		EventsDilemmasNorthleode(context, turn)
 	end
 	
 end
@@ -310,6 +314,8 @@ function EventsMissions(context)
 		EventsMissionsStratClut(context, turn)
 	elseif cm:model():world():faction_by_key("vik_fact_circenn"):is_human() then
 		EventsMissionsCircenn(context, turn)
+    elseif cm:model():world():faction_by_key("vik_fact_northleode"):is_human() then
+		EventsMissionsNorthleode(context, turn)
 	end
 	
 end
@@ -1977,8 +1983,8 @@ function EventsCircenn(turn, newturn)
 			cm:override_mission_succeeded_status("vik_fact_circenn", "vik_mission_circenn_orkneyar_b", true);
 		end
 	end
-
 end
+
 
 function EventsMissionsCircenn(context, turn)
 
@@ -2043,6 +2049,48 @@ function EventsDilemmasCircenn(context, turn)
 	end
 	
 end
+
+-------------------------------------------
+----------Events: Northleode!--------------
+-------------------------------------------
+EVENTS_NORTHLEODE_STRAT_CLUT = false;
+EVENTS_NORTHLEODE_WESTMORINGAS = false;
+EVENTS_NORTHLEODE_PLOT = 0;
+EVENTS_NORTHLEODE_BOOKS = false;
+EVENTS_NORTHLEODE_KING_OF_NOTHING = false;
+
+
+
+
+function EventsNorthleode(turn, new_turn)
+    local northleode = get_faction("vik_fact_northleode")
+    local is_still_vassal = northleode:is_vassal_of(get_faction("vik_fact_northymbre"))
+    if is_still_vassal and not northleode:has_effect_bundle("sw_northleode_king_of_nothing") then
+        cm:apply_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode", 0)
+    elseif not is_still_vassal and northleode:has_effect_bundle("sw_northleode_king_of_nothing") then
+        cm:remove_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode")
+    end
+
+end
+
+
+function EventsMissionsNorthleode(context, turn)
+
+
+end
+
+function EventsDilemmasNorthleode(context, turn)
+
+end
+
+
+
+
+
+
+
+
+
 
 ------------------------------------------------
 ---------------- Saving/Loading ----------------
