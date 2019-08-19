@@ -1,29 +1,71 @@
 function StartGameNorthleode()
     local difficulty = cm:model():difficulty_level();
-    local force = "est_marauders,est_spear_hirdmen,est_spear_hirdmen,est_shield_biters,est_marauders"
-    if difficulty < -1 then
-        force = force .. ",est_spear_hirdmen"
-    end
-    cm:apply_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode", 0)
-    cm:create_force("vik_fact_wicing", force, "vik_reg_coldingaham", 541, 542, "northleode_start_army", true)
-    dev.callback(function()
-    cm:force_declare_war("vik_fact_wicing", "vik_fact_northymbre")
-    cm:force_declare_war("vik_fact_wicing", "vik_fact_northleode")
-    end, 0.1)
-    local burt = get_faction("vik_fact_northleode"):faction_leader()
-    cm:add_unit_to_force("eng_north_hunters", burt:military_force():command_queue_index())
-    cm:add_unit_to_force("eng_ceorl_spearmen", burt:military_force():command_queue_index())
-    cm:add_unit_to_force("eng_thegn_spearmen", burt:military_force():command_queue_index())
-    dev.callback(function()
-        local zoom = dev.get_uic(cm:ui_root(), "panel_manager", "events", "button_set", "accept", "button_zoom")
-        if zoom then
-            zoom:SimulateLClick()
-        end
-        local tab = dev.get_uic(cm:ui_root(), "campaign_tactical_map", "button_holder", "button_tactical_map")
-        if tab then
-            tab:SimulateLClick()
-        end
-    end, 0.2)
+	cm:apply_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode", 0)
+	cm:trigger_mission("vik_fact_northleode", "sw_start_northleode", true);
+end
+if not cm:get_saved_value("start_mission_done_northleode") then
+	
+	cm:add_listener(
+		"StartMissionNorthleode",
+		"CharacterCompletedBattle",
+		function(context)
+			return get_faction("vik_fact_wicing"):is_dead()
+		end,
+		function(context)
+			cm:set_saved_value("start_mission_done_northleode", true)
+			cm:override_mission_succeeded_status("vik_fact_northleode", "sw_start_northleode", true)
+		end,
+		false)
+	
+end
+
+
+function StartGameWessex()
+	cm:trigger_mission("vik_fact_west_seaxe", "sw_start_wessex", true);
+end
+if not cm:get_saved_value("start_mission_done_west_seaxe") then
+	cm:add_listener(
+		"StartMissionNorthleode",
+		"CharacterCompletedBattle",
+		function(context)
+			return get_faction("vik_fact_jorvik"):is_dead()
+		end,
+		function(context)
+			cm:set_saved_value("start_mission_done_west_seaxe", true)
+			cm:override_mission_succeeded_status("vik_fact_west_seaxe", "sw_start_wessex", true)
+		end,
+		false)
+end
+
+
+function StartGameMierce()
+	cm:trigger_mission("vik_fact_mierce", "sw_start_mierce", true);
+
+
+end
+if not cm:get_saved_value("start_mission_done_mierce") then
+	cm:set_saved_value("start_mission_done_mierce", true)
+	cm:add_listener(
+		"StartMissionNorthleode",
+		"CharacterCompletedBattle",
+		function(context)
+			local main_attacker_faction = cm:pending_battle_cache_get_attacker_faction_name(1);
+			local main_defender_faction = cm:pending_battle_cache_get_defender_faction_name(1);
+			if main_attacker_faction == "vik_fact_mierce" and main_defender_faction == "vik_fact_ledeborg" and cm:model():pending_battle():attacker():won_battle() then
+				return true
+			elseif main_defender_faction == "vik_fact_mierce" and main_attacker_faction == "vik_fact_ledeborg" and not cm:model():pending_battle():attacker():won_battle() then
+				return true
+			end
+			if get_faction("vik_fact_ledeborg"):is_dead() then
+				return true
+			end
+			return false
+		end,
+		function(context)
+			cm:set_saved_value("start_mission_done_mierce", true)
+			cm:override_mission_succeeded_status("vik_fact_mierce", "sw_start_mierce", true)
+		end,
+		false)
 end
 
 
@@ -223,13 +265,11 @@ function SetupStartingRebels()
 			end
 			
 			if cm:model():world():faction_by_key("vik_fact_mierce"):is_human() then
-				CreateStartingRebels("vik_reg_ceaster", "english", 495, 314)
-				cm:trigger_mission("vik_fact_mierce", "vik_starting_rebels", true);
+				StartGameMierce()
 			end
 			
 			if cm:model():world():faction_by_key("vik_fact_west_seaxe"):is_human() then
-				CreateStartingRebels("vik_reg_sceaftesburg", "english", 536, 117)
-				cm:trigger_mission("vik_fact_west_seaxe", "vik_starting_rebels", true);
+				StartGameWessex()
 			end
 			
 			if cm:model():world():faction_by_key("vik_fact_gwined"):is_human() then

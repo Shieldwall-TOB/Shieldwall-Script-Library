@@ -629,6 +629,19 @@ function Add_Decrees_Listeners()
 	DecreesAlertIcon(cm:model():world():whose_turn_is_it():name())
 	if get_faction("vik_fact_mierce"):is_human() then
 		update_hoards()
+		cm:add_listener(
+			"FactionTurnStartHoards",
+			"FactionTurnStart",
+			function(context) return context:faction():is_human() and context:faction():name() == "vik_fact_mierce" end,
+			function(context) 
+				local mierce_decrees = DECREE_LIST["vik_fact_mierce"]
+				local current_hoards = mierce_decrees["current_hoards"]
+				if current_hoards > 0 then
+					cm:treasury_mod("vik_fact_mierce", 500*current_hoards)
+				end
+			end,
+			true
+		);
 	end
 	local faction_list = cm:model():world():faction_list();
 	for i = 0, faction_list:num_items() - 1 do 

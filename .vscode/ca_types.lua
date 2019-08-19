@@ -165,6 +165,7 @@
 --# assume CM.force_add_trait: method(lookup: string, trait_key: string, showMessage: boolean)
 --# assume CM.force_remove_trait: method(lookup: string, trait_key: string)
 --# assume CM.kill_character: method(lookup: string, kill_force: boolean, command_queue: boolean)
+--# assume CM.disable_movement_for_character: method(lookup: string)
 --technology
 --# assume CM.lock_technology: method(faction: string, technology: string)
 --# assume CM.unlock_technology: method(faction: string, technology: string)
@@ -182,7 +183,8 @@
 --forces
 --# assume CM.zero_action_points: method(lookup: string)
 --# assume CM.replenish_action_points: method(lookup: string)
-
+--# assume CM.create_force: method(faction_key: string, force: string, region: string, x: number, y: number, unique_id: string, faction_leader: boolean)
+--# assume CM.force_character_force_into_stance: method(lookup: string, stance: string)
 --MODEL
 --# assume CA_MODEL.world: method() --> CA_WORLD
 --# assume CA_MODEL.pending_battle: method() --> CA_PENDING_BATTLE

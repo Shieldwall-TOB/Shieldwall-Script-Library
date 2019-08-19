@@ -2055,7 +2055,7 @@ end
 -------------------------------------------
 EVENTS_NORTHLEODE_STRAT_CLUT = false;
 EVENTS_NORTHLEODE_WESTMORINGAS = false;
-EVENTS_NORTHLEODE_PLOT = 0;
+EVENTS_NORTHLEODE_BETRAYAL = false;
 EVENTS_NORTHLEODE_BOOKS = false;
 EVENTS_NORTHLEODE_KING_OF_NOTHING = false;
 
@@ -2063,14 +2063,54 @@ EVENTS_NORTHLEODE_KING_OF_NOTHING = false;
 
 
 function EventsNorthleode(turn, new_turn)
-    local northleode = get_faction("vik_fact_northleode")
-    local is_still_vassal = northleode:is_vassal_of(get_faction("vik_fact_northymbre"))
-    if is_still_vassal and not northleode:has_effect_bundle("sw_northleode_king_of_nothing") then
-        cm:apply_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode", 0)
-    elseif not is_still_vassal and northleode:has_effect_bundle("sw_northleode_king_of_nothing") then
-        cm:remove_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode")
-    end
-
+	local northleode = get_faction("vik_fact_northleode")
+	if not get_faction("vik_fact_northymbre"):is_dead() then
+		dev.log("Checking northleode faction events!")
+		local is_still_vassal = northleode:is_vassal_of(get_faction("vik_fact_northymbre"))
+		dev.log("vassal status: ["..tostring(is_still_vassal).."]")
+		if is_still_vassal and not northleode:has_effect_bundle("sw_northleode_king_of_nothing") then
+			cm:apply_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode", 0)
+		elseif not is_still_vassal and northleode:has_effect_bundle("sw_northleode_king_of_nothing") then
+			cm:remove_effect_bundle("sw_northleode_king_of_nothing", "vik_fact_northleode")
+		end
+		if turn == 2 then
+			cm:force_diplomacy("vik_fact_westmoringas", "vik_fact_northymbre", "war", false, false)
+			cm:force_diplomacy("vik_fact_northymbre", "vik_fact_westmoringas", "war", false, false)
+		end
+		if is_still_vassal and new_turn and (not EVENTS_NORTHLEODE_STRAT_CLUT) and get_faction("vik_fact_strat_clut"):at_war_with(get_faction("vik_fact_westernas")) then
+			dev.log("triggering northleode strat clut dilemma")
+			cm:trigger_dilemma("vik_fact_northleode", "sw_northleode_help_against_strat_clut", true)
+			EVENTS_NORTHLEODE_STRAT_CLUT = true
+		elseif turn >= 3 and (not EVENTS_NORTHLEODE_STRAT_CLUT) then
+			dev.log("forcing war between strat clut and westernas")
+			cm:force_declare_war("vik_fact_strat_clut", "vik_fact_westernas")
+		end
+		if turn > 14 and is_still_vassal and (not EVENTS_NORTHLEODE_WESTMORINGAS) then
+			dev.log("triggering northleode westmoringas dilemma")
+			cm:force_diplomacy("vik_fact_westmoringas", "vik_fact_northymbre", "war", true, true)
+			cm:force_diplomacy("vik_fact_northymbre", "vik_fact_westmoringas", "war", true, true)
+			EVENTS_NORTHLEODE_WESTMORINGAS = true
+			cm:trigger_dilemma("vik_fact_northleode", "sw_northleode_help_against_jorvik", true)
+		end
+		if turn > 25 and is_still_vassal and (not EVENTS_NORTHLEODE_BETRAYAL) then
+			dev.log("checking northleode betrayal dilemma")
+			if (not get_faction("vik_fact_east_engle"):is_dead()) and (not get_faction("vik_fact_northleode"):at_war_with(get_faction("vik_fact_east_engle"))) then
+				dev.log("rolling for northleode east engle dilemma")
+				if cm:random_number(25) > 15 then
+					dev.log("triggering northleode mierce dilemma")
+					cm:trigger_dilemma("vik_fact_northleode", "sw_northleode_betrayal_east_engle", true)
+					EVENTS_NORTHLEODE_BETRAYAL = true
+				end
+			elseif (not get_faction("vik_fact_mierce"):is_dead()) and (not get_faction("vik_fact_northleode"):at_war_with(get_faction("vik_fact_mierce"))) then
+				dev.log("rolling for northleode mierce dilemma")
+				if cm:random_number(25) > 15 then
+					dev.log("triggering northleode mierce dilemma")
+					cm:trigger_dilemma("vik_fact_northleode", "sw_northleode_betrayal_mierce", true)
+					EVENTS_NORTHLEODE_BETRAYAL = true
+				end
+			end
+		end
+	end
 end
 
 
@@ -2080,7 +2120,36 @@ function EventsMissionsNorthleode(context, turn)
 end
 
 function EventsDilemmasNorthleode(context, turn)
-
+	local dilemma = context:dilemma()
+	local choice = context:choice()
+	if dilemma == "sw_northleode_help_against_strat_clut" then
+		if choice == 0 then
+			cm:force_declare_war("vik_fact_northymbre", "vik_fact_strat_clut")
+		end
+	end
+	if dilemma == "sw_northleode_help_against_jorvik" then
+		if choice == 0 then
+			cm:force_declare_war("vik_fact_northleode", "vik_fact_northymbre")
+		else
+			cm:force_declare_war("vik_fact_northymbre", "vik_fact_westmoringas")
+		end
+	end
+	if dilemma == "sw_northleode_betrayal_east_engle" then
+		if choice == 0 then
+			cm:force_declare_war("vik_fact_northleode", "vik_fact_northymbre")
+			if (not get_faction("vik_fact_east_engle"):at_war_with(get_faction("vik_fact_northymbre"))) then
+				cm:force_declare_war("vik_fact_east_engle", "vik_fact_northymbre")
+			end
+		end
+	end
+	if dilemma == "sw_northleode_betrayal_mierce" then
+		if choice == 0 then
+			cm:force_declare_war("vik_fact_northleode", "vik_fact_northymbre")
+			if (not get_faction("vik_fact_mierce"):at_war_with(get_faction("vik_fact_northymbre"))) then
+				cm:force_declare_war("vik_fact_mierce", "vik_fact_northymbre")
+			end
+		end
+	end
 end
 
 
@@ -2147,6 +2216,11 @@ cm:register_loading_game_callback(
 		EVENTS_CIRCENN_KING_ATHFOCHLA = cm:load_value("EVENTS_CIRCENN_KING_ATHFOCHLA", 0, context);
 		EVENTS_CIRCENN_KING_STRAT_CLUT = cm:load_value("EVENTS_CIRCENN_KING_STRAT_CLUT", 0, context);
 		SACKED_SETTLEMENTS = cm:load_value("SACKED_SETTLEMENTS", SACKED_SETTLEMENTS, context);
+		EVENTS_NORTHLEODE_WESTMORINGAS = cm:load_value("EVENTS_NORTHLEODE_WESTMORINGAS", false, context);
+		EVENTS_NORTHLEODE_BETRAYAL = cm:load_value("EVENTS_NORTHLEODE_BETRAYAL", false, context);
+		EVENTS_NORTHLEODE_BOOKS = cm:load_value("EVENTS_NORTHLEODE_BOOKS", false, context);
+		EVENTS_NORTHLEODE_KING_OF_NOTHING = cm:load_value("EVENTS_NORTHLEODE_KING_OF_NOTHING", false, context);
+		EVENTS_NORTHLEODE_STRAT_CLUT = cm:load_value("EVENTS_NORTHLEODE_STRAT_CLUT", false, context);
 	end
 );
 
@@ -2201,5 +2275,11 @@ cm:register_saving_game_callback(
 		cm:save_value("EVENTS_CIRCENN_KING_ATHFOCHLA", EVENTS_CIRCENN_KING_ATHFOCHLA, context);
 		cm:save_value("EVENTS_CIRCENN_KING_STRAT_CLUT", EVENTS_CIRCENN_KING_STRAT_CLUT, context);
 		cm:save_value("SACKED_SETTLEMENTS", SACKED_SETTLEMENTS, context);
-		end
+
+		cm:save_value("EVENTS_NORTHLEODE_WESTMORINGAS", EVENTS_NORTHLEODE_WESTMORINGAS, context);
+		cm:save_value("EVENTS_NORTHLEODE_BETRAYAL", EVENTS_NORTHLEODE_BETRAYAL, context);
+		cm:save_value("EVENTS_NORTHLEODE_BOOKS", EVENTS_NORTHLEODE_BOOKS, context);
+		cm:save_value("EVENTS_NORTHLEODE_KING_OF_NOTHING", EVENTS_NORTHLEODE_KING_OF_NOTHING, context);
+		cm:save_value("EVENTS_NORTHLEODE_STRAT_CLUT", EVENTS_NORTHLEODE_STRAT_CLUT, context);
+	end
 );

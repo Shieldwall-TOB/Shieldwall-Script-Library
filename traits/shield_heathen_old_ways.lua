@@ -32,8 +32,12 @@ function(context)
     if faction:is_human() and context:is_war() then
         local faction_detail = pkm:get_faction(faction:name())
         --case, the faction declaring war is a vassal and they are not declaring war on their liege.
-        if faction_detail:is_vassal() and (not context:recipient():name() == faction_detail:liege():name()) then
-            return false, nil
+        local faction_list = dev.faction_list()
+        for i = 0, faction_list:num_items() - 1 do
+            local master = faction_list:item_at(i)
+            if faction:is_vassal_of(master) then
+                return false, nil
+            end
         end
       return Check.is_char_from_viking_faction(context:recipient():faction_leader()), faction
     end
