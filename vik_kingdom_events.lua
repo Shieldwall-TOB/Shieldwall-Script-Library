@@ -383,7 +383,7 @@ function KingdomSetFounderFaction(faction, kingdom, long_victory)
 			cm:apply_effect_bundle("vik_kingdom_"..kingdom.."_sudreyar", faction:name(), 0)
 		end
 	end
-	
+	dev.eh:trigger_event("FactionFormsKingdom", kingdom, get_faction(faction))
 	--Fire the incident
 	local incident = "vik_incident_kingdom_formed_"..kingdom.."_"..founder;
 	if long_victory == true then
