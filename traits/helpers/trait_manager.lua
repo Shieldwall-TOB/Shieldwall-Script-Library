@@ -328,8 +328,12 @@ function trait_manager.add_faction_leader_dilemma(self, event, conditional_funct
             if valid and faction and faction:is_human() and not faction:faction_leader():is_null_interface() then
                 local character = faction:faction_leader()
                 local dilemma = self.key.."_kings_choice"
-                if (not TM_TRIGGERED_DILEMMA[dilemma]) or (not TM_TRIGGERED_DILEMMA[dilemma][tostring(character:command_queue_index())]) then
+                if (not TM_TRIGGERED_DILEMMA[dilemma]) or (not TM_TRIGGERED_DILEMMA[dilemma][tostring(character:command_queue_index())]) and not character:has_trait(self.key) then
                     cm:trigger_dilemma(faction:name(), dilemma, true)
+                    if TM_TRIGGERED_DILEMMA[dilemma] == nil then
+                        TM_TRIGGERED_DILEMMA[dilemma] = {}
+                    end
+                    TM_TRIGGERED_DILEMMA[dilemma][tostring(character:command_queue_index())] = true
                 end
             end
         end,
@@ -344,10 +348,6 @@ function trait_manager.add_faction_leader_dilemma(self, event, conditional_funct
                 local faction = context:faction()
                 local character = faction:faction_leader()
                 local dilemma = context:dilemma()
-                if TM_TRIGGERED_DILEMMA[dilemma] == nil then
-                    TM_TRIGGERED_DILEMMA[dilemma] = {}
-                end
-                TM_TRIGGERED_DILEMMA[dilemma][tostring(character:command_queue_index())] = true
                 local choice = context:choice()
                 if choices[choice] == true then
                     cm:force_add_trait(dev.lookup(character), self.key, true)

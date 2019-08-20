@@ -1,7 +1,9 @@
 
 local tm = traits_manager.new("shield_heathen_old_ways")
 local FLAG_CHANCE = 20
+local KING_TRAIT_CHANCE = 20
 
+--only for non-vikings. Vikings can get this trait bundled with pagan.
 tm:add_dilemma_flag_listener("CharacterTurnStart",
 function(context)
     local char = context:character()
@@ -19,6 +21,29 @@ function(context)
     end
     return false, char
 end)
+
+
+tm:add_faction_leader_dilemma("PositiveDiplomaticEvent",
+function(context)
+    local proposer = context:proposer()
+    local recipient = context:recipient()
+    if proposer:is_human() and Check.is_faction_viking_faction(recipient) and not Check.is_faction_viking_faction(proposer) then
+        --the proposer is a human faction who isn't viking and just made a deal with vikings.
+        return cm:random_number(100) < (KING_TRAIT_CHANCE/2), proposer
+        --we divide the chance by two because diplomacy events trigger twice every time they fire. 
+    elseif recipient:is_human() and Check.is_faction_viking_faction(proposer) and not Check.is_faction_viking_faction(recipient) then
+        --the recpient is a human faction who isn't viking and just made a deal with vikings.
+        return cm:random_number(100) < (KING_TRAIT_CHANCE/2), recipient
+        --we divide the chance by two because diplomacy events trigger twice every time they fire.
+    end
+    return false, nil
+end, {[0] = true, [1] = false})
+
+
+
+
+
+
 
 tm:set_loyalty_event_condition("NegativeDiplomaticEvent",
 function(context)
