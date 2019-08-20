@@ -7,6 +7,10 @@ local KING_TRAIT_CHANCE = 20
 tm:add_dilemma_flag_listener("CharacterTurnStart",
 function(context)
     local char = context:character()
+    --cannot be a friend of the church
+    if char:has_trait("shield_faithful_friend_of_the_church") then
+        return false
+    end
     if Check.is_char_from_viking_faction(char) then
         return false, char
     end
@@ -27,13 +31,22 @@ tm:add_faction_leader_dilemma("PositiveDiplomaticEvent",
 function(context)
     local proposer = context:proposer()
     local recipient = context:recipient()
+    --the proposer is a human faction who isn't viking and just made a deal with vikings.
     if proposer:is_human() and Check.is_faction_viking_faction(recipient) and not Check.is_faction_viking_faction(proposer) then
-        --the proposer is a human faction who isn't viking and just made a deal with vikings.
-        return cm:random_number(100) < (KING_TRAIT_CHANCE/2), proposer
+        --cannot be a friend of the church
+        if proposer:faction_leader():has_trait("shield_faithful_friend_of_the_church") then
+            return false, nil
+        end
+        return cm:random_number(100) < (KING_TRAIT_CHANCE/2), proposer 
         --we divide the chance by two because diplomacy events trigger twice every time they fire. 
+
+    --the recpient is a human faction who isn't viking and just made a deal with vikings.
     elseif recipient:is_human() and Check.is_faction_viking_faction(proposer) and not Check.is_faction_viking_faction(recipient) then
-        --the recpient is a human faction who isn't viking and just made a deal with vikings.
-        return cm:random_number(100) < (KING_TRAIT_CHANCE/2), recipient
+        --cannot be a friend of the church
+        if recipient:faction_leader():has_trait("shield_faithful_friend_of_the_church") then
+            return false, nil
+        end
+        return cm:random_number(100) < (KING_TRAIT_CHANCE/2), recipient 
         --we divide the chance by two because diplomacy events trigger twice every time they fire.
     end
     return false, nil
