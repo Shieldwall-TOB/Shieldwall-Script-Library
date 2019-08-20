@@ -12,8 +12,20 @@ function(context)
     --return has_daddy_to_pay_tuition_money and is_correct_age and period_accurate_sexism--]]
 end)
 
+tm:set_loyalty_event_condition("BuildingCompleted",
+function(context)
+    local building = context:building()
+    if building:superchain() == "vik_library" or building:superchain() == "vik_court_school" then
+        return true, context:building():faction()
+    end
+    return false, nil
+end)
+
+
 tm:set_cross_loyalty("shield_scholar_wise", 1)
 
 tm:set_start_pos_characters(
-    "faction:vik_fact_west_seaxe,forename:2147363229"
+    "faction:vik_fact_west_seaxe,forename:2147363229",
+    "faction:vik_fact_west_seaxe,forename:2147363108",
+    "faction:vik_fact_gwined,forename:2147367296"
 )

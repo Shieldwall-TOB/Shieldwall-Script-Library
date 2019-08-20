@@ -1,30 +1,24 @@
 
 local tm = traits_manager.new("shield_heathen_old_ways")
+local FLAG_CHANCE = 20
 
---[[ suspected crash cause :c
-tm:add_dilemma_flag_listener( "CharacterTurnStart",
+tm:add_dilemma_flag_listener("CharacterTurnStart",
 function(context)
-    local chance = 2 --:number
-    local char = context:character() --:CA_CHAR
-    if not char:faction():is_null_interface() and char:faction():is_human() and Check.is_char_from_viking_faction(char) then
+    local char = context:character()
+    if Check.is_char_from_viking_faction(char) then
         return false, char
     end
-    if not char:faction():is_human() then
-        return cm:random_number(100) > 10, char
+    if char:region():is_null_interface() then
+        return false, char
     end
-    local list = dev.faction_list()
-    for i = 0, list:num_items() - 1 do
-        local trade_faction = list:item_at(i)
-        if trade_faction:has_faction_leader() then
-            if char:faction():name() ~= trade_faction:name() and Check.is_char_from_viking_faction(trade_faction:faction_leader()) then
-                if char:faction():is_trading_with(trade_faction) then
-                    chance = chance + 6
-                end
-            end
+    for i = 0, char:region():adjacent_region_list():num_items() - 1 do
+        local current = char:region():adjacent_region_list():item_at(i)
+        if current:owning_faction():has_faction_leader() and Check.is_char_from_viking_faction(current:owning_faction():faction_leader()) then
+            return cm:random_number(100) < FLAG_CHANCE, char
         end
     end
-    return cm:random_number(100) < chance, char
-end)]]
+    return false, char
+end)
 
 tm:set_loyalty_event_condition("NegativeDiplomaticEvent",
 function(context)
@@ -45,6 +39,17 @@ function(context)
 end)
 
 tm:set_start_pos_characters(
-    "faction:vik_fact_northleode,forename:2147363531"
+    --northanhymbre viking sympathizer
+    "faction:vik_fact_northleode,forename:2147363531",
+    --dyflin and sudreyar pagans
+    "faction:vik_fact_sudreyar,forename:2147365942",
+    "faction:vik_fact_sudreyar,forename:2147366135",
+    "faction:vik_fact_sudreyar,forename:2147365979",
+    "faction:vik_fact_sudreyar,forename:2147365995",
+    "faction:vik_fact_sudreyar,forename:2147366152",
+    "faction:vik_fact_dyflin,forename:2147365881",
+    "faction:vik_fact_dyflin,forename:2147366107",
+    "faction:vik_fact_dyflin,forename:2147366232",
+    "faction:vik_fact_dyflin,forename:2147366227"
 )
 

@@ -177,11 +177,11 @@ function region_rioting_event(region, faction_name, public_order)
 			pkm:get_faction(faction_name):get_food_manager():mod_food_storage(pkm:get_faction(faction_name):get_food_manager():food_in_storage() * (-0.25))
 		end)
 		cm:trigger_incident(faction_name, incident, true)
-	elseif pkm:get_faction(faction_name):pop_manager_by_key("serf"):display_value_in_province(region:province_name()) > 40 then
+	elseif pkm:get_faction(faction_name):pop_manager_by_key("lord"):display_value_in_province(region:province_name()) > 40 then
 		local incident = "shield_rebellion_nobles_"..region_name
 		respond_to_incident(incident, function(context)
 			local region = dev.get_region(region_name) 
-			pkm:get_faction(faction_name):pop_manager_by_key("serf"):apply_unrest(region:province_name())
+			pkm:get_faction(faction_name):pop_manager_by_key("lord"):apply_unrest(region:province_name())
 		end)
 		cm:trigger_incident(faction_name, incident, true)
 	end

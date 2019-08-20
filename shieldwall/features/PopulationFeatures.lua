@@ -34,7 +34,34 @@ cm:add_listener(
     end,
     true
 )
+
+cm:add_listener(
+    "PopulationBeingRaided",
+    "CharacterTurnEnd",
+    function(context)
+        local character = context:character()
+        return (not character:region():is_null_interface()) and character:region():owning_faction():is_human() 
+        and character:has_military_force() and character:military_force():active_stance() == "MILITARY_FORCE_ACTIVE_STANCE_TYPE_LAND_RAID"
+    end,
+    function(context)
+        local region = context:character():region()
+        local faction_name = region:owning_faction():name()
+        local pop_manager = pkm:get_faction(faction_name):pop_manager_by_key("serf")
+        pop_manager:apply_unrest(region:province_name())
+    end,
+    true
+)
+
+
+
+
 end)
+
+
+
+
+
+
 --AI recruits a unit.
 
 

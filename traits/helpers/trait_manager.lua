@@ -24,6 +24,27 @@ function trait_manager.new(trait_key)
     --startpos characters
     self.startpos_characters = {}
     self.start_traits_applied = not not cm:get_saved_value("tm_"..self.key.."_start_traits_applied")
+    --loyalty event auto-removal
+    cm:set_saved_value("tm_"..self.key.."_remove_loyalty_event", -1)
+    cm:add_listener(
+        "TMLoyaltyEventFactionTurnStart",
+        "FactionTurnStart",
+        function(context)
+            return context:faction():is_human() and cm:get_saved_value("tm_"..self.key.."_remove_loyalty_event") == cm:model():turn_number()
+        end,
+        function(context)
+            local faction = context:faction()
+            local chars = faction:character_list() 
+            for i = 0, chars:num_items() - 1 do
+                local char = chars:item_at(i)
+                if char:has_trait(self.key.."_loyalty_event_flag") then
+                    cm:force_remove_trait(dev.lookup(char), self.key.."_loyalty_event_flag")
+                end
+            end
+            cm:set_saved_value("tm_"..self.key.."_remove_loyalty_event", -1)
+        end,
+        false 
+    )
     return self
 end
 
@@ -59,8 +80,20 @@ end
 
 --v function(self: TRAIT_MANAGER, dilemma_key: string, choice: number)
 function trait_manager.register_faction_leader_remove_trait_dilemma(self, dilemma_key, choice)
-
-
+    cm:add_listener(
+        "TMRemoveTraitDilemma",
+        "DilemmaChoiceMadeEvent",
+        function(context)
+            return (not not string.find(context:dilemma(), dilemma_key)) and context:choice() == choice
+            --the string find helps in partial match situations.
+        end,
+        function(context)
+            local faction = context:faction()
+            if (not faction:faction_leader():is_null_interface()) and faction:faction_leader():has_trait(self.key) then
+                cm:force_remove_trait(dev.lookup(faction:faction_leader()), self.key)
+            end
+        end,
+        true)
 end
 
 --private function
@@ -130,7 +163,7 @@ function trait_manager.add_dilemma_flag_listener(self, event, conditional_functi
             "DilemmaChoiceMadeEventRemoveFlagsTraitName",
             "DilemmaChoiceMadeEvent",
             function(context)
-                return context:dilemma() == self.key.."_choice"
+                return not not string.find(context:dilemma(), self.key.."_choice")
             end,
             function(context)
                 for i = 0, context:faction():character_list():num_items() - 1 do
@@ -153,7 +186,7 @@ function trait_manager.add_dilemma_flag_listener(self, event, conditional_functi
             "IncidentOccuredEventRemoveFlags",
             "IncidentOccuredEvent",
             function(context)
-                return context:dilemma() == self.key.."_event"
+                return not not string.find(context:dilemma(), self.key.."_choice")
             end,
             function(context)
                 for i = 0, context:faction():character_list():num_items() - 1 do
@@ -172,12 +205,14 @@ function trait_manager.add_dilemma_flag_listener(self, event, conditional_functi
                     end
                 end
             end, true)
+
     end)
 end
 
 
---v function(self: TRAIT_MANAGER, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR?))
-function trait_manager.add_normal_trait_trigger(self, event, conditional_function) 
+--v function(self: TRAIT_MANAGER, event: string, conditional_function: function(context: WHATEVER) --> (boolean, CA_CHAR?), ...:string)
+function trait_manager.add_normal_trait_trigger(self, event, conditional_function, ...) 
+    --the veriadic args are used for traits to also add when this particular listener fires. Used for traits that always come together.
     self:wait(function()
         cm:add_listener(
             "TMTraitTriggerNormal"..self.key,
@@ -191,6 +226,12 @@ function trait_manager.add_normal_trait_trigger(self, event, conditional_functio
                     if not char:has_trait(self.key) then
                         cm:force_add_trait(dev.lookup(char), self.key, true)
                     end
+                    
+                    for i = 1, arg.n do
+                        if not char:has_trait(arg[i]) then
+                            cm:force_add_trait(dev.lookup(char), arg[i], true)
+                        end
+                    end
                 end
             end,
             true
@@ -203,7 +244,7 @@ function trait_manager.set_start_pos_characters(self, ...)
     dev.first_tick(function(context)
         if self.start_traits_applied == false then
             cm:set_saved_value("tm_"..self.key.."_start_traits_applied", true)
-            for i = 1, #arg do
+            for i = 1, arg.n do
                 cm:force_add_trait(arg[i], self.key, false)
             end
         end
@@ -231,10 +272,11 @@ function trait_manager.set_loyalty_event_condition(self, event, conditional_func
                 local chars = faction:character_list() 
                 for i = 0, chars:num_items() - 1 do
                     local char = chars:item_at(i)
-                    if char:has_trait(self.key) then
+                    if not char:is_faction_leader() and char:has_trait(self.key) then
                         cm:force_add_trait(dev.lookup(char), self.key.."_loyalty_event_flag", false)
                     end
                 end
+                cm:set_saved_value("tm_"..self.key.."_remove_loyalty_event", cm:model():turn_number() + 3)
             end
         end,
         true
@@ -244,7 +286,7 @@ function trait_manager.set_loyalty_event_condition(self, event, conditional_func
         "DilemmaChoiceMadeEventRemoveFlagsTraitName",
         "DilemmaChoiceMadeEvent",
         function(context)
-            return context:dilemma() == self.key.."_loyalty_event"
+            return not not string.find(context:dilemma(), self.key.."_loyalty_event")
         end,
         function(context)
             local faction = context:faction()
@@ -260,7 +302,7 @@ function trait_manager.set_loyalty_event_condition(self, event, conditional_func
         "IncidentOccuredEventRemoveFlags",
         "IncidentOccuredEvent",
         function(context)
-            return context:dilemma() == self.key.."_loyalty_event"
+            return not not string.find(context:dilemma(), self.key.."_loyalty_event")
         end,
         function(context)
             local faction = context:faction()
@@ -273,6 +315,44 @@ function trait_manager.set_loyalty_event_condition(self, event, conditional_func
             end
         end, true)
     end)
+end
+
+--v function(self: TRAIT_MANAGER, event: string, conditional_function: (function(context:WHATEVER) --> (boolean, CA_FACTION)), choices: map<number, boolean>)
+function trait_manager.add_faction_leader_dilemma(self, event, conditional_function, choices)
+    cm:add_listener(
+        "TMFactionLeaderDilemma"..self.key,
+        event,
+        true,
+        function(context)
+            local valid, faction = conditional_function(context)
+            if valid and faction and faction:is_human() and not faction:faction_leader():is_null_interface() then
+                local character = faction:faction_leader()
+                local dilemma = self.key.."_kings_choice"
+                if (not TM_TRIGGERED_DILEMMA[dilemma]) or (not TM_TRIGGERED_DILEMMA[dilemma][tostring(character:command_queue_index())]) then
+                    cm:trigger_dilemma(faction:name(), dilemma, true)
+                end
+            end
+        end,
+        true)
+        cm:add_listener(
+            "DilemmaChoiceMadeEventTMFactionLeaderDilemma"..self.key,
+            "DilemmaChoiceMadeEvent",
+            function(context)
+                return not not string.find(context:dilemma(), self.key.."_kings_choice")
+            end,
+            function(context)
+                local faction = context:faction()
+                local character = faction:faction_leader()
+                local dilemma = context:dilemma()
+                if TM_TRIGGERED_DILEMMA[dilemma] == nil then
+                    TM_TRIGGERED_DILEMMA[dilemma] = {}
+                end
+                TM_TRIGGERED_DILEMMA[dilemma][tostring(character:command_queue_index())] = true
+                local choice = context:choice()
+                if choices[choice] == true then
+                    cm:force_add_trait(dev.lookup(character), self.key, true)
+                end
+            end, true)
 end
 
 cm:register_loading_game_callback(
