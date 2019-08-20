@@ -1,25 +1,27 @@
-
 local tm = traits_manager.new("shield_heathen_old_ways")
 local FLAG_CHANCE = 20
 local KING_TRAIT_CHANCE = 20
 
---only for non-vikings. Vikings can get this trait bundled with pagan.
 tm:add_dilemma_flag_listener("CharacterTurnStart",
 function(context)
     local char = context:character()
     --cannot be a friend of the church
     if char:has_trait("shield_faithful_friend_of_the_church") then
-        return false
+        return false, char
     end
+    --cannot trigger for viking
     if Check.is_char_from_viking_faction(char) then
         return false, char
     end
+    --needs a valid region for check
     if char:region():is_null_interface() then
         return false, char
     end
+    --for each region adjacent to the one the character is in.
     for i = 0, char:region():adjacent_region_list():num_items() - 1 do
         local current = char:region():adjacent_region_list():item_at(i)
-        if current:owning_faction():has_faction_leader() and Check.is_char_from_viking_faction(current:owning_faction():faction_leader()) then
+        --is the region owned by a viking we are *not* are war with?
+        if (not char:faction():at_war_with(current:owning_faction())) and Check.is_faction_viking_faction(current:owning_faction()) then
             return cm:random_number(100) < FLAG_CHANCE, char
         end
     end
@@ -61,18 +63,22 @@ end, {[0] = true, [1] = false})
 tm:set_loyalty_event_condition("NegativeDiplomaticEvent",
 function(context)
     local faction = context:proposer()
+    --if the event is a war and the human faction declared it.
     if faction:is_human() and context:is_war() then
         local faction_detail = pkm:get_faction(faction:name())
-        --case, the faction declaring war is a vassal and they are not declaring war on their liege.
+        --don't trigger if the faction is a vassal.
         local faction_list = dev.faction_list()
         for i = 0, faction_list:num_items() - 1 do
             local master = faction_list:item_at(i)
             if faction:is_vassal_of(master) then
                 return false, nil
+                --if the faction has just declared war on their master, they won't be a vassal anymore when this check happens.
             end
         end
-      return Check.is_char_from_viking_faction(context:recipient():faction_leader()), faction
+        --the recipient of the war declaration must be a viking faction.
+      return Check.is_faction_viking_faction(context:recipient()), faction
     end
+    --otherwise, false
     return false, nil
 end)
 
